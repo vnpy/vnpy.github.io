@@ -9,18 +9,18 @@
     
     <meta name="author" content="用python的trader">
     
-    <meta name="description" content="基于python的开源交易平台框架">
+    <meta name="description" content="基于python的开源交易平台开发框架">
     
     
-    <meta name="description" content="基于python的开源交易平台框架">
+    <meta name="description" content="基于python的开源交易平台开发框架">
 <meta property="og:type" content="website">
 <meta property="og:title" content="vn.py">
 <meta property="og:url" content="http://yoursite.com/">
 <meta property="og:site_name" content="vn.py">
-<meta property="og:description" content="基于python的开源交易平台框架">
+<meta property="og:description" content="基于python的开源交易平台开发框架">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="vn.py">
-<meta name="twitter:description" content="基于python的开源交易平台框架">
+<meta name="twitter:description" content="基于python的开源交易平台开发框架">
 
 
     
@@ -47,7 +47,7 @@
 			
 			<div id="textlogo">
 				<h1 class="site-name"><a href="/" title="vn.py">vn.py</a></h1>
-				<h2 class="blog-motto">基于python的开源交易平台框架</h2>
+				<h2 class="blog-motto">基于python的开源交易平台开发框架</h2>
 			</div>
 			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
@@ -58,8 +58,6 @@
 						<li><a href="/">主页</a></li>
 					
 						<li><a href="/archives">存档</a></li>
-					
-						<li><a href="/about">关于</a></li>
 					
 					<li>
  					
@@ -83,37 +81,38 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/03/02/hello-world/" title="Hello World" itemprop="url">Hello World</a>
+      <a href="/2015/03/03/20150303_项目状态/" title="2015/3/3 项目开发日志" itemprop="url">2015/3/3 项目开发日志</a>
   </h1>
   <p class="article-author">By
        
 		<a href="http://yoursite.com/about" title="用python的trader" target="_blank" itemprop="author">用python的trader</a>
 		
   <p class="article-time">
-    <time datetime="2015-03-02T06:47:52.260Z" itemprop="datePublished"> 发表于 3月 2 2015</time>
+    <time datetime="2015-03-03T10:16:45.000Z" itemprop="datePublished"> 发表于 3月 3 2015</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2>
-<h3 id="Create_a_new_post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <h2 id="目前项目状态">目前项目状态</h2>
+<p>目前完成：  </p>
+<ol>
+<li>华宝证券的LTS API的python封装，发布在vn.lts文件夹下  </li>
+<li>事件驱动引擎，发布在vn.event文件夹下  </li>
+</ol>
+<h3 id="vn-lts">vn.lts</h3>
+<p>ltsapi：华宝证券官方的LTS C++ API<br>pyscript：用于自动生成重复度较高的封装代码的python脚本<br>vnltsmd：行情API的封装源代码和测试脚本<br>vnltstd：交易API的封装源代码和测试脚本  </p>
+<h3 id="vn-event">vn.event</h3>
+<p>eventType：定义事件类型常量<br>eventEngine：包含事件驱动引擎实现  </p>
+<h2 id="下一步计划">下一步计划</h2>
+<ol>
+<li>API封装、编译、使用方面的教程</li>
+<li>事件驱动引擎原理、使用方面的教程</li>
+<li>基于API和引擎开发的LTS交易客户平台（因为华宝没有提供官方的LTS交易软件，目前的两个实现分别是基于C++的尔易终端和基于.COM封装的盈佳终端）</li>
+<li>策略引擎接口</li>
+</ol>
+<h2 id="联系作者">联系作者</h2>
+<p>作者知乎名：用python的trader，想要联系作者可以通过知乎私信。</p>
 
         
         
@@ -123,6 +122,11 @@
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/日志/">日志</a>
+</div>
 
 
 </div>
@@ -153,6 +157,15 @@
 <aside class="clearfix">
 
   
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/日志/" title="日志">日志<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
 
   
 
