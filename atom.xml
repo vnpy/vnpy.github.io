@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title><![CDATA[vn.py]]></title>
+  <subtitle><![CDATA[基于python的开源交易平台开发框架]]></subtitle>
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://vnpy.github.io/"/>
+  <updated>2015-03-04T02:05:21.159Z</updated>
+  <id>http://vnpy.github.io/</id>
+  
+  <author>
+    <name><![CDATA[用python的trader]]></name>
+    <email><![CDATA[vn.py@foxmail.com]]></email>
+  </author>
+  
+  <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[2015/3/3 项目开发日志]]></title>
+    <link href="http://vnpy.github.io/2015/03/03/20150303_%E9%A1%B9%E7%9B%AE%E7%8A%B6%E6%80%81/"/>
+    <id>http://vnpy.github.io/2015/03/03/20150303_项目状态/</id>
+    <published>2015-03-03T10:16:45.000Z</published>
+    <updated>2015-03-03T10:32:06.946Z</updated>
+    <content type="html"><![CDATA[<h2 id="目前项目状态">目前项目状态</h2>
+<p>目前完成：  </p>
+<ol>
+<li>华宝证券的LTS API的python封装，发布在vn.lts文件夹下  </li>
+<li>事件驱动引擎，发布在vn.event文件夹下  </li>
+</ol>
+<h3 id="vn-lts">vn.lts</h3>
+<p>ltsapi：华宝证券官方的LTS C++ API<br>pyscript：用于自动生成重复度较高的封装代码的python脚本<br>vnltsmd：行情API的封装源代码和测试脚本<br>vnltstd：交易API的封装源代码和测试脚本  </p>
+<h3 id="vn-event">vn.event</h3>
+<p>eventType：定义事件类型常量<br>eventEngine：包含事件驱动引擎实现  </p>
+<h2 id="下一步计划">下一步计划</h2>
+<ol>
+<li>API封装、编译、使用方面的教程</li>
+<li>事件驱动引擎原理、使用方面的教程</li>
+<li>基于API和引擎开发的LTS交易客户平台（因为华宝没有提供官方的LTS交易软件，目前的两个实现分别是基于C++的尔易终端和基于.COM封装的盈佳终端）</li>
+<li>策略引擎接口</li>
+</ol>
+<h2 id="联系作者">联系作者</h2>
+<p>作者知乎名：用python的trader，想要联系作者可以通过知乎私信。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="目前项目状态">目前项目状态</h2>
+<p>目前完成：  </p>
+<ol>
+<li>华宝证券的LTS API的python封装，发布在vn.lts文件夹下  </li>
+<li>事件驱动引擎，发布在vn.event文件夹下  </li>
+</ol>
+<h3 i]]>
+    </summary>
+    
+      <category term="日志" scheme="http://vnpy.github.io/categories/%E6%97%A5%E5%BF%97/"/>
+    
+  </entry>
+  
+</feed>
