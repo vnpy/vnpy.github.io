@@ -1,0 +1,232 @@
+
+  <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Category: 教程 | vn.py</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="用python的交易员">
+    
+    <meta name="description" content="基于python的开源交易平台开发框架">
+    
+    
+    <meta name="description" content="基于python的开源交易平台开发框架">
+<meta property="og:type" content="website">
+<meta property="og:title" content="vn.py">
+<meta property="og:url" content="http://vnpy.github.io/categories/教程/">
+<meta property="og:site_name" content="vn.py">
+<meta property="og:description" content="基于python的开源交易平台开发框架">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vn.py">
+<meta name="twitter:description" content="基于python的开源交易平台开发框架">
+
+
+    
+    <link rel="alternative" href="/atom.xml" title="vn.py" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+    <body>
+      <header>
+        <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="vn.py" title="vn.py"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="vn.py">vn.py</a></h1>
+				<h2 class="blog-motto">基于python的开源交易平台开发框架</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">存档</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:vnpy.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+      </header>
+      <div id="container">
+        
+
+<div class="archive-title" >
+  <h2 class="category-icon">教程</h2>
+  
+</div>
+<div id="main" class="archive-part clearfix">
+  <div id="archive-page">
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2015/03/05/20150305_Python量化交易平台开发教程系列1-类CTP交易API的工作原理/" title="Python量化交易平台开发教程系列1-类CTP交易API的工作原理" itemprop="url">
+  
+
+    <time datetime="2015-03-05T06:28:49.000Z" itemprop="datePublished">3月 5 2015</time>
+
+
+    <h1 itemprop="name">Python量化交易平台开发教程系列1-类CTP交易API的工作原理</h1>
+
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2015/03/04/20150304_Python量化交易平台开发教程系列0-引言/" title="Python量化交易平台开发教程系列0-引言" itemprop="url">
+  
+
+    <time datetime="2015-03-04T02:58:42.000Z" itemprop="datePublished">3月 4 2015</time>
+
+
+    <h1 itemprop="name">Python量化交易平台开发教程系列0-引言</h1>
+
+  </a>
+</section>
+
+
+  </div>
+</div>
+
+      </div>
+      <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Talk is cheap, show me the code. <br/>
+			</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="http://vnpy.github.io/about" target="_blank" title="用python的交易员">用python的交易员</a>
+		
+		</p>
+</div>
+</footer>
+      <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+    </body>
+   </html>

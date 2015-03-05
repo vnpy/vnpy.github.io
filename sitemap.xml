@@ -2,13 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://vnpy.github.io/2015/03/04/20150304_python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%970-%E5%BC%95%E8%A8%80/</loc>
-    <lastmod>2015-03-04T08:40:21.861Z</lastmod>
+    <loc>http://vnpy.github.io/2015/03/05/20150305_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%971-%E7%B1%BBCTP%E4%BA%A4%E6%98%93API%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/</loc>
+    <lastmod>2015-03-05T10:10:28.357Z</lastmod>
   </url>
   
   <url>
-    <loc>http://vnpy.github.io/2015/03/03/20150303_%E9%A1%B9%E7%9B%AE%E7%8A%B6%E6%80%81/</loc>
-    <lastmod>2015-03-03T10:32:06.946Z</lastmod>
+    <loc>http://vnpy.github.io/2015/03/04/20150304_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%970-%E5%BC%95%E8%A8%80/</loc>
+    <lastmod>2015-03-05T06:25:34.714Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://vnpy.github.io/2015/03/03/20150303_20150303%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/</loc>
+    <lastmod>2015-03-05T06:24:42.700Z</lastmod>
   </url>
   
 </urlset>

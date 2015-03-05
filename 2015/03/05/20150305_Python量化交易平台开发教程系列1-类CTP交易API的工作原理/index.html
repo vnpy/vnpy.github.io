@@ -4,23 +4,50 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>vn.py</title>
+    <title>Python量化交易平台开发教程系列1-类CTP交易API的工作原理 | vn.py</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="用python的交易员">
     
-    <meta name="description" content="基于python的开源交易平台开发框架">
+    <meta name="description" content="原创文章，转载请注明出处：用Python的交易员
+类CTP交易API简介
+国内程序化交易技术的爆发式发展几乎就是起源于上期技术公司基于CTP柜台推出了交易API，使得用户可以随意开发自己的交易软件直接连接到交易柜台上进行交易，同时CTP API的设计模式也成为了许多其他柜台上交易API的设计标准，本">
     
     
-    <meta name="description" content="基于python的开源交易平台开发框架">
-<meta property="og:type" content="website">
-<meta property="og:title" content="vn.py">
-<meta property="og:url" content="http://vnpy.github.io/">
+    <meta name="description" content="原创文章，转载请注明出处：用Python的交易员
+类CTP交易API简介
+国内程序化交易技术的爆发式发展几乎就是起源于上期技术公司基于CTP柜台推出了交易API，使得用户可以随意开发自己的交易软件直接连接到交易柜台上进行交易，同时CTP API的设计模式也成为了许多其他柜台上交易API的设计标准，本人已知的类CTP交易API包括：
+
+上期CTP  
+飞马  
+华宝证券LTS
+飞创Xspeed
+金仕">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python量化交易平台开发教程系列1-类CTP交易API的工作原理">
+<meta property="og:url" content="http://vnpy.github.io/2015/03/05/20150305_Python量化交易平台开发教程系列1-类CTP交易API的工作原理/">
 <meta property="og:site_name" content="vn.py">
-<meta property="og:description" content="基于python的开源交易平台开发框架">
+<meta property="og:description" content="原创文章，转载请注明出处：用Python的交易员
+类CTP交易API简介
+国内程序化交易技术的爆发式发展几乎就是起源于上期技术公司基于CTP柜台推出了交易API，使得用户可以随意开发自己的交易软件直接连接到交易柜台上进行交易，同时CTP API的设计模式也成为了许多其他柜台上交易API的设计标准，本人已知的类CTP交易API包括：
+
+上期CTP  
+飞马  
+华宝证券LTS
+飞创Xspeed
+金仕">
+<meta property="og:image" content="http://7x2w1m.com1.z0.glb.clouddn.com/API文件列表.jpg">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="vn.py">
-<meta name="twitter:description" content="基于python的开源交易平台开发框架">
+<meta name="twitter:title" content="Python量化交易平台开发教程系列1-类CTP交易API的工作原理">
+<meta name="twitter:description" content="原创文章，转载请注明出处：用Python的交易员
+类CTP交易API简介
+国内程序化交易技术的爆发式发展几乎就是起源于上期技术公司基于CTP柜台推出了交易API，使得用户可以随意开发自己的交易软件直接连接到交易柜台上进行交易，同时CTP API的设计模式也成为了许多其他柜台上交易API的设计标准，本人已知的类CTP交易API包括：
+
+上期CTP  
+飞马  
+华宝证券LTS
+飞创Xspeed
+金仕">
 
 
     
@@ -73,12 +100,10 @@
 </div>
     </header>
     <div id="container">
-      <div id="main">
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
   <h1 itemprop="name">
     
       <a href="/2015/03/05/20150305_Python量化交易平台开发教程系列1-类CTP交易API的工作原理/" title="Python量化交易平台开发教程系列1-类CTP交易API的工作原理" itemprop="url">Python量化交易平台开发教程系列1-类CTP交易API的工作原理</a>
@@ -92,9 +117,16 @@
     
   </p>
 </header>
-    <div class="article-content">
-        
-        <p>原创文章，转载请注明出处：用Python的交易员</p>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#类CTP交易API简介"><span class="toc-number">1.</span> <span class="toc-text">类CTP交易API简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LTS_API文件说明"><span class="toc-number">2.</span> <span class="toc-text">LTS API文件说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#-h头文件介绍"><span class="toc-number">3.</span> <span class="toc-text">.h头文件介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ApiDataType-h"><span class="toc-number">3.1.</span> <span class="toc-text">ApiDataType.h</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApiStruct-h"><span class="toc-number">3.2.</span> <span class="toc-text">ApiStruct.h</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MdApi-h"><span class="toc-number">3.3.</span> <span class="toc-text">MdApi.h</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CSecurityFtdcMdSpi"><span class="toc-number">3.3.1.</span> <span class="toc-text">CSecurityFtdcMdSpi</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CSecurityFtdcMdApi"><span class="toc-number">3.3.2.</span> <span class="toc-text">CSecurityFtdcMdApi</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<p>原创文章，转载请注明出处：用Python的交易员</p>
 <h2 id="类CTP交易API简介">类CTP交易API简介</h2>
 <p>国内程序化交易技术的爆发式发展几乎就是起源于上期技术公司基于CTP柜台推出了交易API，使得用户可以随意开发自己的交易软件直接连接到交易柜台上进行交易，同时CTP API的设计模式也成为了许多其他柜台上交易API的设计标准，本人已知的类CTP交易API包括：</p>
 <ol>
@@ -155,14 +187,9 @@
 <li>创建MdSpi对象后，需要使用MdApi对象的RegisterSpi方法将该MdSpi对象的指针注册到MdApi上，也就是告诉MdApi从柜台端收到数据后应该通过哪个对象的回调函数推送给用户。从API的这个设计上作者猜测MdApi中后包含了和柜台端通讯、接收和发送数据包的功能，而MdSpi仅仅是用来实现一个通过回调函数向用户程序推送数据的接口。</li>
 <li>绝大部分主动函数（以Req开头）在调用时都会用到一个整数类型的参数nRequestID，该参数在整个API的调用中应当保持递增唯一性，从而在收到回调函数推送的数据时，可以知道是由哪次操作引起的。</li>
 </ol>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
+  
+	</div>
+		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
 <div class="article-categories">
@@ -175,202 +202,43 @@
 
 
 
-
-<div class="comments-count">
+	<div class="article-share" id="share">
 	
-</div>
+	  <div data-url="http://vnpy.github.io/2015/03/05/20150305_Python量化交易平台开发教程系列1-类CTP交易API的工作原理/" data-title="Python量化交易平台开发教程系列1-类CTP交易API的工作原理 | vn.py" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
 
 </footer>
 
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/03/04/20150304_Python量化交易平台开发教程系列0-引言/" title="Python量化交易平台开发教程系列0-引言" itemprop="url">Python量化交易平台开发教程系列0-引言</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://vnpy.github.io/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
-		
-  <p class="article-time">
-    <time datetime="2015-03-04T02:58:42.000Z" itemprop="datePublished"> 发表于 3月 4 2015</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>原创文章，转载请注明出处：用Python的交易员</p>
-<h2 id="为什么用Python来开发量化交易平台">为什么用Python来开发量化交易平台</h2>
-<p>目前本人所在的公司一共有三款平台，分别基于C++， C#和Python。其中C#和Python平台都是由交易员开发；C++平台则是由专职IT团队作为一个通用平台开发，内部组件进行了封装（交易员不可见），对外提供行情、交易的API用于策略开发（除了C++ 外也包括C#和Python可用的API）。</p>
-<p>理论上这款C++平台应该是最为稳定和强大的，由专业人士设计，同时采用封装核心，暴露API，支持组件模块开发，linux服务器运行的形式。</p>
-<p>但是在实际运用中，交易团队表达了一个强烈的观点：这个平台实在是太难用了！ </p>
-<ol>
-<li>由IT团队设计的API功能非常强大，但是也太过繁琐，导致学习曲线极为陡峭。  </li>
-<li>为了追求速度，没有设计原生GUI（本来就为了在Linux服务器上跑），但是今天绝大多数的非超高频（追求微秒级延迟的那种）交易策略，几乎都需要有人实时监控，你总不能让交易员盯着个linux shell上不断print出来的内容或者盘中去翻日志吧，这个运维风险就扛不起。尽管可以作为插件的形式开发GUI，但C++本身的GUI开发还是较为复杂的，非专业IT很难搞的定。  </li>
-<li>交易员团队的需求变化很快，通常等不及IT去排班开发，最好是今天收盘有个点子，明天开盘就能开始接实盘数据验证，没问题后天就能上实盘。比如去年四季度的分级基金套利机会就是稍纵即逝，那段时间如果能快速开发完成一套专门的监控套利系统，抓住的利润绝对会比用excel接wind数据来的多不少。  </li>
-<li>某些业务逻辑确实太过复杂，交易员想解释让IT明白，无奈IT并不是太擅长某些金融领域（比如期权高频套利的整个业务框架），交流成本太高。</li>
-</ol>
-<p>用web开发来做比较的话，C++实现的量化交易平台像是java在网络开发领域的地位，强大（几乎无所不能）、稳定（无数大公司的支持），但是也很臃肿（你一两个人开发试试）。</p>
-<p>以上的原因促成了我坚持使用Python开发一个交易平台，这款平台的定位好比于node.js为前端工程师（用户体验的直接缔造者）提供了一个简洁又不失强大的后端平台，主要的目标用户群是中小型量化团队（根据我的经验，绝大部分的券商自营、期货资管和基金量化部门都不大）、专业的交易员团队（可以雇得起少量专职IT）以及一部分打算从互联网领域转行来的程序猿们（Python在互联网公司用的不少）。</p>
-<h2 id="Python在量化平台开发方面的优缺点">Python在量化平台开发方面的优缺点</h2>
-<h3 id="优点">优点</h3>
-<ol>
-<li>动态语言的快速开发特性，封接口有boost.Python，写GUI有PyQt，时间序列有numpy，等等，几乎你想干的事都有现成的库可以用，这里吐槽下公司大牛自己写C++里的简单移动平均（SMA）算法，确实比常规实现快不少，但似乎对pnl没什么直接帮助。</li>
-<li>学习成本低，这点算是个共识了吧？</li>
-<li>真需要低延迟的时候，胶水语言很容易通过其他语言拓展：cython, ctypes, boost.Python等等。</li>
-<li>运行速度足够快，也许和C++比起来确实慢了不少，但是就我的经验来看，这点速度延迟对90%的策略pnl毫无影响。</li>
-</ol>
-<h3 id="缺点">缺点</h3>
-<ol>
-<li>GIL，该死的全局锁导致Python无法有效利用多核CPU的性能，尽管可以通过拓展绕过去，但还是没有其他语言原生多线程利用多核的方案来的简便。</li>
-<li>没有静态类型检查，重构的时候确实有点痛苦，不过一个良好的编程范式可以有效解决这个问题。</li>
-<li>不适合用来搞超高频策略（追求微秒级延迟的差异），得承认这点Python确实搞不过C++。常规基于TICK级数据的策略没问题。</li>
-</ol>
-<h2 id="为什么会有这个系列">为什么会有这个系列</h2>
-<p>2015年的春节期间突然萌发了启动一个开源量化交易平台开发框架项目的想法，原因包括：  </p>
-<ol>
-<li>国内很多的机构和个人量化投资者，在受够了一些商业软件的束缚后（TB、金字塔等）想基于柜台API进行直接开发，然后在C++的.h头文件、网上一些不成体系的开发指南、不知道如何构建程序核心架构等等问题中赚的一头雾水后放弃。  </li>
-<li>国外有相当多类似的项目，比如AlgoTrader、Tradelink、Marketcetera等等开源交易平台有着大量的用户和活跃的社区。目前国内据我所知只有海风的AT平台项目（基于C#），QuantBox项目当前更多只是一个柜台API的统一化封装（当然封装的非常漂亮，有兴趣的建议直接看看源代码）。  </li>
-<li>在本人的整个求学经历中，发现最佳的学习方式之一就是自己当老师，当你试着把某种知识教给别人时，你对这种知识的掌握会更加细致深入。  </li>
-<li>抛砖引玉，本人是交易员出身，编程算是半路出家，不专业的地方很多，通过这个项目和业内人士多多交流。  </li>
-<li>TB之类的商业软件不算，国内目前最大量化交易社区应该是C#（交易）和Matlab（研发），而能兼顾交易和研发的Python社区居然十分弱小，实在是不能忍。</li>
-</ol>
-<p>授人以鱼不如授人以渔，目前这个项目<strong><a href="http://github.com/vnpy/vnpy" target="_blank" rel="external">vn.py</a></strong>已经发布在了github上，包含了基于华宝证券LTS API的Python封装和事件驱动引擎，鱼竿准备好了，剩下的就是学习如何钓鱼。一方面也是因为自己之前在学习过程中遇到的最大问题之一就是目前国内缺乏一个成体系的量化平台开发教程，所以发布项目后的下一步工作就是编写这个教程系列。</p>
-<h2 id="系列内容安排">系列内容安排</h2>
-<p>整个系列文章目前预计包含的内容如下：  </p>
-<ol>
-<li>类CTP交易API的工作原理  </li>
-<li>类CTP交易API的Python封装设计</li>
-<li>vn.py项目中API封装的编译，其他交易API的封装</li>
-<li>事件驱动引擎原理和使用</li>
-<li>华宝LTS交易平台开发：登陆、订阅市场行情</li>
-<li>华宝LTS交易平台开发：交易功能</li>
-<li>华宝LTS交易平台开发：持仓、交易、下单监控</li>
-</ol>
-<h2 id="联系作者">联系作者</h2>
-<p>本人的知乎号：<a href="http://www.zhihu.com/people/traderusingPython" target="_blank" rel="external">用Python的交易员</a>，可以通过知乎私信联系到我，一些和开源项目、教程相关的问题交流也会发在知乎上。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/教程/">教程</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
+   	       
+	</article>
 	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/03/04/20150304_Python量化交易平台开发教程系列0-引言/"  title="Python量化交易平台开发教程系列0-引言">
+ <strong>下一篇：</strong><br/> 
+ <span>Python量化交易平台开发教程系列0-引言
+</span>
+</a>
 </div>
 
-</footer>
+</nav>
 
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/03/03/20150303_20150303项目开发日志/" title="2015/3/3 项目开发日志" itemprop="url">2015/3/3 项目开发日志</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://vnpy.github.io/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
-		
-  <p class="article-time">
-    <time datetime="2015-03-03T10:16:45.000Z" itemprop="datePublished"> 发表于 3月 3 2015</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="目前项目状态">目前项目状态</h2>
-<p>目前完成：  </p>
-<ol>
-<li>华宝证券的LTS API的Python封装，发布在vn.lts文件夹下  </li>
-<li>事件驱动引擎，发布在vn.event文件夹下  </li>
-</ol>
-<h3 id="vn-lts">vn.lts</h3>
-<p>ltsapi：华宝证券官方的LTS C++ API<br>pyscript：用于自动生成重复度较高的封装代码的Python脚本<br>vnltsmd：行情API的封装源代码和测试脚本<br>vnltstd：交易API的封装源代码和测试脚本  </p>
-<h3 id="vn-event">vn.event</h3>
-<p>eventType：定义事件类型常量<br>eventEngine：包含事件驱动引擎实现  </p>
-<h2 id="下一步计划">下一步计划</h2>
-<ol>
-<li>API封装、编译、使用方面的教程</li>
-<li>事件驱动引擎原理、使用方面的教程</li>
-<li>基于API和引擎开发的LTS交易客户平台（因为华宝没有提供官方的LTS交易软件，目前的两个实现分别是基于C++的尔易终端和基于.COM封装的盈佳终端）</li>
-<li>策略引擎接口</li>
-</ol>
-<h2 id="联系作者">联系作者</h2>
-<p>作者知乎名：用Python的交易员，想要联系作者可以通过知乎私信。</p>
-<hr>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/日志/">日志</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
 	
-</div>
 
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-
-</div>
+</div>  
       <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#类CTP交易API简介"><span class="toc-number">1.</span> <span class="toc-text">类CTP交易API简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LTS_API文件说明"><span class="toc-number">2.</span> <span class="toc-text">LTS API文件说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#-h头文件介绍"><span class="toc-number">3.</span> <span class="toc-text">.h头文件介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ApiDataType-h"><span class="toc-number">3.1.</span> <span class="toc-text">ApiDataType.h</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApiStruct-h"><span class="toc-number">3.2.</span> <span class="toc-text">ApiStruct.h</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MdApi-h"><span class="toc-number">3.3.</span> <span class="toc-text">MdApi.h</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CSecurityFtdcMdSpi"><span class="toc-number">3.3.1.</span> <span class="toc-text">CSecurityFtdcMdSpi</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CSecurityFtdcMdApi"><span class="toc-number">3.3.2.</span> <span class="toc-text">CSecurityFtdcMdApi</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
 
 <div id="asidepart">
 <div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
@@ -476,6 +344,8 @@ $(document).ready(function(){
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
       o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
         
     }
   });
@@ -495,6 +365,67 @@ $(document).ready(function(){
 });
 </script>
 
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
 
 
 
@@ -503,6 +434,27 @@ $(document).ready(function(){
 
 
 
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
 
 
 
@@ -530,4 +482,4 @@ $(document).ready(function(){
 <!-- MathJax End -->
 
   </body>
- </html>
+</html>

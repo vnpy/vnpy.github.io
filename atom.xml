@@ -4,7 +4,7 @@
   <subtitle><![CDATA[基于python的开源交易平台开发框架]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://vnpy.github.io/"/>
-  <updated>2015-03-04T08:40:37.548Z</updated>
+  <updated>2015-03-05T10:11:18.874Z</updated>
   <id>http://vnpy.github.io/</id>
   
   <author>
@@ -15,14 +15,92 @@
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[python量化交易平台开发教程系列0-引言]]></title>
-    <link href="http://vnpy.github.io/2015/03/04/20150304_python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%970-%E5%BC%95%E8%A8%80/"/>
-    <id>http://vnpy.github.io/2015/03/04/20150304_python量化交易平台开发教程系列0-引言/</id>
+    <title><![CDATA[Python量化交易平台开发教程系列1-类CTP交易API的工作原理]]></title>
+    <link href="http://vnpy.github.io/2015/03/05/20150305_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%971-%E7%B1%BBCTP%E4%BA%A4%E6%98%93API%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"/>
+    <id>http://vnpy.github.io/2015/03/05/20150305_Python量化交易平台开发教程系列1-类CTP交易API的工作原理/</id>
+    <published>2015-03-05T06:28:49.000Z</published>
+    <updated>2015-03-05T10:10:28.357Z</updated>
+    <content type="html"><![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2 id="类CTP交易API简介">类CTP交易API简介</h2>
+<p>国内程序化交易技术的爆发式发展几乎就是起源于上期技术公司基于CTP柜台推出了交易API，使得用户可以随意开发自己的交易软件直接连接到交易柜台上进行交易，同时CTP API的设计模式也成为了许多其他柜台上交易API的设计标准，本人已知的类CTP交易API包括：</p>
+<ol>
+<li>上期CTP  </li>
+<li>飞马  </li>
+<li>华宝证券LTS</li>
+<li>飞创Xspeed</li>
+<li>金仕达</li>
+<li>恒生UFT</li>
+</ol>
+<p>所以这个教程系列选择从类CTP交易API中的LTS API开始来介绍API的Python封装方法，真正掌握了以后想要做其他类型API（比如恒生的T2)的封装也只是大同小异而已。</p>
+<h2 id="LTS_API文件说明">LTS API文件说明</h2>
+<p>通常当用户从网上下载API的压缩包，解压后会看到以下的文件：<br><img src="http://7x2w1m.com1.z0.glb.clouddn.com/API文件列表.jpg" alt=""></p>
+<ul>
+<li>.h文件：C++的头文件，包含了API的内部结构信息，开发C++程序时需要包含在项目内</li>
+<li>.dll文件：windows下的动态链接库文件，API的实体，开发C++程序编译和链接时用，使用开发好的程序时也必须放在程序的文件夹内  </li>
+<li>.lib文件：windows下的库文件，编译和链接时用，程序开发好后无需放在程序的文件夹内</li>
+<li>.so文件：linux下的动态链接库文件，其他同.dll文件</li>
+</ul>
+<p>找不到压缩包的读者可以在这里直接看<a href="https://github.com/vnpy/vnpy/tree/master/vn.lts/ltsapi" title="https://github.com/vnpy/vnpy/tree/master/vn.lts/ltsapi" target="_blank" rel="external">https://github.com/vnpy/vnpy/tree/master/vn.lts/ltsapi</a>。</p>
+<h2 id="-h头文件介绍">.h头文件介绍</h2>
+<p>.dll、.lib、.so文件都是编译好的二进制文件，无法打开，所以从用户角度我们只需关注.h文件中的内容。对于不同的API而言，.h文件的前缀可能有所区别，如LTS是SecurityFtdc，CTP是ThostFtdc，下面分别介绍这4个.h文件。</p>
+<h3 id="ApiDataType-h">ApiDataType.h</h3>
+<p>该文件中包含了对API中用到的常量的定义，如以下代码定义了一个产品类型常量对应的字符：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">///期货</span></div><div class="line"><span class="preprocessor">#<span class="keyword">define</span> SECURITY_FTDC_PC_Futures '1'</span></div></pre></td></tr></table></figure>
+
+<p>以及类型的定义，如以下代码定义了产品名称类型是一个长度为21个字符的字符串：  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/////////////////////////////////////////////////////////////////////////</span></div><div class="line"><span class="comment">///TFtdcProductNameType是一个产品名称类型</span></div><div class="line"><span class="comment">/////////////////////////////////////////////////////////////////////////</span></div><div class="line"><span class="keyword">typedef</span> <span class="keyword">char</span> TSecurityFtdcProductNameType[<span class="number">21</span>];</div></pre></td></tr></table></figure>
+
+<h3 id="ApiStruct-h">ApiStruct.h</h3>
+<p>该文件中包含了API中用到的结构体的定义，如以下代码定义了交易所这个结构体的构成：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">///交易所</span></div><div class="line"><span class="keyword">struct</span> CSecurityFtdcExchangeField</div><div class="line">{</div><div class="line">	<span class="comment">///交易所代码</span></div><div class="line">	TSecurityFtdcExchangeIDType	ExchangeID;</div><div class="line">	<span class="comment">///交易所名称</span></div><div class="line">	TSecurityFtdcExchangeNameType	ExchangeName;</div><div class="line">	<span class="comment">///交易所属性</span></div><div class="line">	TSecurityFtdcExchangePropertyType	ExchangeProperty;</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>例如TSecurityFtdcExchangeIDType这个类型的定义，可以在ApiDataType.h中找到。</p>
+<h3 id="MdApi-h">MdApi.h</h3>
+<p>该文件中包含了API中的行情相关组件的定义，文件通常开头会有一段这样的内容：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="preprocessor">#<span class="keyword">if</span> !defined(SECURITY_FTDCMDAPI_H)</span></div><div class="line"><span class="preprocessor">#<span class="keyword">define</span> SECURITY_FTDCMDAPI_H</span></div><div class="line"></div><div class="line"><span class="preprocessor">#<span class="keyword">if</span> _MSC_VER &gt; 1000</span></div><div class="line"><span class="preprocessor">#<span class="keyword">pragma</span> once</span></div><div class="line"><span class="preprocessor">#<span class="keyword">endif</span> <span class="comment">// _MSC_VER &gt; 1000</span></span></div><div class="line"></div><div class="line"><span class="preprocessor">#<span class="keyword">include</span> "SecurityFtdcUserApiStruct.h"</span></div><div class="line"></div><div class="line"><span class="preprocessor">#<span class="keyword">if</span> defined(ISLIB) && defined(WIN32)</span></div><div class="line"><span class="preprocessor">#ifdef LIB_MD_API_EXPORT</span></div><div class="line"><span class="preprocessor">#<span class="keyword">define</span> MD_API_EXPORT __declspec(dllexport)</span></div><div class="line"><span class="preprocessor">#<span class="keyword">else</span></span></div><div class="line"><span class="preprocessor">#<span class="keyword">define</span> MD_API_EXPORT __declspec(dllimport)</span></div><div class="line"><span class="preprocessor">#<span class="keyword">endif</span></span></div><div class="line"><span class="preprocessor">#<span class="keyword">else</span></span></div><div class="line"><span class="preprocessor">#<span class="keyword">define</span> MD_API_EXPORT </span></div><div class="line"><span class="preprocessor">#<span class="keyword">endif</span></span></div></pre></td></tr></table></figure>
+
+<p>这些内容主要是一些和操作系统、编译环境相关的定义，一般用户忽略就好（作者其实也不太懂…）。</p>
+<p>然后是两个类CSecurityFtdcMdSpi和CSecurityFtdcMdApi的定义。</p>
+<h4 id="CSecurityFtdcMdSpi">CSecurityFtdcMdSpi</h4>
+<p>MdSpi类中包含了行情功能相关的回调函数接口，什么是回调函数呢？简单来说就是由于柜台端向用户端发送信息后才会被系统自动调用的函数（非用户主动调用），对应的主动函数会在下面介绍。CSecurityFtdcMdSpi大概看起来是这么个样子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> CSecurityFtdcMdSpi</div><div class="line">{</div><div class="line"><span class="keyword">public</span>:</div><div class="line">	......</div><div class="line"></div><div class="line">	<span class="comment">///登录请求响应</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnRspUserLogin(CSecurityFtdcRspUserLoginField *pRspUserLogin, CSecurityFtdcRspInfoField *pRspInfo, <span class="keyword">int</span> nRequestID, <span class="keyword">bool</span> bIsLast) {};</div><div class="line"></div><div class="line">	......</div><div class="line"></div><div class="line">	<span class="comment">///深度行情通知</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnRtnDepthMarketData(CSecurityFtdcDepthMarketDataField *pDepthMarketData) {};</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>……省略了部分代码。从上面的代码中可以注意到：</p>
+<ol>
+<li>回调函数都是以On开头。</li>
+<li>柜台端向用户端发送的信息经过API处理后，传给我们的是一个结构体的指针，如CSecurityFtdcRspUserLoginField *pRspUserLogin，这里的pRspUserLogin就是一个C++的指针类型，其指向的结构体对象是CSecurityFtdcRspUserLoginField结构的，而该结构的定义可以在ApiStruct.h中找到。</li>
+<li>不同的回调函数，传过来的参数数量是不同的，OnRspUserLogin中传入的参数包括两个结构体指针，以及一个整数（代表该响应对应的用户请求号）和一个布尔值（该响应是否是这个请求号的最后一次响应）。</li>
+</ol>
+<h4 id="CSecurityFtdcMdApi">CSecurityFtdcMdApi</h4>
+<p>MdApi类中包含了行情功能相关的主动函数结构，顾名思义，主动函数指的是由用户负责进行调用的函数，用于向柜台端发送各种请求和指令，大概样子如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> MD_API_EXPORT CSecurityFtdcMdApi</div><div class="line">{</div><div class="line"><span class="keyword">public</span>:</div><div class="line">	<span class="comment">///创建MdApi</span></div><div class="line">	<span class="comment">///@param pszFlowPath 存贮订阅信息文件的目录，默认为当前目录</span></div><div class="line">	<span class="comment">///@return 创建出的UserApi</span></div><div class="line">	<span class="comment">///modify for udp marketdata</span></div><div class="line">	<span class="keyword">static</span> CSecurityFtdcMdApi *CreateFtdcMdApi(<span class="keyword">const</span> <span class="keyword">char</span> *pszFlowPath = <span class="string">""</span>);</div><div class="line">	</div><div class="line">	......</div><div class="line">	</div><div class="line">	<span class="comment">///注册回调接口</span></div><div class="line">	<span class="comment">///@param pSpi 派生自回调接口类的实例</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> RegisterSpi(CSecurityFtdcMdSpi *pSpi) = <span class="number">0</span>;</div><div class="line">	</div><div class="line">	<span class="comment">///订阅行情。</span></div><div class="line">	<span class="comment">///@param ppInstrumentID 合约ID  </span></div><div class="line">	<span class="comment">///@param nCount 要订阅/退订行情的合约个数</span></div><div class="line">	<span class="comment">///@remark </span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">int</span> SubscribeMarketData(<span class="keyword">char</span> *ppInstrumentID[], <span class="keyword">int</span> nCount, <span class="keyword">char</span>* pExchageID) = <span class="number">0</span>;</div><div class="line"></div><div class="line">	......</div><div class="line"></div><div class="line">	<span class="comment">///用户登录请求</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">int</span> ReqUserLogin(CSecurityFtdcReqUserLoginField *pReqUserLoginField, <span class="keyword">int</span> nRequestID) = <span class="number">0</span>;</div><div class="line">	</div><div class="line">	......</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>以上代码中，需要注意的重点包括：</p>
+<ol>
+<li>MdApi对象不应该直接创建，而应该通过调用类的静态方法CreateFtdcMdApi创建，传入参数为你希望保存API的通讯用的.con文件的目录（可以选择留空，则.con文件会被放在程序所在的文件夹下）。</li>
+<li>创建MdSpi对象后，需要使用MdApi对象的RegisterSpi方法将该MdSpi对象的指针注册到MdApi上，也就是告诉MdApi从柜台端收到数据后应该通过哪个对象的回调函数推送给用户。从API的这个设计上作者猜测MdApi中后包含了和柜台端通讯、接收和发送数据包的功能，而MdSpi仅仅是用来实现一个通过回调函数向用户程序推送数据的接口。</li>
+<li>绝大部分主动函数（以Req开头）在调用时都会用到一个整数类型的参数nRequestID，该参数在整个API的调用中应当保持递增唯一性，从而在收到回调函数推送的数据时，可以知道是由哪次操作引起的。</li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2 id="类CTP交易API简介">类CTP交易API简介</h2>
+<p>国内程序化交易技术的爆发式发展几乎就是起源于上期技术公司基于CTP柜台推出了交易API，使得用户可以随意开发自己的交易软件直接连接到交]]>
+    </summary>
+    
+      <category term="教程" scheme="http://vnpy.github.io/categories/%E6%95%99%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Python量化交易平台开发教程系列0-引言]]></title>
+    <link href="http://vnpy.github.io/2015/03/04/20150304_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%970-%E5%BC%95%E8%A8%80/"/>
+    <id>http://vnpy.github.io/2015/03/04/20150304_Python量化交易平台开发教程系列0-引言/</id>
     <published>2015-03-04T02:58:42.000Z</published>
-    <updated>2015-03-04T08:40:21.861Z</updated>
-    <content type="html"><![CDATA[<p>原创文章，转载请注明出处：用python的交易员</p>
-<h2 id="为什么用python来开发量化交易平台">为什么用python来开发量化交易平台</h2>
-<p>目前本人所在的公司一共有三款平台，分别基于C++， C#和python。其中C#和python平台都是由交易员开发；C++平台则是由专职IT团队作为一个通用平台开发，内部组件进行了封装（交易员不可见），对外提供行情、交易的API用于策略开发（除了C++ 外也包括C#和python可用的API）。</p>
+    <updated>2015-03-05T06:25:34.714Z</updated>
+    <content type="html"><![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2 id="为什么用Python来开发量化交易平台">为什么用Python来开发量化交易平台</h2>
+<p>目前本人所在的公司一共有三款平台，分别基于C++， C#和Python。其中C#和Python平台都是由交易员开发；C++平台则是由专职IT团队作为一个通用平台开发，内部组件进行了封装（交易员不可见），对外提供行情、交易的API用于策略开发（除了C++ 外也包括C#和Python可用的API）。</p>
 <p>理论上这款C++平台应该是最为稳定和强大的，由专业人士设计，同时采用封装核心，暴露API，支持组件模块开发，linux服务器运行的形式。</p>
 <p>但是在实际运用中，交易团队表达了一个强烈的观点：这个平台实在是太难用了！ </p>
 <ol>
@@ -32,20 +110,20 @@
 <li>某些业务逻辑确实太过复杂，交易员想解释让IT明白，无奈IT并不是太擅长某些金融领域（比如期权高频套利的整个业务框架），交流成本太高。</li>
 </ol>
 <p>用web开发来做比较的话，C++实现的量化交易平台像是java在网络开发领域的地位，强大（几乎无所不能）、稳定（无数大公司的支持），但是也很臃肿（你一两个人开发试试）。</p>
-<p>以上的原因促成了我坚持使用python开发一个交易平台，这款平台的定位好比于node.js为前端工程师（用户体验的直接缔造者）提供了一个简洁又不失强大的后端平台，主要的目标用户群是中小型量化团队（根据我的经验，绝大部分的券商自营、期货资管和基金量化部门都不大）、专业的交易员团队（可以雇得起少量专职IT）以及一部分打算从互联网领域转行来的程序猿们（python在互联网公司用的不少）。</p>
-<h2 id="python在量化平台开发方面的优缺点">python在量化平台开发方面的优缺点</h2>
+<p>以上的原因促成了我坚持使用Python开发一个交易平台，这款平台的定位好比于node.js为前端工程师（用户体验的直接缔造者）提供了一个简洁又不失强大的后端平台，主要的目标用户群是中小型量化团队（根据我的经验，绝大部分的券商自营、期货资管和基金量化部门都不大）、专业的交易员团队（可以雇得起少量专职IT）以及一部分打算从互联网领域转行来的程序猿们（Python在互联网公司用的不少）。</p>
+<h2 id="Python在量化平台开发方面的优缺点">Python在量化平台开发方面的优缺点</h2>
 <h3 id="优点">优点</h3>
 <ol>
-<li>动态语言的快速开发特性，封接口有boost.python，写GUI有PyQt，时间序列有numpy，等等，几乎你想干的事都有现成的库可以用，这里吐槽下公司大牛自己写C++里的简单移动平均（SMA）算法，确实比常规实现快不少，但似乎对pnl没什么直接帮助。</li>
+<li>动态语言的快速开发特性，封接口有boost.Python，写GUI有PyQt，时间序列有numpy，等等，几乎你想干的事都有现成的库可以用，这里吐槽下公司大牛自己写C++里的简单移动平均（SMA）算法，确实比常规实现快不少，但似乎对pnl没什么直接帮助。</li>
 <li>学习成本低，这点算是个共识了吧？</li>
-<li>真需要低延迟的时候，胶水语言很容易通过其他语言拓展：cython, ctypes, boost.python等等。</li>
+<li>真需要低延迟的时候，胶水语言很容易通过其他语言拓展：cython, ctypes, boost.Python等等。</li>
 <li>运行速度足够快，也许和C++比起来确实慢了不少，但是就我的经验来看，这点速度延迟对90%的策略pnl毫无影响。</li>
 </ol>
 <h3 id="缺点">缺点</h3>
 <ol>
-<li>GIL，该死的全局锁导致python无法有效利用多核CPU的性能，尽管可以通过拓展绕过去，但还是没有其他语言原生多线程利用多核的方案来的简便。</li>
+<li>GIL，该死的全局锁导致Python无法有效利用多核CPU的性能，尽管可以通过拓展绕过去，但还是没有其他语言原生多线程利用多核的方案来的简便。</li>
 <li>没有静态类型检查，重构的时候确实有点痛苦，不过一个良好的编程范式可以有效解决这个问题。</li>
-<li>不适合用来搞超高频策略（追求微秒级延迟的差异），得承认这点python确实搞不过C++。常规基于TICK级数据的策略没问题。</li>
+<li>不适合用来搞超高频策略（追求微秒级延迟的差异），得承认这点Python确实搞不过C++。常规基于TICK级数据的策略没问题。</li>
 </ol>
 <h2 id="为什么会有这个系列">为什么会有这个系列</h2>
 <p>2015年的春节期间突然萌发了启动一个开源量化交易平台开发框架项目的想法，原因包括：  </p>
@@ -54,14 +132,14 @@
 <li>国外有相当多类似的项目，比如AlgoTrader、Tradelink、Marketcetera等等开源交易平台有着大量的用户和活跃的社区。目前国内据我所知只有海风的AT平台项目（基于C#），QuantBox项目当前更多只是一个柜台API的统一化封装（当然封装的非常漂亮，有兴趣的建议直接看看源代码）。  </li>
 <li>在本人的整个求学经历中，发现最佳的学习方式之一就是自己当老师，当你试着把某种知识教给别人时，你对这种知识的掌握会更加细致深入。  </li>
 <li>抛砖引玉，本人是交易员出身，编程算是半路出家，不专业的地方很多，通过这个项目和业内人士多多交流。  </li>
-<li>TB之类的商业软件不算，国内目前最大量化交易社区应该是C#（交易）和Matlab（研发），而能兼顾交易和研发的python社区居然十分弱小，实在是不能忍。</li>
+<li>TB之类的商业软件不算，国内目前最大量化交易社区应该是C#（交易）和Matlab（研发），而能兼顾交易和研发的Python社区居然十分弱小，实在是不能忍。</li>
 </ol>
-<p>授人以鱼不如授人以渔，目前这个项目<strong><a href="http://github.com/vnpy/vnpy" target="_blank" rel="external">vn.py</a></strong>已经发布在了github上，包含了基于华宝证券LTS API的python封装和事件驱动引擎，鱼竿准备好了，剩下的就是学习如何钓鱼。一方面也是因为自己之前在学习过程中遇到的最大问题之一就是目前国内缺乏一个成体系的量化平台开发教程，所以发布项目后的下一步工作就是编写这个教程系列。</p>
+<p>授人以鱼不如授人以渔，目前这个项目<strong><a href="http://github.com/vnpy/vnpy" target="_blank" rel="external">vn.py</a></strong>已经发布在了github上，包含了基于华宝证券LTS API的Python封装和事件驱动引擎，鱼竿准备好了，剩下的就是学习如何钓鱼。一方面也是因为自己之前在学习过程中遇到的最大问题之一就是目前国内缺乏一个成体系的量化平台开发教程，所以发布项目后的下一步工作就是编写这个教程系列。</p>
 <h2 id="系列内容安排">系列内容安排</h2>
 <p>整个系列文章目前预计包含的内容如下：  </p>
 <ol>
 <li>类CTP交易API的工作原理  </li>
-<li>类CTP交易API的python封装设计</li>
+<li>类CTP交易API的Python封装设计</li>
 <li>vn.py项目中API封装的编译，其他交易API的封装</li>
 <li>事件驱动引擎原理和使用</li>
 <li>华宝LTS交易平台开发：登陆、订阅市场行情</li>
@@ -69,12 +147,12 @@
 <li>华宝LTS交易平台开发：持仓、交易、下单监控</li>
 </ol>
 <h2 id="联系作者">联系作者</h2>
-<p>本人的知乎号：<a href="http://www.zhihu.com/people/traderusingpython" target="_blank" rel="external">用python的交易员</a>，可以通过知乎私信联系到我，一些和开源项目、教程相关的问题交流也会发在知乎上。</p>
+<p>本人的知乎号：<a href="http://www.zhihu.com/people/traderusingPython" target="_blank" rel="external">用Python的交易员</a>，可以通过知乎私信联系到我，一些和开源项目、教程相关的问题交流也会发在知乎上。</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>原创文章，转载请注明出处：用python的交易员</p>
-<h2 id="为什么用python来开发量化交易平台">为什么用python来开发量化交易平台</h2>
-<p>目前本人所在的公司一共有三款平台，分别基于C++， C#和python。其中C#和python平台都是]]>
+    <![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2 id="为什么用Python来开发量化交易平台">为什么用Python来开发量化交易平台</h2>
+<p>目前本人所在的公司一共有三款平台，分别基于C++， C#和Python。其中C#和Python平台都是]]>
     </summary>
     
       <category term="教程" scheme="http://vnpy.github.io/categories/%E6%95%99%E7%A8%8B/"/>
@@ -83,18 +161,18 @@
   
   <entry>
     <title><![CDATA[2015/3/3 项目开发日志]]></title>
-    <link href="http://vnpy.github.io/2015/03/03/20150303_%E9%A1%B9%E7%9B%AE%E7%8A%B6%E6%80%81/"/>
-    <id>http://vnpy.github.io/2015/03/03/20150303_项目状态/</id>
+    <link href="http://vnpy.github.io/2015/03/03/20150303_20150303%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/"/>
+    <id>http://vnpy.github.io/2015/03/03/20150303_20150303项目开发日志/</id>
     <published>2015-03-03T10:16:45.000Z</published>
-    <updated>2015-03-03T10:32:06.946Z</updated>
+    <updated>2015-03-05T06:24:42.700Z</updated>
     <content type="html"><![CDATA[<h2 id="目前项目状态">目前项目状态</h2>
 <p>目前完成：  </p>
 <ol>
-<li>华宝证券的LTS API的python封装，发布在vn.lts文件夹下  </li>
+<li>华宝证券的LTS API的Python封装，发布在vn.lts文件夹下  </li>
 <li>事件驱动引擎，发布在vn.event文件夹下  </li>
 </ol>
 <h3 id="vn-lts">vn.lts</h3>
-<p>ltsapi：华宝证券官方的LTS C++ API<br>pyscript：用于自动生成重复度较高的封装代码的python脚本<br>vnltsmd：行情API的封装源代码和测试脚本<br>vnltstd：交易API的封装源代码和测试脚本  </p>
+<p>ltsapi：华宝证券官方的LTS C++ API<br>pyscript：用于自动生成重复度较高的封装代码的Python脚本<br>vnltsmd：行情API的封装源代码和测试脚本<br>vnltstd：交易API的封装源代码和测试脚本  </p>
 <h3 id="vn-event">vn.event</h3>
 <p>eventType：定义事件类型常量<br>eventEngine：包含事件驱动引擎实现  </p>
 <h2 id="下一步计划">下一步计划</h2>
@@ -105,13 +183,14 @@
 <li>策略引擎接口</li>
 </ol>
 <h2 id="联系作者">联系作者</h2>
-<p>作者知乎名：用python的trader，想要联系作者可以通过知乎私信。</p>
+<p>作者知乎名：用Python的交易员，想要联系作者可以通过知乎私信。</p>
+<hr>
 ]]></content>
     <summary type="html">
     <![CDATA[<h2 id="目前项目状态">目前项目状态</h2>
 <p>目前完成：  </p>
 <ol>
-<li>华宝证券的LTS API的python封装，发布在vn.lts文件夹下  </li>
+<li>华宝证券的LTS API的Python封装，发布在vn.lts文件夹下  </li>
 <li>事件驱动引擎，发布在vn.event文件夹下  </li>
 </ol>
 <h3 i]]>
