@@ -4,7 +4,7 @@
   <subtitle><![CDATA[基于python的开源交易平台开发框架]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://vnpy.github.io/"/>
-  <updated>2015-03-06T03:41:45.547Z</updated>
+  <updated>2015-03-06T07:34:24.473Z</updated>
   <id>http://vnpy.github.io/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://vnpy.github.io/2015/03/05/20150305_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%971-%E7%B1%BBCTP%E4%BA%A4%E6%98%93API%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"/>
     <id>http://vnpy.github.io/2015/03/05/20150305_Python量化交易平台开发教程系列1-类CTP交易API的工作原理/</id>
     <published>2015-03-05T06:28:49.000Z</published>
-    <updated>2015-03-06T03:40:43.448Z</updated>
+    <updated>2015-03-06T07:33:48.128Z</updated>
     <content type="html"><![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
 <h2 id="类CTP交易API简介">类CTP交易API简介</h2>
 <p>国内程序化交易技术的爆发式发展几乎就是起源于上期技术公司基于CTP柜台推出了交易API，使得用户可以随意开发自己的交易软件直接连接到交易柜台上进行交易，同时CTP API的设计模式也成为了许多其他柜台上交易API的设计标准，本人已知的类CTP交易API包括：</p>
@@ -45,10 +45,10 @@
 <p>.dll、.lib、.so文件都是编译好的二进制文件，无法打开，所以从用户角度我们只需关注.h文件中的内容。对于不同的API而言，.h文件的前缀可能有所区别，如LTS是SecurityFtdc，CTP是ThostFtdc，下面分别介绍这4个.h文件。</p>
 <h3 id="ApiDataType-h">ApiDataType.h</h3>
 <p>该文件中包含了对API中用到的常量的定义，如以下代码定义了一个产品类型常量对应的字符：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">///期货</span></div><div class="line"><span class="preprocessor">#<span class="keyword">define</span> SECURITY_FTDC_PC_Futures '1'</span></div></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="preprocessor">#<span class="keyword">define</span> SECURITY_FTDC_PC_Futures '1'</span></div></pre></td></tr></table></figure>
 
 <p>以及类型的定义，如以下代码定义了产品名称类型是一个长度为21个字符的字符串：  </p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/////////////////////////////////////////////////////////////////////////</span></div><div class="line"><span class="comment">///TFtdcProductNameType是一个产品名称类型</span></div><div class="line"><span class="comment">/////////////////////////////////////////////////////////////////////////</span></div><div class="line"><span class="keyword">typedef</span> <span class="keyword">char</span> TSecurityFtdcProductNameType[<span class="number">21</span>];</div></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">char</span> TSecurityFtdcProductNameType[<span class="number">21</span>];</div></pre></td></tr></table></figure>
 
 <h3 id="ApiStruct-h">ApiStruct.h</h3>
 <p>该文件中包含了API中用到的结构体的定义，如以下代码定义了交易所这个结构体的构成：</p>
@@ -102,6 +102,34 @@
 <li>Req…开头的函数，可以由用户主动调用的业务逻辑请求，传入参数通常包括2个：业务请求结构体指针和一个请求号的整数。</li>
 <li>其他非Req…开头的函数，包括初始化、订阅数据流等等参数较为简单的功能，传入参数的数量和类型视乎函数功能不一定。</li>
 </ol>
+<h2 id="API工作流程">API工作流程</h2>
+<p>简单介绍一下MdApi和TraderApi的一般工作流程，这里不会包含太多细节，仅仅是让读者有一个概念。</p>
+<h3 id="MdApi">MdApi</h3>
+<ol>
+<li>创建MdSpi对象</li>
+<li>调用MdApi类以Create开头的静态方法，创建MdApi对象</li>
+<li>调用MdApi对象的RegisterSpi方法注册MdSpi对象的指针</li>
+<li>调用MdApi对象的RegisterFront方法注册行情柜台的前置机地址</li>
+<li>调用MdApi对象的Init方法初始化到前置机的连接，连接成功后会通过MdSpi对象的OnFrontConnected回调函数通知用户</li>
+<li>等待连接成功的通知后，可以调用MdApi的ReqUserLogin方法登陆，登陆成功后会通过MdSpi对象的OnRspUserLogin通知用户</li>
+<li>登陆成功后就可以开始订阅合约了，使用MdApi对象的SubscribeMarketData方法，传入参数为想要订阅的合约的代码</li>
+<li>订阅成功后，当合约有新的行情时，会通过MdApi的OnRtnDepthMarketData回调函数通知用户</li>
+<li>用户的某次请求发生错误时，会通过OnRspError通知用户。</li>
+<li>MdApi同样提供了退订合约、登出的功能，一般退出程序时就直接杀进程（不太安全）</li>
+</ol>
+<h3 id="TraderApi">TraderApi</h3>
+<ol>
+<li>TraderApi和MdApi类似，以下仅仅介绍不同点</li>
+<li>注册TraderSpi对象的指针后，需要调用TraderApi对象的SubscribePrivateTopic和SubscribePublicTopic方法去选择公开和私有数据流的重传方法（这一步MdApi没有）</li>
+<li>对于期货柜台而言（CTP、恒生UFT期货等），在每日第一次登陆成功后需要先查询前一日的结算单，等待结算单查询结果返回后，确认结算单，才可以进行后面的操作；而证券柜台LTS无此要求</li>
+<li>上一步完成后，用户可以调用ReqQryInstrument的方法查询柜台上所有可以交易的合约信息（包括代码、中文名、涨跌停、最小价位变动、合约乘数等大量细节），一般是在这里获得合约信息列表后，再去MdApi中订阅合约；经常有人问为什么在MdApi中找不到查询可供订阅的合约代码的函数，这里尤其要注意，必须通过TraderApi来获取</li>
+<li>当用户的报单、成交状态发生变化时，TraderApi会自动通过OnRtnOrder、OnRtnTrade通知用户，无需额外订阅</li>
+</ol>
+<h2 id="总结">总结</h2>
+<p>第一篇教程到这里已经接近结束了，如果你是一个没有任何交易API开发经验的读者，并且坚持看了下来，此时你心中很可能有这么个想法：我X，API开发这么复杂？？？！！！</p>
+<p>相信我，这是人之常情（某些读者如果觉得很好理解那作者真是佩服你了），作者刚开始的时候大概在CTP API的头文件和网上的教程资料、示例中纠结了3个多月而不得入门，当时也没有任何C++的开发经验（我是金融工程出生，大学里编程只学了VBA和Matlab，还几乎都是些算法方面的内容），边学语言边研究怎么开发，真心痛苦。</p>
+<p>在这里，我想告诉读者的一个好消息是：还剩两篇教程，我们基本就可以和C++ say goodbye，进入Python灵活快速开发的世界了。同时对于绝大部分不打算自己去封装API的读者，这三篇文章可以走马观花的过一遍，不会影响任何你未来对于vn.py框架的使用。</p>
+<p>当然，对于有恒心和毅力的读者，100%自己掌握API的封装技术是一项绝对值得投入时间和精力的事情。在很多人的观念中Python并不适合用来开发低延迟的交易平台，这里作者可以用亲身经验告诉你：那只是在纯用Python的情况下。作为一门胶水语言，Python最大的特点之一就是易于通过混合编程来进行拓展，用户可以在真正需要优化的地方进行最深度的定制优化，把自己有限的时间、精力花在刀刃上。在交易API层面，可以定制的地方包括C++层面的数据结构改变、数据预处理、回调函数传递顺序调整等等诸多的优化，这些只有在你完全掌握API的封装后才能办得到。</p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
