@@ -1,0 +1,461 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计 | vn.py</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="用python的交易员">
+    
+    <meta name="description" content="原创文章，转载请注明出处：用Python的交易员
+从Python的角度看原生API的一些问题
+上一篇教程后读者应该对C++ API的结构和使用方法有了基础的了解，这篇教程主要介绍的是对原生的C++ API进行Python封装时的设计和思路，这些构成了vn.py开源项目中vn.lts（华宝证券LTS柜">
+    
+    
+    <meta name="description" content="原创文章，转载请注明出处：用Python的交易员
+从Python的角度看原生API的一些问题
+上一篇教程后读者应该对C++ API的结构和使用方法有了基础的了解，这篇教程主要介绍的是对原生的C++ API进行Python封装时的设计和思路，这些构成了vn.py开源项目中vn.lts（华宝证券LTS柜台API封装）的基础。首先让我们来从Python的角度看看原生API的一些问题：
+
+原生的API中每">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计">
+<meta property="og:url" content="http://vnpy.github.io/2015/03/09/20150309_Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计/">
+<meta property="og:site_name" content="vn.py">
+<meta property="og:description" content="原创文章，转载请注明出处：用Python的交易员
+从Python的角度看原生API的一些问题
+上一篇教程后读者应该对C++ API的结构和使用方法有了基础的了解，这篇教程主要介绍的是对原生的C++ API进行Python封装时的设计和思路，这些构成了vn.py开源项目中vn.lts（华宝证券LTS柜台API封装）的基础。首先让我们来从Python的角度看看原生API的一些问题：
+
+原生的API中每">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计">
+<meta name="twitter:description" content="原创文章，转载请注明出处：用Python的交易员
+从Python的角度看原生API的一些问题
+上一篇教程后读者应该对C++ API的结构和使用方法有了基础的了解，这篇教程主要介绍的是对原生的C++ API进行Python封装时的设计和思路，这些构成了vn.py开源项目中vn.lts（华宝证券LTS柜台API封装）的基础。首先让我们来从Python的角度看看原生API的一些问题：
+
+原生的API中每">
+
+
+    
+    <link rel="alternative" href="/atom.xml" title="vn.py" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="vn.py" title="vn.py"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="vn.py">vn.py</a></h1>
+				<h2 class="blog-motto">基于python的开源交易平台开发框架</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">存档</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:vnpy.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/03/09/20150309_Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计/" title="Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计" itemprop="url">Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="http://vnpy.github.io/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
+		
+  <p class="article-time">
+    <time datetime="2015-03-09T03:49:28.000Z" itemprop="datePublished"> 发表于 3月 9 2015</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#从Python的角度看原生API的一些问题"><span class="toc-number">1.</span> <span class="toc-text">从Python的角度看原生API的一些问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python_API的结构设计"><span class="toc-number">2.</span> <span class="toc-text">Python API的结构设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#封装中的类和函数命名选择尽量贴近原生API："><span class="toc-number">2.1.</span> <span class="toc-text">封装中的类和函数命名选择尽量贴近原生API：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MdApi的成员变量介绍："><span class="toc-number">2.2.</span> <span class="toc-text">MdApi的成员变量介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#工作步骤如下（后面会有具体函数的实现细节）："><span class="toc-number">2.3.</span> <span class="toc-text">工作步骤如下（后面会有具体函数的实现细节）：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python_API的函数实现"><span class="toc-number">3.</span> <span class="toc-text">Python API的函数实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#构造、析构函数"><span class="toc-number">3.1.</span> <span class="toc-text">构造、析构函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#主动函数"><span class="toc-number">3.2.</span> <span class="toc-text">主动函数</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2 id="从Python的角度看原生API的一些问题">从Python的角度看原生API的一些问题</h2>
+<p>上一篇教程后读者应该对C++ API的结构和使用方法有了基础的了解，这篇教程主要介绍的是对原生的C++ API进行Python封装时的设计和思路，这些构成了<a href="https://github.com/vnpy/vnpy" target="_blank" rel="external">vn.py</a>开源项目中vn.lts（华宝证券LTS柜台API封装）的基础。首先让我们来从Python的角度看看原生API的一些问题：</p>
+<ol>
+<li>原生的API中每个功能分为了两个类：分别是包含回调函数的Spi类和主动函数的Api类，这种设计能让用户更好的分清不同的功能。但是从面向对象的角度，把两个类封装到一起更为方便，实际使用中绝大部分C++的用户也会将接口整合到一个类里面（可以参见网上很多CTP开发的示例代码），因此Python的API中，我们也会将Spi和Api两个类的功能封装到一个类中。</li>
+<li>原生的API中回调函数被触发后必须快速返回，否则会导致其他数据的推送被阻塞，阻塞时间长了还有可能导致API发生崩溃，因此回调函数中不适合包含耗时较长的计算逻辑。例如某个TICK行情推送后，如果用户在回调函数中写了一些比较复杂的计算（循环计算等等），耗时超过3秒（这个数字只是笔者的一个经验），则在这个3秒中，其他的行情推送用户是收不到的（被阻塞了），且很可能3秒后会出现API崩溃（程序死掉）。这里的解决方案是使用生产者-消费者模型，在API中包含一个缓冲队列，当回调函数收到新的数据信息时只是简单存入缓冲队列中并立即返回，而数据信息的处理和向Python中的推送则由另一个工作线程来执行。</li>
+<li>API的函数中使用了大量的结构体用于数据传送，这在C++而言是非常自然的设计，但是对Python封装会造成不小的麻烦，所有的结构体都要封装成对应的Python类，工作量太大也非常容易出错。这点我们可以利用Python相对于C++更为高级的数据结构来解决，Python中的dict字典本质是一个哈希表，但是同一个字典内键和值的类型允许不同，这个特性使得字典可以非常方便的用来代替C++的结构体。</li>
+</ol>
+<p>明确了以上的问题后，我们就可以开始着手设计Python API的结构了。</p>
+<h2 id="Python_API的结构设计">Python API的结构设计</h2>
+<p>这里使用行情API作为示例。</p>
+<p>…表示省略的代码。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//API的继承实现</span></div><div class="line"><span class="keyword">class</span> MdApi : <span class="keyword">public</span> CSecurityFtdcMdSpi</div><div class="line">{</div><div class="line"><span class="keyword">private</span>:</div><div class="line">	CSecurityFtdcMdApi* api;			<span class="comment">//API对象</span></div><div class="line">	thread *task_thread;				<span class="comment">//工作线程指针（向python中推送数据）</span></div><div class="line">	ConcurrentQueue&lt;Task&gt; task_queue;	<span class="comment">//任务队列</span></div><div class="line"></div><div class="line"><span class="keyword">public</span>:</div><div class="line">	MdApi()</div><div class="line">	{</div><div class="line">		function0&lt;<span class="keyword">void</span>&gt; f = boost::bind(&MdApi::processTask, <span class="keyword">this</span>);</div><div class="line">		thread t(f);</div><div class="line">		<span class="keyword">this</span>-&gt;task_thread = &t;</div><div class="line">	};</div><div class="line"></div><div class="line">	~MdApi()</div><div class="line">	{</div><div class="line">	};</div><div class="line"></div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">//登录请求响应</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnRspUserLogin(CSecurityFtdcRspUserLoginField *pRspUserLogin, CSecurityFtdcRspInfoField *pRspInfo, <span class="keyword">int</span> nRequestID, <span class="keyword">bool</span> bIsLast);</div><div class="line"></div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">//数据任务处理函数（在工作线程中运行）</span></div><div class="line">	<span class="keyword">void</span> processTask();</div><div class="line"></div><div class="line">	...</div><div class="line">	</div><div class="line">	<span class="comment">//处理登陆请求响应</span></div><div class="line">	<span class="keyword">void</span> processRspUserLogin(Task task);</div><div class="line"></div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">//该回调函数在Python中继承</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> onRspUserLogin(dict data, dict error, <span class="keyword">int</span> id, <span class="keyword">bool</span> last) {};</div><div class="line"></div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">//请求登陆的主动函数</span></div><div class="line">	<span class="keyword">int</span> reqUserLogin(dict req, <span class="keyword">int</span> nRequestID);</div><div class="line"></div><div class="line">	...</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>注意原生API的函数名开头都是大写字母，为了便于分辨以及符合Python的PEP8编码规则，作者的函数都以小写字母开头。上面的代码中采用的示例是用户登陆UserLogin这个功能。</p>
+<h3 id="封装中的类和函数命名选择尽量贴近原生API：">封装中的类和函数命名选择尽量贴近原生API：</h3>
+<ul>
+<li>封装后的Python API的类取名为MdApi，注意这个不是原生API中的CSecurityFtdcMdApi。</li>
+<li>原生API中以On开头的回调函数（如OnRspUserLogin）对应的Python API的回调函数直接改为以on开头（如onRspUserLogin）。</li>
+<li>原生API中的主动函数（如ReqUserLogin）对应的Python API的主动函数改为首字母小写（如reqUserLogin)。</li>
+</ul>
+<h3 id="MdApi的成员变量介绍：">MdApi的成员变量介绍：</h3>
+<ul>
+<li>api：原生API中的CSecurityFtdcMdApi对象，用于实现主动函数的调用。</li>
+<li>task_thread：一个boost线程指针，用于实现任务线程的工作。        </li>
+<li>task_queue：一个线程安全的任务队列。</li>
+</ul>
+<h3 id="工作步骤如下（后面会有具体函数的实现细节）：">工作步骤如下（后面会有具体函数的实现细节）：</h3>
+<ol>
+<li>用户在Python中调用reqUserLogin函数，传入参数为包含登陆信息（用户名、密码）的字典req以及本次请求号nRequestID，该函数自动将字典中的信息提取并创建原生API使用的结构体后，调用原生API的主动函数ReqUserLogin来进行登录。</li>
+<li>登录成功后，原生API会调用OnRspUserLogin的回调函数返回登录信息（注意这里On是大写），在回调函数里，只是简单的把结构体数据保存到一个任务对象Task中，并推送到任务队列里。</li>
+<li>工作线程中运行的函数是processTask，该函数负责检查任务队列中是否有新的任务，如果有则调用对应的process函数进行处理，如果没有则阻塞等待。</li>
+<li>processTask函数检查到任务队列中OnRspUserLogin推送的一个任务后，调用processRspUserLogin函数进行处理。该函数首先从结构体中提取数据并转换为Python字典，然后调用onRspUserLogin函数（这里的on是小写）推送到Python环境中，onRspUserLogin函数由用户在Python中继承实现。</li>
+</ol>
+<h2 id="Python_API的函数实现">Python API的函数实现</h2>
+<p>仍然使用之前的示例进行函数实现的讲解，包括MdApi的构造、析构函数，主动函数（reqUserLogin等），原生API回调函数（OnRspUserLogin等）和任务处理函数（processTask和processRspUserLogin等）。</p>
+<h3 id="构造、析构函数">构造、析构函数</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">MdApi()</div><div class="line">{</div><div class="line">	function0&lt;<span class="keyword">void</span>&gt; f = boost::bind(&MdApi::processTask, <span class="keyword">this</span>);</div><div class="line">	thread t(f);</div><div class="line">	<span class="keyword">this</span>-&gt;task_thread = &t;</div><div class="line">};</div><div class="line"></div><div class="line">~MdApi()</div><div class="line">{</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>构造函数中仅包含了创建一个工作函数为processTask的工作线程，并将该线程的指针绑定到task_thread上。</p>
+<p>析构函数为空，用户在退出前应当主动调用安全退出函数（参见源代码中的exit）。</p>
+<h3 id="主动函数">主动函数</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> MdApi::reqUserLogin(dict req, <span class="keyword">int</span> nRequestID)</div><div class="line">{</div><div class="line">	<span class="comment">//创建原生API函数调用需要的结构体</span></div><div class="line">	CSecurityFtdcReqUserLoginField myreq = CSecurityFtdcReqUserLoginField();</div><div class="line">	<span class="comment">//初始化这个结构体的内存</span></div><div class="line">	<span class="built_in">memset</span>(&myreq, <span class="number">0</span>, <span class="keyword">sizeof</span>(myreq));</div><div class="line">	<span class="comment">//提取字典中的内容并复制到结构体中</span></div><div class="line">	getChar(req, <span class="string">"MacAddress"</span>, myreq.MacAddress);</div><div class="line">	getChar(req, <span class="string">"UserProductInfo"</span>, myreq.UserProductInfo);</div><div class="line">	getChar(req, <span class="string">"UserID"</span>, myreq.UserID);</div><div class="line">	getChar(req, <span class="string">"AuthCode"</span>, myreq.AuthCode);</div><div class="line">	getChar(req, <span class="string">"TradingDay"</span>, myreq.TradingDay);</div><div class="line">	getChar(req, <span class="string">"InterfaceProductInfo"</span>, myreq.InterfaceProductInfo);</div><div class="line">	getChar(req, <span class="string">"BrokerID"</span>, myreq.BrokerID);</div><div class="line">	getChar(req, <span class="string">"ClientIPAddress"</span>, myreq.ClientIPAddress);</div><div class="line">	getChar(req, <span class="string">"OneTimePassword"</span>, myreq.OneTimePassword);</div><div class="line">	getChar(req, <span class="string">"ProtocolInfo"</span>, myreq.ProtocolInfo);</div><div class="line">	getChar(req, <span class="string">"Password"</span>, myreq.Password);</div><div class="line">	<span class="comment">//将结构体的指针和代表请求编号的整数作为参数调用原生API的函数</span></div><div class="line">	<span class="keyword">int</span> i = <span class="keyword">this</span>-&gt;api-&gt;ReqUserLogin(&myreq, nRequestID);</div><div class="line">	<span class="comment">//返回原生API函数的调用结果</span></div><div class="line">	<span class="keyword">return</span> i;</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>原生API中的请求登陆函数为ReqUserLogin，传入的参数一共包含两个：一个CSecurityFtdcReqUserLoginField 结构体的指针，一个代表请求编号的整数。</p>
+<p>封装后的Python API函数为reqUserLogin，传入参数同样为两个：一个Python字典对象、一个整数。reqUserLogin函数会从Python字典对象中根据键值依次提取结构体中对应的数据。如结构体中有一个成员叫做BrokerID，则使用getChar函数从字典对象中提取”BrokerID”键对应的值。</p>
+<p>getChar函数的实现如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//d为Python字典对象</span></div><div class="line"><span class="comment">//key为d中想要提取的数据的键名</span></div><div class="line"><span class="comment">//value为最终需要这个数据的结构体成员的指针</span></div><div class="line"><span class="keyword">void</span> getChar(dict d, <span class="built_in">string</span> key, <span class="keyword">char</span> *value)</div><div class="line">{</div><div class="line">	<span class="comment">//首先检查字典中是否存在key这个键</span></div><div class="line">	<span class="keyword">if</span> (d.has_key(key))</div><div class="line">	{</div><div class="line">		<span class="comment">//提取key这个键对应的值，即Python对象o</span></div><div class="line">		object o = d[key];</div><div class="line"></div><div class="line">		<span class="comment">//生成从o中提取std::string类的提取器</span></div><div class="line">		extract&lt;<span class="built_in">string</span>&gt; x(o);</div><div class="line">		</div><div class="line">		<span class="comment">//检查提取器是否能提取出数据</span></div><div class="line">		<span class="keyword">if</span> (x.check())</div><div class="line">		{</div><div class="line">			<span class="comment">//执行解包器，提取string对象s</span></div><div class="line">			<span class="built_in">string</span> s = x();</div><div class="line">			</div><div class="line">			<span class="comment">//从s中获取字符串指针buffer</span></div><div class="line">			<span class="keyword">const</span> <span class="keyword">char</span> *buffer = s.c_str();</div><div class="line">			</div><div class="line">			<span class="comment">//将字符串指针指向的字符串数组复制到结构体成员的指针上</span></div><div class="line">			<span class="comment">//对字符串指针赋值必须使用strcpy_s, vs2013使用strcpy编译通不过</span></div><div class="line">			<span class="comment">//+1应该是因为C++字符串的结尾符号？不是特别确定，不加这个1会出错</span></div><div class="line">			strcpy_s(value, <span class="built_in">strlen</span>(buffer) + <span class="number">1</span>, buffer);</div><div class="line">		}</div><div class="line">	}</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>由于原生API中用到的底层数据类型主要包括四种：char字符、char[]字符串数组、int整数、double浮点数，可以对应的Python中的数据类型为：string、int、float。因此设计了三个函数getChar、getInt、getDouble来从Python对象中提取所需的C++数据，getInt、getDouble请参见源代码。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/教程/">教程</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://vnpy.github.io/2015/03/09/20150309_Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计/" data-title="Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计 | vn.py" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/03/05/20150305_Python量化交易平台开发教程系列1-类CTP交易API的工作原理/"  title="Python量化交易平台开发教程系列1-类CTP交易API的工作原理">
+ <strong>下一篇：</strong><br/> 
+ <span>Python量化交易平台开发教程系列1-类CTP交易API的工作原理
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#从Python的角度看原生API的一些问题"><span class="toc-number">1.</span> <span class="toc-text">从Python的角度看原生API的一些问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python_API的结构设计"><span class="toc-number">2.</span> <span class="toc-text">Python API的结构设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#封装中的类和函数命名选择尽量贴近原生API："><span class="toc-number">2.1.</span> <span class="toc-text">封装中的类和函数命名选择尽量贴近原生API：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MdApi的成员变量介绍："><span class="toc-number">2.2.</span> <span class="toc-text">MdApi的成员变量介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#工作步骤如下（后面会有具体函数的实现细节）："><span class="toc-number">2.3.</span> <span class="toc-text">工作步骤如下（后面会有具体函数的实现细节）：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python_API的函数实现"><span class="toc-number">3.</span> <span class="toc-text">Python API的函数实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#构造、析构函数"><span class="toc-number">3.1.</span> <span class="toc-text">构造、析构函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#主动函数"><span class="toc-number">3.2.</span> <span class="toc-text">主动函数</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/教程/" title="教程">教程<sup>3</sup></a></li>
+		
+			<li><a href="/categories/日志/" title="日志">日志<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://github.com/vnpy/vnpy" target="_blank" title="vn.py on GitHub">vn.py on GitHub</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Talk is cheap, show me the code. <br/>
+			</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="http://vnpy.github.io/about" target="_blank" title="用python的交易员">用python的交易员</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+  </body>
+</html>
