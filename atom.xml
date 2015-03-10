@@ -4,7 +4,7 @@
   <subtitle><![CDATA[基于python的开源交易平台开发框架]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://vnpy.github.io/"/>
-  <updated>2015-03-09T09:35:50.369Z</updated>
+  <updated>2015-03-10T07:55:18.815Z</updated>
   <id>http://vnpy.github.io/</id>
   
   <author>
@@ -19,8 +19,35 @@
     <link href="http://vnpy.github.io/2015/03/09/20150309_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%972-%E7%B1%BBCTP%E4%BA%A4%E6%98%93API%E7%9A%84Python%E5%B0%81%E8%A3%85%E8%AE%BE%E8%AE%A1/"/>
     <id>http://vnpy.github.io/2015/03/09/20150309_Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计/</id>
     <published>2015-03-09T03:49:28.000Z</published>
-    <updated>2015-03-09T09:35:30.527Z</updated>
+    <updated>2015-03-10T07:54:50.191Z</updated>
     <content type="html"><![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2 id="为什么要封装API">为什么要封装API</h2>
+<p>直接原因就是C++的API没法直接在Python里用，不过这个回答有点太简单，这里我们稍微做一些拓展解释：</p>
+<ol>
+<li>C++ API中很多函数的调用参数是ApiStruct.h（参见上一篇）中定义的结构体，而在Python中我们既无法直接创建这些结构体（主动函数），也无法提取结构体中包含的数据（回调函数）。</li>
+<li>Python虚拟机是基于C语言实现的，所有的Python对象，哪怕只是一个整数或者字符串，在C的环境中都是一个PyObject对象（好吧，我知道C里没有对象，只有结构体，但估计90%的读者都不在乎这个区别）。用户如果在Python中直接传递一个参数到C++环境里，C++是无法识别的（Python：买入1手股指, C++：你要买入多少？）。</li>
+<li>Python只能加载封装为PyObject对象的模块，因此原生C++的API在Python中连加载都加载不了。</li>
+</ol>
+<h2 id="封装后API的工作流程">封装后API的工作流程</h2>
+<h3 id="主动函数">主动函数</h3>
+<ol>
+<li>用户在Python程序中调用封装API的主动函数，并直接传入Python变量（PyObject对象）作为参数。</li>
+<li>封装API将Python变量转换成C++变量。</li>
+<li>封装API调用原生API的主动函数，并传入C++变量作为参数。</li>
+</ol>
+<h3 id="回调函数">回调函数</h3>
+<ol>
+<li>交易柜台通过原生API的C++回调函数推送数据信息，传入参数为C++变量</li>
+<li>封装API将C++变量转换为Python变量</li>
+<li>封装API调用封装后的回调函数向用户的Python程序中推送数据，传入参数为Python变量</li>
+</ol>
+<h3 id="名词定义">名词定义</h3>
+<ul>
+<li>封装API：指的是经过封装后，可以直接在Python中使用的API</li>
+<li>原生API：指的是由软件公司提供，在C++中使用的API</li>
+<li>Python变量：包含Python中的数字、字符串、对象等等</li>
+<li>C++变量：包含C++中的内置数据类型和结构体等</li>
+</ul>
 <h2 id="从Python的角度看原生API的一些问题">从Python的角度看原生API的一些问题</h2>
 <p>上一篇教程后读者应该对C++ API的结构和使用方法有了基础的了解，这篇教程主要介绍的是对原生的C++ API进行Python封装时的设计和思路，这些构成了<a href="https://github.com/vnpy/vnpy" target="_blank" rel="external">vn.py</a>开源项目中vn.lts（华宝证券LTS柜台API封装）的基础。首先让我们来从Python的角度看看原生API的一些问题：</p>
 <ol>
@@ -34,20 +61,21 @@
 <p>…表示省略的代码。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//API的继承实现</span></div><div class="line"><span class="keyword">class</span> MdApi : <span class="keyword">public</span> CSecurityFtdcMdSpi</div><div class="line">{</div><div class="line"><span class="keyword">private</span>:</div><div class="line">	CSecurityFtdcMdApi* api;			<span class="comment">//API对象</span></div><div class="line">	thread *task_thread;				<span class="comment">//工作线程指针（向python中推送数据）</span></div><div class="line">	ConcurrentQueue&lt;Task&gt; task_queue;	<span class="comment">//任务队列</span></div><div class="line"></div><div class="line"><span class="keyword">public</span>:</div><div class="line">	MdApi()</div><div class="line">	{</div><div class="line">		function0&lt;<span class="keyword">void</span>&gt; f = boost::bind(&MdApi::processTask, <span class="keyword">this</span>);</div><div class="line">		thread t(f);</div><div class="line">		<span class="keyword">this</span>-&gt;task_thread = &t;</div><div class="line">	};</div><div class="line"></div><div class="line">	~MdApi()</div><div class="line">	{</div><div class="line">	};</div><div class="line"></div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">//登录请求响应</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnRspUserLogin(CSecurityFtdcRspUserLoginField *pRspUserLogin, CSecurityFtdcRspInfoField *pRspInfo, <span class="keyword">int</span> nRequestID, <span class="keyword">bool</span> bIsLast);</div><div class="line"></div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">//数据任务处理函数（在工作线程中运行）</span></div><div class="line">	<span class="keyword">void</span> processTask();</div><div class="line"></div><div class="line">	...</div><div class="line">	</div><div class="line">	<span class="comment">//处理登陆请求响应</span></div><div class="line">	<span class="keyword">void</span> processRspUserLogin(Task task);</div><div class="line"></div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">//该回调函数在Python中继承</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> onRspUserLogin(dict data, dict error, <span class="keyword">int</span> id, <span class="keyword">bool</span> last) {};</div><div class="line"></div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">//请求登陆的主动函数</span></div><div class="line">	<span class="keyword">int</span> reqUserLogin(dict req, <span class="keyword">int</span> nRequestID);</div><div class="line"></div><div class="line">	...</div><div class="line">};</div></pre></td></tr></table></figure>
 
+<p>（以上代码截取自vnltsmd.h文件）</p>
 <p>注意原生API的函数名开头都是大写字母，为了便于分辨以及符合Python的PEP8编码规则，作者的函数都以小写字母开头。上面的代码中采用的示例是用户登陆UserLogin这个功能。</p>
-<h3 id="封装中的类和函数命名选择尽量贴近原生API：">封装中的类和函数命名选择尽量贴近原生API：</h3>
+<h3 id="封装中的类和函数命名规则">封装中的类和函数命名规则</h3>
 <ul>
 <li>封装后的Python API的类取名为MdApi，注意这个不是原生API中的CSecurityFtdcMdApi。</li>
 <li>原生API中以On开头的回调函数（如OnRspUserLogin）对应的Python API的回调函数直接改为以on开头（如onRspUserLogin）。</li>
-<li>原生API中的主动函数（如ReqUserLogin）对应的Python API的主动函数改为首字母小写（如reqUserLogin)。</li>
+<li>原生API中的主动函数（如ReqUserLogin）对应的封装后API中的主动函数改为首字母小写（如reqUserLogin)。</li>
 </ul>
-<h3 id="MdApi的成员变量介绍：">MdApi的成员变量介绍：</h3>
+<h3 id="MdApi的成员变量">MdApi的成员变量</h3>
 <ul>
 <li>api：原生API中的CSecurityFtdcMdApi对象，用于实现主动函数的调用。</li>
 <li>task_thread：一个boost线程指针，用于实现任务线程的工作。        </li>
 <li>task_queue：一个线程安全的任务队列。</li>
 </ul>
-<h3 id="工作步骤如下（后面会有具体函数的实现细节）：">工作步骤如下（后面会有具体函数的实现细节）：</h3>
+<h3 id="工作步骤（后面会有具体函数的实现细节）">工作步骤（后面会有具体函数的实现细节）</h3>
 <ol>
 <li>用户在Python中调用reqUserLogin函数，传入参数为包含登陆信息（用户名、密码）的字典req以及本次请求号nRequestID，该函数自动将字典中的信息提取并创建原生API使用的结构体后，调用原生API的主动函数ReqUserLogin来进行登录。</li>
 <li>登录成功后，原生API会调用OnRspUserLogin的回调函数返回登录信息（注意这里On是大写），在回调函数里，只是简单的把结构体数据保存到一个任务对象Task中，并推送到任务队列里。</li>
@@ -59,22 +87,51 @@
 <h3 id="构造、析构函数">构造、析构函数</h3>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">MdApi()</div><div class="line">{</div><div class="line">	function0&lt;<span class="keyword">void</span>&gt; f = boost::bind(&MdApi::processTask, <span class="keyword">this</span>);</div><div class="line">	thread t(f);</div><div class="line">	<span class="keyword">this</span>-&gt;task_thread = &t;</div><div class="line">};</div><div class="line"></div><div class="line">~MdApi()</div><div class="line">{</div><div class="line">};</div></pre></td></tr></table></figure>
 
+<p>（以上代码截取自vnltsmd.h文件）</p>
 <p>构造函数中仅包含了创建一个工作函数为processTask的工作线程，并将该线程的指针绑定到task_thread上。</p>
 <p>析构函数为空，用户在退出前应当主动调用安全退出函数（参见源代码中的exit）。</p>
-<h3 id="主动函数">主动函数</h3>
+<h3 id="主动函数-1">主动函数</h3>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> MdApi::reqUserLogin(dict req, <span class="keyword">int</span> nRequestID)</div><div class="line">{</div><div class="line">	<span class="comment">//创建原生API函数调用需要的结构体</span></div><div class="line">	CSecurityFtdcReqUserLoginField myreq = CSecurityFtdcReqUserLoginField();</div><div class="line">	<span class="comment">//初始化这个结构体的内存</span></div><div class="line">	<span class="built_in">memset</span>(&myreq, <span class="number">0</span>, <span class="keyword">sizeof</span>(myreq));</div><div class="line">	<span class="comment">//提取字典中的内容并复制到结构体中</span></div><div class="line">	getChar(req, <span class="string">"MacAddress"</span>, myreq.MacAddress);</div><div class="line">	getChar(req, <span class="string">"UserProductInfo"</span>, myreq.UserProductInfo);</div><div class="line">	getChar(req, <span class="string">"UserID"</span>, myreq.UserID);</div><div class="line">	getChar(req, <span class="string">"AuthCode"</span>, myreq.AuthCode);</div><div class="line">	getChar(req, <span class="string">"TradingDay"</span>, myreq.TradingDay);</div><div class="line">	getChar(req, <span class="string">"InterfaceProductInfo"</span>, myreq.InterfaceProductInfo);</div><div class="line">	getChar(req, <span class="string">"BrokerID"</span>, myreq.BrokerID);</div><div class="line">	getChar(req, <span class="string">"ClientIPAddress"</span>, myreq.ClientIPAddress);</div><div class="line">	getChar(req, <span class="string">"OneTimePassword"</span>, myreq.OneTimePassword);</div><div class="line">	getChar(req, <span class="string">"ProtocolInfo"</span>, myreq.ProtocolInfo);</div><div class="line">	getChar(req, <span class="string">"Password"</span>, myreq.Password);</div><div class="line">	<span class="comment">//将结构体的指针和代表请求编号的整数作为参数调用原生API的函数</span></div><div class="line">	<span class="keyword">int</span> i = <span class="keyword">this</span>-&gt;api-&gt;ReqUserLogin(&myreq, nRequestID);</div><div class="line">	<span class="comment">//返回原生API函数的调用结果</span></div><div class="line">	<span class="keyword">return</span> i;</div><div class="line">};</div></pre></td></tr></table></figure>
 
-<p>原生API中的请求登陆函数为ReqUserLogin，传入的参数一共包含两个：一个CSecurityFtdcReqUserLoginField 结构体的指针，一个代表请求编号的整数。</p>
-<p>封装后的Python API函数为reqUserLogin，传入参数同样为两个：一个Python字典对象、一个整数。reqUserLogin函数会从Python字典对象中根据键值依次提取结构体中对应的数据。如结构体中有一个成员叫做BrokerID，则使用getChar函数从字典对象中提取”BrokerID”键对应的值。</p>
+<p>（以上代码截取自vnltsmd.cpp文件）</p>
+<p>原生API中的请求登录函数为ReqUserLogin，传入的参数一共包含两个：一个CSecurityFtdcReqUserLoginField 结构体的指针，一个代表请求编号的整数。</p>
+<p>封装后的API函数为reqUserLogin，传入参数同样为两个：一个Python字典对象、一个整数。reqUserLogin函数会从Python字典对象中根据键值依次提取结构体中对应的数据。如结构体中有一个成员叫做BrokerID，则使用getChar函数从字典对象中提取”BrokerID”键对应的值。</p>
 <p>getChar函数的实现如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//d为Python字典对象</span></div><div class="line"><span class="comment">//key为d中想要提取的数据的键名</span></div><div class="line"><span class="comment">//value为最终需要这个数据的结构体成员的指针</span></div><div class="line"><span class="keyword">void</span> getChar(dict d, <span class="built_in">string</span> key, <span class="keyword">char</span> *value)</div><div class="line">{</div><div class="line">	<span class="comment">//首先检查字典中是否存在key这个键</span></div><div class="line">	<span class="keyword">if</span> (d.has_key(key))</div><div class="line">	{</div><div class="line">		<span class="comment">//提取key这个键对应的值，即Python对象o</span></div><div class="line">		object o = d[key];</div><div class="line"></div><div class="line">		<span class="comment">//生成从o中提取std::string类的提取器</span></div><div class="line">		extract&lt;<span class="built_in">string</span>&gt; x(o);</div><div class="line">		</div><div class="line">		<span class="comment">//检查提取器是否能提取出数据</span></div><div class="line">		<span class="keyword">if</span> (x.check())</div><div class="line">		{</div><div class="line">			<span class="comment">//执行解包器，提取string对象s</span></div><div class="line">			<span class="built_in">string</span> s = x();</div><div class="line">			</div><div class="line">			<span class="comment">//从s中获取字符串指针buffer</span></div><div class="line">			<span class="keyword">const</span> <span class="keyword">char</span> *buffer = s.c_str();</div><div class="line">			</div><div class="line">			<span class="comment">//将字符串指针指向的字符串数组复制到结构体成员的指针上</span></div><div class="line">			<span class="comment">//对字符串指针赋值必须使用strcpy_s, vs2013使用strcpy编译通不过</span></div><div class="line">			<span class="comment">//+1应该是因为C++字符串的结尾符号？不是特别确定，不加这个1会出错</span></div><div class="line">			strcpy_s(value, <span class="built_in">strlen</span>(buffer) + <span class="number">1</span>, buffer);</div><div class="line">		}</div><div class="line">	}</div><div class="line">};</div></pre></td></tr></table></figure>
 
+<p>（以上代码截取自vnltsmd.cpp文件）</p>
 <p>由于原生API中用到的底层数据类型主要包括四种：char字符、char[]字符串数组、int整数、double浮点数，可以对应的Python中的数据类型为：string、int、float。因此设计了三个函数getChar、getInt、getDouble来从Python对象中提取所需的C++数据，getInt、getDouble请参见源代码。</p>
+<h3 id="原生API的回调函数">原生API的回调函数</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> MdApi::OnRspUserLogin(CSecurityFtdcRspUserLoginField *pRspUserLogin, CSecurityFtdcRspInfoField *pRspInfo, <span class="keyword">int</span> nRequestID, <span class="keyword">bool</span> bIsLast)</div><div class="line">{</div><div class="line">	Task task = Task();</div><div class="line">	task.task_name = ONRSPUSERLOGIN;</div><div class="line">	task.task_data = *pRspUserLogin;</div><div class="line">	<span class="keyword">if</span> (pRspInfo)</div><div class="line">	{</div><div class="line">		task.task_error = *pRspInfo;</div><div class="line">	}</div><div class="line">	<span class="keyword">else</span></div><div class="line">	{</div><div class="line">		CSecurityFtdcRspInfoField empty_error = CSecurityFtdcRspInfoField();</div><div class="line">		<span class="built_in">memset</span>(&empty_error, <span class="number">0</span>, <span class="keyword">sizeof</span>(empty_error));</div><div class="line">		task.task_error = empty_error;</div><div class="line">	}</div><div class="line">	task.task_id = nRequestID;</div><div class="line">	task.task_last = bIsLast;</div><div class="line">	<span class="keyword">this</span>-&gt;task_queue.push(task);</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>（以上代码截取自vnltsmd.cpp文件）</p>
+<p>当登录成功后，原生API中的回调函数OnRspUserLogin会被自动调用，通知用户登录相关的信息，传入参数包括四个，分别为CSecurityFtdcRspUserLoginField结构体指针（用户本次登录的相关信息）pRspUserLogin，CSecurityFtdcRspInfoField结构体指针（登录是否存在错误的相关信息）pRspInfo，整数（登陆请求编号）nRequestID和布尔值（是否为该请求的最后一次通知）bIsLast。</p>
+<p>在回调函数中，我们通过创建一个Task对象来保存这些信息，并推入task_queue中，等待工作线程的提取处理。其中，由于pRspInfo可能存在空指针的情况，所以需要进行判断，若指针为空，则在Task对象上绑定一个内容为空的CSecurityFtdcRspInfoField结构体（这步等于一个异常情况的处理）。ONRSPUSERLOGIN是一个整数常量（在头文件中定义），用于标识该Task对象包含的是哪个回调函数返回的信息。</p>
+<p>Task对象的定义如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//任务结构体</span></div><div class="line"><span class="keyword">struct</span> Task</div><div class="line">{</div><div class="line">	<span class="keyword">int</span> task_name;		<span class="comment">//回调函数名称对应的常量</span></div><div class="line">	any task_data;		<span class="comment">//数据结构体</span></div><div class="line">	any task_error;		<span class="comment">//错误结构体</span></div><div class="line">	<span class="keyword">int</span> task_id;		<span class="comment">//请求id</span></div><div class="line">	<span class="keyword">bool</span> task_last;		<span class="comment">//是否为最后返回</span></div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>（以上代码截取自vnltsmd.h文件）</p>
+<p>其中any是boost库中的any类，作用是定义一个可以存放任意类型数据的变量（有点类似于Python里的变量），但是当用户尝试从该变量中获取原本的数据时，需要知道原本数据的类型。原生API中不同回调函数返回的参数类型是不同的，因此为了提高代码的简洁性选择使用boost.any这个泛型类。</p>
+<h3 id="任务处理函数">任务处理函数</h3>
+<p>首先是负责从任务队列中提取任务，并根据任务名称的不同使用对应的函数进行处理的processTask函数：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">///-------------------------------------------------------------------------------------</span></div><div class="line"><span class="comment">///工作线程从队列中取出数据，转化为python对象后，进行推送</span></div><div class="line"><span class="comment">///-------------------------------------------------------------------------------------</span></div><div class="line"><span class="keyword">void</span> MdApi::processTask()</div><div class="line">{</div><div class="line">	<span class="keyword">while</span> (<span class="number">1</span>)</div><div class="line">	{</div><div class="line">		Task task = <span class="keyword">this</span>-&gt;task_queue.wait_and_pop();</div><div class="line"></div><div class="line">		<span class="keyword">switch</span> (task.task_name)</div><div class="line">		{</div><div class="line">			...</div><div class="line"></div><div class="line">			<span class="keyword">case</span> ONRSPUSERLOGIN:</div><div class="line">			{</div><div class="line">				<span class="keyword">this</span>-&gt;processRspUserLogin(task);</div><div class="line">				<span class="keyword">break</span>;</div><div class="line">			}</div><div class="line"></div><div class="line">			...</div><div class="line">		};</div><div class="line">	}</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>（以上代码截取自vnltsmd.cpp文件）</p>
+<p>使用while (1)的方式让processTask处于无限循环中不断运行，从task_queue队列中提取任务对象task后，使用swtich根据任务的回调函数名称task_name，调用对应的函数处理该任务。上面的例子中，当程序检查task_name是ONRSPUSERLOGIN这个常量值后，就会调用processRspUserLogin函数进行处理，其代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> MdApi::processRspUserLogin(Task task)</div><div class="line">{</div><div class="line">	CSecurityFtdcRspUserLoginField task_data = any_cast&lt;CSecurityFtdcRspUserLoginField&gt;(task.task_data);</div><div class="line">	dict data;</div><div class="line">	data[<span class="string">"MaxOrderRef"</span>] = task_data.MaxOrderRef;</div><div class="line">	data[<span class="string">"UserID"</span>] = task_data.UserID;</div><div class="line">	data[<span class="string">"TradingDay"</span>] = task_data.TradingDay;</div><div class="line">	data[<span class="string">"SessionID"</span>] = task_data.SessionID;</div><div class="line">	data[<span class="string">"SystemName"</span>] = task_data.SystemName;</div><div class="line">	data[<span class="string">"FrontID"</span>] = task_data.FrontID;</div><div class="line">	data[<span class="string">"BrokerID"</span>] = task_data.BrokerID;</div><div class="line">	data[<span class="string">"LoginTime"</span>] = task_data.LoginTime;</div><div class="line"></div><div class="line">	CSecurityFtdcRspInfoField task_error = any_cast&lt;CSecurityFtdcRspInfoField&gt;(task.task_error);</div><div class="line">	dict error;</div><div class="line">	error[<span class="string">"ErrorMsg"</span>] = task_error.ErrorMsg;</div><div class="line">	error[<span class="string">"ErrorID"</span>] = task_error.ErrorID;</div><div class="line"></div><div class="line">	<span class="keyword">this</span>-&gt;onRspUserLogin(data, error, task.task_id, task.task_last);</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>（以上代码截取自vnltsmd.cpp文件）</p>
+<p>any_cast函数由boost.any库提供，作用之前提到的从any变量中提取出用户需要的数据类型来。dict类由boost.python库提供，使用dict可以直接创建Python环境中的字典，同时当我们使用d[key] = value这种语句进行赋值时，dict中的key和value均会自动转换为对应的Python对象。当我们将返回的业务信息CSecurityFtdcRspUserLoginField结构体和错误信息结构体CSecurityFtdcRspInfoField分别转换为data和error这两个Python字典后，我们就可以通过onRspUserLogin回调函数推送到Python环境中了。</p>
+<h1 id="总结">总结</h1>
+<p>之前几段示例代码展示的是用户登陆这个简单业务操作，包括了从用户在Python中调用主动函数到柜台通过回调函数返回信息再推送到Python中的全过程。文章主要是对源代码中的注释起到一个更为细致的解释作用。同样这篇内容对于想用vn.py做量化平台开发的用户而言不是必须掌握的东西，放在这里主要是考虑教程的完整性，看不懂的就先跳过吧。</p>
+<p>下一章是vn.py平台中API部分的编译方法，github上项目里的.pyd文件可能由于你的操作系统或者编译器和作者本人的不同没法直接使用，必须自行编译，整个教程会包含一步步的截图和说明，包教包会（还不会的可以到github上提问 :p ）。</p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
-<h2 id="从Python的角度看原生API的一些问题">从Python的角度看原生API的一些问题</h2>
-<p>上一篇教程后读者应该对C++ API的结构和使用方法有了基础的了解，这篇教程主要介绍的是对原生]]>
+<h2 id="为什么要封装API">为什么要封装API</h2>
+<p>直接原因就是C++的API没法直接在Python里用，不过这个回答有点太简单，这里我们稍微做一些拓展解释：</p>
+<ol>
+<li>C++ ]]>
     </summary>
     
       <category term="教程" scheme="http://vnpy.github.io/categories/%E6%95%99%E7%A8%8B/"/>
