@@ -10,36 +10,35 @@
     <meta name="author" content="用python的交易员">
     
     <meta name="description" content="原创文章，转载请注明出处：用Python的交易员
+(本篇教程包含的内容太多也太复杂，有不少读者反应看不懂，因为本身也不是使用vn.py必须掌握的知识，这篇教程暂时处于半完成状态，等多收集些读者的建议后会再做一个比较大的修订）
 为什么要封装API
-直接原因就是C++的API没法直接在Python里用，不过这个回答有点太简单，这里我们稍微做一些拓展解释：
-
-C++ API中很多函数的调用参数是ApiStruct.h（参见上一篇）中定义的结构体，而在Python中我们既无法直接">
+直接原因就是C++的API没法直接在Python里用，">
     
     
     <meta name="description" content="原创文章，转载请注明出处：用Python的交易员
+(本篇教程包含的内容太多也太复杂，有不少读者反应看不懂，因为本身也不是使用vn.py必须掌握的知识，这篇教程暂时处于半完成状态，等多收集些读者的建议后会再做一个比较大的修订）
 为什么要封装API
 直接原因就是C++的API没法直接在Python里用，不过这个回答有点太简单，这里我们稍微做一些拓展解释：
 
-C++ API中很多函数的调用参数是ApiStruct.h（参见上一篇）中定义的结构体，而在Python中我们既无法直接创建这些结构体（主动函数），也无法提取结构体中包含的数据（回调函数）。
-Python虚拟机是基于C语">
+C++ API中很多函数的调用参数是ApiS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计">
 <meta property="og:url" content="http://vnpy.github.io/2015/03/09/20150309_Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计/">
 <meta property="og:site_name" content="vn.py">
 <meta property="og:description" content="原创文章，转载请注明出处：用Python的交易员
+(本篇教程包含的内容太多也太复杂，有不少读者反应看不懂，因为本身也不是使用vn.py必须掌握的知识，这篇教程暂时处于半完成状态，等多收集些读者的建议后会再做一个比较大的修订）
 为什么要封装API
 直接原因就是C++的API没法直接在Python里用，不过这个回答有点太简单，这里我们稍微做一些拓展解释：
 
-C++ API中很多函数的调用参数是ApiStruct.h（参见上一篇）中定义的结构体，而在Python中我们既无法直接创建这些结构体（主动函数），也无法提取结构体中包含的数据（回调函数）。
-Python虚拟机是基于C语">
+C++ API中很多函数的调用参数是ApiS">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计">
 <meta name="twitter:description" content="原创文章，转载请注明出处：用Python的交易员
+(本篇教程包含的内容太多也太复杂，有不少读者反应看不懂，因为本身也不是使用vn.py必须掌握的知识，这篇教程暂时处于半完成状态，等多收集些读者的建议后会再做一个比较大的修订）
 为什么要封装API
 直接原因就是C++的API没法直接在Python里用，不过这个回答有点太简单，这里我们稍微做一些拓展解释：
 
-C++ API中很多函数的调用参数是ApiStruct.h（参见上一篇）中定义的结构体，而在Python中我们既无法直接创建这些结构体（主动函数），也无法提取结构体中包含的数据（回调函数）。
-Python虚拟机是基于C语">
+C++ API中很多函数的调用参数是ApiS">
 
 
     
@@ -119,6 +118,7 @@ Python虚拟机是基于C语">
 		</div>
 		
 		<p>原创文章，转载请注明出处：用Python的交易员</p>
+<p>(本篇教程包含的内容太多也太复杂，有不少读者反应看不懂，因为本身也不是使用vn.py必须掌握的知识，这篇教程暂时处于半完成状态，等多收集些读者的建议后会再做一个比较大的修订）</p>
 <h2 id="为什么要封装API">为什么要封装API</h2>
 <p>直接原因就是C++的API没法直接在Python里用，不过这个回答有点太简单，这里我们稍微做一些拓展解释：</p>
 <ol>
@@ -253,6 +253,14 @@ Python虚拟机是基于C语">
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2015/03/12/20150312_Python量化交易平台开发教程系列3-vn.py项目中API封装的编译/" title="Python量化交易平台开发教程系列3-vn.py项目中API封装的编译">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Python量化交易平台开发教程系列3-vn.py项目中API封装的编译</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2015/03/05/20150305_Python量化交易平台开发教程系列1-类CTP交易API的工作原理/"  title="Python量化交易平台开发教程系列1-类CTP交易API的工作原理">
@@ -285,7 +293,7 @@ Python虚拟机是基于C语">
 	<p class="asidetitle">分类</p>
 		<ul>
 		
-			<li><a href="/categories/教程/" title="教程">教程<sup>3</sup></a></li>
+			<li><a href="/categories/教程/" title="教程">教程<sup>4</sup></a></li>
 		
 			<li><a href="/categories/日志/" title="日志">日志<sup>1</sup></a></li>
 		
