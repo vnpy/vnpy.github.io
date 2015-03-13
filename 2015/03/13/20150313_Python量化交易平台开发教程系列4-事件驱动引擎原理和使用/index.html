@@ -1,0 +1,457 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Python量化交易平台开发教程系列4-事件驱动引擎原理和使用 | vn.py</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="用python的交易员">
+    
+    <meta name="description" content="原创文章，转载请注明出处：用Python的交易员
+前言
+从这篇开始，后面的教程都会基于Python（终于可以跟C++说再见了）。
+经过上一篇复杂繁琐的API编译后，我们已经有了一个可以在Python环境中用来收行情和发单的接口，但是尽管作者在Github上也放了简单的API功能测试代码作为接口使用方">
+    
+    
+    <meta name="description" content="原创文章，转载请注明出处：用Python的交易员
+前言
+从这篇开始，后面的教程都会基于Python（终于可以跟C++说再见了）。
+经过上一篇复杂繁琐的API编译后，我们已经有了一个可以在Python环境中用来收行情和发单的接口，但是尽管作者在Github上也放了简单的API功能测试代码作为接口使用方法的示例，绝大部分读者应该对于如何用这个接口去开发自己的交易系统毫无头绪。
+类似的情况也常常发生于当">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python量化交易平台开发教程系列4-事件驱动引擎原理和使用">
+<meta property="og:url" content="http://vnpy.github.io/2015/03/13/20150313_Python量化交易平台开发教程系列4-事件驱动引擎原理和使用/">
+<meta property="og:site_name" content="vn.py">
+<meta property="og:description" content="原创文章，转载请注明出处：用Python的交易员
+前言
+从这篇开始，后面的教程都会基于Python（终于可以跟C++说再见了）。
+经过上一篇复杂繁琐的API编译后，我们已经有了一个可以在Python环境中用来收行情和发单的接口，但是尽管作者在Github上也放了简单的API功能测试代码作为接口使用方法的示例，绝大部分读者应该对于如何用这个接口去开发自己的交易系统毫无头绪。
+类似的情况也常常发生于当">
+<meta property="og:image" content="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B4%E6%8E%A5%E5%8F%97%E6%8C%91%E6%88%98.jpg">
+<meta property="og:image" content="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B4%E4%B8%8D%E7%9F%A5%E6%89%80%E6%8E%AA.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python量化交易平台开发教程系列4-事件驱动引擎原理和使用">
+<meta name="twitter:description" content="原创文章，转载请注明出处：用Python的交易员
+前言
+从这篇开始，后面的教程都会基于Python（终于可以跟C++说再见了）。
+经过上一篇复杂繁琐的API编译后，我们已经有了一个可以在Python环境中用来收行情和发单的接口，但是尽管作者在Github上也放了简单的API功能测试代码作为接口使用方法的示例，绝大部分读者应该对于如何用这个接口去开发自己的交易系统毫无头绪。
+类似的情况也常常发生于当">
+
+
+    
+    <link rel="alternative" href="/atom.xml" title="vn.py" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="vn.py" title="vn.py"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="vn.py">vn.py</a></h1>
+				<h2 class="blog-motto">基于python的开源交易平台开发框架</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">存档</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:vnpy.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/03/13/20150313_Python量化交易平台开发教程系列4-事件驱动引擎原理和使用/" title="Python量化交易平台开发教程系列4-事件驱动引擎原理和使用" itemprop="url">Python量化交易平台开发教程系列4-事件驱动引擎原理和使用</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="http://vnpy.github.io/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
+		
+  <p class="article-time">
+    <time datetime="2015-03-13T02:58:00.000Z" itemprop="datePublished"> 发表于 3月 13 2015</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#事件驱动"><span class="toc-number">2.</span> <span class="toc-text">事件驱动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#计算机程序分类"><span class="toc-number">2.1.</span> <span class="toc-text">计算机程序分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#连续运行型程序"><span class="toc-number">2.2.</span> <span class="toc-text">连续运行型程序</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#时间驱动"><span class="toc-number">2.2.1.</span> <span class="toc-text">时间驱动</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#事件驱动-1"><span class="toc-number">2.2.2.</span> <span class="toc-text">事件驱动</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#事件驱动引擎"><span class="toc-number">3.</span> <span class="toc-text">事件驱动引擎</span></a></li></ol>
+		
+		</div>
+		
+		<p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2 id="前言">前言</h2>
+<p>从这篇开始，后面的教程都会基于Python（终于可以跟C++说再见了）。</p>
+<p>经过上一篇复杂繁琐的API编译后，我们已经有了一个可以在Python环境中用来收行情和发单的接口，但是尽管作者在Github上也放了简单的API功能测试代码作为接口使用方法的示例，绝大部分读者应该对于如何用这个接口去开发自己的交易系统毫无头绪。</p>
+<p>类似的情况也常常发生于当我们从万得、恒生、网上的其他开源项目（比如pyctp）等等拿到开发接口和文档示例后：</p>
+<p>看了半天觉得似乎上面讲的都懂。</p>
+<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B4%E6%8E%A5%E5%8F%97%E6%8C%91%E6%88%98.jpg" alt="enter image description here"></p>
+<p>但要写个自己的系统依旧不知道从何处下手。</p>
+<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B4%E4%B8%8D%E7%9F%A5%E6%89%80%E6%8E%AA.jpg" alt="enter image description here"></p>
+<p>所以在搞定交易接口后，我们开发交易系统的第一步就是要弄清楚系统的工作原理，在读完这篇教程后，你应该至少不会再对如何写一个交易系统茫然无措了。</p>
+<h2 id="事件驱动">事件驱动</h2>
+<h3 id="计算机程序分类">计算机程序分类</h3>
+<p>所有的计算机程序都可以大致分为两类：脚本型（单次运行）和连续运行型（直到用户主动退出）。脚本型的程序包括最早的批处理文件以及使用Python做交易策略回测等等，这类程序的特点是在用户启动后会按照编程时设计好的步骤一步步运行，所有步骤运行完后自动退出。连续运行型的程序包含了操作系统和绝大部分我们日常使用的软件等等，这类程序启动后会处于一个无限循环中连续运行，直到用户主动退出时才会结束。</p>
+<h3 id="连续运行型程序">连续运行型程序</h3>
+<p>我们要开发的交易系统就是属于连续运行型程序，而这种程序根据其计算逻辑的运行机制不同，又可以粗略的分为时间驱动和事件驱动两种。</p>
+<h4 id="时间驱动">时间驱动</h4>
+<p>时间驱动的程序逻辑相对容易设计，简单来说就是让电脑每隔一段时间自动做一些事情。这个事情本身可以很复杂、包括很多步骤，但这些步骤都是线性的，按照顺序一步步执行下来。</p>
+<p>以下代码展示了一个非常简单的时间驱动的Python程序。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo</span><span class="params">()</span>:</span></div><div class="line">	<span class="keyword">print</span> <span class="string">u'时间驱动的程序每隔1秒运行demo函数'</span></div><div class="line"></div><div class="line"><span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">	demo()</div><div class="line">	sleep(<span class="number">1.0</span>)</div></pre></td></tr></table></figure>
+
+<p>时间驱动的程序本质上就是每隔一段时间固定运行一次脚本（上面代码中的demo函数）。尽管脚本自身可以很长、包含非常多的步骤，但是我们可以看出这种程序的运行机制相对比较简单、容易理解。</p>
+<p>举一些量化交易相关的例子：</p>
+<ol>
+<li>每隔5分钟，通过新浪财经网页的公开API读取一次沪深300成分股的价格，根据当日涨幅进行排序后输出到电脑屏幕上。</li>
+<li>每隔1秒钟，检查一次最新收到的股指期货TICK数据，更新K线和其他技术指标，检查是否满足趋势策略的下单条件，若满足则执行下单。</li>
+</ol>
+<p>对速度要求较高的量化交易方面（日内CTA策略、高频策略等等），时间驱动的程序会存在一个非常大的缺点：对数据信息在反应操作上的处理延时。例子2中，在每次逻辑脚本运行完等待的那1秒钟里，程序对于接收到的新数据信息（行情、成交推送等等）是不会做出任何反应的，只有在等待时间结束后脚本再次运行时才会进行相关的计算处理。而处理延时在量化交易中的直接后果就是money：市价单滑点、限价单错过本可成交的价格。</p>
+<p>时间驱动的程序在量化交易方面还存在一些其他的缺点：如浪费CPU的计算资源、实现异步逻辑复杂度高等等。</p>
+<h4 id="事件驱动-1">事件驱动</h4>
+<p>与时间驱动对应的就是事件驱动的程序：当某个新的事件被推送到程序中时（如API推送新的行情、成交），程序立即调用和这个事件相对应的处理函数进行相关的操作。</p>
+<p>上面例子2的事件驱动版：交易程序对股指TICK数据进行监听，当没有新的行情过来时，程序保持监听状态不进行任何操作；当收到新的数据时，数据处理函数立即更新K线和其他技术指标，并检查是否满足趋势策略的下单条件执行下单。</p>
+<p>对于简单的程序，我们可以采用上面测试代码中的方案，直接在API的回调函数中写入相应的逻辑。但随着程序复杂度的增加，这种方案会变得越来越不可行。假设我们有一个带有图形界面的量化交易系统，系统在某一时刻接收到了API推送的股指期货行情数据，针对这个数据系统需要进行如下处理：</p>
+<ol>
+<li>更新图表上显示的K线图形（绘图）</li>
+<li>更新行情监控表中股指期货的行情数据（表格更新）</li>
+<li>策略1需要运行一次内部算法，检查该数据是否会触发策略进行下单（运算、下单）</li>
+<li>策略2同样需要运行一次内部算法，检查该数据是否会触发策略进行下单（运算、下单）</li>
+<li>风控系统需要检查最新行情价格是否会导致账户的整体风险超限，若超限需要进行报警（运算、报警）</li>
+</ol>
+<p>此时将上面所有的操作都写到一个回调函数中无疑变成了非常差的方案，代码过长容易出错不说，可扩展性也差，每添加一个策略或者功能则又需要修改之前的源代码（有经验的读者会知道，经常修改生产代码是一种非常危险的运营管理方法）。</p>
+<p>为了解决这种情况，我们需要用到事件驱动引擎来管理不同事件的事件监听函数并执行所有和事件驱动相关的操作。</p>
+<h2 id="事件驱动引擎">事件驱动引擎</h2>
+<p>vn.py框架中的<a href="https://github.com/vnpy/vnpy/tree/master/vn.event" target="_blank" rel="external">vn.event模块</a>包含了一个可扩展的事件驱动引擎。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/教程/">教程</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://vnpy.github.io/2015/03/13/20150313_Python量化交易平台开发教程系列4-事件驱动引擎原理和使用/" data-title="Python量化交易平台开发教程系列4-事件驱动引擎原理和使用 | vn.py" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/03/12/20150312_Python量化交易平台开发教程系列3-vn.py项目中API封装的编译 - 副本/"  title="Python量化交易平台开发教程系列3-vn.py项目中API封装的编译">
+ <strong>下一篇：</strong><br/> 
+ <span>Python量化交易平台开发教程系列3-vn.py项目中API封装的编译
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#事件驱动"><span class="toc-number">2.</span> <span class="toc-text">事件驱动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#计算机程序分类"><span class="toc-number">2.1.</span> <span class="toc-text">计算机程序分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#连续运行型程序"><span class="toc-number">2.2.</span> <span class="toc-text">连续运行型程序</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#时间驱动"><span class="toc-number">2.2.1.</span> <span class="toc-text">时间驱动</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#事件驱动-1"><span class="toc-number">2.2.2.</span> <span class="toc-text">事件驱动</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#事件驱动引擎"><span class="toc-number">3.</span> <span class="toc-text">事件驱动引擎</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/教程/" title="教程">教程<sup>5</sup></a></li>
+		
+			<li><a href="/categories/日志/" title="日志">日志<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://github.com/vnpy/vnpy" target="_blank" title="vn.py on GitHub">vn.py on GitHub</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Talk is cheap, show me the code. <br/>
+			</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="http://vnpy.github.io/about" target="_blank" title="用python的交易员">用python的交易员</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+  </body>
+</html>
