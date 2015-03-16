@@ -59,6 +59,8 @@
 					
 						<li><a href="/archives">存档</a></li>
 					
+						<li><a href="/about">关于</a></li>
+					
 					<li>
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
@@ -75,754 +77,142 @@
     <div id="container">
       <div id="main">
 
-   
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/03/13/20150313_Python量化交易平台开发教程系列4-事件驱动引擎原理和使用/" title="Python量化交易平台开发教程系列4-事件驱动引擎原理和使用" itemprop="url">
+  
+    <h1 itemprop="name">Python量化交易平台开发教程系列4-事件驱动引擎原理和使用</h1>
     
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
+     
+           <p itemprop="description" >原创文章，转载请注明出处：用Python的交易员
+前言
+从这篇开始，后面的教程都会基于Python（终于可以跟C++说再见了）。
+经过上一篇复杂繁琐的API编译后，我们已经有了一个可以在Python环境中用来收行情和发单的接口，但是尽管作者在Github上也放了简单的API功能测</p>
+        
     
-      <a href="/2015/03/13/20150313_Python量化交易平台开发教程系列4-事件驱动引擎原理和使用/" title="Python量化交易平台开发教程系列4-事件驱动引擎原理和使用" itemprop="url">Python量化交易平台开发教程系列4-事件驱动引擎原理和使用</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://vnpy.github.io/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
-		
-  <p class="article-time">
-    <time datetime="2015-03-13T02:58:00.000Z" itemprop="datePublished"> 发表于 3月 13 2015</time>
+    <time datetime="2015-03-13T02:58:00.000Z" itemprop="datePublished">3月 13 2015</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/03/12/20150312_Python量化交易平台开发教程系列3-vn.py项目中API封装的编译 - 副本/" title="Python量化交易平台开发教程系列3-vn.py项目中API封装的编译" itemprop="url">
+  
+    <h1 itemprop="name">Python量化交易平台开发教程系列3-vn.py项目中API封装的编译</h1>
     
-  </p>
-</header>
-    <div class="article-content">
+     
+           <p itemprop="description" >原创文章，转载请注明出处：用Python的交易员
+前言
+经历了两篇的理论折磨后，本篇教程开始进入实际操作的环节，这里作者假设读者是毫无C++经验的用户，操作一步步配图，还有问题的来vn.py项目的github主页上提问。
+本篇将会包含的内容：
+
+安装Anaconda （一次安装搞</p>
         
-        <p>原创文章，转载请注明出处：用Python的交易员</p>
-<h2 id="前言">前言</h2>
-<p>从这篇开始，后面的教程都会基于Python（终于可以跟C++说再见了）。</p>
-<p>经过上一篇复杂繁琐的API编译后，我们已经有了一个可以在Python环境中用来收行情和发单的接口，但是尽管作者在Github上也放了简单的API功能测试代码作为接口使用方法的示例，绝大部分读者应该对于如何用这个接口去开发自己的交易系统毫无头绪。</p>
-<p>类似的情况也常常发生于当我们从万得、恒生、网上的其他开源项目（比如pyctp）等等拿到开发接口和文档示例后：</p>
-<p>看了半天觉得似乎上面讲的都懂。</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B4%E6%8E%A5%E5%8F%97%E6%8C%91%E6%88%98.jpg" alt="enter image description here"></p>
-<p>但要写个自己的系统依旧不知道从何处下手。</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B4%E4%B8%8D%E7%9F%A5%E6%89%80%E6%8E%AA.jpg" alt="enter image description here"></p>
-<p>所以在搞定交易接口后，我们开发交易系统的第一步就是要弄清楚系统的工作原理，在读完这篇教程后，你应该至少不会再对如何写一个交易系统茫然无措了。</p>
-<h2 id="事件驱动">事件驱动</h2>
-<h3 id="计算机程序分类">计算机程序分类</h3>
-<p>所有的计算机程序都可以大致分为两类：脚本型（单次运行）和连续运行型（直到用户主动退出）。脚本型的程序包括最早的批处理文件以及使用Python做交易策略回测等等，这类程序的特点是在用户启动后会按照编程时设计好的步骤一步步运行，所有步骤运行完后自动退出。连续运行型的程序包含了操作系统和绝大部分我们日常使用的软件等等，这类程序启动后会处于一个无限循环中连续运行，直到用户主动退出时才会结束。</p>
-<h3 id="连续运行型程序">连续运行型程序</h3>
-<p>我们要开发的交易系统就是属于连续运行型程序，而这种程序根据其计算逻辑的运行机制不同，又可以粗略的分为时间驱动和事件驱动两种。</p>
-<h4 id="时间驱动">时间驱动</h4>
-<p>时间驱动的程序逻辑相对容易设计，简单来说就是让电脑每隔一段时间自动做一些事情。这个事情本身可以很复杂、包括很多步骤，但这些步骤都是线性的，按照顺序一步步执行下来。</p>
-<p>以下代码展示了一个非常简单的时间驱动的Python程序。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo</span><span class="params">()</span>:</span></div><div class="line">	<span class="keyword">print</span> <span class="string">u'时间驱动的程序每隔1秒运行demo函数'</span></div><div class="line"></div><div class="line"><span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">	demo()</div><div class="line">	sleep(<span class="number">1.0</span>)</div></pre></td></tr></table></figure>
-
-<p>时间驱动的程序本质上就是每隔一段时间固定运行一次脚本（上面代码中的demo函数）。尽管脚本自身可以很长、包含非常多的步骤，但是我们可以看出这种程序的运行机制相对比较简单、容易理解。</p>
-<p>举一些量化交易相关的例子：</p>
-<ol>
-<li>每隔5分钟，通过新浪财经网页的公开API读取一次沪深300成分股的价格，根据当日涨幅进行排序后输出到电脑屏幕上。</li>
-<li>每隔1秒钟，检查一次最新收到的股指期货TICK数据，更新K线和其他技术指标，检查是否满足趋势策略的下单条件，若满足则执行下单。</li>
-</ol>
-<p>对速度要求较高的量化交易方面（日内CTA策略、高频策略等等），时间驱动的程序会存在一个非常大的缺点：对数据信息在反应操作上的处理延时。例子2中，在每次逻辑脚本运行完等待的那1秒钟里，程序对于接收到的新数据信息（行情、成交推送等等）是不会做出任何反应的，只有在等待时间结束后脚本再次运行时才会进行相关的计算处理。而处理延时在量化交易中的直接后果就是money：市价单滑点、限价单错过本可成交的价格。</p>
-<p>时间驱动的程序在量化交易方面还存在一些其他的缺点：如浪费CPU的计算资源、实现异步逻辑复杂度高等等。</p>
-<h4 id="事件驱动-1">事件驱动</h4>
-<p>与时间驱动对应的就是事件驱动的程序：当某个新的事件被推送到程序中时（如API推送新的行情、成交），程序立即调用和这个事件相对应的处理函数进行相关的操作。</p>
-<p>上面例子2的事件驱动版：交易程序对股指TICK数据进行监听，当没有新的行情过来时，程序保持监听状态不进行任何操作；当收到新的数据时，数据处理函数立即更新K线和其他技术指标，并检查是否满足趋势策略的下单条件执行下单。</p>
-<p>对于简单的程序，我们可以采用上面测试代码中的方案，直接在API的回调函数中写入相应的逻辑。但随着程序复杂度的增加，这种方案会变得越来越不可行。假设我们有一个带有图形界面的量化交易系统，系统在某一时刻接收到了API推送的股指期货行情数据，针对这个数据系统需要进行如下处理：</p>
-<ol>
-<li>更新图表上显示的K线图形（绘图）</li>
-<li>更新行情监控表中股指期货的行情数据（表格更新）</li>
-<li>策略1需要运行一次内部算法，检查该数据是否会触发策略进行下单（运算、下单）</li>
-<li>策略2同样需要运行一次内部算法，检查该数据是否会触发策略进行下单（运算、下单）</li>
-<li>风控系统需要检查最新行情价格是否会导致账户的整体风险超限，若超限需要进行报警（运算、报警）</li>
-</ol>
-<p>此时将上面所有的操作都写到一个回调函数中无疑变成了非常差的方案，代码过长容易出错不说，可扩展性也差，每添加一个策略或者功能则又需要修改之前的源代码（有经验的读者会知道，经常修改生产代码是一种非常危险的运营管理方法）。</p>
-<p>为了解决这种情况，我们需要用到事件驱动引擎来管理不同事件的事件监听函数并执行所有和事件驱动相关的操作。</p>
-<h2 id="事件驱动引擎">事件驱动引擎</h2>
-<p>vn.py框架中的<a href="https://github.com/vnpy/vnpy/tree/master/vn.event" target="_blank" rel="external">vn.event模块</a>包含了一个可扩展的事件驱动引擎。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/教程/">教程</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
     
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
+    <time datetime="2015-03-12T02:02:28.000Z" itemprop="datePublished">3月 12 2015</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/03/09/20150309_Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计/" title="Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计" itemprop="url">
+  
+    <h1 itemprop="name">Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计</h1>
     
-      <a href="/2015/03/12/20150312_Python量化交易平台开发教程系列3-vn.py项目中API封装的编译 - 副本/" title="Python量化交易平台开发教程系列3-vn.py项目中API封装的编译" itemprop="url">Python量化交易平台开发教程系列3-vn.py项目中API封装的编译</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://vnpy.github.io/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
-		
-  <p class="article-time">
-    <time datetime="2015-03-12T02:02:28.000Z" itemprop="datePublished"> 发表于 3月 12 2015</time>
+     
+           <p itemprop="description" >原创文章，转载请注明出处：用Python的交易员
+(本篇教程包含的内容太多也太复杂，有不少读者反应看不懂，因为本身也不是使用vn.py必须掌握的知识，这篇教程暂时处于半完成状态，等多收集些读者的建议后会再做一个比较大的修订）
+为什么要封装API
+直接原因就是C++的API没法直接</p>
+        
     
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>原创文章，转载请注明出处：用Python的交易员</p>
-<h2 id="前言">前言</h2>
-<p>经历了两篇的理论折磨后，本篇教程开始进入实际操作的环节，这里作者假设读者是毫无C++经验的用户，操作一步步配图，还有问题的来<a href="https://github.com/vnpy/vnpy" target="_blank" rel="external">vn.py项目的github主页</a>上提问。</p>
-<p>本篇将会包含的内容：</p>
-<ol>
-<li>安装Anaconda （一次安装搞定95%以上量化相关包的Python发行版）</li>
-<li>安装Visual Studio</li>
-<li>编译Boost库</li>
-<li>编译vn.lts</li>
-</ol>
-<h2 id="安装Anaconda">安装Anaconda</h2>
-<p>在<a href="http://repo.continuum.io/archive/index.html" target="_blank" rel="external">Anaconda历史版本</a>中下载1.9.2（win 32位版本）。</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3anaconda.jpg" alt="enter image description here"></p>
-<p>下载好后双击安装，流程没有特别需要注意的，安装文件夹作者选的是D:\Anaconda，读者可以自己选择，注意最后一步编译vn.lts中设置时的文件夹必须是这里的安装文件夹。</p>
-<p>为什么不用最新版本：尝试过使用2.1.0版，发现有一些包在我的电脑上存在兼容性问题（可能因为中文支持不好），需要修改一些.py文件里的源代码，太过麻烦，而且1.9.2到2.1.0的区别非常小。</p>
-<p>为什么不用64位版本：同样是因为发生过兼容性的问题，不怕麻烦的读者可以自己折腾看看。</p>
-<h2 id="安装Visual_Studio">安装Visual Studio</h2>
-<p>在<a href="https://www.visualstudio.com/downloads/download-visual-studio-vs" target="_blank" rel="external">Visual Studio下载</a>中下载Community 2013 with Update 4，注意选择简体中文（英文好的随意）。</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/教程3vs2013_cn.jpg" alt="enter image description here"></p>
-<p>下好了同样正常安装，安装文件夹随意，这个对后面编译没有影响。</p>
-<p>不想用2013的其他版本的VS应该也都没问题，作者还测试过2010。</p>
-<h2 id="编译Boost库">编译Boost库</h2>
-<h3 id="下载解压缩">下载解压缩</h3>
-<p>在<a href="http://sourceforge.net/projects/boost/files/boost/1.57.0/" target="_blank" rel="external">Source Forge</a>下载Boost 1.57.0，Source Forge下载速度较慢，建议选择7z格式。</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3boost%20download.jpg" alt="enter image description here"></p>
-<p>下载完成后进行解压缩，将Boost库放到D:\boost_1_57_0文件夹下，注意最后一步编译vn.lts同样会用到这个文件夹。</p>
-<h3 id="Visual_Studio_命令提示">Visual Studio 命令提示</h3>
-<p>打开Visual Studio 2013，在菜单栏的“工具”下找到“Visual Studio 命令提示”打开，如下图。</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3vs%20cmd.jpg" alt="enter image description here"></p>
-<p>打开后的窗口就是个cmd命令窗口，接下来我们需要在其中敲入一些命令。</p>
-<p>记得我们之前Boost库放在了D:\boost_1_57_0这个文件夹下，首先我们要切换到这个文件夹，逐行输入以下命令，输完后记得回车：</p>
-<pre><code><span class="attribute">d</span>: <span class="string"></span>
-
-<span class="bash"><span class="built_in">cd</span>\boost_1_57_0</span>
-</code></pre><p>此时cmd里的显示应该类似于：<br><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3boost%20cmd.jpg" alt="enter image description here"></p>
-<h3 id="booststrap-bat">booststrap.bat</h3>
-<p>然后输入以下内容，用于生成b2.exe文件：</p>
-<pre><code>booststrap.bat
-</code></pre><p>成功后显示为：<br><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3bootstrap.jpg" alt="enter image description here"></p>
-<h3 id="b2-exe">b2.exe</h3>
-<p>接下来编译boost库，—toolset=msvc-12.0是因为作者使用的是VS2013, —build-type=complete编译整个boost库，因为项目中不止用到boost.python：</p>
-<pre><code>b2 --toolset=msvc-<span class="number">12.0</span> --build-<span class="built_in">type</span>=<span class="built_in">complete</span>
-</code></pre><p>这一步耗时会较长，视乎你的电脑性能，作者这里耗时大约20多分钟，过程中也会出现很多奇怪的输出，忽略就好，成功后会看到：</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3boost%20complete.jpg" alt="enter image description here"></p>
-<p>这里D:\boost_1_57_0\stage\lib中就是我们编译好的Boost库。</p>
-<h2 id="编译vn-lts">编译vn.lts</h2>
-<p>本教程中的例子是行情API（vnltsmd）。</p>
-<h3 id="下载vn-py">下载vn.py</h3>
-<p>vn.py项目托管在Github上，主页为<a href="https://github.com/vnpy/vnpy" target="_blank" rel="external">https://github.com/vnpy/vnpy</a>，点击主页右侧的“Download ZIP”下载（下图红框）。</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3github.jpg" alt="enter image description here"></p>
-<p>解压缩zip文件，将vn.lts\ltsapi文件夹下的所有文件（.so文件除外）以及vn.lts\vnltsmd\pyltsmd文件夹下的所有文件，复制到一个新的文件夹中（假设命名为new），内容如下图所示：</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3folder.jpg" alt="enter image description here"></p>
-<h3 id="创建VS项目">创建VS项目</h3>
-<p>打开VS2013后，点击菜单栏的“文件” -&gt; “新建” -&gt; “项目”， 在弹出的窗口中的左侧选择“模板” -&gt; “Visual C++” -&gt; “Win32” -&gt; “Win32项目”，下方的名称填入“vnltsmd”， 位置填入“D:\”（参见下图）。</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3vs2013%20project.jpg" alt="enter image description here"></p>
-<p>点击“确定”后，弹出Win32应用程序向导，点击“下一步”，应用程序类型选择为“DLL”，点击“完成”。</p>
-<h3 id="添加文件">添加文件</h3>
-<p>在左侧的解决方案管理器中，将已有的文件全部删除。然后右键点击vnltsmd，选择“添加” -&gt; “现有项”， 将之前new文件夹中所有的文件添加进来，如下图：</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3vs2013%20project%20setting.jpg" alt="enter image description here"></p>
-<p>添加完成后的解决方案如下图：</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3solution%20files.jpg" alt="enter image description here"></p>
-<h3 id="配置项目">配置项目</h3>
-<p>点击上方工具栏中的解决方案配置选项框（默认显示应该是“Debug”），选择“Release”，如下图红色方框：<br><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E9%85%8D%E7%BD%AE.jpg" alt="enter image description here"></p>
-<p>右键点击方案管理器中的vnltsmd，选择“属性”，打开“vnltsmd属性页”对话框。</p>
-<p>选择“配置属性” -&gt; “VC++目录” ，如下图：</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3vc++%E7%9B%AE%E5%BD%952.jpg" alt="enter image description here"></p>
-<p>在包含目录中添加：</p>
-<ul>
-<li>D:\boost_1_57_0</li>
-<li>D:\Anaconda\include</li>
-<li>new文件夹</li>
-</ul>
-<p>在引用目录中添加：</p>
-<ul>
-<li>D:\boost_1_57_0\libs\</li>
-<li>D:\Anaconda\libs</li>
-<li>new文件夹</li>
-</ul>
-<p>然后点击“链接器”，在附加库目录中添加：</p>
-<ul>
-<li>D:\boost_1_57_0\stage\lib</li>
-<li>D:\Anaconda\libs</li>
-<li>new文件夹</li>
-</ul>
-<p>最后点击“C/C++” -&gt; “预编译头”，将“预编译头”设置为“不使用预编译头”。</p>
-<p>都设置完了记得点“确定”，不然又得重弄一遍。</p>
-<h3 id="编译">编译</h3>
-<p>终于完成了繁琐的项目创建和配置，此时按下F7，VS就会开始自动编译创建项目。显示如下内容说明编译成功：</p>
-<pre><code><span class="number">1</span>&gt;------ 已启动生成:  项目: <span class="function_or_atom">vnltsmd</span>, 配置: <span class="variable">Release</span> <span class="variable">Win32</span> ------
-<span class="prompt">1&gt; </span> <span class="function_or_atom">dllmain</span>.<span class="function_or_atom">cpp</span>
-<span class="prompt">1&gt; </span> <span class="function_or_atom">stdafx</span>.<span class="function_or_atom">cpp</span>
-<span class="prompt">1&gt; </span> <span class="function_or_atom">vnltsmd</span>.<span class="function_or_atom">cpp</span>
-<span class="prompt">1&gt; </span>    正在创建库 <span class="variable">D</span>:\<span class="function_or_atom">vnltsmd</span>\<span class="variable">Release</span>\<span class="function_or_atom">vnltsmd</span>.<span class="function_or_atom">lib</span> 和对象 <span class="variable">D</span>:\<span class="function_or_atom">vnltsmd</span>\<span class="variable">Release</span>\<span class="function_or_atom">vnltsmd</span>.<span class="function_or_atom">exp</span>
-<span class="prompt">1&gt; </span> 正在生成代码
-<span class="prompt">1&gt; </span> 已完成代码的生成
-<span class="prompt">1&gt; </span> <span class="function_or_atom">vnltsmd</span>.<span class="function_or_atom">vcxproj</span> <span class="arrow">-&gt;</span> <span class="variable">D</span>:\<span class="function_or_atom">vnltsmd</span>\<span class="variable">Release</span>\<span class="function_or_atom">vnltsmd</span>.<span class="function_or_atom">dll</span>
-========== 生成:  成功 <span class="number">1</span> 个，失败 <span class="number">0</span> 个，最新 <span class="number">0</span> 个，跳过 <span class="number">0</span> 个 ==========
-</code></pre><p>这时候我们到D:\vnltsmd\Release\文件夹下，找到vnltsmd.dll这个文件，将后缀名从.dll改为.pyd，就可以直接在python中导入使用了。</p>
-<p>从Github上下载的文件解压缩后的文件夹内，找到vn.lts\vnltsmd\test文件夹，将改名后的vnltsmd.pyd复制到该文件夹下覆盖原本的同名文件，就可以使用mdtest.py进行测试了，注意要在mdtest.py中先填入你的LTS用户名和密码。</p>
-<h2 id="总结">总结</h2>
-<p>本篇教程如果读者从头到尾按照步骤一步步做下来应该是可以保证编译出.pyd文件的，上文示例中使用的是行情API，交易API的编译方法相同。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/教程/">教程</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
+    <time datetime="2015-03-09T03:49:28.000Z" itemprop="datePublished">3月 9 2015</time>
+  </a>
+</section>
 
 
 
 
 
 
-   
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/03/05/20150305_Python量化交易平台开发教程系列1-类CTP交易API的工作原理/" title="Python量化交易平台开发教程系列1-类CTP交易API的工作原理" itemprop="url">
+  
+    <h1 itemprop="name">Python量化交易平台开发教程系列1-类CTP交易API的工作原理</h1>
     
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
+     
+           <p itemprop="description" >原创文章，转载请注明出处：用Python的交易员
+类CTP交易API简介
+国内程序化交易技术的爆发式发展几乎就是起源于上期技术公司基于CTP柜台推出了交易API，使得用户可以随意开发自己的交易软件直接连接到交易柜台上进行交易，同时CTP API的设计模式也成为了许多其他柜台上交易</p>
+        
     
-      <a href="/2015/03/09/20150309_Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计/" title="Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计" itemprop="url">Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://vnpy.github.io/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
-		
-  <p class="article-time">
-    <time datetime="2015-03-09T03:49:28.000Z" itemprop="datePublished"> 发表于 3月 9 2015</time>
+    <time datetime="2015-03-05T06:28:49.000Z" itemprop="datePublished">3月 5 2015</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/03/04/20150304_Python量化交易平台开发教程系列0-引言/" title="Python量化交易平台开发教程系列0-引言" itemprop="url">
+  
+    <h1 itemprop="name">Python量化交易平台开发教程系列0-引言</h1>
     
-  </p>
-</header>
-    <div class="article-content">
+     
+           <p itemprop="description" >原创文章，转载请注明出处：用Python的交易员
+为什么用Python来开发量化交易平台
+目前本人所在的公司一共有三款平台，分别基于C++， C#和Python。其中C#和Python平台都是由交易员开发；C++平台则是由专职IT团队作为一个通用平台开发，内部组件进行了封装（交易</p>
         
-        <p>原创文章，转载请注明出处：用Python的交易员</p>
-<p>(本篇教程包含的内容太多也太复杂，有不少读者反应看不懂，因为本身也不是使用vn.py必须掌握的知识，这篇教程暂时处于半完成状态，等多收集些读者的建议后会再做一个比较大的修订）</p>
-<h2 id="为什么要封装API">为什么要封装API</h2>
-<p>直接原因就是C++的API没法直接在Python里用，不过这个回答有点太简单，这里我们稍微做一些拓展解释：</p>
-<ol>
-<li>C++ API中很多函数的调用参数是ApiStruct.h（参见上一篇）中定义的结构体，而在Python中我们既无法直接创建这些结构体（主动函数），也无法提取结构体中包含的数据（回调函数）。</li>
-<li>Python虚拟机是基于C语言实现的，所有的Python对象，哪怕只是一个整数或者字符串，在C的环境中都是一个PyObject对象（好吧，我知道C里没有对象，只有结构体，但估计90%的读者都不在乎这个区别）。用户如果在Python中直接传递一个参数到C++环境里，C++是无法识别的（Python：买入1手股指, C++：你要买入多少？）。</li>
-<li>Python只能加载封装为PyObject对象的模块，因此原生C++的API在Python中连加载都加载不了。</li>
-</ol>
-<h2 id="封装后API的工作流程">封装后API的工作流程</h2>
-<h3 id="主动函数">主动函数</h3>
-<ol>
-<li>用户在Python程序中调用封装API的主动函数，并直接传入Python变量（PyObject对象）作为参数。</li>
-<li>封装API将Python变量转换成C++变量。</li>
-<li>封装API调用原生API的主动函数，并传入C++变量作为参数。</li>
-</ol>
-<h3 id="回调函数">回调函数</h3>
-<ol>
-<li>交易柜台通过原生API的C++回调函数推送数据信息，传入参数为C++变量</li>
-<li>封装API将C++变量转换为Python变量</li>
-<li>封装API调用封装后的回调函数向用户的Python程序中推送数据，传入参数为Python变量</li>
-</ol>
-<h3 id="名词定义">名词定义</h3>
-<ul>
-<li>封装API：指的是经过封装后，可以直接在Python中使用的API</li>
-<li>原生API：指的是由软件公司提供，在C++中使用的API</li>
-<li>Python变量：包含Python中的数字、字符串、对象等等</li>
-<li>C++变量：包含C++中的内置数据类型和结构体等</li>
-</ul>
-<h2 id="从Python的角度看原生API的一些问题">从Python的角度看原生API的一些问题</h2>
-<p>上一篇教程后读者应该对C++ API的结构和使用方法有了基础的了解，这篇教程主要介绍的是对原生的C++ API进行Python封装时的设计和思路，这些构成了<a href="https://github.com/vnpy/vnpy" target="_blank" rel="external">vn.py</a>开源项目中vn.lts（华宝证券LTS柜台API封装）的基础。首先让我们来从Python的角度看看原生API的一些问题：</p>
-<ol>
-<li>原生的API中每个功能分为了两个类：分别是包含回调函数的Spi类和主动函数的Api类，这种设计能让用户更好的分清不同的功能。但是从面向对象的角度，把两个类封装到一起更为方便，实际使用中绝大部分C++的用户也会将接口整合到一个类里面（可以参见网上很多CTP开发的示例代码），因此Python的API中，我们也会将Spi和Api两个类的功能封装到一个类中。</li>
-<li>原生的API中回调函数被触发后必须快速返回，否则会导致其他数据的推送被阻塞，阻塞时间长了还有可能导致API发生崩溃，因此回调函数中不适合包含耗时较长的计算逻辑。例如某个TICK行情推送后，如果用户在回调函数中写了一些比较复杂的计算（循环计算等等），耗时超过3秒（这个数字只是笔者的一个经验），则在这个3秒中，其他的行情推送用户是收不到的（被阻塞了），且很可能3秒后会出现API崩溃（程序死掉）。这里的解决方案是使用生产者-消费者模型，在API中包含一个缓冲队列，当回调函数收到新的数据信息时只是简单存入缓冲队列中并立即返回，而数据信息的处理和向Python中的推送则由另一个工作线程来执行。</li>
-<li>API的函数中使用了大量的结构体用于数据传送，这在C++而言是非常自然的设计，但是对Python封装会造成不小的麻烦，所有的结构体都要封装成对应的Python类，工作量太大也非常容易出错。这点我们可以利用Python相对于C++更为高级的数据结构来解决，Python中的dict字典本质是一个哈希表，但是同一个字典内键和值的类型允许不同，这个特性使得字典可以非常方便的用来代替C++的结构体。</li>
-</ol>
-<p>明确了以上的问题后，我们就可以开始着手设计Python API的结构了。</p>
-<h2 id="Python_API的结构设计">Python API的结构设计</h2>
-<p>这里使用行情API作为示例。</p>
-<p>…表示省略的代码。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//API的继承实现</span></div><div class="line"><span class="keyword">class</span> MdApi : <span class="keyword">public</span> CSecurityFtdcMdSpi</div><div class="line">{</div><div class="line"><span class="keyword">private</span>:</div><div class="line">	CSecurityFtdcMdApi* api;			<span class="comment">//API对象</span></div><div class="line">	thread *task_thread;				<span class="comment">//工作线程指针（向python中推送数据）</span></div><div class="line">	ConcurrentQueue&lt;Task&gt; task_queue;	<span class="comment">//任务队列</span></div><div class="line"></div><div class="line"><span class="keyword">public</span>:</div><div class="line">	MdApi()</div><div class="line">	{</div><div class="line">		function0&lt;<span class="keyword">void</span>&gt; f = boost::bind(&MdApi::processTask, <span class="keyword">this</span>);</div><div class="line">		thread t(f);</div><div class="line">		<span class="keyword">this</span>-&gt;task_thread = &t;</div><div class="line">	};</div><div class="line"></div><div class="line">	~MdApi()</div><div class="line">	{</div><div class="line">	};</div><div class="line"></div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">//登录请求响应</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnRspUserLogin(CSecurityFtdcRspUserLoginField *pRspUserLogin, CSecurityFtdcRspInfoField *pRspInfo, <span class="keyword">int</span> nRequestID, <span class="keyword">bool</span> bIsLast);</div><div class="line"></div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">//数据任务处理函数（在工作线程中运行）</span></div><div class="line">	<span class="keyword">void</span> processTask();</div><div class="line"></div><div class="line">	...</div><div class="line">	</div><div class="line">	<span class="comment">//处理登陆请求响应</span></div><div class="line">	<span class="keyword">void</span> processRspUserLogin(Task task);</div><div class="line"></div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">//该回调函数在Python中继承</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> onRspUserLogin(dict data, dict error, <span class="keyword">int</span> id, <span class="keyword">bool</span> last) {};</div><div class="line"></div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">//请求登陆的主动函数</span></div><div class="line">	<span class="keyword">int</span> reqUserLogin(dict req, <span class="keyword">int</span> nRequestID);</div><div class="line"></div><div class="line">	...</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>（以上代码截取自vnltsmd.h文件）</p>
-<p>注意原生API的函数名开头都是大写字母，为了便于分辨以及符合Python的PEP8编码规则，作者的函数都以小写字母开头。上面的代码中采用的示例是用户登陆UserLogin这个功能。</p>
-<h3 id="封装中的类和函数命名规则">封装中的类和函数命名规则</h3>
-<ul>
-<li>封装后的Python API的类取名为MdApi，注意这个不是原生API中的CSecurityFtdcMdApi。</li>
-<li>原生API中以On开头的回调函数（如OnRspUserLogin）对应的Python API的回调函数直接改为以on开头（如onRspUserLogin）。</li>
-<li>原生API中的主动函数（如ReqUserLogin）对应的封装后API中的主动函数改为首字母小写（如reqUserLogin)。</li>
-</ul>
-<h3 id="MdApi的成员变量">MdApi的成员变量</h3>
-<ul>
-<li>api：原生API中的CSecurityFtdcMdApi对象，用于实现主动函数的调用。</li>
-<li>task_thread：一个boost线程指针，用于实现任务线程的工作。        </li>
-<li>task_queue：一个线程安全的任务队列。</li>
-</ul>
-<h3 id="工作步骤（后面会有具体函数的实现细节）">工作步骤（后面会有具体函数的实现细节）</h3>
-<ol>
-<li>用户在Python中调用reqUserLogin函数，传入参数为包含登陆信息（用户名、密码）的字典req以及本次请求号nRequestID，该函数自动将字典中的信息提取并创建原生API使用的结构体后，调用原生API的主动函数ReqUserLogin来进行登录。</li>
-<li>登录成功后，原生API会调用OnRspUserLogin的回调函数返回登录信息（注意这里On是大写），在回调函数里，只是简单的把结构体数据保存到一个任务对象Task中，并推送到任务队列里。</li>
-<li>工作线程中运行的函数是processTask，该函数负责检查任务队列中是否有新的任务，如果有则调用对应的process函数进行处理，如果没有则阻塞等待。</li>
-<li>processTask函数检查到任务队列中OnRspUserLogin推送的一个任务后，调用processRspUserLogin函数进行处理。该函数首先从结构体中提取数据并转换为Python字典，然后调用onRspUserLogin函数（这里的on是小写）推送到Python环境中，onRspUserLogin函数由用户在Python中继承实现。</li>
-</ol>
-<h2 id="Python_API的函数实现">Python API的函数实现</h2>
-<p>仍然使用之前的示例进行函数实现的讲解，包括MdApi的构造、析构函数，主动函数（reqUserLogin等），原生API回调函数（OnRspUserLogin等）和任务处理函数（processTask和processRspUserLogin等）。</p>
-<h3 id="构造、析构函数">构造、析构函数</h3>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">MdApi()</div><div class="line">{</div><div class="line">	function0&lt;<span class="keyword">void</span>&gt; f = boost::bind(&MdApi::processTask, <span class="keyword">this</span>);</div><div class="line">	thread t(f);</div><div class="line">	<span class="keyword">this</span>-&gt;task_thread = &t;</div><div class="line">};</div><div class="line"></div><div class="line">~MdApi()</div><div class="line">{</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>（以上代码截取自vnltsmd.h文件）</p>
-<p>构造函数中仅包含了创建一个工作函数为processTask的工作线程，并将该线程的指针绑定到task_thread上。</p>
-<p>析构函数为空，用户在退出前应当主动调用安全退出函数（参见源代码中的exit）。</p>
-<h3 id="主动函数-1">主动函数</h3>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> MdApi::reqUserLogin(dict req, <span class="keyword">int</span> nRequestID)</div><div class="line">{</div><div class="line">	<span class="comment">//创建原生API函数调用需要的结构体</span></div><div class="line">	CSecurityFtdcReqUserLoginField myreq = CSecurityFtdcReqUserLoginField();</div><div class="line">	<span class="comment">//初始化这个结构体的内存</span></div><div class="line">	<span class="built_in">memset</span>(&myreq, <span class="number">0</span>, <span class="keyword">sizeof</span>(myreq));</div><div class="line">	<span class="comment">//提取字典中的内容并复制到结构体中</span></div><div class="line">	getChar(req, <span class="string">"MacAddress"</span>, myreq.MacAddress);</div><div class="line">	getChar(req, <span class="string">"UserProductInfo"</span>, myreq.UserProductInfo);</div><div class="line">	getChar(req, <span class="string">"UserID"</span>, myreq.UserID);</div><div class="line">	getChar(req, <span class="string">"AuthCode"</span>, myreq.AuthCode);</div><div class="line">	getChar(req, <span class="string">"TradingDay"</span>, myreq.TradingDay);</div><div class="line">	getChar(req, <span class="string">"InterfaceProductInfo"</span>, myreq.InterfaceProductInfo);</div><div class="line">	getChar(req, <span class="string">"BrokerID"</span>, myreq.BrokerID);</div><div class="line">	getChar(req, <span class="string">"ClientIPAddress"</span>, myreq.ClientIPAddress);</div><div class="line">	getChar(req, <span class="string">"OneTimePassword"</span>, myreq.OneTimePassword);</div><div class="line">	getChar(req, <span class="string">"ProtocolInfo"</span>, myreq.ProtocolInfo);</div><div class="line">	getChar(req, <span class="string">"Password"</span>, myreq.Password);</div><div class="line">	<span class="comment">//将结构体的指针和代表请求编号的整数作为参数调用原生API的函数</span></div><div class="line">	<span class="keyword">int</span> i = <span class="keyword">this</span>-&gt;api-&gt;ReqUserLogin(&myreq, nRequestID);</div><div class="line">	<span class="comment">//返回原生API函数的调用结果</span></div><div class="line">	<span class="keyword">return</span> i;</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>（以上代码截取自vnltsmd.cpp文件）</p>
-<p>原生API中的请求登录函数为ReqUserLogin，传入的参数一共包含两个：一个CSecurityFtdcReqUserLoginField 结构体的指针，一个代表请求编号的整数。</p>
-<p>封装后的API函数为reqUserLogin，传入参数同样为两个：一个Python字典对象、一个整数。reqUserLogin函数会从Python字典对象中根据键值依次提取结构体中对应的数据。如结构体中有一个成员叫做BrokerID，则使用getChar函数从字典对象中提取”BrokerID”键对应的值。</p>
-<p>getChar函数的实现如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//d为Python字典对象</span></div><div class="line"><span class="comment">//key为d中想要提取的数据的键名</span></div><div class="line"><span class="comment">//value为最终需要这个数据的结构体成员的指针</span></div><div class="line"><span class="keyword">void</span> getChar(dict d, <span class="built_in">string</span> key, <span class="keyword">char</span> *value)</div><div class="line">{</div><div class="line">	<span class="comment">//首先检查字典中是否存在key这个键</span></div><div class="line">	<span class="keyword">if</span> (d.has_key(key))</div><div class="line">	{</div><div class="line">		<span class="comment">//提取key这个键对应的值，即Python对象o</span></div><div class="line">		object o = d[key];</div><div class="line"></div><div class="line">		<span class="comment">//生成从o中提取std::string类的提取器</span></div><div class="line">		extract&lt;<span class="built_in">string</span>&gt; x(o);</div><div class="line">		</div><div class="line">		<span class="comment">//检查提取器是否能提取出数据</span></div><div class="line">		<span class="keyword">if</span> (x.check())</div><div class="line">		{</div><div class="line">			<span class="comment">//执行解包器，提取string对象s</span></div><div class="line">			<span class="built_in">string</span> s = x();</div><div class="line">			</div><div class="line">			<span class="comment">//从s中获取字符串指针buffer</span></div><div class="line">			<span class="keyword">const</span> <span class="keyword">char</span> *buffer = s.c_str();</div><div class="line">			</div><div class="line">			<span class="comment">//将字符串指针指向的字符串数组复制到结构体成员的指针上</span></div><div class="line">			<span class="comment">//对字符串指针赋值必须使用strcpy_s, vs2013使用strcpy编译通不过</span></div><div class="line">			<span class="comment">//+1应该是因为C++字符串的结尾符号？不是特别确定，不加这个1会出错</span></div><div class="line">			strcpy_s(value, <span class="built_in">strlen</span>(buffer) + <span class="number">1</span>, buffer);</div><div class="line">		}</div><div class="line">	}</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>（以上代码截取自vnltsmd.cpp文件）</p>
-<p>由于原生API中用到的底层数据类型主要包括四种：char字符、char[]字符串数组、int整数、double浮点数，可以对应的Python中的数据类型为：string、int、float。因此设计了三个函数getChar、getInt、getDouble来从Python对象中提取所需的C++数据，getInt、getDouble请参见源代码。</p>
-<h3 id="原生API的回调函数">原生API的回调函数</h3>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> MdApi::OnRspUserLogin(CSecurityFtdcRspUserLoginField *pRspUserLogin, CSecurityFtdcRspInfoField *pRspInfo, <span class="keyword">int</span> nRequestID, <span class="keyword">bool</span> bIsLast)</div><div class="line">{</div><div class="line">	Task task = Task();</div><div class="line">	task.task_name = ONRSPUSERLOGIN;</div><div class="line">	task.task_data = *pRspUserLogin;</div><div class="line">	<span class="keyword">if</span> (pRspInfo)</div><div class="line">	{</div><div class="line">		task.task_error = *pRspInfo;</div><div class="line">	}</div><div class="line">	<span class="keyword">else</span></div><div class="line">	{</div><div class="line">		CSecurityFtdcRspInfoField empty_error = CSecurityFtdcRspInfoField();</div><div class="line">		<span class="built_in">memset</span>(&empty_error, <span class="number">0</span>, <span class="keyword">sizeof</span>(empty_error));</div><div class="line">		task.task_error = empty_error;</div><div class="line">	}</div><div class="line">	task.task_id = nRequestID;</div><div class="line">	task.task_last = bIsLast;</div><div class="line">	<span class="keyword">this</span>-&gt;task_queue.push(task);</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>（以上代码截取自vnltsmd.cpp文件）</p>
-<p>当登录成功后，原生API中的回调函数OnRspUserLogin会被自动调用，通知用户登录相关的信息，传入参数包括四个，分别为CSecurityFtdcRspUserLoginField结构体指针（用户本次登录的相关信息）pRspUserLogin，CSecurityFtdcRspInfoField结构体指针（登录是否存在错误的相关信息）pRspInfo，整数（登陆请求编号）nRequestID和布尔值（是否为该请求的最后一次通知）bIsLast。</p>
-<p>在回调函数中，我们通过创建一个Task对象来保存这些信息，并推入task_queue中，等待工作线程的提取处理。其中，由于pRspInfo可能存在空指针的情况，所以需要进行判断，若指针为空，则在Task对象上绑定一个内容为空的CSecurityFtdcRspInfoField结构体（这步等于一个异常情况的处理）。ONRSPUSERLOGIN是一个整数常量（在头文件中定义），用于标识该Task对象包含的是哪个回调函数返回的信息。</p>
-<p>Task对象的定义如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//任务结构体</span></div><div class="line"><span class="keyword">struct</span> Task</div><div class="line">{</div><div class="line">	<span class="keyword">int</span> task_name;		<span class="comment">//回调函数名称对应的常量</span></div><div class="line">	any task_data;		<span class="comment">//数据结构体</span></div><div class="line">	any task_error;		<span class="comment">//错误结构体</span></div><div class="line">	<span class="keyword">int</span> task_id;		<span class="comment">//请求id</span></div><div class="line">	<span class="keyword">bool</span> task_last;		<span class="comment">//是否为最后返回</span></div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>（以上代码截取自vnltsmd.h文件）</p>
-<p>其中any是boost库中的any类，作用是定义一个可以存放任意类型数据的变量（有点类似于Python里的变量），但是当用户尝试从该变量中获取原本的数据时，需要知道原本数据的类型。原生API中不同回调函数返回的参数类型是不同的，因此为了提高代码的简洁性选择使用boost.any这个泛型类。</p>
-<h3 id="任务处理函数">任务处理函数</h3>
-<p>首先是负责从任务队列中提取任务，并根据任务名称的不同使用对应的函数进行处理的processTask函数：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">///-------------------------------------------------------------------------------------</span></div><div class="line"><span class="comment">///工作线程从队列中取出数据，转化为python对象后，进行推送</span></div><div class="line"><span class="comment">///-------------------------------------------------------------------------------------</span></div><div class="line"><span class="keyword">void</span> MdApi::processTask()</div><div class="line">{</div><div class="line">	<span class="keyword">while</span> (<span class="number">1</span>)</div><div class="line">	{</div><div class="line">		Task task = <span class="keyword">this</span>-&gt;task_queue.wait_and_pop();</div><div class="line"></div><div class="line">		<span class="keyword">switch</span> (task.task_name)</div><div class="line">		{</div><div class="line">			...</div><div class="line"></div><div class="line">			<span class="keyword">case</span> ONRSPUSERLOGIN:</div><div class="line">			{</div><div class="line">				<span class="keyword">this</span>-&gt;processRspUserLogin(task);</div><div class="line">				<span class="keyword">break</span>;</div><div class="line">			}</div><div class="line"></div><div class="line">			...</div><div class="line">		};</div><div class="line">	}</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>（以上代码截取自vnltsmd.cpp文件）</p>
-<p>使用while (1)的方式让processTask处于无限循环中不断运行，从task_queue队列中提取任务对象task后，使用swtich根据任务的回调函数名称task_name，调用对应的函数处理该任务。上面的例子中，当程序检查task_name是ONRSPUSERLOGIN这个常量值后，就会调用processRspUserLogin函数进行处理，其代码如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> MdApi::processRspUserLogin(Task task)</div><div class="line">{</div><div class="line">	CSecurityFtdcRspUserLoginField task_data = any_cast&lt;CSecurityFtdcRspUserLoginField&gt;(task.task_data);</div><div class="line">	dict data;</div><div class="line">	data[<span class="string">"MaxOrderRef"</span>] = task_data.MaxOrderRef;</div><div class="line">	data[<span class="string">"UserID"</span>] = task_data.UserID;</div><div class="line">	data[<span class="string">"TradingDay"</span>] = task_data.TradingDay;</div><div class="line">	data[<span class="string">"SessionID"</span>] = task_data.SessionID;</div><div class="line">	data[<span class="string">"SystemName"</span>] = task_data.SystemName;</div><div class="line">	data[<span class="string">"FrontID"</span>] = task_data.FrontID;</div><div class="line">	data[<span class="string">"BrokerID"</span>] = task_data.BrokerID;</div><div class="line">	data[<span class="string">"LoginTime"</span>] = task_data.LoginTime;</div><div class="line"></div><div class="line">	CSecurityFtdcRspInfoField task_error = any_cast&lt;CSecurityFtdcRspInfoField&gt;(task.task_error);</div><div class="line">	dict error;</div><div class="line">	error[<span class="string">"ErrorMsg"</span>] = task_error.ErrorMsg;</div><div class="line">	error[<span class="string">"ErrorID"</span>] = task_error.ErrorID;</div><div class="line"></div><div class="line">	<span class="keyword">this</span>-&gt;onRspUserLogin(data, error, task.task_id, task.task_last);</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>（以上代码截取自vnltsmd.cpp文件）</p>
-<p>any_cast函数由boost.any库提供，作用之前提到的从any变量中提取出用户需要的数据类型来。dict类由boost.python库提供，使用dict可以直接创建Python环境中的字典，同时当我们使用d[key] = value这种语句进行赋值时，dict中的key和value均会自动转换为对应的Python对象。当我们将返回的业务信息CSecurityFtdcRspUserLoginField结构体和错误信息结构体CSecurityFtdcRspInfoField分别转换为data和error这两个Python字典后，我们就可以通过onRspUserLogin回调函数推送到Python环境中了。</p>
-<h1 id="总结">总结</h1>
-<p>之前几段示例代码展示的是用户登陆这个简单业务操作，包括了从用户在Python中调用主动函数到柜台通过回调函数返回信息再推送到Python中的全过程。文章主要是对源代码中的注释起到一个更为细致的解释作用。同样这篇内容对于想用vn.py做量化平台开发的用户而言不是必须掌握的东西，放在这里主要是考虑教程的完整性，看不懂的就先跳过吧。</p>
-<p>下一章是vn.py平台中API部分的编译方法，github上项目里的.pyd文件可能由于你的操作系统或者编译器和作者本人的不同没法直接使用，必须自行编译，整个教程会包含一步步的截图和说明，包教包会（还不会的可以到github上提问 :p ）。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/教程/">教程</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
     
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
+    <time datetime="2015-03-04T02:58:42.000Z" itemprop="datePublished">3月 4 2015</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/03/03/20150303_20150303项目开发日志/" title="2015/3/3 项目开发日志" itemprop="url">
+  
+    <h1 itemprop="name">2015/3/3 项目开发日志</h1>
     
-      <a href="/2015/03/05/20150305_Python量化交易平台开发教程系列1-类CTP交易API的工作原理/" title="Python量化交易平台开发教程系列1-类CTP交易API的工作原理" itemprop="url">Python量化交易平台开发教程系列1-类CTP交易API的工作原理</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://vnpy.github.io/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
-		
-  <p class="article-time">
-    <time datetime="2015-03-05T06:28:49.000Z" itemprop="datePublished"> 发表于 3月 5 2015</time>
+     
+           <p itemprop="description" >目前项目状态
+目前完成：  
+
+华宝证券的LTS API的Python封装，发布在vn.lts文件夹下  
+事件驱动引擎，发布在vn.event文件夹下  
+
+vn.lts
+ltsapi：华宝证券官方的LTS C++ APIpyscript：用于自动生成重复度较高的封装代码的Py</p>
+        
     
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>原创文章，转载请注明出处：用Python的交易员</p>
-<h2 id="类CTP交易API简介">类CTP交易API简介</h2>
-<p>国内程序化交易技术的爆发式发展几乎就是起源于上期技术公司基于CTP柜台推出了交易API，使得用户可以随意开发自己的交易软件直接连接到交易柜台上进行交易，同时CTP API的设计模式也成为了许多其他柜台上交易API的设计标准，本人已知的类CTP交易API包括：</p>
-<ol>
-<li>上期CTP  </li>
-<li>飞马  </li>
-<li>华宝证券LTS</li>
-<li>飞创Xspeed</li>
-<li>金仕达</li>
-<li>恒生UFT</li>
-</ol>
-<p>所以这个教程系列选择从类CTP交易API中的LTS API开始来介绍API的Python封装方法，真正掌握了以后想要做其他类型API（比如恒生的T2)的封装也只是大同小异而已。</p>
-<h2 id="LTS_API文件说明">LTS API文件说明</h2>
-<p>通常当用户从网上下载API的压缩包，解压后会看到以下的文件：<br><img src="http://7x2w1m.com1.z0.glb.clouddn.com/API文件列表.jpg" alt=""></p>
-<ul>
-<li>.h文件：C++的头文件，包含了API的内部结构信息，开发C++程序时需要包含在项目内</li>
-<li>.dll文件：windows下的动态链接库文件，API的实体，开发C++程序编译和链接时用，使用开发好的程序时也必须放在程序的文件夹内  </li>
-<li>.lib文件：windows下的库文件，编译和链接时用，程序开发好后无需放在程序的文件夹内</li>
-<li>.so文件：linux下的动态链接库文件，其他同.dll文件</li>
-</ul>
-<p>找不到压缩包的读者可以在这里直接看<a href="https://github.com/vnpy/vnpy/tree/master/vn.lts/ltsapi" title="https://github.com/vnpy/vnpy/tree/master/vn.lts/ltsapi" target="_blank" rel="external">https://github.com/vnpy/vnpy/tree/master/vn.lts/ltsapi</a>。</p>
-<h2 id="-h头文件介绍">.h头文件介绍</h2>
-<p>.dll、.lib、.so文件都是编译好的二进制文件，无法打开，所以从用户角度我们只需关注.h文件中的内容。对于不同的API而言，.h文件的前缀可能有所区别，如LTS是SecurityFtdc，CTP是ThostFtdc，下面分别介绍这4个.h文件。</p>
-<h3 id="ApiDataType-h">ApiDataType.h</h3>
-<p>该文件中包含了对API中用到的常量的定义，如以下代码定义了一个产品类型常量对应的字符：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="preprocessor">#<span class="keyword">define</span> SECURITY_FTDC_PC_Futures '1'</span></div></pre></td></tr></table></figure>
-
-<p>以及类型的定义，如以下代码定义了产品名称类型是一个长度为21个字符的字符串：  </p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">char</span> TSecurityFtdcProductNameType[<span class="number">21</span>];</div></pre></td></tr></table></figure>
-
-<h3 id="ApiStruct-h">ApiStruct.h</h3>
-<p>该文件中包含了API中用到的结构体的定义，如以下代码定义了交易所这个结构体的构成：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">///交易所</span></div><div class="line"><span class="keyword">struct</span> CSecurityFtdcExchangeField</div><div class="line">{</div><div class="line">	<span class="comment">///交易所代码</span></div><div class="line">	TSecurityFtdcExchangeIDType	ExchangeID;</div><div class="line">	<span class="comment">///交易所名称</span></div><div class="line">	TSecurityFtdcExchangeNameType	ExchangeName;</div><div class="line">	<span class="comment">///交易所属性</span></div><div class="line">	TSecurityFtdcExchangePropertyType	ExchangeProperty;</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>例如TSecurityFtdcExchangeIDType这个类型的定义，可以在ApiDataType.h中找到。</p>
-<h3 id="MdApi-h">MdApi.h</h3>
-<p>该文件中包含了API中的行情相关组件的定义，文件通常开头会有一段这样的内容：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="preprocessor">#<span class="keyword">if</span> !defined(SECURITY_FTDCMDAPI_H)</span></div><div class="line"><span class="preprocessor">#<span class="keyword">define</span> SECURITY_FTDCMDAPI_H</span></div><div class="line"></div><div class="line"><span class="preprocessor">#<span class="keyword">if</span> _MSC_VER &gt; 1000</span></div><div class="line"><span class="preprocessor">#<span class="keyword">pragma</span> once</span></div><div class="line"><span class="preprocessor">#<span class="keyword">endif</span> <span class="comment">// _MSC_VER &gt; 1000</span></span></div><div class="line"></div><div class="line"><span class="preprocessor">#<span class="keyword">include</span> "SecurityFtdcUserApiStruct.h"</span></div><div class="line"></div><div class="line"><span class="preprocessor">#<span class="keyword">if</span> defined(ISLIB) && defined(WIN32)</span></div><div class="line"><span class="preprocessor">#ifdef LIB_MD_API_EXPORT</span></div><div class="line"><span class="preprocessor">#<span class="keyword">define</span> MD_API_EXPORT __declspec(dllexport)</span></div><div class="line"><span class="preprocessor">#<span class="keyword">else</span></span></div><div class="line"><span class="preprocessor">#<span class="keyword">define</span> MD_API_EXPORT __declspec(dllimport)</span></div><div class="line"><span class="preprocessor">#<span class="keyword">endif</span></span></div><div class="line"><span class="preprocessor">#<span class="keyword">else</span></span></div><div class="line"><span class="preprocessor">#<span class="keyword">define</span> MD_API_EXPORT </span></div><div class="line"><span class="preprocessor">#<span class="keyword">endif</span></span></div></pre></td></tr></table></figure>
-
-<p>这些内容主要是一些和操作系统、编译环境相关的定义，一般用户忽略就好（作者其实也不太懂…）。</p>
-<p>然后是两个类CSecurityFtdcMdSpi和CSecurityFtdcMdApi的定义。</p>
-<h4 id="CSecurityFtdcMdSpi">CSecurityFtdcMdSpi</h4>
-<p>MdSpi类中包含了行情功能相关的回调函数接口，什么是回调函数呢？简单来说就是由于柜台端向用户端发送信息后才会被系统自动调用的函数（非用户主动调用），对应的主动函数会在下面介绍。CSecurityFtdcMdSpi大概看起来是这么个样子：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> CSecurityFtdcMdSpi</div><div class="line">{</div><div class="line"><span class="keyword">public</span>:</div><div class="line">	......</div><div class="line"></div><div class="line">	<span class="comment">///登录请求响应</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnRspUserLogin(CSecurityFtdcRspUserLoginField *pRspUserLogin, CSecurityFtdcRspInfoField *pRspInfo, <span class="keyword">int</span> nRequestID, <span class="keyword">bool</span> bIsLast) {};</div><div class="line"></div><div class="line">	......</div><div class="line"></div><div class="line">	<span class="comment">///深度行情通知</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnRtnDepthMarketData(CSecurityFtdcDepthMarketDataField *pDepthMarketData) {};</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>……省略了部分代码。从上面的代码中可以注意到：</p>
-<ol>
-<li>回调函数都是以On开头。</li>
-<li>柜台端向用户端发送的信息经过API处理后，传给我们的是一个结构体的指针，如CSecurityFtdcRspUserLoginField *pRspUserLogin，这里的pRspUserLogin就是一个C++的指针类型，其指向的结构体对象是CSecurityFtdcRspUserLoginField结构的，而该结构的定义可以在ApiStruct.h中找到。</li>
-<li>不同的回调函数，传过来的参数数量是不同的，OnRspUserLogin中传入的参数包括两个结构体指针，以及一个整数（代表该响应对应的用户请求号）和一个布尔值（该响应是否是这个请求号的最后一次响应）。</li>
-</ol>
-<h4 id="CSecurityFtdcMdApi">CSecurityFtdcMdApi</h4>
-<p>MdApi类中包含了行情功能相关的主动函数结构，顾名思义，主动函数指的是由用户负责进行调用的函数，用于向柜台端发送各种请求和指令，大概样子如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> MD_API_EXPORT CSecurityFtdcMdApi</div><div class="line">{</div><div class="line"><span class="keyword">public</span>:</div><div class="line">	<span class="comment">///创建MdApi</span></div><div class="line">	<span class="comment">///@param pszFlowPath 存贮订阅信息文件的目录，默认为当前目录</span></div><div class="line">	<span class="comment">///@return 创建出的UserApi</span></div><div class="line">	<span class="comment">///modify for udp marketdata</span></div><div class="line">	<span class="keyword">static</span> CSecurityFtdcMdApi *CreateFtdcMdApi(<span class="keyword">const</span> <span class="keyword">char</span> *pszFlowPath = <span class="string">""</span>);</div><div class="line">	</div><div class="line">	......</div><div class="line">	</div><div class="line">	<span class="comment">///注册回调接口</span></div><div class="line">	<span class="comment">///@param pSpi 派生自回调接口类的实例</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> RegisterSpi(CSecurityFtdcMdSpi *pSpi) = <span class="number">0</span>;</div><div class="line">	</div><div class="line">	<span class="comment">///订阅行情。</span></div><div class="line">	<span class="comment">///@param ppInstrumentID 合约ID  </span></div><div class="line">	<span class="comment">///@param nCount 要订阅/退订行情的合约个数</span></div><div class="line">	<span class="comment">///@remark </span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">int</span> SubscribeMarketData(<span class="keyword">char</span> *ppInstrumentID[], <span class="keyword">int</span> nCount, <span class="keyword">char</span>* pExchageID) = <span class="number">0</span>;</div><div class="line"></div><div class="line">	......</div><div class="line"></div><div class="line">	<span class="comment">///用户登录请求</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">int</span> ReqUserLogin(CSecurityFtdcReqUserLoginField *pReqUserLoginField, <span class="keyword">int</span> nRequestID) = <span class="number">0</span>;</div><div class="line">	</div><div class="line">	......</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>以上代码中，需要注意的重点包括：</p>
-<ol>
-<li>MdApi对象不应该直接创建，而应该通过调用类的静态方法CreateFtdcMdApi创建，传入参数为你希望保存API的通讯用的.con文件的目录（可以选择留空，则.con文件会被放在程序所在的文件夹下）。</li>
-<li>创建MdSpi对象后，需要使用MdApi对象的RegisterSpi方法将该MdSpi对象的指针注册到MdApi上，也就是告诉MdApi从柜台端收到数据后应该通过哪个对象的回调函数推送给用户。从API的这个设计上作者猜测MdApi中后包含了和柜台端通讯、接收和发送数据包的功能，而MdSpi仅仅是用来实现一个通过回调函数向用户程序推送数据的接口。</li>
-<li>绝大部分主动函数（以Req开头）在调用时都会用到一个整数类型的参数nRequestID，该参数在整个API的调用中应当保持递增唯一性，从而在收到回调函数推送的数据时，可以知道是由哪次操作引起的。</li>
-</ol>
-<h3 id="TraderApi-h">TraderApi.h</h3>
-<p>该文件中包含了API中的交易相关组件的定义，文件同样以一段看不懂的定义开头，然后包含了两个类CSecurityFtdcTraderSpi和CSecurityFtdcTraderApi，这两个类和MdApi中的两个类在结构上非常接近，区别仅仅在于类包含的方法函数上。</p>
-<h4 id="CSecurityFtdcTraderSpi">CSecurityFtdcTraderSpi</h4>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> CSecurityFtdcTraderSpi</div><div class="line">{</div><div class="line"><span class="keyword">public</span>:</div><div class="line">	<span class="comment">///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnFrontConnected(){};</div><div class="line">	</div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">///错误应答</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnRspError(CSecurityFtdcRspInfoField *pRspInfo, <span class="keyword">int</span> nRequestID, <span class="keyword">bool</span> bIsLast) {};</div><div class="line"></div><div class="line">	<span class="comment">///登录请求响应</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnRspUserLogin(CSecurityFtdcRspUserLoginField *pRspUserLogin, CSecurityFtdcRspInfoField *pRspInfo, <span class="keyword">int</span> nRequestID, <span class="keyword">bool</span> bIsLast) {};</div><div class="line"></div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">///报单通知</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnRtnOrder(CSecurityFtdcOrderField *pOrder) {};</div><div class="line"></div><div class="line">	...</div><div class="line">	</div><div class="line">	<span class="comment">///报单录入错误回报</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnErrRtnOrderInsert(CSecurityFtdcInputOrderField *pInputOrder, CSecurityFtdcRspInfoField *pRspInfo) {};</div><div class="line"></div><div class="line">	...</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>Spi（包括MdSpi和TraderSpi）类的回调函数基本上可以分为以下四种：</p>
-<ol>
-<li>以On…开头，这种回调函数通常是返回API连接相关的信息内容，与业务逻辑无关，返回值（即回调函数的参数）通常为空或是简单的整数类型。</li>
-<li>以OnRsp…开头，这种回调函数通常是针对用户的某次特定业务逻辑操作返回信息内容，返回值通常会包括4个参数：业务逻辑相关结构体的指针，错误信息结构体的指针，本次操作的请求号整数，是否是本次操作最后返回信息的布尔值。其中OnRspError主要用于一些通用错误信息的返回，因此返回的值中不包含业务逻辑相关结构体指针，只有3个返回值。</li>
-<li>以OnRtn…开头，这种回调函数返回的通常是由柜台向用户主动推送的信息内容，如客户报单状态的变化、成交情况的变化、市场行情等等，因此返回值通常只有1个参数，为推送信息内容结构体的指针。</li>
-<li>以OnErrRtn…开头，这种回调函数通常由于用户进行的某种业务逻辑操作请求（挂单、撤单等等）在交易所端触发了错误，如用户发出撤单指令、但是该订单在交易所端已经成交，返回值通常是2个参数，即业务逻辑相关结构体的指针和错误信息的指针。</li>
-</ol>
-<h4 id="CSecurityFtdcTraderApi">CSecurityFtdcTraderApi</h4>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> TRADER_API_EXPORT CSecurityFtdcTraderApi</div><div class="line">{</div><div class="line"><span class="keyword">public</span>:</div><div class="line">	<span class="comment">///创建TraderApi</span></div><div class="line">	<span class="comment">///@param pszFlowPath 存贮订阅信息文件的目录，默认为当前目录</span></div><div class="line">	<span class="comment">///@return 创建出的UserApi</span></div><div class="line">	<span class="keyword">static</span> CSecurityFtdcTraderApi *CreateFtdcTraderApi(<span class="keyword">const</span> <span class="keyword">char</span> *pszFlowPath = <span class="string">""</span>);</div><div class="line">	</div><div class="line">	...</div><div class="line">	</div><div class="line">	<span class="comment">///初始化</span></div><div class="line">	<span class="comment">///@remark 初始化运行环境,只有调用后,接口才开始工作</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> Init() = <span class="number">0</span>;</div><div class="line">	</div><div class="line">	...</div><div class="line">	</div><div class="line">	<span class="comment">///用户登录请求</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">int</span> ReqUserLogin(CSecurityFtdcReqUserLoginField *pReqUserLoginField, <span class="keyword">int</span> nRequestID) = <span class="number">0</span>;</div><div class="line"></div><div class="line">	...</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>Api类包括的主动函数通常分为以下三种：</p>
-<ol>
-<li>Create…，类的静态方法，用于创建API对象，传入参数是用来保存API通讯.con文件的文件夹路径。</li>
-<li>Req…开头的函数，可以由用户主动调用的业务逻辑请求，传入参数通常包括2个：业务请求结构体指针和一个请求号的整数。</li>
-<li>其他非Req…开头的函数，包括初始化、订阅数据流等等参数较为简单的功能，传入参数的数量和类型视乎函数功能不一定。</li>
-</ol>
-<h2 id="API工作流程">API工作流程</h2>
-<p>简单介绍一下MdApi和TraderApi的一般工作流程，这里不会包含太多细节，仅仅是让读者有一个概念。</p>
-<h3 id="MdApi">MdApi</h3>
-<ol>
-<li>创建MdSpi对象</li>
-<li>调用MdApi类以Create开头的静态方法，创建MdApi对象</li>
-<li>调用MdApi对象的RegisterSpi方法注册MdSpi对象的指针</li>
-<li>调用MdApi对象的RegisterFront方法注册行情柜台的前置机地址</li>
-<li>调用MdApi对象的Init方法初始化到前置机的连接，连接成功后会通过MdSpi对象的OnFrontConnected回调函数通知用户</li>
-<li>等待连接成功的通知后，可以调用MdApi的ReqUserLogin方法登陆，登陆成功后会通过MdSpi对象的OnRspUserLogin通知用户</li>
-<li>登陆成功后就可以开始订阅合约了，使用MdApi对象的SubscribeMarketData方法，传入参数为想要订阅的合约的代码</li>
-<li>订阅成功后，当合约有新的行情时，会通过MdApi的OnRtnDepthMarketData回调函数通知用户</li>
-<li>用户的某次请求发生错误时，会通过OnRspError通知用户。</li>
-<li>MdApi同样提供了退订合约、登出的功能，一般退出程序时就直接杀进程（不太安全）</li>
-</ol>
-<h3 id="TraderApi">TraderApi</h3>
-<ol>
-<li>TraderApi和MdApi类似，以下仅仅介绍不同点</li>
-<li>注册TraderSpi对象的指针后，需要调用TraderApi对象的SubscribePrivateTopic和SubscribePublicTopic方法去选择公开和私有数据流的重传方法（这一步MdApi没有）</li>
-<li>对于期货柜台而言（CTP、恒生UFT期货等），在每日第一次登陆成功后需要先查询前一日的结算单，等待结算单查询结果返回后，确认结算单，才可以进行后面的操作；而证券柜台LTS无此要求</li>
-<li>上一步完成后，用户可以调用ReqQryInstrument的方法查询柜台上所有可以交易的合约信息（包括代码、中文名、涨跌停、最小价位变动、合约乘数等大量细节），一般是在这里获得合约信息列表后，再去MdApi中订阅合约；经常有人问为什么在MdApi中找不到查询可供订阅的合约代码的函数，这里尤其要注意，必须通过TraderApi来获取</li>
-<li>当用户的报单、成交状态发生变化时，TraderApi会自动通过OnRtnOrder、OnRtnTrade通知用户，无需额外订阅</li>
-</ol>
-<h2 id="总结">总结</h2>
-<p>第一篇教程到这里已经接近结束了，如果你是一个没有任何交易API开发经验的读者，并且坚持看了下来，此时你心中很可能有这么个想法：我X，API开发这么复杂？？？！！！</p>
-<p>相信我，这是人之常情（某些读者如果觉得很好理解那作者真是佩服你了），作者刚开始的时候大概在CTP API的头文件和网上的教程资料、示例中纠结了3个多月而不得入门，当时也没有任何C++的开发经验（我是金融工程出生，大学里编程只学了VBA和Matlab，还几乎都是些算法方面的内容），边学语言边研究怎么开发，真心痛苦。</p>
-<p>在这里，我想告诉读者的一个好消息是：还剩两篇教程，我们基本就可以和C++ say goodbye，进入Python灵活快速开发的世界了。同时对于绝大部分不打算自己去封装API的读者，这三篇文章可以走马观花的过一遍，不会影响任何你未来对于vn.py框架的使用。</p>
-<p>当然，对于有恒心和毅力的读者，100%自己掌握API的封装技术是一项绝对值得投入时间和精力的事情。在很多人的观念中Python并不适合用来开发低延迟的交易平台，这里作者可以用亲身经验告诉你：那只是在纯用Python的情况下。作为一门胶水语言，Python最大的特点之一就是易于通过混合编程来进行拓展，用户可以在真正需要优化的地方进行最深度的定制优化，把自己有限的时间、精力花在刀刃上。在交易API层面，可以定制的地方包括C++层面的数据结构改变、数据预处理、回调函数传递顺序调整等等诸多的优化，这些只有在你完全掌握API的封装后才能办得到。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/教程/">教程</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/03/04/20150304_Python量化交易平台开发教程系列0-引言/" title="Python量化交易平台开发教程系列0-引言" itemprop="url">Python量化交易平台开发教程系列0-引言</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://vnpy.github.io/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
-		
-  <p class="article-time">
-    <time datetime="2015-03-04T02:58:42.000Z" itemprop="datePublished"> 发表于 3月 4 2015</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>原创文章，转载请注明出处：用Python的交易员</p>
-<h2 id="为什么用Python来开发量化交易平台">为什么用Python来开发量化交易平台</h2>
-<p>目前本人所在的公司一共有三款平台，分别基于C++， C#和Python。其中C#和Python平台都是由交易员开发；C++平台则是由专职IT团队作为一个通用平台开发，内部组件进行了封装（交易员不可见），对外提供行情、交易的API用于策略开发（除了C++ 外也包括C#和Python可用的API）。</p>
-<p>理论上这款C++平台应该是最为稳定和强大的，由专业人士设计，同时采用封装核心，暴露API，支持组件模块开发，linux服务器运行的形式。</p>
-<p>但是在实际运用中，交易团队表达了一个强烈的观点：这个平台实在是太难用了！ </p>
-<ol>
-<li>由IT团队设计的API功能非常强大，但是也太过繁琐，导致学习曲线极为陡峭。  </li>
-<li>为了追求速度，没有设计原生GUI（本来就为了在Linux服务器上跑），但是今天绝大多数的非超高频（追求微秒级延迟的那种）交易策略，几乎都需要有人实时监控，你总不能让交易员盯着个linux shell上不断print出来的内容或者盘中去翻日志吧，这个运维风险就扛不起。尽管可以作为插件的形式开发GUI，但C++本身的GUI开发还是较为复杂的，非专业IT很难搞的定。  </li>
-<li>交易员团队的需求变化很快，通常等不及IT去排班开发，最好是今天收盘有个点子，明天开盘就能开始接实盘数据验证，没问题后天就能上实盘。比如去年四季度的分级基金套利机会就是稍纵即逝，那段时间如果能快速开发完成一套专门的监控套利系统，抓住的利润绝对会比用excel接wind数据来的多不少。  </li>
-<li>某些业务逻辑确实太过复杂，交易员想解释让IT明白，无奈IT并不是太擅长某些金融领域（比如期权高频套利的整个业务框架），交流成本太高。</li>
-</ol>
-<p>用web开发来做比较的话，C++实现的量化交易平台像是java在网络开发领域的地位，强大（几乎无所不能）、稳定（无数大公司的支持），但是也很臃肿（你一两个人开发试试）。</p>
-<p>以上的原因促成了我坚持使用Python开发一个交易平台，这款平台的定位好比于node.js为前端工程师（用户体验的直接缔造者）提供了一个简洁又不失强大的后端平台，主要的目标用户群是中小型量化团队（根据我的经验，绝大部分的券商自营、期货资管和基金量化部门都不大）、专业的交易员团队（可以雇得起少量专职IT）以及一部分打算从互联网领域转行来的程序猿们（Python在互联网公司用的不少）。</p>
-<h2 id="Python在量化平台开发方面的优缺点">Python在量化平台开发方面的优缺点</h2>
-<h3 id="优点">优点</h3>
-<ol>
-<li>动态语言的快速开发特性，封接口有boost.Python，写GUI有PyQt，时间序列有numpy，等等，几乎你想干的事都有现成的库可以用，这里吐槽下公司大牛自己写C++里的简单移动平均（SMA）算法，确实比常规实现快不少，但似乎对pnl没什么直接帮助。</li>
-<li>学习成本低，这点算是个共识了吧？</li>
-<li>真需要低延迟的时候，胶水语言很容易通过其他语言拓展：cython, ctypes, boost.Python等等。</li>
-<li>运行速度足够快，也许和C++比起来确实慢了不少，但是就我的经验来看，这点速度延迟对90%的策略pnl毫无影响。</li>
-</ol>
-<h3 id="缺点">缺点</h3>
-<ol>
-<li>GIL，该死的全局锁导致Python无法有效利用多核CPU的性能，尽管可以通过拓展绕过去，但还是没有其他语言原生多线程利用多核的方案来的简便。</li>
-<li>没有静态类型检查，重构的时候确实有点痛苦，不过一个良好的编程范式可以有效解决这个问题。</li>
-<li>不适合用来搞超高频策略（追求微秒级延迟的差异），得承认这点Python确实搞不过C++。常规基于TICK级数据的策略没问题。</li>
-</ol>
-<h2 id="为什么会有这个系列">为什么会有这个系列</h2>
-<p>2015年的春节期间突然萌发了启动一个开源量化交易平台开发框架项目的想法，原因包括：  </p>
-<ol>
-<li>国内很多的机构和个人量化投资者，在受够了一些商业软件的束缚后（TB、金字塔等）想基于柜台API进行直接开发，然后在C++的.h头文件、网上一些不成体系的开发指南、不知道如何构建程序核心架构等等问题中赚的一头雾水后放弃。  </li>
-<li>国外有相当多类似的项目，比如AlgoTrader、Tradelink、Marketcetera等等开源交易平台有着大量的用户和活跃的社区。目前国内据我所知只有海风的AT平台项目（基于C#），QuantBox项目当前更多只是一个柜台API的统一化封装（当然封装的非常漂亮，有兴趣的建议直接看看源代码）。  </li>
-<li>在本人的整个求学经历中，发现最佳的学习方式之一就是自己当老师，当你试着把某种知识教给别人时，你对这种知识的掌握会更加细致深入。  </li>
-<li>抛砖引玉，本人是交易员出身，编程算是半路出家，不专业的地方很多，通过这个项目和业内人士多多交流。  </li>
-<li>TB之类的商业软件不算，国内目前最大量化交易社区应该是C#（交易）和Matlab（研发），而能兼顾交易和研发的Python社区居然十分弱小，实在是不能忍。</li>
-</ol>
-<p>授人以鱼不如授人以渔，目前这个项目<strong><a href="http://github.com/vnpy/vnpy" target="_blank" rel="external">vn.py</a></strong>已经发布在了github上，包含了基于华宝证券LTS API的Python封装和事件驱动引擎，鱼竿准备好了，剩下的就是学习如何钓鱼。一方面也是因为自己之前在学习过程中遇到的最大问题之一就是目前国内缺乏一个成体系的量化平台开发教程，所以发布项目后的下一步工作就是编写这个教程系列。</p>
-<h2 id="系列内容安排">系列内容安排</h2>
-<p>整个系列文章目前预计包含的内容如下：  </p>
-<ol>
-<li>类CTP交易API的工作原理  </li>
-<li>类CTP交易API的Python封装设计</li>
-<li>vn.py项目中API封装的编译，其他交易API的封装</li>
-<li>事件驱动引擎原理和使用</li>
-<li>华宝LTS交易平台开发：登陆、订阅市场行情</li>
-<li>华宝LTS交易平台开发：交易功能</li>
-<li>华宝LTS交易平台开发：持仓、交易、下单监控</li>
-</ol>
-<h2 id="联系作者">联系作者</h2>
-<p>本人的知乎号：<a href="http://www.zhihu.com/people/traderusingPython" target="_blank" rel="external">用Python的交易员</a>，可以通过知乎私信联系到我，一些和开源项目、教程相关的问题交流也会发在知乎上。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/教程/">教程</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/03/03/20150303_20150303项目开发日志/" title="2015/3/3 项目开发日志" itemprop="url">2015/3/3 项目开发日志</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://vnpy.github.io/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
-		
-  <p class="article-time">
-    <time datetime="2015-03-03T10:16:45.000Z" itemprop="datePublished"> 发表于 3月 3 2015</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="目前项目状态">目前项目状态</h2>
-<p>目前完成：  </p>
-<ol>
-<li>华宝证券的LTS API的Python封装，发布在vn.lts文件夹下  </li>
-<li>事件驱动引擎，发布在vn.event文件夹下  </li>
-</ol>
-<h3 id="vn-lts">vn.lts</h3>
-<p>ltsapi：华宝证券官方的LTS C++ API<br>pyscript：用于自动生成重复度较高的封装代码的Python脚本<br>vnltsmd：行情API的封装源代码和测试脚本<br>vnltstd：交易API的封装源代码和测试脚本  </p>
-<h3 id="vn-event">vn.event</h3>
-<p>eventType：定义事件类型常量<br>eventEngine：包含事件驱动引擎实现  </p>
-<h2 id="下一步计划">下一步计划</h2>
-<ol>
-<li>API封装、编译、使用方面的教程</li>
-<li>事件驱动引擎原理、使用方面的教程</li>
-<li>基于API和引擎开发的LTS交易客户平台（因为华宝没有提供官方的LTS交易软件，目前的两个实现分别是基于C++的尔易终端和基于.COM封装的盈佳终端）</li>
-<li>策略引擎接口</li>
-</ol>
-<h2 id="联系作者">联系作者</h2>
-<p>作者知乎名：用Python的交易员，想要联系作者可以通过知乎私信。</p>
-<hr>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/日志/">日志</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
+    <time datetime="2015-03-03T10:16:45.000Z" itemprop="datePublished">3月 3 2015</time>
+  </a>
+</section>
 
 
 
@@ -865,9 +255,6 @@
     </ul>
 </div>
 
-  
-
-
   <div class="rsspart">
 	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
@@ -891,6 +278,7 @@
 	<div class="social-font" class="clearfix">
 		
 		
+		<a href="https://github.com/vnpy" target="_blank" class="icon-github" title="github"></a>
 		
 		
 		
@@ -898,6 +286,11 @@
 		
 		
 		
+		<a href="https://www.zhihu.com/people/traderusingpython" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:vn.py@foxmail.com" target="_blank" class="icon-email" title="Email Me"></a>
 		
 	</div>
 		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
@@ -959,6 +352,18 @@ $(document).ready(function(){
 
 
 
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"vnpy"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
 
 
 
@@ -971,7 +376,14 @@ $(document).ready(function(){
 
 
 
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fe8c7573f82d43fa50c895a8e28c49ceb' type='text/javascript'%3E%3C/script%3E"));
+</script>
 
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254558631'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s23.cnzz.com/z_stat.php%3Fid%3D1254558631' type='text/javascript'%3E%3C/script%3E"));</script>
 
 <!-- Analytics End -->
 
