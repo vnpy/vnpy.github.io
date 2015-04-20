@@ -85,6 +85,95 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2015/04/20/20150420_20150420项目开发日志/" title="2015/4/20 项目开发日志" itemprop="url">2015/4/20 项目开发日志</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="http://vnpy.github.io/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
+		
+  <p class="article-time">
+    <time datetime="2015-04-20T08:56:45.000Z" itemprop="datePublished"> 发表于 4月 20 2015</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h2 id="目前项目状态">目前项目状态</h2>
+<p>差不多一个多月的时间，完成了CTP API的vn.ctp封装，以及用于展示如何使用vn.py框架开发的vn.demo，两者均已发布到github上。</p>
+<p>接下来将会发布几篇和vn.demo相关的教程。</p>
+<h2 id="vn-demo介绍">vn.demo介绍</h2>
+<p>该demo主要用于展示如何使用vn.py框架开发交易平台，使用了vn.event和vn.lts模块。</p>
+<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B4vndemo.jpg" alt="enter image description here"></p>
+<h2 id="如何使用">如何使用</h2>
+<p>常规用户可以直接运行exe文件夹下的demoMain.exe。</p>
+<p>对开发有兴趣的用户需要根据vnpy.org的教程3安装相关的开发环境，然后通过demoMain.py和demoMain.pyw（无cmd界面）运行。</p>
+<h2 id="实现功能">实现功能</h2>
+<p>demo的实现参考了盈佳和尔易的LTS交易平台，功能如下：</p>
+<ol>
+<li>行情、持仓、账户、成交、报单的监控</li>
+<li>平台的日志记录</li>
+<li>下单交易，实现了LTS提供的所有订单类型和交易类型</li>
+<li>双击报单监控中的单元格撤单，以及下单交易组件一键全撤</li>
+</ol>
+<h2 id="文件说明">文件说明</h2>
+<ul>
+<li>demoApi.py主要包含了程序的底层接口，对vn.lts中的API进行了简化封装</li>
+<li>demoEngine.py主要包含了程序的中间层，负责调用底层接口</li>
+<li>demoUi.py主要包含了用于数据监控和主动函数调用相关的GUI组件</li>
+<li>demoMain.py包含了程序的主函数入口，双击运行</li>
+<li>demoMain.pyw功能和demoMain.py一样，双击时会自动调用pythonw.exe运行（无cmd界面）</li>
+</ul>
+<h2 id="nuitka编译说明">nuitka编译说明</h2>
+<p>要执行nuikta编译，请在本文件夹下打开cmd，并输入以下命令：</p>
+<p>nuitka —recurse-all —windows-disable-console —icon=C:\vn.demo\vnpy.ico demoMain.py</p>
+<p>其中C:\vn.demo\vnpy.ico需要修改为用户vn.demo文件夹的路径。</p>
+<h2 id="LTS测试服务器地址">LTS测试服务器地址</h2>
+<p><strong>行情</strong><br>tcp://211.144.195.163:34513</p>
+<p><strong>交易</strong><br>tcp://211.144.195.163:34505</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/日志/">日志</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="http://vnpy.github.io/2015/04/20/20150420_20150420项目开发日志/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/04/20/20150420_20150420项目开发日志/" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2015/03/13/20150313_Python量化交易平台开发教程系列4-事件驱动引擎原理和使用/" title="Python量化交易平台开发教程系列4-事件驱动引擎原理和使用" itemprop="url">Python量化交易平台开发教程系列4-事件驱动引擎原理和使用</a>
   </h1>
   <p class="article-author">By
@@ -928,7 +1017,7 @@
 		
 			<li><a href="/categories/教程/" title="教程">教程<sup>5</sup></a></li>
 		
-			<li><a href="/categories/日志/" title="日志">日志<sup>1</sup></a></li>
+			<li><a href="/categories/日志/" title="日志">日志<sup>2</sup></a></li>
 		
 		</ul>
 </div>
