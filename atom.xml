@@ -4,7 +4,7 @@
   <subtitle><![CDATA[基于python的开源交易平台开发框架]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://vnpy.github.io/"/>
-  <updated>2015-04-23T09:29:30.855Z</updated>
+  <updated>2015-05-04T01:22:26.966Z</updated>
   <id>http://vnpy.github.io/</id>
   
   <author>
@@ -191,7 +191,7 @@
     <link href="http://vnpy.github.io/2015/03/12/20150312_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%973-vn.py%E9%A1%B9%E7%9B%AE%E4%B8%ADAPI%E5%B0%81%E8%A3%85%E7%9A%84%E7%BC%96%E8%AF%91%20-%20%E5%89%AF%E6%9C%AC/"/>
     <id>http://vnpy.github.io/2015/03/12/20150312_Python量化交易平台开发教程系列3-vn.py项目中API封装的编译 - 副本/</id>
     <published>2015-03-12T02:02:28.000Z</published>
-    <updated>2015-03-12T06:56:35.298Z</updated>
+    <updated>2015-05-04T01:21:28.572Z</updated>
     <content type="html"><![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
 <h2 id="前言">前言</h2>
 <p>经历了两篇的理论折磨后，本篇教程开始进入实际操作的环节，这里作者假设读者是毫无C++经验的用户，操作一步步配图，还有问题的来<a href="https://github.com/vnpy/vnpy" target="_blank" rel="external">vn.py项目的github主页</a>上提问。</p>
@@ -229,7 +229,7 @@
 </code></pre><p>此时cmd里的显示应该类似于：<br><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3boost%20cmd.jpg" alt="enter image description here"></p>
 <h3 id="booststrap-bat">booststrap.bat</h3>
 <p>然后输入以下内容，用于生成b2.exe文件：</p>
-<pre><code>booststrap.bat
+<pre><code>bootstrap.bat
 </code></pre><p>成功后显示为：<br><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3bootstrap.jpg" alt="enter image description here"></p>
 <h3 id="b2-exe">b2.exe</h3>
 <p>接下来编译boost库，—toolset=msvc-12.0是因为作者使用的是VS2013, —build-type=complete编译整个boost库，因为项目中不止用到boost.python：</p>
