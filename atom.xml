@@ -4,7 +4,7 @@
   <subtitle><![CDATA[基于python的开源交易平台开发框架]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://vnpy.github.io/"/>
-  <updated>2015-05-06T09:11:53.268Z</updated>
+  <updated>2015-05-08T02:02:23.712Z</updated>
   <id>http://vnpy.github.io/</id>
   
   <author>
@@ -16,22 +16,51 @@
   
   <entry>
     <title><![CDATA[Python量化交易平台开发教程系列5-底层接口对接]]></title>
-    <link href="http://vnpy.github.io/2015/05/05/20150505_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%975-%E4%BA%A4%E6%98%93%E6%8E%A5%E5%8F%A3%E7%AE%80%E5%8C%96%E5%B0%81%E8%A3%85%E5%92%8C%E4%B8%AD%E5%B1%82%E5%BC%95%E6%93%8E/"/>
-    <id>http://vnpy.github.io/2015/05/05/20150505_Python量化交易平台开发教程系列5-交易接口简化封装和中层引擎/</id>
+    <link href="http://vnpy.github.io/2015/05/05/20150505_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%975-%E5%BA%95%E5%B1%82%E6%8E%A5%E5%8F%A3%E5%AF%B9%E6%8E%A5/"/>
+    <id>http://vnpy.github.io/2015/05/05/20150505_Python量化交易平台开发教程系列5-底层接口对接/</id>
     <published>2015-05-05T06:46:00.000Z</published>
-    <updated>2015-05-06T09:11:17.040Z</updated>
+    <updated>2015-05-08T01:59:46.089Z</updated>
     <content type="html"><![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
 <h2 id="前言">前言</h2>
 <p>从本篇教程开始，所有的开发都会在Python环境中进行（谢天谢地可以和C++说再见了）。</p>
-<p>通常情况下，一个交易程序的架构会由以下三个部分组成：</p>
+<p><strong>通常情况下，一个交易程序的架构会由以下三个部分组成：</strong></p>
 <ul>
 <li>底层接口：负责对接行情和交易API，将数据推送到系统核心中，以及发送指令（下单、数据请求等）</li>
 <li>中层引擎：用于整合程序中的各个组件（包括底层接口、数据库接口等等）到一个对象中，便于顶层UI调用</li>
 <li>顶层GUI：用于显示数据和调用中层引擎暴露的主动函数，实现各项具体功能</li>
 </ul>
-<p>下面这张图展示的是国外的一款开源交易平台AlgoTrader的架构：</p>
 <p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B5algotrader_%E6%9E%84%E6%9E%B6.png" alt="AlgoTrader架构"></p>
-<p>本篇教程将会介绍底层接口，后面的若干篇则是关于中层引擎和各种顶层GUI组件。</p>
+<p><strong>上面这张图展示的是国外的一款开源交易平台AlgoTrader的架构：</strong></p>
+<ul>
+<li>两边的Adapters代表的是底层接口（左边数据，右边交易）</li>
+<li>红色圆柱形中包括的是中层引擎架构，事件驱动方面使用了Esper复杂事件处理（CEP）引擎，同时内置了一些常用的功能引擎，如期权定价引擎、外汇对冲模块、投资组合管理模块等</li>
+<li>上方的Strategy1、2等代表的是顶层应用（算法策略、GUI界面等），通过调用中层引擎的功能来实现用户所需的业务</li>
+</ul>
+<p><strong>vn.py和AlgoTrader的比较：</strong></p>
+<p>这里对两个项目做一个简单的比较。</p>
+<p>vn.py优势：</p>
+<ul>
+<li>语言易用：Java语言比Python啰嗦</li>
+<li>架构简洁：Java的编程理念（纯面向对象，大量使用框架等）更是比Python的编程理念（人生苦短，我们的目标是搞定问题）繁琐</li>
+<li>事件驱动引擎：AlgoTrader使用的Esper引擎尽管功能强大，使用起来也过于复杂，对于国内绝大部分的量化业务而言完全用不着</li>
+<li>本地化：vn.py完全为中国市场设计，在功能设计上更符合国人的使用习惯，而AlgoTrader则是针对欧美市场设计</li>
+</ul>
+<p>AlgoTrader优势：</p>
+<ul>
+<li>静态语言：Java在开发时可以进行静态检查，同时相对较低的灵活性使得其更适合大型团队使用（即每个成员未必对项目整体非常了解）</li>
+<li>国外接口：已有大量的国外经纪商和行情提供商接口，如果用户主要做欧美市场基本可以开箱即用</li>
+<li>成熟度：AlgoTrader从2009发布至今已经有6年的历史，同时有着相当数量的机构客户</li>
+</ul>
+<p>两个项目的相似之处：</p>
+<ul>
+<li>作者在最初都是为了交易某种期权策略而开发了该项目</li>
+<li>整体框架设计类似（底层接口、中层引擎、顶层GUI）</li>
+<li>都可以非常方便的开发全自动交易策略</li>
+<li>都是开源项目，目前托管在Github上（废话），用户可以根据自己的需求随意定制相关功能</li>
+<li>都可以应用于高频交易（毫秒级延迟），不适用于超高频交易（微秒级延迟）</li>
+</ul>
+<p><strong>教程说明</strong></p>
+<p>本篇教程将会介绍底层接口的开发，后面的若干篇则是关于中层引擎和各种顶层GUI组件。</p>
 <p>相关的示例都是基于vn.demo中的LTS接口DEMO，发布在：<br><a href="https://github.com/vnpy/vnpy/tree/master/vn.demo/ltsdemo" target="_blank" rel="external">https://github.com/vnpy/vnpy/tree/master/vn.demo/ltsdemo</a></p>
 <h2 id="底层接口对接">底层接口对接</h2>
 <p>通过前面的教程，我们已经获得了和原生C++ API功能完全相同的Python封装API。通常情况下，为了将某个API对接到我们的程序中，需要以下两步：</p>
@@ -97,8 +126,7 @@
     <![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
 <h2 id="前言">前言</h2>
 <p>从本篇教程开始，所有的开发都会在Python环境中进行（谢天谢地可以和C++说再见了）。</p>
-<p>通常情况下，一个交易程序的架构会由以下三个部分组成：</p>
-<u]]>
+<p><strong>通常情况下，一个交易程序的架构会由以下三个部分组成]]>
     </summary>
     
       <category term="教程" scheme="http://vnpy.github.io/categories/%E6%95%99%E7%A8%8B/"/>
