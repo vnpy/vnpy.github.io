@@ -1,0 +1,479 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Python量化交易平台开发教程系列6-中层引擎设计 | vn.py</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="用python的交易员">
+    
+    <meta name="description" content="原创文章，转载请注明出处：用Python的交易员
+前言
+中层引擎在设计上主要是为了进一步封装底层接口所暴露出的API函数，使得其更容易被上层的GUI和策略组件调用。本篇的内容会相对简单，主要以LTS接口DEMO为例介绍一些设计方面的思路。
+相关的示例都是基于vn.demo中的LTS接口DEMO，发布">
+    
+    
+    <meta name="description" content="原创文章，转载请注明出处：用Python的交易员
+前言
+中层引擎在设计上主要是为了进一步封装底层接口所暴露出的API函数，使得其更容易被上层的GUI和策略组件调用。本篇的内容会相对简单，主要以LTS接口DEMO为例介绍一些设计方面的思路。
+相关的示例都是基于vn.demo中的LTS接口DEMO，发布在：https://github.com/vnpy/vnpy/tree/master/vn.demo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python量化交易平台开发教程系列6-中层引擎设计">
+<meta property="og:url" content="http://vnpy.github.io/2015/05/20/20150520_Python量化交易平台开发教程系列6-中层引擎设计/">
+<meta property="og:site_name" content="vn.py">
+<meta property="og:description" content="原创文章，转载请注明出处：用Python的交易员
+前言
+中层引擎在设计上主要是为了进一步封装底层接口所暴露出的API函数，使得其更容易被上层的GUI和策略组件调用。本篇的内容会相对简单，主要以LTS接口DEMO为例介绍一些设计方面的思路。
+相关的示例都是基于vn.demo中的LTS接口DEMO，发布在：https://github.com/vnpy/vnpy/tree/master/vn.demo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python量化交易平台开发教程系列6-中层引擎设计">
+<meta name="twitter:description" content="原创文章，转载请注明出处：用Python的交易员
+前言
+中层引擎在设计上主要是为了进一步封装底层接口所暴露出的API函数，使得其更容易被上层的GUI和策略组件调用。本篇的内容会相对简单，主要以LTS接口DEMO为例介绍一些设计方面的思路。
+相关的示例都是基于vn.demo中的LTS接口DEMO，发布在：https://github.com/vnpy/vnpy/tree/master/vn.demo">
+
+
+    
+    <link rel="alternative" href="/atom.xml" title="vn.py" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/ioslogo.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/ioslogo.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="vn.py" title="vn.py"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="vn.py">vn.py</a></h1>
+				<h2 class="blog-motto">基于python的开源交易平台开发框架</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">存档</a></li>
+					
+						<li><a href="/demo">Demo</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:vnpy.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/05/20/20150520_Python量化交易平台开发教程系列6-中层引擎设计/" title="Python量化交易平台开发教程系列6-中层引擎设计" itemprop="url">Python量化交易平台开发教程系列6-中层引擎设计</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="http://vnpy.github.io/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
+		
+  <p class="article-time">
+    <time datetime="2015-05-20T01:20:00.000Z" itemprop="datePublished"> 发表于 5月 20 2015</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#中层引擎设计"><span class="toc-number">2.</span> <span class="toc-text">中层引擎设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#构造函数"><span class="toc-number">2.1.</span> <span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他主动函数"><span class="toc-number">2.2.</span> <span class="toc-text">其他主动函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+		
+		</div>
+		
+		<p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2 id="前言">前言</h2>
+<p>中层引擎在设计上主要是为了进一步封装底层接口所暴露出的API函数，使得其更容易被上层的GUI和策略组件调用。本篇的内容会相对简单，主要以LTS接口DEMO为例介绍一些设计方面的思路。</p>
+<p>相关的示例都是基于vn.demo中的LTS接口DEMO，发布在：<br><a href="https://github.com/vnpy/vnpy/tree/master/vn.demo/ltsdemo" target="_blank" rel="external">https://github.com/vnpy/vnpy/tree/master/vn.demo/ltsdemo</a></p>
+<h2 id="中层引擎设计">中层引擎设计</h2>
+<h3 id="构造函数">构造函数</h3>
+<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">########################################################################</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainEngine</span>:</span></div><div class="line">    <span class="string">"""主引擎，负责对API的调度"""</span></div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""Constructor"""</span></div><div class="line">        self.ee = EventEngine()         <span class="comment"># 创建事件驱动引擎</span></div><div class="line">        </div><div class="line">        self.md = DemoMdApi(self.ee)    <span class="comment"># 创建API接口</span></div><div class="line">        <span class="comment">#self.md = DemoL2Api(self.ee)   # 如果使用L2行情就改为这行</span></div><div class="line">        self.td = DemoTdApi(self.ee)</div><div class="line">        </div><div class="line">        self.ee.start()                 <span class="comment"># 启动事件驱动引擎</span></div><div class="line">        </div><div class="line">        <span class="comment"># 循环查询持仓和账户相关</span></div><div class="line">        self.countGet = <span class="number">0</span>               <span class="comment"># 查询延时计数</span></div><div class="line">        self.lastGet = <span class="string">'Account'</span>        <span class="comment"># 上次查询的性质</span></div><div class="line">        self.ee.register(EVENT_TDLOGIN, self.initGet)  <span class="comment"># 登录成功后开始初始化查询</span></div><div class="line">        </div><div class="line">        <span class="comment"># 合约储存相关</span></div><div class="line">        self.dictInstrument = {}        <span class="comment"># 字典（保存合约查询数据）</span></div><div class="line">        self.ee.register(EVENT_INSTRUMENT, self.insertInstrument)</div></pre></td></tr></table></figure>
+
+<ol>
+<li><p>首先以主引擎成员变量的形式创建事件驱动引擎ee、行情接口md和交易接口td的对象，两个接口对象创建时传入事件驱动引擎ee对象作为构造函数的参数。</p>
+</li>
+<li><p>在创建以上三个对象后，立即启动事件驱动引擎，此后当用户调用接口的连接、登录等功能收到事件推送后，ee可以立即推送到监听这些事件的组件进行处理。</p>
+</li>
+<li><p>LTS和CTP接口的持仓情况和账户情况并不会通过回调函数主动推送，只有在投资者调用查询函数时才会返回，我们的DEMO作为一个手动交易终端，选择使用循环查询的模式不断获取持仓和账户情况的更新。这里的每次查询都会占用网络带宽导致系统延时的增加，对于某些运行全自动策略的程序，可以选择不进行查询，而通过对成交、行情等数据的统计来自行计算持仓和账户情况（甚至对于某些策略可以直接忽略该步骤，进一步降低延时水平）。</p>
+</li>
+<li><p>LTS和CTP发送主动查询指令时，存在流量控制（通常限制在1秒一次查询），因此选择间隔发送查询账户和查询持仓的指令。</p>
+</li>
+<li><p>在登录成功后，我们需要查询柜台上所有可交易的合约信息，将这些信息保存到字典dictInstrument中，方便后面需要时进行查询。这里很好的体现出了Python的方便，笔者在设计封装API的回调函数时特别选择使用Python字典的形式推送信息，包含合约信息的字典收到后，可以直接插入到dictInstrument字典进行保存（字典嵌字典），查询时直接使用合约代码即可。而用C++语言开发时通常还需要用到Sqlite之类的内存数据库进行保存，麻烦了不少。</p>
+</li>
+</ol>
+<h3 id="其他主动函数">其他主动函数</h3>
+<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">login</span><span class="params">(self, userid, mdPassword, tdPassword, brokerid, mdAddress, tdAddress)</span>:</span></div><div class="line">    <span class="string">"""登陆"""</span></div><div class="line">    self.md.login(mdAddress, userid, mdPassword, brokerid)</div><div class="line">    self.td.login(tdAddress, userid, tdPassword, brokerid)</div><div class="line"></div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">subscribe</span><span class="params">(self, instrumentid, exchangeid)</span>:</span></div><div class="line">    <span class="string">"""订阅合约"""</span></div><div class="line">    self.md.subscribe(instrumentid, exchangeid)</div><div class="line">    </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">getAccount</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">"""查询账户"""</span></div><div class="line">    self.td.getAccount()</div><div class="line">    </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">getInvestor</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">"""查询投资者"""</span></div><div class="line">    self.td.getInvestor()</div><div class="line">    </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">getPosition</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">"""查询持仓"""</span></div><div class="line">    self.td.getPosition()</div><div class="line"></div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">getInstrument</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">"""获取合约"""</span></div><div class="line">    event = Event(type_=EVENT_LOG)</div><div class="line">    log = <span class="string">u'查询合约信息'</span></div><div class="line">    event.dict_[<span class="string">'log'</span>] = log</div><div class="line">    self.ee.put(event)          </div><div class="line">    </div><div class="line">    self.td.getInstrument()</div><div class="line">    </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">sendOrder</span><span class="params">(self, instrumentid, exchangeid, price, pricetype, volume, direction, offset)</span>:</span></div><div class="line">    <span class="string">"""发单"""</span></div><div class="line">    self.td.sendOrder(instrumentid, exchangeid, price, pricetype, volume, direction, offset)</div><div class="line">    </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">cancelOrder</span><span class="params">(self, instrumentid, exchangeid, orderref, frontid, sessionid)</span>:</span></div><div class="line">    <span class="string">"""撤单"""</span></div><div class="line">    self.td.cancelOrder(instrumentid, exchangeid, orderref, frontid, sessionid)</div><div class="line">    </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">getAccountPosition</span><span class="params">(self, event)</span>:</span></div><div class="line">    <span class="string">"""循环查询账户和持仓"""</span></div><div class="line">    self.countGet = self.countGet + <span class="number">1</span></div><div class="line">    </div><div class="line">    <span class="comment"># 每5秒发一次查询</span></div><div class="line">    <span class="keyword">if</span> self.countGet &gt; <span class="number">5</span>:</div><div class="line">        self.countGet = <span class="number">0</span>   <span class="comment"># 清空计数</span></div><div class="line">        </div><div class="line">        <span class="keyword">if</span> self.lastGet == <span class="string">'Account'</span>:</div><div class="line">            self.getPosition()</div><div class="line">            self.lastGet = <span class="string">'Position'</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            self.getAccount()</div><div class="line">            self.lastGet = <span class="string">'Account'</span></div><div class="line"></div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">initGet</span><span class="params">(self, event)</span>:</span></div><div class="line">    <span class="string">"""在交易服务器登录成功后，开始初始化查询"""</span></div><div class="line">    <span class="comment"># 打开设定文件setting.vn</span></div><div class="line">    f = shelve.open(<span class="string">'setting.vn'</span>)</div><div class="line">    </div><div class="line">    <span class="comment"># 尝试读取设定字典，若该字典不存在，则发出查询请求</span></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        d = f[<span class="string">'instrument'</span>]</div><div class="line">        </div><div class="line">        <span class="comment"># 如果本地保存的合约数据是今日的，则载入，否则发出查询请求</span></div><div class="line">        today = date.today()</div><div class="line">        <span class="keyword">if</span> d[<span class="string">'date'</span>] == today:</div><div class="line">            self.dictInstrument = d[<span class="string">'dictInstrument'</span>]</div><div class="line">            </div><div class="line">            event = Event(type_=EVENT_LOG)</div><div class="line">            log = <span class="string">u'合约信息读取完成'</span></div><div class="line">            event.dict_[<span class="string">'log'</span>] = log</div><div class="line">            self.ee.put(event)            </div><div class="line"></div><div class="line">            self.getInvestor()</div><div class="line">            </div><div class="line">            <span class="comment"># 开始循环查询</span></div><div class="line">            self.ee.register(EVENT_TIMER, self.getAccountPosition)                 </div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            self.getInstrument()</div><div class="line">    <span class="keyword">except</span> KeyError:</div><div class="line">        self.getInstrument()</div><div class="line">        </div><div class="line">    f.close()</div><div class="line"> </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">insertInstrument</span><span class="params">(self, event)</span>:</span></div><div class="line">    <span class="string">"""插入合约对象"""</span></div><div class="line">    data = event.dict_[<span class="string">'data'</span>]</div><div class="line">    last = event.dict_[<span class="string">'last'</span>]</div><div class="line">    </div><div class="line">    self.dictInstrument[data[<span class="string">'InstrumentID'</span>]] = data</div><div class="line">    </div><div class="line">    <span class="comment"># 合约对象查询完成后，查询投资者信息并开始循环查询</span></div><div class="line">    <span class="keyword">if</span> last:</div><div class="line">        <span class="comment"># 将查询完成的合约信息保存到本地文件，今日登录可直接使用不再查询</span></div><div class="line">        self.saveInstrument()</div><div class="line">        </div><div class="line">        event = Event(type_=EVENT_LOG)</div><div class="line">        log = <span class="string">u'合约信息查询完成'</span></div><div class="line">        event.dict_[<span class="string">'log'</span>] = log</div><div class="line">        self.ee.put(event)            </div><div class="line"></div><div class="line">        self.getInvestor()</div><div class="line">        </div><div class="line">        <span class="comment"># 开始循环查询</span></div><div class="line">        self.ee.register(EVENT_TIMER, self.getAccountPosition)              </div><div class="line">    </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">selectInstrument</span><span class="params">(self, instrumentid)</span>:</span></div><div class="line">    <span class="string">"""获取合约信息对象"""</span></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        instrument = self.dictInstrument[instrumentid]</div><div class="line">    <span class="keyword">except</span> KeyError:</div><div class="line">        instrument = <span class="keyword">None</span></div><div class="line">    <span class="keyword">return</span> instrument</div><div class="line"></div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">exit</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">"""退出"""</span></div><div class="line">    <span class="comment"># 销毁API对象</span></div><div class="line">    self.td = <span class="keyword">None</span></div><div class="line">    self.md = <span class="keyword">None</span></div><div class="line">    </div><div class="line">    <span class="comment"># 停止事件驱动引擎</span></div><div class="line">    self.ee.stop()</div><div class="line">    </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">saveInstrument</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">"""保存合约属性数据"""</span></div><div class="line">    f = shelve.open(<span class="string">'setting.vn'</span>)</div><div class="line">    d = {}</div><div class="line">    d[<span class="string">'dictInstrument'</span>] = self.dictInstrument</div><div class="line">    d[<span class="string">'date'</span>] = date.today()</div><div class="line">    f[<span class="string">'instrument'</span>] = d</div><div class="line">    f.close()</div></pre></td></tr></table></figure>
+
+<ol>
+<li><p>LTS和CTP的行情和交易账户通常是由经纪商一起提供的，为了简洁起见，把两个接口的登录一起封装在了login函数中。</p>
+</li>
+<li><p>subscribe, getAccount, getPosition, getInvestor, getInstrument, sendOrder, cancelOrder都只是直接调用行情和交易接口的功能，做这种设计的目的是为了让用户在写上层组件代码时，可以直接写self.mainEngine.subscribe(‘IF1506’, ‘CFFEX’)，而不必去写self.mainEngine.td.subscribe(‘IF1506’, ‘CFFEX’)，很小的区别，但是相信我，程序规模大了后会让你烦到崩溃。</p>
+</li>
+<li><p>getAccountPosition用于实现循环查询账户和持仓，这里我设为了每5秒发一次，基本够用就好。</p>
+</li>
+<li><p>initGet和insertInstrument两个函数实现了登录后初始化查询相关的功能。首先登录完成后，程序用shelve模块打开本地保存的文件setting.vn，检查其中的合约信息数据，如果该数据的更新日期为今日，则直接读取使用，无需再次查询可交易合约信息（一般该信息每天日内保持不变）。否则调用getInstrument函数查询合约信息，insertInstrument函数负责将收到的合约信息插入到dictInstrument字典中，当所有合约信息都插入完成后，通过saveInstrument函数将该字典保存到setting.vn中，即可实现日内再次登录无需查询直接读取。</p>
+</li>
+<li><p>合约信息查询完成后，通常会再查询一次投资者姓名getInvestor，主要用于输出在程序的标题栏上（方便用户检查，防止登录错账户等），并将循环查询函数getAccountPosition注册到每秒触发的定时器事件监听上，开始循环查询。</p>
+</li>
+<li><p>当用户退出程序时，需要调用主引擎的exit函数，释放行情和交易API接口对象（在C++环境中会自动析构），并停止事件驱动引擎的工作线程（否则可能报线程退出错误等）。</p>
+</li>
+</ol>
+<h2 id="总结">总结</h2>
+<p>中层引擎的设计思路主要是封装底层接口，从而让用户在开发顶层GUI和策略组件时无需直接调用底层接口的主动函数，降低开发和维护的复杂度。</p>
+<p>DEMO中的这个中层引擎非常简单，功能上只实现了个循环查询（其实也可以在接口层中实现，视乎需求）。而在实际开发中，中层引擎通常会包含用户最常用的一些功能模块，比如做期权策略的会加入期权定价引擎，做期现套利的会加入持仓组合的敞口监控对冲引擎等等。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/教程/">教程</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://vnpy.github.io/2015/05/20/20150520_Python量化交易平台开发教程系列6-中层引擎设计/" data-title="Python量化交易平台开发教程系列6-中层引擎设计 | vn.py" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/05/05/20150505_Python量化交易平台开发教程系列5-底层接口对接/"  title="Python量化交易平台开发教程系列5-底层接口对接">
+ <strong>下一篇：</strong><br/> 
+ <span>Python量化交易平台开发教程系列5-底层接口对接
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2015/05/20/20150520_Python量化交易平台开发教程系列6-中层引擎设计/" data-title="Python量化交易平台开发教程系列6-中层引擎设计" data-url="http://vnpy.github.io/2015/05/20/20150520_Python量化交易平台开发教程系列6-中层引擎设计/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#中层引擎设计"><span class="toc-number">2.</span> <span class="toc-text">中层引擎设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#构造函数"><span class="toc-number">2.1.</span> <span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他主动函数"><span class="toc-number">2.2.</span> <span class="toc-text">其他主动函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/教程/" title="教程">教程<sup>7</sup></a></li>
+		
+			<li><a href="/categories/日志/" title="日志">日志<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://github.com/vnpy/vnpy" target="_blank" title="vn.py on GitHub">vn.py on GitHub</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Talk is cheap, show me the code. <br/>
+			</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/vnpy" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="https://www.zhihu.com/people/traderusingpython" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:vn.py@foxmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="http://vnpy.github.io/about" target="_blank" title="用python的交易员">用python的交易员</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"vnpy"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fe8c7573f82d43fa50c895a8e28c49ceb' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254558631'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s23.cnzz.com/z_stat.php%3Fid%3D1254558631' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+  </body>
+</html>
