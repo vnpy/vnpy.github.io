@@ -1,0 +1,534 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Python量化交易平台开发教程系列7-顶层GUI界面开发（1） | vn.py</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="用python的交易员">
+    
+    <meta name="description" content="原创文章，转载请注明出处：用Python的交易员
+前言
+终于有时间来写第一篇顶层GUI界面开发相关的教程了，之前实在是事情太多，跟各位读者抱个歉。
+整合底层接口的各项功能到中层引擎中后，当我们开发顶层应用时（GUI或者策略算法），只需知道中层引擎对外提供的主动API函数以及事件引擎中相关的事件类型和">
+    
+    
+    <meta name="description" content="原创文章，转载请注明出处：用Python的交易员
+前言
+终于有时间来写第一篇顶层GUI界面开发相关的教程了，之前实在是事情太多，跟各位读者抱个歉。
+整合底层接口的各项功能到中层引擎中后，当我们开发顶层应用时（GUI或者策略算法），只需知道中层引擎对外提供的主动API函数以及事件引擎中相关的事件类型和数据形式即可。
+在GUI和策略算法这两个主要类型的顶层应用中，作者选择先介绍GUI开发的原因是：目前">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python量化交易平台开发教程系列7-顶层GUI界面开发（1）">
+<meta property="og:url" content="http://vnpy.github.io/2015/07/09/20150709_Python量化交易平台开发教程系列7-顶层GUI界面开发（1）/">
+<meta property="og:site_name" content="vn.py">
+<meta property="og:description" content="原创文章，转载请注明出处：用Python的交易员
+前言
+终于有时间来写第一篇顶层GUI界面开发相关的教程了，之前实在是事情太多，跟各位读者抱个歉。
+整合底层接口的各项功能到中层引擎中后，当我们开发顶层应用时（GUI或者策略算法），只需知道中层引擎对外提供的主动API函数以及事件引擎中相关的事件类型和数据形式即可。
+在GUI和策略算法这两个主要类型的顶层应用中，作者选择先介绍GUI开发的原因是：目前">
+<meta property="og:image" content="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B7%E7%9B%91%E6%8E%A7.jpg">
+<meta property="og:image" content="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B7%E4%B8%BB%E5%8A%A8.jpg">
+<meta property="og:image" content="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B7%E6%B7%B7%E5%90%88.jpg">
+<meta property="og:image" content="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B7%E6%97%A5%E5%BF%97.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python量化交易平台开发教程系列7-顶层GUI界面开发（1）">
+<meta name="twitter:description" content="原创文章，转载请注明出处：用Python的交易员
+前言
+终于有时间来写第一篇顶层GUI界面开发相关的教程了，之前实在是事情太多，跟各位读者抱个歉。
+整合底层接口的各项功能到中层引擎中后，当我们开发顶层应用时（GUI或者策略算法），只需知道中层引擎对外提供的主动API函数以及事件引擎中相关的事件类型和数据形式即可。
+在GUI和策略算法这两个主要类型的顶层应用中，作者选择先介绍GUI开发的原因是：目前">
+
+
+    
+    <link rel="alternative" href="/atom.xml" title="vn.py" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/ioslogo.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/ioslogo.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="vn.py" title="vn.py"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="vn.py">vn.py</a></h1>
+				<h2 class="blog-motto">基于python的开源交易平台开发框架</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">存档</a></li>
+					
+						<li><a href="/demo">Demo</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:vnpy.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/07/09/20150709_Python量化交易平台开发教程系列7-顶层GUI界面开发（1）/" title="Python量化交易平台开发教程系列7-顶层GUI界面开发（1）" itemprop="url">Python量化交易平台开发教程系列7-顶层GUI界面开发（1）</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="http://vnpy.github.io/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
+		
+  <p class="article-time">
+    <time datetime="2015-07-09T08:20:00.000Z" itemprop="datePublished"> 发表于 7月 9 2015</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PyQt"><span class="toc-number">2.</span> <span class="toc-text">PyQt</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GUI组件"><span class="toc-number">3.</span> <span class="toc-text">GUI组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据监控组件"><span class="toc-number">4.</span> <span class="toc-text">数据监控组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#日志监控"><span class="toc-number">4.1.</span> <span class="toc-text">日志监控</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol>
+		
+		</div>
+		
+		<p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2 id="前言">前言</h2>
+<p>终于有时间来写第一篇顶层GUI界面开发相关的教程了，之前实在是事情太多，跟各位读者抱个歉。</p>
+<p>整合底层接口的各项功能到中层引擎中后，当我们开发顶层应用时（GUI或者策略算法），只需知道中层引擎对外提供的主动API函数以及事件引擎中相关的事件类型和数据形式即可。</p>
+<p>在GUI和策略算法这两个主要类型的顶层应用中，作者选择先介绍GUI开发的原因是：目前国内支持用户定制化开发GUI界面的量化平台少之又少，而包含一个比较全面的GUI开发教程的则据我所知还没有。随着国内越来越多的衍生品推出（期权、分级基金、未来的反向基金），很多新型的交易策略从全自动转向了半自动，经常需要交易员的手动干预（启动暂停策略、盘中微调参数等），以及投资组合层面的风险管理（期权希腊值、分级基金行业暴露等），这种情况下传统上仅支持策略算法开发的量化交易平台变得越发难以满足交易员的需求（包括作者本人），所以估计这方面的文章更能填补当前市场需求的空缺（笑…）。</p>
+<hr>
+<h2 id="PyQt">PyQt</h2>
+<p>目前Python上主要的GUI开发工具包括：tkinter、PyQt、PyGTK和wxPython，笔者选择PyQt的主要原因是：</p>
+<ol>
+<li>Anaconda中已经包含（早期版本中包含的是LGPL协议的Pyside，稳定性不如PyQt）</li>
+<li>另一个内置GUI库tkinter的功能太弱</li>
+</ol>
+<p>网上对这四款GUI开发工具比较分析的文章很多，有兴趣的读者可以自己搜搜看。</p>
+<p>接下来的几篇GUI开发教程会假设读者已经对PyQt开发有了一定的了解，主要针对和量化交易平台开发相关的部分，需要补充基础知识的读者建议参考以下资源：</p>
+<ol>
+<li>zetcode.com，上面的教程简单明了，从头到尾做一遍对PyQt的工作原理基本就有个全面的了解了</li>
+<li>Rapid GUI Programming with Python and Qt，一本由Riverbank（PyQt的开发公司）员工推出的PyQt开发教程，非常细致全面，但是部分内容跳跃性太大，需要从头到尾多看几遍</li>
+<li>也可以在遇到特定问题时搜百度或者StackOverflow，通常都能找到答案</li>
+</ol>
+<p><strong>PyQt版本</strong><br>在<a href="http://www.riverbankcomputing.com/software/pyqt/download" target="_blank" rel="external">Riverbank官网</a>下载：</p>
+<blockquote>
+<p>PyQt4-4.11.4-gpl-Py2.7-Qt4.8.7-x32.exe    Windows 32 bit installer</p>
+</blockquote>
+<p>请特别注意这个版本的问题，从最近几个月的经验看，很多PyQt相关模块运行时报错就是因为下错了版本（PyQt5、64位等等都不对）。</p>
+<hr>
+<h2 id="GUI组件">GUI组件</h2>
+<p>从功能上看，所有交易平台的GUI组件都可以分为两类，数据监控（被动）和功能调用（主动），当然也有同时混合两类功能的组件。</p>
+<p><strong>数据监控</strong><br><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B7%E7%9B%91%E6%8E%A7.jpg" alt="enter image description here"><br>行情监控组件，用于监控实时行情数据，每当API端有新的行情数据推送时立即进行更新。</p>
+<p><strong>功能调用</strong><br><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B7%E4%B8%BB%E5%8A%A8.jpg" alt="enter image description here"><br>账号登录组件，用于调用中层引擎的登录功能，传入用户名、密码、服务器地址等参数。</p>
+<p><strong>混合（交易下单）</strong><br><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B7%E6%B7%B7%E5%90%88.jpg" alt="enter image description here"><br>交易下单组件，左侧部分用于填入下单参数后调用中层引擎的下单功能发单，右侧部分用于监控用户输入的合约代码的实时行情（有行情推送时立即更新）。</p>
+<hr>
+<h2 id="数据监控组件">数据监控组件</h2>
+<p>数据监控组件主要用于对交易平台中的各项数据实现实时更新或者手动更新的显示监控，最常用的包括行情、报单、成交、持仓和日志等。监控组件中最常见的类型是表格，对应PyQt中的QTableWidget组件，表格中的单元格则使用QTableWidgetItem组件。对于某些特殊的数据监控也可以使用其他类型的组件，如上面交易下单组件中右侧的部分，主要是使用标签组件QLabel构成的。</p>
+<p>针对不同的监控内容需要实现不同的数据更新方法，例如日志、成交类数据应该使用插入更新（即每条新的数据都应该插入新的一行），行情数据应该使用固定位置更新（即在表格中固定的单元格位置更新数据），以及主要针对持仓和报单数据的混合更新（即已经存在的数据直接在对应的位置更新，否则插入新的一行）。</p>
+<p>下面以最基础的日志监控为例介绍监控组件的实现原理，其他更为复杂的监控组件建议用户直接阅读vn.demo中demoMain.py的源代码，大部分代码作者都做了详尽的注释。</p>
+<h3 id="日志监控">日志监控</h3>
+<p>日志监控组件主要用于输出程序运行过程中有关当前程序运行状态的信息。</p>
+<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B7%E6%97%A5%E5%BF%97.jpg" alt="enter image description here"></p>
+<p>整个实现代码如下：</p>
+<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="comment">########################################################################</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">LogMonitor</span><span class="params">(QtGui.QTableWidget)</span>:</span></div><div class="line">    <span class="string">"""用于显示日志"""</span></div><div class="line">    signal = QtCore.pyqtSignal(type(Event()))</div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, eventEngine, parent=None)</span>:</span></div><div class="line">        <span class="string">"""Constructor"""</span></div><div class="line">        super(LogMonitor, self).__init__(parent)</div><div class="line">        self.__eventEngine = eventEngine</div><div class="line"></div><div class="line">        self.initUi()</div><div class="line">        self.registerEvent()</div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initUi</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""初始化界面"""</span></div><div class="line">        self.setWindowTitle(<span class="string">u'日志'</span>)</div><div class="line"></div><div class="line">        self.setColumnCount(<span class="number">2</span>)                     </div><div class="line">        self.setHorizontalHeaderLabels([<span class="string">u'时间'</span>, <span class="string">u'日志'</span>])</div><div class="line"></div><div class="line">        self.verticalHeader().setVisible(<span class="keyword">False</span>)                 <span class="comment"># 关闭左边的垂直表头</span></div><div class="line">        self.setEditTriggers(QtGui.QTableWidget.NoEditTriggers) <span class="comment"># 设为不可编辑状态</span></div><div class="line"></div><div class="line">        <span class="comment"># 自动调整列宽</span></div><div class="line">        self.horizontalHeader().setResizeMode(<span class="number">0</span>, QtGui.QHeaderView.ResizeToContents)</div><div class="line">        self.horizontalHeader().setResizeMode(<span class="number">1</span>, QtGui.QHeaderView.Stretch)        </div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">registerEvent</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""注册事件监听"""</span></div><div class="line">        <span class="comment"># Qt图形组件的GUI更新必须使用Signal/Slot机制，否则有可能导致程序崩溃</span></div><div class="line">        <span class="comment"># 因此这里先将图形更新函数作为Slot，和信号连接起来</span></div><div class="line">        <span class="comment"># 然后将信号的触发函数注册到事件驱动引擎中</span></div><div class="line">        self.signal.connect(self.updateLog)</div><div class="line">        self.__eventEngine.register(EVENT_LOG, self.signal.emit)</div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">updateLog</span><span class="params">(self, event)</span>:</span></div><div class="line">        <span class="string">"""更新日志"""</span></div><div class="line">        <span class="comment"># 获取当前时间和日志内容</span></div><div class="line">        t = time.strftime(<span class="string">'%H:%M:%S'</span>,time.localtime(time.time()))   </div><div class="line">        log = event.dict_[<span class="string">'log'</span>]                                    </div><div class="line"></div><div class="line">        <span class="comment"># 在表格最上方插入一行</span></div><div class="line">        self.insertRow(<span class="number">0</span>)              </div><div class="line"></div><div class="line">        <span class="comment"># 创建单元格</span></div><div class="line">        cellTime = QtGui.QTableWidgetItem(t)    </div><div class="line">        cellLog = QtGui.QTableWidgetItem(log)</div><div class="line"></div><div class="line">        <span class="comment"># 将单元格插入表格</span></div><div class="line">        self.setItem(<span class="number">0</span>, <span class="number">0</span>, cellTime)            </div><div class="line">        self.setItem(<span class="number">0</span>, <span class="number">1</span>, cellLog)</div></pre></td></tr></table></figure>
+
+<p>接下来逐段讲解：</p>
+<p><strong>对象初始化（<strong>init</strong>）</strong></p>
+<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, eventEngine, parent=None)</span>:</span></div><div class="line">    <span class="string">"""Constructor"""</span></div><div class="line">    super(LogMonitor, self).__init__(parent)</div><div class="line">    self.__eventEngine = eventEngine</div><div class="line"></div><div class="line">    self.initUi()</div><div class="line">    self.registerEvent()</div></pre></td></tr></table></figure>
+
+<ul>
+<li>创建对象时，我们需要传入程序中的事件驱动引擎对象eventEngine，以及该图形组件所依附的母组件对象parent（一般可以留空）</li>
+<li>把eventEngine对象的引用保存到__eventEngine上后，我们调用initUi方法初始化图形组件的界面，以及registerEvent方法来向事件引擎中注册该图形组件的事件监听函数。</li>
+</ul>
+<p><strong>初始化界面（initUi）</strong></p>
+<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">initUi</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">"""初始化界面"""</span></div><div class="line">    self.setWindowTitle(<span class="string">u'日志'</span>)</div><div class="line"></div><div class="line">    self.setColumnCount(<span class="number">2</span>)                     </div><div class="line">    self.setHorizontalHeaderLabels([<span class="string">u'时间'</span>, <span class="string">u'日志'</span>])</div><div class="line"></div><div class="line">    self.verticalHeader().setVisible(<span class="keyword">False</span>)                 <span class="comment"># 关闭左边的垂直表头</span></div><div class="line">    self.setEditTriggers(QtGui.QTableWidget.NoEditTriggers) <span class="comment"># 设为不可编辑状态</span></div><div class="line"></div><div class="line">    <span class="comment"># 自动调整列宽</span></div><div class="line">    self.horizontalHeader().setResizeMode(<span class="number">0</span>, QtGui.QHeaderView.ResizeToContents)</div><div class="line">    self.horizontalHeader().setResizeMode(<span class="number">1</span>, QtGui.QHeaderView.Stretch)</div></pre></td></tr></table></figure>
+
+<ul>
+<li>首先设置该图形组件左上方的标题栏内容为“日志”（日志监控组件）</li>
+<li>我们希望显示日志时，每行显示该条日志的生成时间和具体的日志内容</li>
+<li>由于QTableWidget本身比较类似于Excel表格，左侧有垂直标题栏（默认用于显示每行行号的表头）且可以编辑，我们需要关闭这两个功能</li>
+<li>另外我们希望显示日志生成时间的列的列宽可以调整为最小（只要能看见完整的时间就行），而把显示日志内容的列设为拉升（即窗口有多宽都完全覆盖）</li>
+</ul>
+<p><strong>注册事件监听（registerEvent）</strong></p>
+<p>这里需要稍微深入一下vn.py框架中的多线程工作机制：</p>
+<ol>
+<li>整个框架在Python环境中主要包含两个线程：主线程（运行Qt循环）和事件处理线程（运行EventEngine中的工作循环）</li>
+<li>针对用户是否需要使用GUI界面，主线程中运行的Qt循环可以选择QApplication（带GUI）或者QCoreApplication（纯cmd）</li>
+<li>. Qt循环主要负责处理所有GUI相关的操作（控件绘制、信号处理等等），用户不能在其他线程中直接改变GUI界面上的任何内容，否则可能会直接导致程序崩溃</li>
+<li>当用户希望在其他线程中对GUI进行操作时，必须依赖Qt提供的signal/slot机制，Qt循环的底层也运行着一个类似于EventEngine的事件处理机制，其他线程发出signal后会首先记录到一个队列中，然后由Qt对队列中的signal任务进行循环处理（具体请参考Qt相关的资料）</li>
+<li>事件处理线程的工作原理在之前的教程中已经专门介绍过了，这里不再重复，用户只需记住所有Qt GUI组件的事件处理函数，都必须使用一个signal和该函数相连，并且在向事件引擎中注册函数监听时，将该signal的emit方法代替原本的事件处理函数进行注册</li>
+</ol>
+<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">########################################################################</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">LogMonitor</span><span class="params">(QtGui.QTableWidget)</span>:</span></div><div class="line">    <span class="string">"""用于显示日志"""</span></div><div class="line">    signal = QtCore.pyqtSignal(type(Event()))</div></pre></td></tr></table></figure>
+
+<ul>
+<li>signal的创建需要放在类的构造中，而不能放在类的初始化函数里（Qt会直接报错）</li>
+<li>由于事件驱动引擎在调用监听函数时会传入事件对象本身作为参数，因此在创建signal时需要允许传入一个类型为Event的参数</li>
+</ul>
+<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">   </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">registerEvent</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">"""注册事件监听"""</span></div><div class="line">    <span class="comment"># Qt图形组件的GUI更新必须使用Signal/Slot机制，否则有可能导致程序崩溃</span></div><div class="line">    <span class="comment"># 因此这里先将图形更新函数作为Slot，和信号连接起来</span></div><div class="line">    <span class="comment"># 然后将信号的触发函数注册到事件驱动引擎中</span></div><div class="line">    self.signal.connect(self.updateLog)</div><div class="line">    self.__eventEngine.register(EVENT_LOG, self.signal.emit)</div></pre></td></tr></table></figure>
+
+<ul>
+<li>首先我们把signal和事件处理函数updateLog连接.</li>
+<li>然后将signal的emit方法注册到事件驱动引擎中，监听EVENT_LOG类型的事件</li>
+</ul>
+<p><strong>更新日志记录（updateLog）</strong></p>
+<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">updateLog</span><span class="params">(self, event)</span>:</span></div><div class="line">    <span class="string">"""更新日志"""</span></div><div class="line">    <span class="comment"># 获取当前时间和日志内容</span></div><div class="line">    t = time.strftime(<span class="string">'%H:%M:%S'</span>,time.localtime(time.time()))   </div><div class="line">    log = event.dict_[<span class="string">'log'</span>]                                    </div><div class="line"></div><div class="line">    <span class="comment"># 在表格最上方插入一行</span></div><div class="line">    self.insertRow(<span class="number">0</span>)              </div><div class="line"></div><div class="line">    <span class="comment"># 创建单元格</span></div><div class="line">    cellTime = QtGui.QTableWidgetItem(t)    </div><div class="line">    cellLog = QtGui.QTableWidgetItem(log)</div><div class="line"></div><div class="line">    <span class="comment"># 将单元格插入表格</span></div><div class="line">    self.setItem(<span class="number">0</span>, <span class="number">0</span>, cellTime)            </div><div class="line">    self.setItem(<span class="number">0</span>, <span class="number">1</span>, cellLog)</div></pre></td></tr></table></figure>
+
+<ul>
+<li>感觉这段代码的注释已经足够清楚，就不多废话了</li>
+</ul>
+<h2 id="总结">总结</h2>
+<p>尽管Qt库本身使用C++开发，相比之下在Python中使用PyQt构建GUI程序更为快捷、简便。基于Python动态语言的特性，在很多不是特别追求性能（GUI更新速度）的地方可以大幅减少用户的代码编写量，并且降低出错率。</p>
+<p>请记住vn.py从开始就是一款专门为交易员设计的通用型交易平台开发框架（而不止是全自动的程序化交易），在金融市场上真正能帮助交易员赚钱的绝对不是多么复杂的程序算法，而是能够完美实现交易员的交易策略并且越简单越好的工具。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/教程/">教程</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://vnpy.github.io/2015/07/09/20150709_Python量化交易平台开发教程系列7-顶层GUI界面开发（1）/" data-title="Python量化交易平台开发教程系列7-顶层GUI界面开发（1） | vn.py" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/05/20/20150520_Python量化交易平台开发教程系列6-中层引擎设计/"  title="Python量化交易平台开发教程系列6-中层引擎设计">
+ <strong>下一篇：</strong><br/> 
+ <span>Python量化交易平台开发教程系列6-中层引擎设计
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2015/07/09/20150709_Python量化交易平台开发教程系列7-顶层GUI界面开发（1）/" data-title="Python量化交易平台开发教程系列7-顶层GUI界面开发（1）" data-url="http://vnpy.github.io/2015/07/09/20150709_Python量化交易平台开发教程系列7-顶层GUI界面开发（1）/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PyQt"><span class="toc-number">2.</span> <span class="toc-text">PyQt</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GUI组件"><span class="toc-number">3.</span> <span class="toc-text">GUI组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据监控组件"><span class="toc-number">4.</span> <span class="toc-text">数据监控组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#日志监控"><span class="toc-number">4.1.</span> <span class="toc-text">日志监控</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/教程/" title="教程">教程<sup>8</sup></a></li>
+		
+			<li><a href="/categories/日志/" title="日志">日志<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://github.com/vnpy/vnpy" target="_blank" title="vn.py on GitHub">vn.py on GitHub</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Talk is cheap, show me the code. <br/>
+			</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/vnpy" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="https://www.zhihu.com/people/traderusingpython" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:vn.py@foxmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="http://vnpy.github.io/about" target="_blank" title="用python的交易员">用python的交易员</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"vnpy"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fe8c7573f82d43fa50c895a8e28c49ceb' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254558631'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s23.cnzz.com/z_stat.php%3Fid%3D1254558631' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+  </body>
+</html>
