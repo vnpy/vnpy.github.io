@@ -141,7 +141,7 @@
 <ol>
 <li><p>LTS和CTP的行情和交易账户通常是由经纪商一起提供的，为了简洁起见，把两个接口的登录一起封装在了login函数中。</p>
 </li>
-<li><p>subscribe, getAccount, getPosition, getInvestor, getInstrument, sendOrder, cancelOrder都只是直接调用行情和交易接口的功能，做这种设计的目的是为了让用户在写上层组件代码时，可以直接写self.mainEngine.subscribe(‘IF1506’, ‘CFFEX’)，而不必去写self.mainEngine.td.subscribe(‘IF1506’, ‘CFFEX’)，很小的区别，但是相信我，程序规模大了后会让你烦到崩溃。</p>
+<li><p>subscribe, getAccount, getPosition, getInvestor, getInstrument, sendOrder, cancelOrder都只是直接调用行情和交易接口的功能，做这种设计的目的是为了让用户在写上层组件代码时，可以直接写self.mainEngine.subscribe(‘IF1506’, ‘CFFEX’)，而不必去写self.mainEngine.md.subscribe(‘IF1506’, ‘CFFEX’)，很小的区别，但是相信我，程序规模大了后会让你烦到崩溃。</p>
 </li>
 <li><p>getAccountPosition用于实现循环查询账户和持仓，这里我设为了每5秒发一次，基本够用就好。</p>
 </li>
@@ -185,6 +185,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2015/07/09/20150709_Python量化交易平台开发教程系列7-顶层GUI界面开发（1）/" title="Python量化交易平台开发教程系列7-顶层GUI界面开发（1）">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Python量化交易平台开发教程系列7-顶层GUI界面开发（1）</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2015/05/05/20150505_Python量化交易平台开发教程系列5-底层接口对接/"  title="Python量化交易平台开发教程系列5-底层接口对接">
@@ -221,7 +229,7 @@
 	<p class="asidetitle">分类</p>
 		<ul>
 		
-			<li><a href="/categories/教程/" title="教程">教程<sup>7</sup></a></li>
+			<li><a href="/categories/教程/" title="教程">教程<sup>8</sup></a></li>
 		
 			<li><a href="/categories/日志/" title="日志">日志<sup>2</sup></a></li>
 		
