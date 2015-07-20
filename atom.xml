@@ -3,9 +3,9 @@
   <title><![CDATA[vn.py]]></title>
   <subtitle><![CDATA[基于python的开源交易平台开发框架]]></subtitle>
   <link href="/atom.xml" rel="self"/>
-  <link href="http://vnpy.github.io/"/>
-  <updated>2015-07-14T09:18:57.593Z</updated>
-  <id>http://vnpy.github.io/</id>
+  <link href="http://vnpy.org/"/>
+  <updated>2015-07-20T10:32:44.855Z</updated>
+  <id>http://vnpy.org/</id>
   
   <author>
     <name><![CDATA[用python的交易员]]></name>
@@ -16,8 +16,8 @@
   
   <entry>
     <title><![CDATA[Python量化交易平台开发教程系列8-顶层GUI界面开发（2）]]></title>
-    <link href="http://vnpy.github.io/2015/07/14/20150714_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%978-%E9%A1%B6%E5%B1%82GUI%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%EF%BC%882%EF%BC%89/"/>
-    <id>http://vnpy.github.io/2015/07/14/20150714_Python量化交易平台开发教程系列8-顶层GUI界面开发（2）/</id>
+    <link href="http://vnpy.org/2015/07/14/20150714_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%978-%E9%A1%B6%E5%B1%82GUI%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%EF%BC%882%EF%BC%89/"/>
+    <id>http://vnpy.org/2015/07/14/20150714_Python量化交易平台开发教程系列8-顶层GUI界面开发（2）/</id>
     <published>2015-07-14T05:20:00.000Z</published>
     <updated>2015-07-14T09:18:29.120Z</updated>
     <content type="html"><![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
@@ -67,14 +67,14 @@
 <figure]]>
     </summary>
     
-      <category term="教程" scheme="http://vnpy.github.io/categories/%E6%95%99%E7%A8%8B/"/>
+      <category term="教程" scheme="http://vnpy.org/categories/%E6%95%99%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Python量化交易平台开发教程系列7-顶层GUI界面开发（1）]]></title>
-    <link href="http://vnpy.github.io/2015/07/09/20150709_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%977-%E9%A1%B6%E5%B1%82GUI%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%EF%BC%881%EF%BC%89/"/>
-    <id>http://vnpy.github.io/2015/07/09/20150709_Python量化交易平台开发教程系列7-顶层GUI界面开发（1）/</id>
+    <link href="http://vnpy.org/2015/07/09/20150709_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%977-%E9%A1%B6%E5%B1%82GUI%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%EF%BC%881%EF%BC%89/"/>
+    <id>http://vnpy.org/2015/07/09/20150709_Python量化交易平台开发教程系列7-顶层GUI界面开发（1）/</id>
     <published>2015-07-09T08:20:00.000Z</published>
     <updated>2015-07-09T09:53:34.416Z</updated>
     <content type="html"><![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
@@ -170,14 +170,14 @@
 <p>整合底层接口的各项功能到中层引擎中后，当我们开发顶层应用时（GU]]>
     </summary>
     
-      <category term="教程" scheme="http://vnpy.github.io/categories/%E6%95%99%E7%A8%8B/"/>
+      <category term="教程" scheme="http://vnpy.org/categories/%E6%95%99%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Python量化交易平台开发教程系列6-中层引擎设计]]></title>
-    <link href="http://vnpy.github.io/2015/05/20/20150520_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%976-%E4%B8%AD%E5%B1%82%E5%BC%95%E6%93%8E%E8%AE%BE%E8%AE%A1/"/>
-    <id>http://vnpy.github.io/2015/05/20/20150520_Python量化交易平台开发教程系列6-中层引擎设计/</id>
+    <link href="http://vnpy.org/2015/05/20/20150520_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%976-%E4%B8%AD%E5%B1%82%E5%BC%95%E6%93%8E%E8%AE%BE%E8%AE%A1/"/>
+    <id>http://vnpy.org/2015/05/20/20150520_Python量化交易平台开发教程系列6-中层引擎设计/</id>
     <published>2015-05-20T01:20:00.000Z</published>
     <updated>2015-07-09T09:52:06.673Z</updated>
     <content type="html"><![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
@@ -227,14 +227,14 @@
 <p>中层引擎在设计上主要是为了进一步封装底层接口所暴露出的API函数，使得其更容易被上层的GUI和策略组件调用。本篇的内容会相对简单，主要以LTS接口DEMO为例介绍一些设计]]>
     </summary>
     
-      <category term="教程" scheme="http://vnpy.github.io/categories/%E6%95%99%E7%A8%8B/"/>
+      <category term="教程" scheme="http://vnpy.org/categories/%E6%95%99%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Python量化交易平台开发教程系列5-底层接口对接]]></title>
-    <link href="http://vnpy.github.io/2015/05/05/20150505_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%975-%E5%BA%95%E5%B1%82%E6%8E%A5%E5%8F%A3%E5%AF%B9%E6%8E%A5/"/>
-    <id>http://vnpy.github.io/2015/05/05/20150505_Python量化交易平台开发教程系列5-底层接口对接/</id>
+    <link href="http://vnpy.org/2015/05/05/20150505_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%975-%E5%BA%95%E5%B1%82%E6%8E%A5%E5%8F%A3%E5%AF%B9%E6%8E%A5/"/>
+    <id>http://vnpy.org/2015/05/05/20150505_Python量化交易平台开发教程系列5-底层接口对接/</id>
     <published>2015-05-05T06:46:00.000Z</published>
     <updated>2015-05-08T01:59:46.089Z</updated>
     <content type="html"><![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
@@ -346,14 +346,14 @@
 <p><strong>通常情况下，一个交易程序的架构会由以下三个部分组成]]>
     </summary>
     
-      <category term="教程" scheme="http://vnpy.github.io/categories/%E6%95%99%E7%A8%8B/"/>
+      <category term="教程" scheme="http://vnpy.org/categories/%E6%95%99%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[2015/4/20 项目开发日志]]></title>
-    <link href="http://vnpy.github.io/2015/04/20/20150420_20150420%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/"/>
-    <id>http://vnpy.github.io/2015/04/20/20150420_20150420项目开发日志/</id>
+    <link href="http://vnpy.org/2015/04/20/20150420_20150420%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/"/>
+    <id>http://vnpy.org/2015/04/20/20150420_20150420项目开发日志/</id>
     <published>2015-04-20T08:56:45.000Z</published>
     <updated>2015-04-20T08:56:33.124Z</updated>
     <content type="html"><![CDATA[<h2 id="目前项目状态">目前项目状态</h2>
@@ -395,14 +395,14 @@
 <p>接下来将会发布几篇和vn.demo相关的教程。</p>]]>
     </summary>
     
-      <category term="日志" scheme="http://vnpy.github.io/categories/%E6%97%A5%E5%BF%97/"/>
+      <category term="日志" scheme="http://vnpy.org/categories/%E6%97%A5%E5%BF%97/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Python量化交易平台开发教程系列4-事件驱动引擎原理和使用]]></title>
-    <link href="http://vnpy.github.io/2015/03/13/20150313_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%974-%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E5%BC%95%E6%93%8E%E5%8E%9F%E7%90%86%E5%92%8C%E4%BD%BF%E7%94%A8/"/>
-    <id>http://vnpy.github.io/2015/03/13/20150313_Python量化交易平台开发教程系列4-事件驱动引擎原理和使用/</id>
+    <link href="http://vnpy.org/2015/03/13/20150313_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%974-%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E5%BC%95%E6%93%8E%E5%8E%9F%E7%90%86%E5%92%8C%E4%BD%BF%E7%94%A8/"/>
+    <id>http://vnpy.org/2015/03/13/20150313_Python量化交易平台开发教程系列4-事件驱动引擎原理和使用/</id>
     <published>2015-03-13T02:58:00.000Z</published>
     <updated>2015-03-18T06:16:56.800Z</updated>
     <content type="html"><![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
@@ -518,14 +518,14 @@
 <p>经过上一篇复杂繁琐的API编译后，我们已经有了一个可以在Python环境中用来收行]]>
     </summary>
     
-      <category term="教程" scheme="http://vnpy.github.io/categories/%E6%95%99%E7%A8%8B/"/>
+      <category term="教程" scheme="http://vnpy.org/categories/%E6%95%99%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Python量化交易平台开发教程系列3-vn.py项目中API封装的编译]]></title>
-    <link href="http://vnpy.github.io/2015/03/12/20150312_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%973-vn.py%E9%A1%B9%E7%9B%AE%E4%B8%ADAPI%E5%B0%81%E8%A3%85%E7%9A%84%E7%BC%96%E8%AF%91/"/>
-    <id>http://vnpy.github.io/2015/03/12/20150312_Python量化交易平台开发教程系列3-vn.py项目中API封装的编译/</id>
+    <link href="http://vnpy.org/2015/03/12/20150312_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%973-vn.py%E9%A1%B9%E7%9B%AE%E4%B8%ADAPI%E5%B0%81%E8%A3%85%E7%9A%84%E7%BC%96%E8%AF%91/"/>
+    <id>http://vnpy.org/2015/03/12/20150312_Python量化交易平台开发教程系列3-vn.py项目中API封装的编译/</id>
     <published>2015-03-12T02:02:28.000Z</published>
     <updated>2015-05-04T01:21:28.572Z</updated>
     <content type="html"><![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
@@ -636,14 +636,14 @@
 <p>经历了两篇的理论折磨后，本篇教程开始进入实际操作的环节，这里作者假设读者是毫无C++经验的用户，操作一步步配图，还有问题的来<a href="https://github]]>
     </summary>
     
-      <category term="教程" scheme="http://vnpy.github.io/categories/%E6%95%99%E7%A8%8B/"/>
+      <category term="教程" scheme="http://vnpy.org/categories/%E6%95%99%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计]]></title>
-    <link href="http://vnpy.github.io/2015/03/09/20150309_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%972-%E7%B1%BBCTP%E4%BA%A4%E6%98%93API%E7%9A%84Python%E5%B0%81%E8%A3%85%E8%AE%BE%E8%AE%A1/"/>
-    <id>http://vnpy.github.io/2015/03/09/20150309_Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计/</id>
+    <link href="http://vnpy.org/2015/03/09/20150309_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%972-%E7%B1%BBCTP%E4%BA%A4%E6%98%93API%E7%9A%84Python%E5%B0%81%E8%A3%85%E8%AE%BE%E8%AE%A1/"/>
+    <id>http://vnpy.org/2015/03/09/20150309_Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计/</id>
     <published>2015-03-09T03:49:28.000Z</published>
     <updated>2015-03-12T01:59:03.196Z</updated>
     <content type="html"><![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
@@ -759,14 +759,14 @@
 <h2 id="为什么要封]]>
     </summary>
     
-      <category term="教程" scheme="http://vnpy.github.io/categories/%E6%95%99%E7%A8%8B/"/>
+      <category term="教程" scheme="http://vnpy.org/categories/%E6%95%99%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Python量化交易平台开发教程系列1-类CTP交易API的工作原理]]></title>
-    <link href="http://vnpy.github.io/2015/03/05/20150305_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%971-%E7%B1%BBCTP%E4%BA%A4%E6%98%93API%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"/>
-    <id>http://vnpy.github.io/2015/03/05/20150305_Python量化交易平台开发教程系列1-类CTP交易API的工作原理/</id>
+    <link href="http://vnpy.org/2015/03/05/20150305_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%971-%E7%B1%BBCTP%E4%BA%A4%E6%98%93API%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"/>
+    <id>http://vnpy.org/2015/03/05/20150305_Python量化交易平台开发教程系列1-类CTP交易API的工作原理/</id>
     <published>2015-03-05T06:28:49.000Z</published>
     <updated>2015-03-06T07:33:48.128Z</updated>
     <content type="html"><![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
@@ -886,14 +886,14 @@
 <p>国内程序化交易技术的爆发式发展几乎就是起源于上期技术公司基于CTP柜台推出了交易API，使得用户可以随意开发自己的交易软件直接连接到交]]>
     </summary>
     
-      <category term="教程" scheme="http://vnpy.github.io/categories/%E6%95%99%E7%A8%8B/"/>
+      <category term="教程" scheme="http://vnpy.org/categories/%E6%95%99%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Python量化交易平台开发教程系列0-引言]]></title>
-    <link href="http://vnpy.github.io/2015/03/04/20150304_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%970-%E5%BC%95%E8%A8%80/"/>
-    <id>http://vnpy.github.io/2015/03/04/20150304_Python量化交易平台开发教程系列0-引言/</id>
+    <link href="http://vnpy.org/2015/03/04/20150304_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%970-%E5%BC%95%E8%A8%80/"/>
+    <id>http://vnpy.org/2015/03/04/20150304_Python量化交易平台开发教程系列0-引言/</id>
     <published>2015-03-04T02:58:42.000Z</published>
     <updated>2015-03-05T06:25:34.714Z</updated>
     <content type="html"><![CDATA[<p>原创文章，转载请注明出处：用Python的交易员</p>
@@ -953,14 +953,14 @@
 <p>目前本人所在的公司一共有三款平台，分别基于C++， C#和Python。其中C#和Python平台都是]]>
     </summary>
     
-      <category term="教程" scheme="http://vnpy.github.io/categories/%E6%95%99%E7%A8%8B/"/>
+      <category term="教程" scheme="http://vnpy.org/categories/%E6%95%99%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[2015/3/3 项目开发日志]]></title>
-    <link href="http://vnpy.github.io/2015/03/03/20150303_20150303%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/"/>
-    <id>http://vnpy.github.io/2015/03/03/20150303_20150303项目开发日志/</id>
+    <link href="http://vnpy.org/2015/03/03/20150303_20150303%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E6%97%A5%E5%BF%97/"/>
+    <id>http://vnpy.org/2015/03/03/20150303_20150303项目开发日志/</id>
     <published>2015-03-03T10:16:45.000Z</published>
     <updated>2015-03-05T06:24:42.700Z</updated>
     <content type="html"><![CDATA[<h2 id="目前项目状态">目前项目状态</h2>
@@ -994,7 +994,7 @@
 <h3 i]]>
     </summary>
     
-      <category term="日志" scheme="http://vnpy.github.io/categories/%E6%97%A5%E5%BF%97/"/>
+      <category term="日志" scheme="http://vnpy.org/categories/%E6%97%A5%E5%BF%97/"/>
     
   </entry>
   
