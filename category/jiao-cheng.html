@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+        <meta charset="utf-8" />
+        <title>vn.py - 教程</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">vn.py </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/jiao-cheng.html">教程</a></li>
+                    <li><a href="/category/ri-zhi.html">日志</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/quantlib-tutorial.html">在Python中使用QuantLib</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2016-03-15T16:25:42+08:00">
+                Published: 周二 15 三月 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yong-pythonde-jiao-yi-yuan.html">用Python的交易员</a>
+        </address>
+<p>In <a href="/category/jiao-cheng.html">教程</a>.</p>
+
+</footer><!-- /.post-info --><h2>Quantlib简介</h2>
+<p>相比TA-Lib在技术分析领域的地位，QuantLib在金融工程领域的地位可以说有过之而无不及。</p>
+<p>参考其<a href="http://quantlib.org/reference/modules.html">官方网站</a>，QuantLib中包含的的模块如下（其中个人感觉国内比较有用的添加了中文注释）：</p>
+<blockquote>
+<ul>
+<li>
+<p>Currencies and FX rates（货币相关）</p>
+</li>
+<li>
+<p>Date and time calculations（日期和时间计算）</p>
+</li>
+<li>
+<p>Calendars  </p>
+</li>
+<li>
+<p>Day counters   </p>
+</li>
+<li>
+<p>Design patterns  </p>
+</li>
+<li>
+<p>Financial instruments</p>
+</li>
+<li>
+<p>Finite-differences framework</p>
+</li>
+<li>
+<p>Lattice methods  </p>
+</li>
+<li>
+<p>Math tools</p>
+</li>
+<li>
+<p>1-D Interpolations and corresponding traits    </p>
+</li>
+<li>
+<p>One-dimensional solvers    </p>
+</li>
+<li>
+<p>Optimizers（优化器）</p>
+</li>
+<li>
+<p>Monte Carlo framework    （蒙特卡洛模拟框架）</p>
+</li>
+<li>
+<p>Numeric types    </p>
+</li>
+<li>
+<p>Output manipulators  </p>
+</li>
+<li>
+<p>Pricing engines（定价引擎）</p>
+</li>
+<li>
+<p>Asian option engines（亚式期权）</p>
+</li>
+<li>
+<p>Barrier option engines（障碍期权）</p>
+</li>
+<li>
+<p>Basket option engines（篮子期权）</p>
+</li>
+<li>
+<p>Cap/floor engines  </p>
+</li>
+<li>
+<p>Cliquet option engines </p>
+</li>
+<li>
+<p>Forward option engines（远期期权）</p>
+</li>
+<li>
+<p>Quanto option engines  </p>
+</li>
+<li>
+<p>Swaption engines   </p>
+</li>
+<li>
+<p>Vanilla option engines（普通期权）</p>
+</li>
+<li>
+<p>QuantLib macros  </p>
+</li>
+<li>
+<p>Debugging macros   </p>
+</li>
+<li>
+<p>Numeric limits </p>
+</li>
+<li>
+<p>Short-rate modelling framework（短期利率建模框架）</p>
+</li>
+<li>
+<p>Stochastic processes（随机过程）</p>
+</li>
+<li>
+<p>Term structures（期限结构）</p>
+</li>
+<li>
+<p>Utilities</p>
+</li>
+</ul>
+</blockquote>
+<p>作为期权交易员，作者本人比较关注的是期权定价引擎和日历模块。接下来国内预计将会推出的大商所豆粕期权和郑商所白糖期权都是美式期权，在每天连续交易时段中定价比较适合的是二叉树模型。相比较于闭式解的BS模型，基于数值模拟的二叉树模型的运算量提高了一个数量级，因此高效的定价引擎对于这些商品期权的交易员而言十分重要。QuantLib使用C++开发，并通过SWIG包装对其他语言提供调用API，足以满足连续交易对性能的需求。</p>
+<p>其他的亚式期权、障碍期权定价引擎等，则适合国内OTC期权市场的参与者（无论做市商还是买方机构），毕竟这是一个“货物出柜、概不退换”的市场，想要不被对手坑就得保证自己也能有奇异期权定价能力。</p>
+<h2>QuantLib在Python中的安装</h2>
+<p>QuantLib功能强大的同时安装也较为复杂，其官方网站仅提供了源代码，需要用户自行编译，完成后还需要编译QuantLib的SWIG封装从而实现Python调用。</p>
+<p>除了官方提供的SWIG封装外，Enthought公司在Github上还有一个名为pyql的Cython封装项目，号称速度更快，API设计更Pythonic，但是这里作者提醒：</p>
+<blockquote>
+<blockquote>
+<p>除非真的特别喜好折腾，否则轻易不要跳pyql的坑！安装过程相当复杂（涉及到修改QuantLib的C++源代码），pyql在github上的安装教程中的步骤也有一些错误，作者跳坑后花了两周都没爬出来，老老实实回去用SWIG封装了。</p>
+</blockquote>
+</blockquote>
+<p>下面开始一步步的介绍安装步骤：</p>
+<ol>
+<li>
+<p>参考<a href="http://vnpy.org/2015/03/12/20150312_Python%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%973-vn.py%E9%A1%B9%E7%9B%AE%E4%B8%ADAPI%E5%B0%81%E8%A3%85%E7%9A%84%E7%BC%96%E8%AF%91/">Python量化交易平台开发教程系列3-vn.py项目中API封装的编译</a>中的步骤，安装好Anaconda、Visual Studio和Boost，假设Anaconda的安装路径为<strong>D:\Anaconda</strong>，Boost的安装路径为<strong>D:\boost_1_60_0</strong>。</p>
+</li>
+<li>
+<p>在<a href="https://sourceforge.net/projects/quantlib/files/QuantLib/">这里</a>下载QuantLib和Quantlib-SWIG，注意请选择两者都有的版本（在作者写这篇教程时，两者都有的最新版本号是1.7），将下载的zip文件分别解压缩，假设路径为<strong>D:\QuantLib-1.7</strong>和<strong>D:\QuantLib-SWIG-1.7</strong>。</p>
+</li>
+<li>
+<p>在<a href="http://www.swig.org/">这里</a>下载SWIG（swigwin-3.0.8），并解压缩放到<strong>D:\swigwin-3.0.8</strong>。</p>
+</li>
+<li>
+<p>设置以下环境变量（不会的请参考<a href="http://jingyan.baidu.com/article/3ea51489e1c2b752e61bbad0.html">设置环境变量</a>）：</p>
+</li>
+<li>
+<p>QL_DIR：D:\QuantLib-1.7</p>
+</li>
+<li>myanaconda：D:\Anaconda</li>
+<li>myboost：D:\boost_1_60_0</li>
+<li>myswig：D:\swigwin-3.0.8</li>
+<li>
+<p>myqlswig：D:\QuantLib-SWIG-1.7</p>
+</li>
+<li>
+<p>编译安装QuantLib，打开cmd，切换到D盘（输入D:，因为上面的所有文件夹都在D盘），点击窗口左上角的图标，选择“编辑-&gt;粘贴“，将下方的批处理命令复制到cmd中运行（可以一次性全部复制，也可以逐行复制运行，注意全部复制时，若运行到某一步卡住，可以尝试按回车执行这一步的命令）：</p>
+<div class="highlight"><pre>REM 这里使用的是VS2013
+
+REM 打开VS命令行工具来设置编译所需的环境变量
+<span class="s2">&quot;%VS120COMNTOOLS%\VsDevCmd.bat&quot;</span>
+
+REM 切换到QuantLib代码所在的文件夹
+<span class="nb">cd</span> %QL_DIR%
+
+REM 把boost库添加到include和library路径中，并且指定VSC+<span class="o">=</span>使用这些路径
+<span class="nb">set </span><span class="nv">INCLUDE</span><span class="o">=</span>%myboost%;%INCLUDE%
+<span class="nb">set </span><span class="nv">LIB</span><span class="o">=</span>%myboost%<span class="se">\l</span>ib32-msvc-12.0;%LIB%
+<span class="nb">set </span><span class="nv">UseEnv</span><span class="o">=</span><span class="nb">true</span>
+
+REM 使用msbuild来编译QuantLib
+REM 这个要花一段时间（几十分钟到若干小时）
+msbuild /p:AdditionalLibPaths<span class="o">=</span><span class="s2">&quot;%myboost\lib&quot;</span> /p:Configuration<span class="o">=</span>Release /p:Platform<span class="o">=</span>Win32 QuantLib_vc12.sln
+</pre></div>
+
+
+</li>
+<li>
+<p>编译安装QuantLib-SWIG，将下方的批处理命令复制到cmd中运行（运行方法和上一步相同）：</p>
+<div class="highlight"><pre><span class="nb">set </span><span class="nv">VS100COMNTOOLS</span><span class="o">=</span>%VS120COMNTOOLS%
+
+REM 打开VS命令行工具来设置编译所需的环境变量
+<span class="s2">&quot;%VS120COMNTOOLS%\VsDevCmd.bat&quot;</span>
+
+REM 切换到QuantLib-SWIG下面的Python文件夹下
+<span class="nb">cd</span> %myqlswig%<span class="se">\P</span>ython
+
+REM 创建setup.cfg
+<span class="nb">echo</span> <span class="o">[</span>build<span class="o">]</span> &gt; setup.cfg
+<span class="nb">echo </span><span class="nv">compiler</span><span class="o">=</span>msvc &gt;&gt; setup.cfg
+
+REM 设置路径和环境变量
+<span class="nb">set </span><span class="nv">PATH</span><span class="o">=</span>%myanaconda%;%myanaconda%<span class="se">\s</span>cripts;%myswig%;%PATH%
+<span class="nb">set </span><span class="nv">INCLUDE</span><span class="o">=</span>%myboost%;%INCLUDE%
+<span class="nb">set </span><span class="nv">LIB</span><span class="o">=</span>%myboost%<span class="se">\l</span>ib32-msvc-12.0;%LIB%
+
+REM 编译QuantLib-SWIG的Python接口
+REM 只有当swig的.i文件发生变化时，才需要先执行wrap命令
+python setup.py wrap
+python setup.py build
+python setup.py install
+</pre></div>
+
+
+</li>
+<li>
+<p>接下来可以尝试运行<strong>D:\QuantLib-SWIG-1.7\Python\examples</strong>目录下的一些例子，没有报错则说明安装成功</p>
+</li>
+</ol>
+<h2>vn.py和QuantLib</h2>
+<p>相比较于TA-Lib，QuantLib由于其主要针对复杂衍生品，适用的人群会相对窄一些，举两个例子：</p>
+<p><strong>商品期权的CTA策略交易</strong></p>
+<p>前文已经提到过国内的商品期权将会主要采用美式期权的合约设计，在定价方面需要使用二叉树模型。商品期权的最小价格变动通常比其标的物本身更小（相同的价格变动对应的TICK跳动更多），所以会比其标的物更适合交易CTA类的策略。</p>
+<p>但是同时因为期权的非线性特征，在做多时可以采用买入看涨和卖出看跌两种方法（做空也一样有两种：买入看跌和卖出看涨），具体的选择就需要参考当时的波动率水平，而QuantLib的速度足以满足CTA类策略对于低延时的要求。</p>
+<p><strong>场外期权交易系统</strong></p>
+<p>越来越多的国内买方机构（券商资管、信托、基金和私募等）开始参与到OTC期权的市场，OTC期权以灵活著称，不但可交易的品种更多（沪深300、中证500、黄金、铜等），可供选择的期权类型也更多（灵活到期时间、奇异期权）。</p>
+<p>目前大部分机构依旧采用传统的EXCEL来记录和管理，通常需要手动输入行情数据（也可以使用Wind接口接入实时行情），使用较为麻烦也无法做到实时的一些交易对冲。同时由于EXCEL VBA的局限性，对于障碍期权等奇异期权，买家往往无法自己进行估值，必须依赖于OTC做市商给出的数字。</p>
+<p>结合vn.py和QuantLib，交易员可以构建连通场内外的期权交易系统，使用数据库而不是EXCEL来管理持仓和风险，并基于实时行情来计算当前持仓的希腊值敞口，结合场内的期货和现货（ETF、股票等）来实现日内对冲，从而真正实现三维立体的交易模式。</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/talib-tutorial.html" rel="bookmark"
+                           title="Permalink to 使用TA-Lib在vn.trader上开发CTA交易策略">使用TA-Lib在vn.trader上开发CTA交易策略</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-03-01T13:58:42+08:00">
+                Published: 周二 01 三月 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yong-pythonde-jiao-yi-yuan.html">用Python的交易员</a>
+        </address>
+<p>In <a href="/category/jiao-cheng.html">教程</a>.</p>
+
+</footer><!-- /.post-info -->                <h2>TA-Lib简介</h2>
+<p>作为一套被业界广泛应用的开源技术分析库（包含技术指标计算和K线模式识别等），TA-Lib自2001年发布以来已经有了十多年的历史。TA-Lib中一共包含大约125个技术指标的计算函数，同时提供了包括C/C++、Java、Perl、Python等多种语言的API。</p>
+<h2>有什么用</h2>
+<p>简单来说TA-Lib就是提供了一堆经过长期实践检验的技术指标计算函数。基于现成的计算函数，开发新策略雏形、快速验证某个灵感的时间可以大幅缩短，否则想象一下每开发个策略都要自己实现要用的技术指标，未免太浪费时间。</p>
+<p>但是除此以外，TA-Lib还可以有一些其他的用法，举两个例子。</p>
+<p><strong>百科全书 </strong>
+坚持每天收盘后选一个自己没用过的指标，输入数据，画个图、跑个回测，开发量化策略很很多其他的技术一样都是熟能生巧。</p>
+<p>另外，所有的技术指标在被开发出来的时候，背后都有一定的金融逻辑原理（行为金融学）的支撑，生搬硬套固然不可取，但是放着前人经验完全不看，整天凭自己的空想就弄个机器学习算法在数据上瞎折腾岂不是更浪费时间？</p>
+<p><strong>Alpha库</strong>
+很大一部分CTA类的策略可以总结为几个简单的逻辑框架，比如趋势策略通常可以分解成以下部分：趋势信号（通常是基于某几个参数计算出来的指标值超过某个阈值）、信号过滤（和趋势信号类似）、出场方案（固定点数/百分比的止盈和止损，移动止损）。</p>
+<p>因此把逻辑框架的代码搭好后，就可以通过机器学习算法来实现一种自动的策略开发方式：</p>
+<ol>
+<li>
+<p>从TA-Lib中选取两个指标分别作为趋势信号和信号过滤，结合止损、止盈方案 ...</p></li></ol>
+                <a class="readmore" href="/talib-tutorial.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/basic-tutorial-8.html" rel="bookmark"
+                           title="Permalink to Python量化交易平台开发教程系列8-顶层GUI界面开发（2）">Python量化交易平台开发教程系列8-顶层GUI界面开发（2）</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-07-14T13:20:00+08:00">
+                Published: 周二 14 七月 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yong-pythonde-jiao-yi-yuan.html">用Python的交易员</a>
+        </address>
+<p>In <a href="/category/jiao-cheng.html">教程</a>.</p>
+
+</footer><!-- /.post-info -->                <p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>前言</h2>
+<p>接上一篇，主要分为两块：展示动态语言特性简化GUI开发的组件以及功能调用组件。</p>
+<h2>动态语言的方便之处</h2>
+<div class="highlight"><pre><span class="c">########################################################################</span>
+<span class="k">class</span> <span class="nc">AccountMonitor</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;用于显示账户&quot;&quot;&quot;</span>
+    <span class="n">signal</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">Event</span><span class="p">()))</span>
+
+    <span class="n">dictLabels</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+    <span class="n">dictLabels</span><span class="p">[</span><span class="s">&#39;AccountID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;投资者账户&#39;</span>
+    <span class="n">dictLabels</span><span class="p">[</span><span class="s">&#39;PreBalance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;昨结&#39;</span>
+    <span class="n">dictLabels</span><span class="p">[</span><span class="s">&#39;Withdraw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;出金&#39;</span>
+    <span class="n">dictLabels</span><span class="p">[</span><span class="s">&#39;Deposit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;入金&#39;</span>    
+    <span class="n">dictLabels</span><span class="p">[</span><span class="s">&#39;FrozenCash&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;冻结资金&#39;</span>
+    <span class="n">dictLabels</span><span class="p">[</span><span class="s">&#39;FrozenMargin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;冻结保证金&#39;</span>
+    <span class="n">dictLabels</span><span class="p">[</span><span class="s">&#39;FrozenCommission&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;冻结手续费&#39;</span>
+    <span class="n">dictLabels</span><span class="p">[</span><span class="s">&#39;FrozenTransferFee ...</span></pre></div>
+                <a class="readmore" href="/basic-tutorial-8.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/basic-tutorial-7.html" rel="bookmark"
+                           title="Permalink to Python量化交易平台开发教程系列7-顶层GUI界面开发（1）">Python量化交易平台开发教程系列7-顶层GUI界面开发（1）</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-07-09T16:20:00+08:00">
+                Published: 周四 09 七月 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yong-pythonde-jiao-yi-yuan.html">用Python的交易员</a>
+        </address>
+<p>In <a href="/category/jiao-cheng.html">教程</a>.</p>
+
+</footer><!-- /.post-info -->                <p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>前言</h2>
+<p>终于有时间来写第一篇顶层GUI界面开发相关的教程了，之前实在是事情太多，跟各位读者抱个歉。</p>
+<p>整合底层接口的各项功能到中层引擎中后，当我们开发顶层应用时（GUI或者策略算法），只需知道中层引擎对外提供的主动API函数以及事件引擎中相关的事件类型和数据形式即可。</p>
+<p>在GUI和策略算法这两个主要类型的顶层应用中，作者选择先介绍GUI开发的原因是：目前国内支持用户定制化开发GUI界面的量化平台少之又少，而包含一个比较全面的GUI开发教程的则据我所知还没有。随着国内越来越多的衍生品推出（期权、分级基金、未来的反向基金），很多新型的交易策略从全自动转向了半自动，经常需要交易员的手动干预（启动暂停策略、盘中微调参数等），以及投资组合层面的风险管理（期权希腊值、分级基金行业暴露等），这种情况下传统上仅支持策略算法开发的量化交易平台变得越发难以满足交易员的需求（包括作者本人），所以估计这方面的文章更能填补当前市场需求的空缺（笑...）。</p>
+<h2>PyQt</h2>
+<p>目前Python上主要的GUI开发工具包括：tkinter、PyQt、PyGTK和wxPython，笔者选择PyQt的主要原因是：</p>
+<ol>
+<li>Anaconda中已经包含（早期版本中包含的是LGPL协议的Pyside，稳定性不如PyQt）</li>
+<li>另一个内置GUI库tkinter的功能太弱</li>
+</ol>
+<p>网上对这四款GUI开发工具比较分析的文章很多，有兴趣的读者可以自己搜搜看。</p>
+<p>接下来的几篇GUI开发教程会假设读者已经对PyQt开发有了一定的了解，主要针对和量化交易平台开发相关的部分，需要补充基础知识的读者建议参考以下资源：</p>
+<ol>
+<li>zetcode.com，上面的教程简单明了，从头到尾做一遍对PyQt的工作原理基本就有个全面的了解了</li>
+<li>Rapid ...</li></ol>
+                <a class="readmore" href="/basic-tutorial-7.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/basic-tutorial-6.html" rel="bookmark"
+                           title="Permalink to Python量化交易平台开发教程系列6-中层引擎设计">Python量化交易平台开发教程系列6-中层引擎设计</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-05-20T09:20:00+08:00">
+                Published: 周三 20 五月 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yong-pythonde-jiao-yi-yuan.html">用Python的交易员</a>
+        </address>
+<p>In <a href="/category/jiao-cheng.html">教程</a>.</p>
+
+</footer><!-- /.post-info -->                <p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>前言</h2>
+<p>中层引擎在设计上主要是为了进一步封装底层接口所暴露出的API函数，使得其更容易被上层的GUI和策略组件调用。本篇的内容会相对简单，主要以LTS接口DEMO为例介绍一些设计方面的思路。</p>
+<p>相关的示例都是基于vn.demo中的LTS接口DEMO，发布在：
+<a href="https://github.com/vnpy/vnpy/tree/master/vn.demo/ltsdemo">https://github.com/vnpy/vnpy/tree/master/vn.demo/ltsdemo</a></p>
+<h2>中层引擎设计</h2>
+<h3>构造函数</h3>
+<div class="highlight"><pre><span class="c">########################################################################</span>
+<span class="k">class</span> <span class="nc">MainEngine</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;主引擎，负责对API的调度&quot;&quot;&quot;</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ee</span> <span class="o">=</span> <span class="n">EventEngine</span><span class="p">()</span>         <span class="c"># 创建事件驱动引擎</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">md</span> <span class="o">=</span> <span class="n">DemoMdApi</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ee</span><span class="p">)</span>    <span class="c"># 创建API接口</span>
+        <span class="c">#self.md = DemoL2Api(self.ee)   # 如果使用L2行情就改为这行</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">td</span> <span class="o">=</span> <span class="n">DemoTdApi ...</span></pre></div>
+                <a class="readmore" href="/basic-tutorial-6.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/basic-tutorial-5.html" rel="bookmark"
+                           title="Permalink to Python量化交易平台开发教程系列5-底层接口对接">Python量化交易平台开发教程系列5-底层接口对接</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-05-05T14:46:00+08:00">
+                Published: 周二 05 五月 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yong-pythonde-jiao-yi-yuan.html">用Python的交易员</a>
+        </address>
+<p>In <a href="/category/jiao-cheng.html">教程</a>.</p>
+
+</footer><!-- /.post-info -->                <p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>前言</h2>
+<p>从本篇教程开始，所有的开发都会在Python环境中进行（谢天谢地可以和C++说再见了）。</p>
+<p><strong>通常情况下，一个交易程序的架构会由以下三个部分组成：</strong></p>
+<ul>
+<li>底层接口：负责对接行情和交易API，将数据推送到系统核心中，以及发送指令（下单、数据请求等）</li>
+<li>中层引擎：用于整合程序中的各个组件（包括底层接口、数据库接口等等）到一个对象中，便于顶层UI调用</li>
+<li>顶层GUI：用于显示数据和调用中层引擎暴露的主动函数，实现各项具体功能</li>
+</ul>
+<p><img alt="AlgoTrader架构" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B5algotrader_%E6%9E%84%E6%9E%B6.png" /></p>
+<p><strong>上面这张图展示的是国外的一款开源交易平台AlgoTrader的架构：</strong></p>
+<ul>
+<li>两边的Adapters代表的是底层接口（左边数据，右边交易）</li>
+<li>红色圆柱形中包括的是中层引擎架构，事件驱动方面使用了Esper复杂事件处理（CEP）引擎，同时内置了一些常用的功能引擎，如期权定价引擎、外汇对冲模块、投资组合管理模块等</li>
+<li>上方的Strategy1、2等代表的是顶层应用（算法策略、GUI界面等），通过调用中层引擎的功能来实现用户所需的业务</li>
+</ul>
+<p><strong>vn.py和AlgoTrader的比较：</strong></p>
+<p>这里对两个项目做一个简单的比较。</p>
+<p>vn.py优势：</p>
+<ul>
+<li>语言易用：Java语言比Python啰嗦</li>
+<li>架构简洁 ...</li></ul>
+                <a class="readmore" href="/basic-tutorial-5.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/basic-tutorial-4.html" rel="bookmark"
+                           title="Permalink to Python量化交易平台开发教程系列4-事件驱动引擎原理和使用">Python量化交易平台开发教程系列4-事件驱动引擎原理和使用</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-03-13T10:58:00+08:00">
+                Published: 周五 13 三月 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yong-pythonde-jiao-yi-yuan.html">用Python的交易员</a>
+        </address>
+<p>In <a href="/category/jiao-cheng.html">教程</a>.</p>
+
+</footer><!-- /.post-info -->                <p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>前言</h2>
+<p>从这篇开始，后面的教程都会基于Python（终于可以跟C++说再见了）。</p>
+<p>经过上一篇复杂繁琐的API编译后，我们已经有了一个可以在Python环境中用来收行情和发单的接口，但是尽管作者在Github上也放了简单的API功能测试代码作为接口使用方法的示例，绝大部分读者应该对于如何用这个接口去开发自己的交易系统毫无头绪。</p>
+<p>类似的情况也常常发生于当我们从万得、恒生、网上的其他开源项目（比如pyctp）等等拿到开发接口和文档示例后：</p>
+<p>看了半天觉得似乎上面讲的都懂。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B4%E6%8E%A5%E5%8F%97%E6%8C%91%E6%88%98.jpg" /></p>
+<p>但要写个自己的系统依旧不知道从何处下手。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B4%E4%B8%8D%E7%9F%A5%E6%89%80%E6%8E%AA.jpg" /></p>
+<p>所以在搞定交易接口后，我们开发交易系统的第一步就是要弄清楚系统的工作原理，在读完这篇教程后，你应该至少不会再对如何写一个交易系统茫然无措了。</p>
+<h2>事件驱动</h2>
+<h3>计算机程序分类</h3>
+<p>所有的计算机程序都可以大致分为两类：脚本型（单次运行）和连续运行型（直到用户主动退出）。</p>
+<p><strong>脚本型</strong>
+脚本型的程序包括最早的批处理文件以及使用Python做交易策略回测等等，这类程序的特点是在用户启动后会按照编程时设计好的步骤一步步运行，所有步骤运行完后自动退出。</p>
+<p><strong>连续运行型</strong>
+连续运行型的程序包含了操作系统和绝大部分我们日常使用的软件等等，这类程序启动后会处于一个无限循环中连续运行，直到用户主动退出时才会结束。</p>
+<h3>连续运行型程序</h3>
+<p>我们要开发的交易系统就是属于连续运行型程序，而这种程序根据其计算逻辑的运行机制不同，又可以粗略的分为时间驱动和事件驱动两种。</p>
+<p><strong>时间驱动</strong></p>
+<p>时间驱动的程序逻辑相对容易设计，简单来说就是让电脑每隔一段时间自动做一些事情。这个事情本身可以很复杂、包括很多步骤，但这些步骤都是线性的，按照顺序一步步执行下来。</p>
+<p>以下代码展示了一个非常简单的时间驱动的Python程序 ...</p>
+                <a class="readmore" href="/basic-tutorial-4.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/basic-tutorial-3.html" rel="bookmark"
+                           title="Permalink to Python量化交易平台开发教程系列3-vn.py项目中API封装的编译">Python量化交易平台开发教程系列3-vn.py项目中API封装的编译</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-03-12T10:02:28+08:00">
+                Published: 周四 12 三月 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yong-pythonde-jiao-yi-yuan.html">用Python的交易员</a>
+        </address>
+<p>In <a href="/category/jiao-cheng.html">教程</a>.</p>
+
+</footer><!-- /.post-info -->                <p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>前言</h2>
+<p>经历了两篇的理论折磨后，本篇教程开始进入实际操作的环节，这里作者假设读者是毫无C++经验的用户，操作一步步配图，还有问题的来<a href="https://github.com/vnpy/vnpy">vn.py项目的github主页</a>上提问。</p>
+<p>本篇将会包含的内容：
+1. 安装Anaconda （一次安装搞定95%以上量化相关包的Python发行版）
+2. 安装Visual Studio
+3. 编译Boost库
+4. 编译vn.lts</p>
+<h2>安装Anaconda</h2>
+<p>在<a href="http://repo.continuum.io/archive/index.html">Anaconda历史版本</a>中下载1.9.2（win 32位版本）。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3anaconda.jpg" /></p>
+<p>下载好后双击安装，流程没有特别需要注意的，安装文件夹作者选的是D:\Anaconda，读者可以自己选择，注意最后一步编译vn.lts中设置时的文件夹必须是这里的安装文件夹。</p>
+<p>为什么不用最新版本：尝试过使用2.1.0版，发现有一些包在我的电脑上存在兼容性问题（可能因为中文支持不好），需要修改一些.py文件里的源代码，太过麻烦 ...</p>
+                <a class="readmore" href="/basic-tutorial-3.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/basic-tutorial-2.html" rel="bookmark"
+                           title="Permalink to Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计">Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-03-09T11:49:28+08:00">
+                Published: 周一 09 三月 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yong-pythonde-jiao-yi-yuan.html">用Python的交易员</a>
+        </address>
+<p>In <a href="/category/jiao-cheng.html">教程</a>.</p>
+
+</footer><!-- /.post-info -->                <p>原创文章，转载请注明出处：用Python的交易员</p>
+<p>(本篇教程包含的内容太多也太复杂，有不少读者反应看不懂，因为本身也不是使用vn.py必须掌握的知识，这篇教程暂时处于半完成状态，等多收集些读者的建议后会再做一个比较大的修订）</p>
+<h2>为什么要封装API</h2>
+<p>直接原因就是C++的API没法直接在Python里用，不过这个回答有点太简单，这里我们稍微做一些拓展解释：
+1. C++ API中很多函数的调用参数是ApiStruct.h（参见上一篇）中定义的结构体，而在Python中我们既无法直接创建这些结构体（主动函数），也无法提取结构体中包含的数据（回调函数）。
+2. Python虚拟机是基于C语言实现的，所有的Python对象，哪怕只是一个整数或者字符串，在C的环境中都是一个PyObject对象（好吧，我知道C里没有对象，只有结构体，但估计90%的读者都不在乎这个区别）。用户如果在Python中直接传递一个参数到C++环境里，C++是无法识别的（Python：买入1手股指, C++：你要买入多少？）。
+3. Python只能加载封装为PyObject对象的模块，因此原生C++的API在Python中连加载都加载不了。</p>
+<h2>封装后API的工作流程</h2>
+<h3>主动函数</h3>
+<ol>
+<li>用户在Python程序中调用封装API的主动函数，并直接传入Python变量 ...</li></ol>
+                <a class="readmore" href="/basic-tutorial-2.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/basic-tutorial-1.html" rel="bookmark"
+                           title="Permalink to Python量化交易平台开发教程系列1-类CTP交易API的工作原理">Python量化交易平台开发教程系列1-类CTP交易API的工作原理</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-03-05T14:28:49+08:00">
+                Published: 周四 05 三月 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yong-pythonde-jiao-yi-yuan.html">用Python的交易员</a>
+        </address>
+<p>In <a href="/category/jiao-cheng.html">教程</a>.</p>
+
+</footer><!-- /.post-info -->                <p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>类CTP交易API简介</h2>
+<p>国内程序化交易技术的爆发式发展几乎就是起源于上期技术公司基于CTP柜台推出了交易API，使得用户可以随意开发自己的交易软件直接连接到交易柜台上进行交易，同时CTP API的设计模式也成为了许多其他柜台上交易API的设计标准，本人已知的类CTP交易API包括：</p>
+<ol>
+<li>上期CTP  </li>
+<li>飞马  </li>
+<li>华宝证券LTS</li>
+<li>飞创Xspeed</li>
+<li>金仕达</li>
+<li>恒生UFT</li>
+</ol>
+<p>所以这个教程系列选择从类CTP交易API中的LTS API开始来介绍API的Python封装方法，真正掌握了以后想要做其他类型API（比如恒生的T2)的封装也只是大同小异而已。</p>
+<h2>LTS API文件说明</h2>
+<p>通常当用户从网上下载API的压缩包，解压后会看到以下的文件：
+<img alt="" src="http://7x2w1m.com1.z0.glb.clouddn.com/API文件列表.jpg" /></p>
+<ul>
+<li>.h文件：C++的头文件，包含了API的内部结构信息，开发C++程序时需要包含在项目内</li>
+<li>.dll文件：windows下的动态链接库文件，API的实体，开发C++程序编译和链接时用，使用开发好的程序时也必须放在程序的文件夹内  </li>
+<li>.lib文件：windows下的库文件，编译和链接时用，程序开发好后无需放在程序的文件夹内</li>
+<li>.so文件：linux下的动态链接库文件，其他同.dll文件</li>
+</ul>
+<p>找不到压缩包的读者可以在这里直接看<a href="https://github.com/vnpy/vnpy/tree/master/vn.lts/ltsapi" title="https://github.com/vnpy/vnpy/tree/master/vn.lts/ltsapi">https://github.com/vnpy/vnpy ...</a></p>
+                <a class="readmore" href="/basic-tutorial-1.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+    Page 1 / 2
+        <a href="/category/jiao-cheng2.html">&raquo;</a>
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="http://www.zhihu.com/people/traderusingpython">作者知乎</a></li>
+                            <li><a href="http://github.com/vnpy/vnpy">Github</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

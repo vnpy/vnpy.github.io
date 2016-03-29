@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+        <meta charset="utf-8" />
+        <title>vn.py - 日志</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">vn.py </a></h1>
+                <nav><ul>
+                    <li><a href="/category/jiao-cheng.html">教程</a></li>
+                    <li class="active"><a href="/category/ri-zhi.html">日志</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/blog-2016-plan.html">2016年vn.py项目计划</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2016-02-15T13:45:45+08:00">
+                Published: 周一 15 二月 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yong-pythonde-jiao-yi-yuan.html">用Python的交易员</a>
+        </address>
+<p>In <a href="/category/ri-zhi.html">日志</a>.</p>
+
+</footer><!-- /.post-info --><p>首先要感谢所有vn.py用户，是你们的热情让vn.py项目在2015年从最初单纯的交易API接口Python封装一步步成长为现在较为全面的交易程序开发框架。</p>
+<p>截止2016年2月15日，vn.py项目在Github上收获了583个Star和362个Fork，且已有6位贡献者提交了代码。项目的用户包括：私募基金，证券自营、资管，期货公司，高校的金融研究院系，个人投资者等，机构用户加起来至少20多家（和作者交流过的）。</p>
+<h2>总结一下项目当前取得的进展</h2>
+<ol>
+<li>
+<p>较为丰富的Python交易和数据API接口，基本覆盖了国内所有常规交易品种（股票、期货、期权），具体包括：</p>
+<ul>
+<li>CTP（vn.ctp）</li>
+<li>飞马（vn.femas）</li>
+<li>LTS（vn.lts）</li>
+<li>金仕达黄金（vn.ksgold）</li>
+<li>金仕达期权（vn.ksotp）</li>
+<li>通联数据（vn.datayes）</li>
+</ul>
+</li>
+<li>
+<p>简洁易用的事件驱动引擎（vn.event），作为事件驱动型交易程序的核心</p>
+</li>
+<li>
+<p>针对如何使用API和事件驱动引擎开发交易程序的示例（vn.demo）</p>
+</li>
+<li>
+<p>开箱即用的实盘交易平台vn.trader（相比之下vn.demo仅建议学习用），整合了多种交易接口，并针对具体策略算法和功能开发提供了简洁易用的API，功能应用举例：</p>
+<ul>
+<li>同时登录多个交易接口，在一套界面上监控多种市场的行情和多种资产账户的资金、持仓、委托、成交情况</li>
+<li>支持跨市场套利（CTP期货和LTS证券）、境内外套利（CTP期货和IB外盘）、多市场数据整合实时预测走势（CTP的股指期货数据、IB的外盘A50数据、Wind的行业指数数据）等策略应用</li>
+<li>CTA策略引擎模块，在保持易用性的同时，允许用户针对CTA类策略运行过程中委托的报撤行为进行细粒度控制（降低交易滑点、实现高频策略）</li>
+</ul>
+</li>
+<li>
+<p><a href="http://vnpy.org">官网</a>和<a href="http://zhuanlan.zhihu.com/vn-py">知乎专栏</a>，内容目前主要是《Python量化交易平台开发教程系列》，以及vn.py项目进展的更新</p>
+</li>
+<li>
+<p>官方交流QQ群262656087，管理较严格（定期清除长期潜水的成员）</p>
+</li>
+</ol>
+<h2>展望一下项目2016年的计划</h2>
+<p>代码方面：
+1. 完善飞创、易盛等相对小众接口的添加，这块将由社区驱动，作者主要负责代码检查和管理
+2. 整理vn.py项目中API的具体版本号，保证封装接口的对应，这点已经有多位用户提起过，项目初期没有做详细记录所以很多API的版本号一时都较难对上
+3. Linux上API的编译以及vn.trader支持
+4. 基于VirtualBox的vn.py开发环境镜像，解决部分用户反映项目初期不知该如何搭建开发环境的问题，这个镜像会由官方长期维护下去</p>
+<p>文章方面：
+1. 作者自己作为交易员的成长经历（这一年来收到好多人关于如何成为Quant、建议看什么书、怎么选学校等类似的问题，与其零散的回答不如介绍下自己的一些经历给大家参考可能更有帮助）
+2. vn.trader的使用教程（目前基本除了代码里的注释什么都没有...）
+3. 将ta-lib（技术分析）和quantlib（金融工程和量化）整合到vn.trader中应用的教程，解决目前策略开发过程中技术指标和量化函数缺乏的问题
+4. 一套关于开发基于股指交易ETF期权的CTA策略的教程（股指期货短时间内还看不到恢复的希望，咱得另谋出路）</p>
+<p>社区方面：
+1. 重新建设官方网站，目前使用的是托管在Github Pages上的Hexo静态博客，一来功能比较有限，二来有些用户反映Github时不时会被墙，考虑基于Flask重建一个托管在国内的官网
+2. 有用户提出建设互动性更强的网站作为交流平台（如论坛或者知乎Q&amp;A类似的模式），这点在考虑中，主要制约因素是作者参与的时间，可能考虑和更多的资深用户合作是个好主意？</p>
+<h2>最后，2016年，Happy Trading!!!</h2>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/blog-20150420.html" rel="bookmark"
+                           title="Permalink to 2015/4/20 项目开发日志">2015/4/20 项目开发日志</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-04-20T16:56:45+08:00">
+                Published: 周一 20 四月 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yong-pythonde-jiao-yi-yuan.html">用Python的交易员</a>
+        </address>
+<p>In <a href="/category/ri-zhi.html">日志</a>.</p>
+
+</footer><!-- /.post-info -->                <h2>目前项目状态</h2>
+<p>差不多一个多月的时间，完成了CTP API的vn.ctp封装，以及用于展示如何使用vn.py框架开发的vn.demo，两者均已发布到github上。</p>
+<p>接下来将会发布几篇和vn.demo相关的教程。</p>
+<h2>vn.demo介绍</h2>
+<p>该demo主要用于展示如何使用vn.py框架开发交易平台，使用了vn.event和vn.lts模块。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B4vndemo.jpg" /></p>
+<h2>如何使用</h2>
+<p>常规用户可以直接运行exe文件夹下的demoMain.exe。</p>
+<p>对开发有兴趣的用户需要根据vnpy.org的教程3安装相关的开发环境，然后通过demoMain.py和demoMain.pyw（无cmd界面）运行。</p>
+<h2>实现功能</h2>
+<p>demo的实现参考了盈佳和尔易的LTS交易平台，功能如下：</p>
+<ol>
+<li>行情、持仓、账户、成交、报单的监控</li>
+<li>平台的日志记录</li>
+<li>下单交易，实现了LTS提供的所有订单类型和交易类型</li>
+<li>双击报单监控中的单元格撤单，以及下单交易组件一键全撤</li>
+</ol>
+<h2>文件说明</h2>
+<ul>
+<li>demoApi.py主要包含了程序的底层接口，对vn.lts中的API进行了简化封装</li>
+<li>demoEngine.py主要包含了程序的中间层，负责调用底层接口</li>
+<li>demoUi ...</li></ul>
+                <a class="readmore" href="/blog-20150420.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/blog-20150303.html" rel="bookmark"
+                           title="Permalink to 2015/3/3 项目开发日志">2015/3/3 项目开发日志</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-03-03T18:16:45+08:00">
+                Published: 周二 03 三月 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yong-pythonde-jiao-yi-yuan.html">用Python的交易员</a>
+        </address>
+<p>In <a href="/category/ri-zhi.html">日志</a>.</p>
+
+</footer><!-- /.post-info -->                <h2>目前项目状态</h2>
+<p>目前完成：<br />
+1. 华宝证券的LTS API的Python封装，发布在vn.lts文件夹下<br />
+2. 事件驱动引擎，发布在vn.event文件夹下  </p>
+<h3>vn.lts</h3>
+<p>ltsapi：华宝证券官方的LTS C++ API<br />
+pyscript：用于自动生成重复度较高的封装代码的Python脚本<br />
+vnltsmd：行情API的封装源代码和测试脚本<br />
+vnltstd：交易API的封装源代码和测试脚本  </p>
+<h3>vn.event</h3>
+<p>eventType：定义事件类型常量<br />
+eventEngine：包含事件驱动引擎实现  </p>
+<h2>下一步计划</h2>
+<ol>
+<li>API封装、编译、使用方面的教程</li>
+<li>事件驱动引擎原理、使用方面的教程</li>
+<li>基于API和引擎开发的LTS交易客户平台（因为华宝没有提供官方的LTS交易软件，目前的两个实现分别是基于C++的尔易终端和基于.COM封装的盈佳终端）</li>
+<li>策略引擎接口</li>
+</ol>
+<h2>联系作者</h2>
+<p>作者知乎名：用Python的交易员，想要联系作者可以通过知乎私信。</p>
+<hr />
+                <a class="readmore" href="/blog-20150303.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="http://www.zhihu.com/people/traderusingpython">作者知乎</a></li>
+                            <li><a href="http://github.com/vnpy/vnpy">Github</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

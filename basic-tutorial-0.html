@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+        <meta charset="utf-8" />
+        <title>Python量化交易平台开发教程系列0-引言</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">vn.py </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/jiao-cheng.html">教程</a></li>
+                    <li><a href="/category/ri-zhi.html">日志</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/basic-tutorial-0.html" rel="bookmark"
+           title="Permalink to Python量化交易平台开发教程系列0-引言">Python量化交易平台开发教程系列0-引言</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-03-04T10:58:42+08:00">
+                Published: 周三 04 三月 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yong-pythonde-jiao-yi-yuan.html">用Python的交易员</a>
+        </address>
+<p>In <a href="/category/jiao-cheng.html">教程</a>.</p>
+
+</footer><!-- /.post-info -->      <p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>为什么用Python来开发量化交易平台</h2>
+<p>目前本人所在的公司一共有三款平台，分别基于C++， C#和Python。其中C#和Python平台都是由交易员开发；C++平台则是由专职IT团队作为一个通用平台开发，内部组件进行了封装（交易员不可见），对外提供行情、交易的API用于策略开发（除了C++ 外也包括C#和Python可用的API）。</p>
+<p>理论上这款C++平台应该是最为稳定和强大的，由专业人士设计，同时采用封装核心，暴露API，支持组件模块开发，linux服务器运行的形式。</p>
+<p>但是在实际运用中，交易团队表达了一个强烈的观点：这个平台实在是太难用了！ </p>
+<ol>
+<li>由IT团队设计的API功能非常强大，但是也太过繁琐，导致学习曲线极为陡峭。  </li>
+<li>为了追求速度，没有设计原生GUI（本来就为了在Linux服务器上跑），但是今天绝大多数的非超高频（追求微秒级延迟的那种）交易策略，几乎都需要有人实时监控，你总不能让交易员盯着个linux shell上不断print出来的内容或者盘中去翻日志吧，这个运维风险就扛不起。尽管可以作为插件的形式开发GUI，但C++本身的GUI开发还是较为复杂的，非专业IT很难搞的定。  </li>
+<li>交易员团队的需求变化很快，通常等不及IT去排班开发，最好是今天收盘有个点子，明天开盘就能开始接实盘数据验证，没问题后天就能上实盘。比如去年四季度的分级基金套利机会就是稍纵即逝，那段时间如果能快速开发完成一套专门的监控套利系统，抓住的利润绝对会比用excel接wind数据来的多不少。  </li>
+<li>某些业务逻辑确实太过复杂，交易员想解释让IT明白，无奈IT并不是太擅长某些金融领域（比如期权高频套利的整个业务框架），交流成本太高。</li>
+</ol>
+<p>用web开发来做比较的话，C++实现的量化交易平台像是java在网络开发领域的地位，强大（几乎无所不能）、稳定（无数大公司的支持），但是也很臃肿（你一两个人开发试试）。</p>
+<p>以上的原因促成了我坚持使用Python开发一个交易平台，这款平台的定位好比于node.js为前端工程师（用户体验的直接缔造者）提供了一个简洁又不失强大的后端平台，主要的目标用户群是中小型量化团队（根据我的经验，绝大部分的券商自营、期货资管和基金量化部门都不大）、专业的交易员团队（可以雇得起少量专职IT）以及一部分打算从互联网领域转行来的程序猿们（Python在互联网公司用的不少）。</p>
+<h2>Python在量化平台开发方面的优缺点</h2>
+<h3>优点</h3>
+<ol>
+<li>动态语言的快速开发特性，封接口有boost.Python，写GUI有PyQt，时间序列有numpy，等等，几乎你想干的事都有现成的库可以用，这里吐槽下公司大牛自己写C++里的简单移动平均（SMA）算法，确实比常规实现快不少，但似乎对pnl没什么直接帮助。</li>
+<li>学习成本低，这点算是个共识了吧？</li>
+<li>真需要低延迟的时候，胶水语言很容易通过其他语言拓展：cython, ctypes, boost.Python等等。</li>
+<li>运行速度足够快，也许和C++比起来确实慢了不少，但是就我的经验来看，这点速度延迟对90%的策略pnl毫无影响。</li>
+</ol>
+<h3>缺点</h3>
+<ol>
+<li>GIL，该死的全局锁导致Python无法有效利用多核CPU的性能，尽管可以通过拓展绕过去，但还是没有其他语言原生多线程利用多核的方案来的简便。</li>
+<li>没有静态类型检查，重构的时候确实有点痛苦，不过一个良好的编程范式可以有效解决这个问题。</li>
+<li>不适合用来搞超高频策略（追求微秒级延迟的差异），得承认这点Python确实搞不过C++。常规基于TICK级数据的策略没问题。</li>
+</ol>
+<h2>为什么会有这个系列</h2>
+<p>2015年的春节期间突然萌发了启动一个开源量化交易平台开发框架项目的想法，原因包括：  </p>
+<ol>
+<li>国内很多的机构和个人量化投资者，在受够了一些商业软件的束缚后（TB、金字塔等）想基于柜台API进行直接开发，然后在C++的.h头文件、网上一些不成体系的开发指南、不知道如何构建程序核心架构等等问题中赚的一头雾水后放弃。  </li>
+<li>国外有相当多类似的项目，比如AlgoTrader、Tradelink、Marketcetera等等开源交易平台有着大量的用户和活跃的社区。目前国内据我所知只有海风的AT平台项目（基于C#），QuantBox项目当前更多只是一个柜台API的统一化封装（当然封装的非常漂亮，有兴趣的建议直接看看源代码）。  </li>
+<li>在本人的整个求学经历中，发现最佳的学习方式之一就是自己当老师，当你试着把某种知识教给别人时，你对这种知识的掌握会更加细致深入。  </li>
+<li>抛砖引玉，本人是交易员出身，编程算是半路出家，不专业的地方很多，通过这个项目和业内人士多多交流。  </li>
+<li>TB之类的商业软件不算，国内目前最大量化交易社区应该是C#（交易）和Matlab（研发），而能兼顾交易和研发的Python社区居然十分弱小，实在是不能忍。</li>
+</ol>
+<p>授人以鱼不如授人以渔，目前这个项目<strong><a href="http://github.com/vnpy/vnpy">vn.py</a></strong>已经发布在了github上，包含了基于华宝证券LTS API的Python封装和事件驱动引擎，鱼竿准备好了，剩下的就是学习如何钓鱼。一方面也是因为自己之前在学习过程中遇到的最大问题之一就是目前国内缺乏一个成体系的量化平台开发教程，所以发布项目后的下一步工作就是编写这个教程系列。</p>
+<h2>系列内容安排</h2>
+<p>整个系列文章目前预计包含的内容如下：  </p>
+<ol>
+<li>类CTP交易API的工作原理  </li>
+<li>类CTP交易API的Python封装设计</li>
+<li>vn.py项目中API封装的编译，其他交易API的封装</li>
+<li>事件驱动引擎原理和使用</li>
+<li>华宝LTS交易平台开发：登陆、订阅市场行情</li>
+<li>华宝LTS交易平台开发：交易功能</li>
+<li>华宝LTS交易平台开发：持仓、交易、下单监控</li>
+</ol>
+<h2>联系作者</h2>
+<p>本人的知乎号：<a href="http://www.zhihu.com/people/traderusingPython">用Python的交易员</a>，可以通过知乎私信联系到我，一些和开源项目、教程相关的问题交流也会发在知乎上。</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="http://www.zhihu.com/people/traderusingpython">作者知乎</a></li>
+                            <li><a href="http://github.com/vnpy/vnpy">Github</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

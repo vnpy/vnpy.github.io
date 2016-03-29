@@ -1,1614 +1,205 @@
-
- <!DOCTYPE HTML>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh">
 <head>
-  <meta charset="UTF-8">
-  
-    <title>vn.py</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
-    
-    <meta name="author" content="用python的交易员">
-    
-    <meta name="description" content="基于python的开源交易平台开发框架">
-    
-    
-    <meta name="description" content="基于python的开源交易平台开发框架">
-<meta property="og:type" content="website">
-<meta property="og:title" content="vn.py">
-<meta property="og:url" content="http://vnpy.org/">
-<meta property="og:site_name" content="vn.py">
-<meta property="og:description" content="基于python的开源交易平台开发框架">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="vn.py">
-<meta name="twitter:description" content="基于python的开源交易平台开发框架">
+        <meta charset="utf-8" />
+        <title>项目</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
 
-
-    
-    <link rel="alternative" href="/atom.xml" title="vn.py" type="application/atom+xml">
-    
-    
-    <link rel="icon" href="/img/favicon.ico">
-    
-    
-    <link rel="apple-touch-icon" href="/img/ioslogo.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/img/ioslogo.jpg">
-    
-    <link rel="stylesheet" href="/css/style.css" type="text/css">
-
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 </head>
 
-  <body>
-    <header>
-      <div>
-		
-			<div id="imglogo">
-				<a href="/"><img src="/img/logo.png" alt="vn.py" title="vn.py"/></a>
-			</div>
-			
-			<div id="textlogo">
-				<h1 class="site-name"><a href="/" title="vn.py">vn.py</a></h1>
-				<h2 class="blog-motto">基于python的开源交易平台开发框架</h2>
-			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
-			</a></div>
-			<nav class="animated">
-				<ul>
-					<ul>
-					 
-						<li><a href="/">主页</a></li>
-					
-						<li><a href="/archives">存档</a></li>
-					
-						<li><a href="/demo">Demo</a></li>
-					
-						<li><a href="/about">关于</a></li>
-					
-					<li>
- 					
-					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
-						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
-						<input type="hidden" name="q" value="site:vnpy.org">
-					</form>
-					
-					</li>
-				</ul>
-			</nav>			
-</div>
-    </header>
-    <div id="container">
-      <div id="main">
-
-   
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">vn.py </a></h1>
+                <nav><ul>
+                    <li><a href="/category/jiao-cheng.html">教程</a></li>
+                    <li><a href="/category/ri-zhi.html">日志</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+    <h1 class="entry-title">项目</h1>
     
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/07/14/20150714_Python量化交易平台开发教程系列8-顶层GUI界面开发（2）/" title="Python量化交易平台开发教程系列8-顶层GUI界面开发（2）" itemprop="url">Python量化交易平台开发教程系列8-顶层GUI界面开发（2）</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://vnpy.org/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
-		
-  <p class="article-time">
-    <time datetime="2015-07-14T05:20:00.000Z" itemprop="datePublished"> 发表于 7月 14 2015</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>原创文章，转载请注明出处：用Python的交易员</p>
-<h2 id="前言">前言</h2>
-<p>接上一篇，主要分为两块：展示动态语言特性简化GUI开发的组件以及功能调用组件。</p>
-<h2 id="动态语言的方便之处">动态语言的方便之处</h2>
-<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line"><span class="comment">########################################################################</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AccountMonitor</span><span class="params">(QtGui.QTableWidget)</span>:</span></div><div class="line">    <span class="string">"""用于显示账户"""</span></div><div class="line">    signal = QtCore.pyqtSignal(type(Event()))</div><div class="line"></div><div class="line">    dictLabels = OrderedDict()</div><div class="line">    dictLabels[<span class="string">'AccountID'</span>] = <span class="string">u'投资者账户'</span></div><div class="line">    dictLabels[<span class="string">'PreBalance'</span>] = <span class="string">u'昨结'</span></div><div class="line">    dictLabels[<span class="string">'Withdraw'</span>] = <span class="string">u'出金'</span></div><div class="line">    dictLabels[<span class="string">'Deposit'</span>] = <span class="string">u'入金'</span>    </div><div class="line">    dictLabels[<span class="string">'FrozenCash'</span>] = <span class="string">u'冻结资金'</span></div><div class="line">    dictLabels[<span class="string">'FrozenMargin'</span>] = <span class="string">u'冻结保证金'</span></div><div class="line">    dictLabels[<span class="string">'FrozenCommission'</span>] = <span class="string">u'冻结手续费'</span></div><div class="line">    dictLabels[<span class="string">'FrozenTransferFee'</span>] = <span class="string">u'冻结过户费'</span></div><div class="line">    dictLabels[<span class="string">'FrozenStampTax'</span>] = <span class="string">u'冻结印花税'</span></div><div class="line">    dictLabels[<span class="string">'Commission'</span>] = <span class="string">u'手续费'</span></div><div class="line">    dictLabels[<span class="string">'TransferFee'</span>] = <span class="string">u'过户费'</span></div><div class="line">    dictLabels[<span class="string">'StampTax'</span>] = <span class="string">u'印花税'</span>    </div><div class="line">    dictLabels[<span class="string">'CurrMargin'</span>] = <span class="string">u'当前保证金'</span></div><div class="line">    dictLabels[<span class="string">'Available'</span>] = <span class="string">u'可用资金'</span></div><div class="line">    dictLabels[<span class="string">'WithdrawQuota'</span>] = <span class="string">u'可取资金'</span></div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, eventEngine, parent=None)</span>:</span></div><div class="line">        <span class="string">"""Constructor"""</span></div><div class="line">        super(AccountMonitor, self).__init__(parent)</div><div class="line">        self.__eventEngine = eventEngine</div><div class="line"></div><div class="line">        self.dictAccount = {}       <span class="comment"># 用来保存账户对应的单元格</span></div><div class="line"></div><div class="line">        self.initUi()</div><div class="line">        self.registerEvent()</div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initUi</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">""""""</span></div><div class="line">        self.setWindowTitle(<span class="string">u'账户'</span>)</div><div class="line"></div><div class="line">        self.setColumnCount(len(self.dictLabels))</div><div class="line">        self.setHorizontalHeaderLabels(self.dictLabels.values())</div><div class="line"></div><div class="line">        self.verticalHeader().setVisible(<span class="keyword">False</span>)                 <span class="comment"># 关闭左边的垂直表头</span></div><div class="line">        self.setEditTriggers(QtGui.QTableWidget.NoEditTriggers) <span class="comment"># 设为不可编辑状态  </span></div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">registerEvent</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">""""""</span></div><div class="line">        self.signal.connect(self.updateAccount)</div><div class="line">        self.__eventEngine.register(EVENT_ACCOUNT, self.signal.emit)</div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">updateAccount</span><span class="params">(self, event)</span>:</span></div><div class="line">        <span class="string">""""""</span></div><div class="line">        data = event.dict_[<span class="string">'data'</span>]</div><div class="line">        accountid = data[<span class="string">'AccountID'</span>]</div><div class="line"></div><div class="line">        <span class="comment"># 如果之前已经收到过这个账户的数据, 则直接更新</span></div><div class="line">        <span class="keyword">if</span> accountid <span class="keyword">in</span> self.dictAccount:</div><div class="line">            d = self.dictAccount[accountid]</div><div class="line"></div><div class="line">            <span class="keyword">for</span> label, cell <span class="keyword">in</span> d.items():</div><div class="line">                cell.setText(str(data[label]))</div><div class="line">        <span class="comment"># 否则插入新的一行，并更新</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            self.insertRow(<span class="number">0</span>)</div><div class="line">            d = {}</div><div class="line"></div><div class="line">            <span class="keyword">for</span> col, label <span class="keyword">in</span> enumerate(self.dictLabels.keys()):</div><div class="line">                cell = QtGui.QTableWidgetItem(str(data[label]))</div><div class="line">                self.setItem(<span class="number">0</span>, col, cell)</div><div class="line">                d[label] = cell</div><div class="line"></div><div class="line">            self.dictAccount[accountid] = d</div></pre></td></tr></table></figure>
-
-<p>写过C++里Qt代码的人可能会有比较直观的感受，上面这段代码利用Python动态语言的特性偷了不少懒。</p>
-<p>该账户监控组件AccountMonitor用于显示LTS账户相关的数据（可用资金、手续费、保证金等等）。在vn.lts的API封装中，通过onRspQryTradingAccount推送回来的账户数据已经被从C++结构体自动转换为了Python字典。</p>
-<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">########################################################################</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AccountMonitor</span><span class="params">(QtGui.QTableWidget)</span>:</span></div><div class="line">    <span class="string">"""用于显示账户"""</span></div><div class="line">    signal = QtCore.pyqtSignal(type(Event()))</div><div class="line"></div><div class="line">    dictLabels = OrderedDict()</div><div class="line">    dictLabels[<span class="string">'AccountID'</span>] = <span class="string">u'投资者账户'</span></div><div class="line">    dictLabels[<span class="string">'PreBalance'</span>] = <span class="string">u'昨结'</span></div><div class="line">    dictLabels[<span class="string">'Withdraw'</span>] = <span class="string">u'出金'</span></div><div class="line">    dictLabels[<span class="string">'Deposit'</span>] = <span class="string">u'入金'</span>    </div><div class="line">    dictLabels[<span class="string">'FrozenCash'</span>] = <span class="string">u'冻结资金'</span></div><div class="line">    dictLabels[<span class="string">'FrozenMargin'</span>] = <span class="string">u'冻结保证金'</span></div><div class="line">    dictLabels[<span class="string">'FrozenCommission'</span>] = <span class="string">u'冻结手续费'</span></div><div class="line">    dictLabels[<span class="string">'FrozenTransferFee'</span>] = <span class="string">u'冻结过户费'</span></div><div class="line">    dictLabels[<span class="string">'FrozenStampTax'</span>] = <span class="string">u'冻结印花税'</span></div><div class="line">    dictLabels[<span class="string">'Commission'</span>] = <span class="string">u'手续费'</span></div><div class="line">    dictLabels[<span class="string">'TransferFee'</span>] = <span class="string">u'过户费'</span></div><div class="line">    dictLabels[<span class="string">'StampTax'</span>] = <span class="string">u'印花税'</span>    </div><div class="line">    dictLabels[<span class="string">'CurrMargin'</span>] = <span class="string">u'当前保证金'</span></div><div class="line">    dictLabels[<span class="string">'Available'</span>] = <span class="string">u'可用资金'</span></div><div class="line">    dictLabels[<span class="string">'WithdrawQuota'</span>] = <span class="string">u'可取资金'</span></div></pre></td></tr></table></figure>
-
-<p>首先通过原生API的.h头文件查询该结构体包含的字段内容，并选择觉得有用、需要显示出来的字段，使用Python内置的排序字典类OrderedDict创建标签显示的配置dictLabels，按照我们希望显示的顺序（从左到右）逐条输入到该字典中。字典的键是该字段的英文名称，值是该字段对应的中文名称。</p>
-<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">initUi</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">""""""</span></div><div class="line">    self.setWindowTitle(<span class="string">u'账户'</span>)</div><div class="line"></div><div class="line">    self.setColumnCount(len(self.dictLabels))</div><div class="line">    self.setHorizontalHeaderLabels(self.dictLabels.values())</div></pre></td></tr></table></figure>
-
-<p>下一步在初始化表格时，表头的列数可以直接取dictLabels的长度，表头的标签内容可以直接取dictLabels的值列表。</p>
-<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">updateAccount</span><span class="params">(self, event)</span>:</span></div><div class="line">    <span class="string">""""""</span></div><div class="line">    data = event.dict_[<span class="string">'data'</span>]</div><div class="line">    accountid = data[<span class="string">'AccountID'</span>]</div><div class="line"></div><div class="line">    <span class="comment"># 如果之前已经收到过这个账户的数据, 则直接更新</span></div><div class="line">    <span class="keyword">if</span> accountid <span class="keyword">in</span> self.dictAccount:</div><div class="line">        d = self.dictAccount[accountid]</div><div class="line"></div><div class="line">        <span class="keyword">for</span> label, cell <span class="keyword">in</span> d.items():</div><div class="line">            cell.setText(str(data[label]))</div><div class="line">    <span class="comment"># 否则插入新的一行，并更新</span></div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        self.insertRow(<span class="number">0</span>)</div><div class="line">        d = {}</div><div class="line"></div><div class="line">        <span class="keyword">for</span> col, label <span class="keyword">in</span> enumerate(self.dictLabels.keys()):</div><div class="line">            cell = QtGui.QTableWidgetItem(str(data[label]))</div><div class="line">            self.setItem(<span class="number">0</span>, col, cell)</div><div class="line">            d[label] = cell</div><div class="line"></div><div class="line">        self.dictAccount[accountid] = d</div></pre></td></tr></table></figure>
-
-<p>在更新账户数据时，由于dictLabels中设置的需要显示的字段和收到的账户数据字典data中的键是一一对应的，我们可以直接对dictLabels中的键进行遍历读取data字典中对应的值，并更新到表格中。这段感觉比较难以用语言描述出来，直接读懂上面的代码可能更能明白其中的意思。</p>
-<p>可以来比较下updateAccount函数的类C++的写法，也是作者在刚开始做GUI开发时使用的方法，现在回看起来真是繁琐。</p>
-<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">updateAccount</span><span class="params">(self, event)</span>:</span></div><div class="line">    <span class="string">""""""</span></div><div class="line">    data = event.dict_[<span class="string">'data'</span>]</div><div class="line">    accountid = data[<span class="string">'AccountID'</span>]</div><div class="line"></div><div class="line">    <span class="comment"># 如果之前已经收到过这个账户的数据, 则直接更新</span></div><div class="line">    <span class="keyword">if</span> accountid <span class="keyword">in</span> self.dictAccount:</div><div class="line">        d = self.dictAccount[accountid]</div><div class="line"></div><div class="line">        d[<span class="string">'AccountID'</span>].setText(str(data[<span class="string">'AccountID'</span>]))</div><div class="line">        d[<span class="string">'PreBalance'</span>].setText(str(data[<span class="string">'PreBalance'</span>]))</div><div class="line">        d[<span class="string">'Deposit'</span>].setText(str(data[<span class="string">'Deposit'</span>]))</div><div class="line">        d[<span class="string">'FrozenCash'</span>].setText(str(data[<span class="string">'FrozenCash'</span>]))</div><div class="line">        d[<span class="string">'FrozenMargin'</span>].setText(str(data[<span class="string">'FrozenMargin'</span>]))</div><div class="line">        d[<span class="string">'FrozenCommission'</span>].setText(str(data[<span class="string">'FrozenCommission'</span>]))</div><div class="line">        d[<span class="string">'FrozenTransferFee'</span>].setText(str(data[<span class="string">'FrozenTransferFee'</span>]))</div><div class="line">        d[<span class="string">'FrozenStampTax'</span>].setText(str(data[<span class="string">'FrozenStampTax'</span>]))</div><div class="line">        d[<span class="string">'Commission'</span>].setText(str(data[<span class="string">'Commission'</span>]))</div><div class="line">        d[<span class="string">'TransferFee'</span>].setText(str(data[<span class="string">'TransferFee'</span>]))</div><div class="line">        d[<span class="string">'StampTax'</span>].setText(str(data[<span class="string">'StampTax'</span>]))</div><div class="line">        d[<span class="string">'CurrMargin'</span>].setText(str(data[<span class="string">'CurrMargin'</span>]))</div><div class="line">        d[<span class="string">'Available'</span>].setText(str(data[<span class="string">'Available'</span>]))</div><div class="line">        d[<span class="string">'WithdrawQuota'</span>].setText(str(data[<span class="string">'WithdrawQuota'</span>]))</div><div class="line">        </div><div class="line">    <span class="comment"># 否则插入新的一行，并更新</span></div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        self.insertRow(<span class="number">0</span>)</div><div class="line">        d = {}</div><div class="line"></div><div class="line">        cellAccountID = QtGui.QTableWidgetItem(str(data[<span class="string">'AccountID'</span>]))</div><div class="line">        self.setItem(<span class="number">0</span>, <span class="number">0</span>, cellAccountID)</div><div class="line">        d[<span class="string">'AccountID'</span>] = cell</div><div class="line">        </div><div class="line">        cellPreBalance = QtGui.QTableWidgetItem(str(data[<span class="string">'PreBalance'</span>]))</div><div class="line">        self.setItem(<span class="number">0</span>, <span class="number">0</span>, cellPreBalance)</div><div class="line">        d[<span class="string">'PreBalance'</span>] = cell</div><div class="line"></div><div class="line">        ...</div><div class="line">        （后面的字段以此类推，这里请原谅作者实在不想写下去了，习惯遍历后复制粘贴都觉得麻烦）</div><div class="line"></div><div class="line">        self.dictAccount[accountid] = d</div></pre></td></tr></table></figure>
-
-<p>和上面的类C++写法相比，之前Python写法的优势就很明显了：</p>
+    <h1>vn.py - 基于python的开源交易平台开发框架</h1>
+<hr />
+<h3>Quick Start</h3>
+<p>对于大部分用户来说，无需自行编译API接口，可以直接使用vn.trader进行交易和策略开发：</p>
+<ol>
+<li>
+<p>准备一台Windows 7 64位系统的电脑</p>
+</li>
+<li>
+<p>安装<a href="http://www.continuum.io/downloads">Anaconda</a>：下载Python 2.7 32位版本，<strong>注意必须是32位</strong></p>
+</li>
+<li>
+<p>安装<a href="https://www.mongodb.org/downloads#production">MongoDB</a>：下载Windows 64-bit 2008 R2+版本</p>
+</li>
+<li>
+<p>安装pymongo：在cmd中运行pip install pymongo</p>
+</li>
+<li>
+<p>参考<a href="http://jingyan.baidu.com/article/6b97984dbeef881ca2b0bf3e.html">这里</a>，将MongoDB注册为Windows服务并启动</p>
+</li>
+<li>
+<p>安装<a href="https://www.microsoft.com/en-gb/download/details.aspx?id=40784">Visual C++  Redistributable Packages for VS2013</a>，中英文随意</p>
+</li>
+<li>
+<p>在本页面选择Download ZIP下载项目代码，并解压到C:\vnpy</p>
+</li>
+<li>
+<p>在<a href="http://simnow.com.cn/">SimNow</a>注册CTP仿真账号，记下你的<strong>账号、密码、经纪商编号</strong>，然后下载快期查询你的<strong>交易和行情服务器地址</strong></p>
+</li>
+<li>
+<p>把C:\vnpy\vn.trader\ctpGateway\CTP_connect.json中的账号、密码、服务器等修改为上一步注册完成后你的信息（注意使用专门的编程编辑器，如Sublime Text等，防止json编码出错）</p>
+</li>
+<li>
+<p>双击运行C:\vnpy\vn.trader\vtMain.py，开始交易！</p>
+</li>
+</ol>
+<p>对于想研究API封装的用户，可以参考<a href="vnpy.org">vnpy.org</a>上面的教程一步步操作。</p>
+<p>其他作者建议使用的软件工具：
+* <a href="http://wingware.com/">WingIDE</a>：非常好用的Python集成开发环境（作者就是用它写的vn.py）</p>
 <ul>
-<li>代码行数显著减少（绝大部分都是重复内容），降低了coding时出错的概率，省下很多debug的时间</li>
-<li>dictLabels可以直接作为配置来使用（类似于Java中使用很多配置文件），当需要增加或者移除某个字段时，用户只需更改dictLabels中的内容而无需改变initUi和updateAccount（这才是浪费无数debug时间的地方），同时修改的配置和本身的程序代码一样都是Python源代码文件（不像Java使用XML等其他文件进行配置）</li>
+<li>
+<p><a href="https://robomongo.org/">Robomongo</a>：MongoDB的图形化客户端，方便监控和修改数据</p>
+</li>
+<li>
+<p><a href="http://www.sublimetext.com/">Sublime Text</a>：针对编程的文本编辑器，当然你也可以使用Vim或者Emacs</p>
+</li>
+<li>
+<p><a href="http://www.pyqtgraph.org/">PyQtGraph</a>：适用于开发实时更新数据的图表，如Tick图、K线图、期权波动率曲线等（Matplotlib渲染开销太大，用于实盘绘图可能拖慢整个程序）</p>
+</li>
+<li>
+<p><a href="https://www.visualstudio.com/en-us/downloads/download-visual-studio-vs.aspx">Visual Studio 2013</a>：这个就不多说了（作者编译API封装用的是2013版本）</p>
+</li>
 </ul>
-<p>当然也存在一个缺点：理论上list遍历的使用降低了性能（GUI的更新耗时更长），但是作者以一个实际用户的经验可以告诉大家，这个性能上的牺牲微乎其微，考虑到vn.py的应用场景，这个缺点几乎可以忽略。</p>
-<p>（限于作者本身的C++水平，以上这段编程语言的比较可能有不正确之处，欢迎读者指出。）</p>
-<h2 id="功能调用组件">功能调用组件</h2>
-<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div></pre></td><td class="code"><pre><div class="line"><span class="comment">########################################################################</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginWidget</span><span class="params">(QtGui.QDialog)</span>:</span></div><div class="line">    <span class="string">"""登录"""</span></div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, mainEngine, parent=None)</span>:</span></div><div class="line">        <span class="string">"""Constructor"""</span></div><div class="line">        super(LoginWidget, self).__init__()</div><div class="line">        self.__mainEngine = mainEngine</div><div class="line"></div><div class="line">        self.initUi()</div><div class="line">        self.loadData()</div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initUi</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""初始化界面"""</span></div><div class="line">        self.setWindowTitle(<span class="string">u'登录'</span>)</div><div class="line"></div><div class="line">        <span class="comment"># 设置组件</span></div><div class="line">        labelUserID = QtGui.QLabel(<span class="string">u'账号：'</span>)</div><div class="line">        labelMdPassword = QtGui.QLabel(<span class="string">u'行情密码：'</span>)</div><div class="line">        labelTdPassword = QtGui.QLabel(<span class="string">u'交易密码：'</span>)</div><div class="line">        labelMdAddress = QtGui.QLabel(<span class="string">u'行情服务器：'</span>)</div><div class="line">        labelTdAddress = QtGui.QLabel(<span class="string">u'交易服务器：'</span>)</div><div class="line"></div><div class="line">        self.editUserID = QtGui.QLineEdit()</div><div class="line">        self.editMdPassword = QtGui.QLineEdit()</div><div class="line">        self.editTdPassword = QtGui.QLineEdit()</div><div class="line">        self.editMdAddress = QtGui.QLineEdit()</div><div class="line">        self.editTdAddress = QtGui.QLineEdit()</div><div class="line"></div><div class="line">        self.editUserID.setMinimumWidth(<span class="number">200</span>)</div><div class="line"></div><div class="line">        buttonLogin = QtGui.QPushButton(<span class="string">u'登录'</span>)</div><div class="line">        buttonCancel = QtGui.QPushButton(<span class="string">u'取消'</span>)</div><div class="line">        buttonLogin.clicked.connect(self.login)</div><div class="line">        buttonCancel.clicked.connect(self.close)</div><div class="line"></div><div class="line">        <span class="comment"># 设置布局</span></div><div class="line">        buttonHBox = QtGui.QHBoxLayout()</div><div class="line">        buttonHBox.addStretch()</div><div class="line">        buttonHBox.addWidget(buttonLogin)</div><div class="line">        buttonHBox.addWidget(buttonCancel)</div><div class="line"></div><div class="line">        grid = QtGui.QGridLayout()</div><div class="line">        grid.addWidget(labelUserID, <span class="number">0</span>, <span class="number">0</span>)</div><div class="line">        grid.addWidget(labelMdPassword, <span class="number">1</span>, <span class="number">0</span>)</div><div class="line">        grid.addWidget(labelTdPassword, <span class="number">2</span>, <span class="number">0</span>)</div><div class="line">        grid.addWidget(labelMdAddress, <span class="number">3</span>, <span class="number">0</span>)</div><div class="line">        grid.addWidget(labelTdAddress, <span class="number">4</span>, <span class="number">0</span>)</div><div class="line">        grid.addWidget(self.editUserID, <span class="number">0</span>, <span class="number">1</span>)</div><div class="line">        grid.addWidget(self.editMdPassword, <span class="number">1</span>, <span class="number">1</span>)</div><div class="line">        grid.addWidget(self.editTdPassword, <span class="number">2</span>, <span class="number">1</span>)</div><div class="line">        grid.addWidget(self.editMdAddress, <span class="number">3</span>, <span class="number">1</span>)</div><div class="line">        grid.addWidget(self.editTdAddress, <span class="number">4</span>, <span class="number">1</span>)</div><div class="line">        grid.addLayout(buttonHBox, <span class="number">5</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>)</div><div class="line"></div><div class="line">        self.setLayout(grid)</div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">login</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""登录"""</span></div><div class="line">        userid = str(self.editUserID.text())</div><div class="line">        mdPassword = str(self.editMdPassword.text())</div><div class="line">        tdPassword = str(self.editTdPassword.text())</div><div class="line">        mdAddress = str(self.editMdAddress.text())</div><div class="line">        tdAddress = str(self.editTdAddress.text())</div><div class="line">        brokerid = <span class="string">'2011'</span>    <span class="comment"># 这里因为LTS的BrokerID固定为2011</span></div><div class="line"></div><div class="line">        self.__mainEngine.login(userid, mdPassword, tdPassword, brokerid, mdAddress, tdAddress)</div><div class="line">        self.close()</div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">loadData</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""读取数据"""</span></div><div class="line">        f = shelve.open(<span class="string">'setting.vn'</span>)</div><div class="line"></div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            setting = f[<span class="string">'login'</span>]</div><div class="line">            userid = setting[<span class="string">'userid'</span>]</div><div class="line">            mdPassword = setting[<span class="string">'mdPassword'</span>]</div><div class="line">            tdPassword = setting[<span class="string">'tdPassword'</span>]</div><div class="line">            mdAddress = setting[<span class="string">'mdAddress'</span>]</div><div class="line">            tdAddress = setting[<span class="string">'tdAddress'</span>]</div><div class="line"></div><div class="line">            self.editUserID.setText(userid)</div><div class="line">            self.editMdPassword.setText(mdPassword)</div><div class="line">            self.editTdPassword.setText(tdPassword)</div><div class="line">            self.editMdAddress.setText(mdAddress)</div><div class="line">            self.editTdAddress.setText(tdAddress)</div><div class="line">        <span class="keyword">except</span> KeyError:</div><div class="line">            <span class="keyword">pass</span></div><div class="line"></div><div class="line">        f.close()</div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">saveData</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""保存数据"""</span></div><div class="line">        setting = {}</div><div class="line">        setting[<span class="string">'userid'</span>] = str(self.editUserID.text())</div><div class="line">        setting[<span class="string">'mdPassword'</span>] = str(self.editMdPassword.text())</div><div class="line">        setting[<span class="string">'tdPassword'</span>] = str(self.editTdPassword.text())</div><div class="line">        setting[<span class="string">'mdAddress'</span>] = str(self.editMdAddress.text())</div><div class="line">        setting[<span class="string">'tdAddress'</span>] = str(self.editTdAddress.text())</div><div class="line"></div><div class="line">        f = shelve.open(<span class="string">'setting.vn'</span>)</div><div class="line">        f[<span class="string">'login'</span>] = setting</div><div class="line">        f.close()   </div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">closeEvent</span><span class="params">(self, event)</span>:</span></div><div class="line">        <span class="string">"""关闭事件处理"""</span></div><div class="line">        <span class="comment"># 当窗口被关闭时，先保存登录数据，再关闭</span></div><div class="line">        self.saveData()</div><div class="line">        event.accept()</div></pre></td></tr></table></figure>
-
+<hr />
+<h3>2016年vn.py项目计划</h3>
+<p>首先要感谢所有vn.py用户，是你们的热情让vn.py项目在2015年从最初单纯的交易API接口Python封装一步步成长为现在较为全面的交易程序开发框架。</p>
+<p>截止2016年2月15日，vn.py项目在Github上收获了583个Star和362个Fork，且已有6位贡献者提交了代码。项目的用户包括：私募基金，证券自营、资管，期货公司，高校的金融研究院系，个人投资者等，机构用户加起来至少20多家（和作者交流过的）。</p>
+<p><strong>总结一下项目当前取得的进展</strong></p>
 <ol>
-<li>主动调用组件通常在工作原理上较为简单，用户只需在界面上放置所需的组件（按钮、下拉框等），并将组件的信号和中层引擎暴露的功能函数连接上（参考上面的initUi和login方法）</li>
-<li>对于一些我们希望保存下来省去每次输入麻烦的信息，这里推荐Python的shelve库，可以直接将Python中的数据对象以二进制的方式保存在文件中（文件后缀名可以自行定义）</li>
-<li>在登录组件第一次创建时，我们从硬盘上的setting.vn文件中尝试读取登录账号等设置内容，同时每次在关闭该窗口时closeEvent方法会被自动触发，保存当前文本框中的设置内容到文件中</li>
-</ol>
-<h2 id="总结">总结</h2>
-<p>系列7和8两篇教程中已经基本覆盖了GUI界面开发的核心原理，剩下的更多细节以及开发中的一些奇技淫巧就留给读者自己去研究vn.py项目的源代码了，毕竟对于这套教程的目标读者，有能力去开发适合自己交易策略的量化平台才是最终目标：now it’s time to get your hands dirty。 </p>
-<p>至此，Python量化交易平台开发教程系列告一段落，作者接下来会将更多的精力放在vn.py项目本身的开发上。同时vn.py的社区已经初具规模，QQ群已经逐渐不能满足大家交流的需求，针对Python量化交易开发的一个论坛也已经初步搭好，近期将会开放，欢迎大家入驻。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/教程/">教程</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="http://vnpy.org/2015/07/14/20150714_Python量化交易平台开发教程系列8-顶层GUI界面开发（2）/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/07/14/20150714_Python量化交易平台开发教程系列8-顶层GUI界面开发（2）/" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/07/09/20150709_Python量化交易平台开发教程系列7-顶层GUI界面开发（1）/" title="Python量化交易平台开发教程系列7-顶层GUI界面开发（1）" itemprop="url">Python量化交易平台开发教程系列7-顶层GUI界面开发（1）</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://vnpy.org/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
-		
-  <p class="article-time">
-    <time datetime="2015-07-09T08:20:00.000Z" itemprop="datePublished"> 发表于 7月 9 2015</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>原创文章，转载请注明出处：用Python的交易员</p>
-<h2 id="前言">前言</h2>
-<p>终于有时间来写第一篇顶层GUI界面开发相关的教程了，之前实在是事情太多，跟各位读者抱个歉。</p>
-<p>整合底层接口的各项功能到中层引擎中后，当我们开发顶层应用时（GUI或者策略算法），只需知道中层引擎对外提供的主动API函数以及事件引擎中相关的事件类型和数据形式即可。</p>
-<p>在GUI和策略算法这两个主要类型的顶层应用中，作者选择先介绍GUI开发的原因是：目前国内支持用户定制化开发GUI界面的量化平台少之又少，而包含一个比较全面的GUI开发教程的则据我所知还没有。随着国内越来越多的衍生品推出（期权、分级基金、未来的反向基金），很多新型的交易策略从全自动转向了半自动，经常需要交易员的手动干预（启动暂停策略、盘中微调参数等），以及投资组合层面的风险管理（期权希腊值、分级基金行业暴露等），这种情况下传统上仅支持策略算法开发的量化交易平台变得越发难以满足交易员的需求（包括作者本人），所以估计这方面的文章更能填补当前市场需求的空缺（笑…）。</p>
-<h2 id="PyQt">PyQt</h2>
-<p>目前Python上主要的GUI开发工具包括：tkinter、PyQt、PyGTK和wxPython，笔者选择PyQt的主要原因是：</p>
-<ol>
-<li>Anaconda中已经包含（早期版本中包含的是LGPL协议的Pyside，稳定性不如PyQt）</li>
-<li>另一个内置GUI库tkinter的功能太弱</li>
-</ol>
-<p>网上对这四款GUI开发工具比较分析的文章很多，有兴趣的读者可以自己搜搜看。</p>
-<p>接下来的几篇GUI开发教程会假设读者已经对PyQt开发有了一定的了解，主要针对和量化交易平台开发相关的部分，需要补充基础知识的读者建议参考以下资源：</p>
-<ol>
-<li>zetcode.com，上面的教程简单明了，从头到尾做一遍对PyQt的工作原理基本就有个全面的了解了</li>
-<li>Rapid GUI Programming with Python and Qt，一本由Riverbank（PyQt的开发公司）员工推出的PyQt开发教程，非常细致全面，但是部分内容跳跃性太大，需要从头到尾多看几遍</li>
-<li>也可以在遇到特定问题时搜百度或者StackOverflow，通常都能找到答案</li>
-</ol>
-<p><strong>PyQt版本</strong><br>在<a href="http://www.riverbankcomputing.com/software/pyqt/download" target="_blank" rel="external">Riverbank官网</a>下载：</p>
-<blockquote>
-<p>PyQt4-4.11.4-gpl-Py2.7-Qt4.8.7-x32.exe    Windows 32 bit installer</p>
-</blockquote>
-<p>请特别注意这个版本的问题，从最近几个月的经验看，很多PyQt相关模块运行时报错就是因为下错了版本（PyQt5、64位等等都不对）。</p>
-<h2 id="GUI组件">GUI组件</h2>
-<p>从功能上看，所有交易平台的GUI组件都可以分为两类，数据监控（被动）和功能调用（主动），当然也有同时混合两类功能的组件。</p>
-<p><strong>数据监控</strong><br><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B7%E7%9B%91%E6%8E%A7.jpg" alt="enter image description here"><br>行情监控组件，用于监控实时行情数据，每当API端有新的行情数据推送时立即进行更新。</p>
-<p><strong>功能调用</strong><br><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B7%E4%B8%BB%E5%8A%A8.jpg" alt="enter image description here"><br>账号登录组件，用于调用中层引擎的登录功能，传入用户名、密码、服务器地址等参数。</p>
-<p><strong>混合（交易下单）</strong><br><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B7%E6%B7%B7%E5%90%88.jpg" alt="enter image description here"><br>交易下单组件，左侧部分用于填入下单参数后调用中层引擎的下单功能发单，右侧部分用于监控用户输入的合约代码的实时行情（有行情推送时立即更新）。</p>
-<h2 id="数据监控组件">数据监控组件</h2>
-<p>数据监控组件主要用于对交易平台中的各项数据实现实时更新或者手动更新的显示监控，最常用的包括行情、报单、成交、持仓和日志等。监控组件中最常见的类型是表格，对应PyQt中的QTableWidget组件，表格中的单元格则使用QTableWidgetItem组件。对于某些特殊的数据监控也可以使用其他类型的组件，如上面交易下单组件中右侧的部分，主要是使用标签组件QLabel构成的。</p>
-<p>针对不同的监控内容需要实现不同的数据更新方法，例如日志、成交类数据应该使用插入更新（即每条新的数据都应该插入新的一行），行情数据应该使用固定位置更新（即在表格中固定的单元格位置更新数据），以及主要针对持仓和报单数据的混合更新（即已经存在的数据直接在对应的位置更新，否则插入新的一行）。</p>
-<p>下面以最基础的日志监控为例介绍监控组件的实现原理，其他更为复杂的监控组件建议用户直接阅读vn.demo中demoMain.py的源代码，大部分代码作者都做了详尽的注释。</p>
-<h3 id="日志监控">日志监控</h3>
-<p>日志监控组件主要用于输出程序运行过程中有关当前程序运行状态的信息。</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B7%E6%97%A5%E5%BF%97.jpg" alt="enter image description here"></p>
-<p>整个实现代码如下：</p>
-<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="comment">########################################################################</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">LogMonitor</span><span class="params">(QtGui.QTableWidget)</span>:</span></div><div class="line">    <span class="string">"""用于显示日志"""</span></div><div class="line">    signal = QtCore.pyqtSignal(type(Event()))</div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, eventEngine, parent=None)</span>:</span></div><div class="line">        <span class="string">"""Constructor"""</span></div><div class="line">        super(LogMonitor, self).__init__(parent)</div><div class="line">        self.__eventEngine = eventEngine</div><div class="line"></div><div class="line">        self.initUi()</div><div class="line">        self.registerEvent()</div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initUi</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""初始化界面"""</span></div><div class="line">        self.setWindowTitle(<span class="string">u'日志'</span>)</div><div class="line"></div><div class="line">        self.setColumnCount(<span class="number">2</span>)                     </div><div class="line">        self.setHorizontalHeaderLabels([<span class="string">u'时间'</span>, <span class="string">u'日志'</span>])</div><div class="line"></div><div class="line">        self.verticalHeader().setVisible(<span class="keyword">False</span>)                 <span class="comment"># 关闭左边的垂直表头</span></div><div class="line">        self.setEditTriggers(QtGui.QTableWidget.NoEditTriggers) <span class="comment"># 设为不可编辑状态</span></div><div class="line"></div><div class="line">        <span class="comment"># 自动调整列宽</span></div><div class="line">        self.horizontalHeader().setResizeMode(<span class="number">0</span>, QtGui.QHeaderView.ResizeToContents)</div><div class="line">        self.horizontalHeader().setResizeMode(<span class="number">1</span>, QtGui.QHeaderView.Stretch)        </div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">registerEvent</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""注册事件监听"""</span></div><div class="line">        <span class="comment"># Qt图形组件的GUI更新必须使用Signal/Slot机制，否则有可能导致程序崩溃</span></div><div class="line">        <span class="comment"># 因此这里先将图形更新函数作为Slot，和信号连接起来</span></div><div class="line">        <span class="comment"># 然后将信号的触发函数注册到事件驱动引擎中</span></div><div class="line">        self.signal.connect(self.updateLog)</div><div class="line">        self.__eventEngine.register(EVENT_LOG, self.signal.emit)</div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">updateLog</span><span class="params">(self, event)</span>:</span></div><div class="line">        <span class="string">"""更新日志"""</span></div><div class="line">        <span class="comment"># 获取当前时间和日志内容</span></div><div class="line">        t = time.strftime(<span class="string">'%H:%M:%S'</span>,time.localtime(time.time()))   </div><div class="line">        log = event.dict_[<span class="string">'log'</span>]                                    </div><div class="line"></div><div class="line">        <span class="comment"># 在表格最上方插入一行</span></div><div class="line">        self.insertRow(<span class="number">0</span>)              </div><div class="line"></div><div class="line">        <span class="comment"># 创建单元格</span></div><div class="line">        cellTime = QtGui.QTableWidgetItem(t)    </div><div class="line">        cellLog = QtGui.QTableWidgetItem(log)</div><div class="line"></div><div class="line">        <span class="comment"># 将单元格插入表格</span></div><div class="line">        self.setItem(<span class="number">0</span>, <span class="number">0</span>, cellTime)            </div><div class="line">        self.setItem(<span class="number">0</span>, <span class="number">1</span>, cellLog)</div></pre></td></tr></table></figure>
-
-<p>接下来逐段讲解：</p>
-<p><strong>对象初始化（<strong>init</strong>）</strong></p>
-<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, eventEngine, parent=None)</span>:</span></div><div class="line">    <span class="string">"""Constructor"""</span></div><div class="line">    super(LogMonitor, self).__init__(parent)</div><div class="line">    self.__eventEngine = eventEngine</div><div class="line"></div><div class="line">    self.initUi()</div><div class="line">    self.registerEvent()</div></pre></td></tr></table></figure>
-
+<li>
+<p>较为丰富的Python交易和数据API接口，基本覆盖了国内所有常规交易品种（股票、期货、期权），具体包括：</p>
 <ul>
-<li>创建对象时，我们需要传入程序中的事件驱动引擎对象eventEngine，以及该图形组件所依附的母组件对象parent（一般可以留空）</li>
-<li>把eventEngine对象的引用保存到__eventEngine上后，我们调用initUi方法初始化图形组件的界面，以及registerEvent方法来向事件引擎中注册该图形组件的事件监听函数。</li>
+<li>
+<p>CTP（vn.ctp）</p>
+</li>
+<li>
+<p>飞马（vn.femas）</p>
+</li>
+<li>
+<p>LTS（vn.lts）</p>
+</li>
+<li>
+<p>金仕达黄金（vn.ksgold）</p>
+</li>
+<li>
+<p>金仕达期权（vn.ksotp）</p>
+</li>
+<li>
+<p>通联数据（vn.datayes）</p>
+</li>
 </ul>
-<p><strong>初始化界面（initUi）</strong></p>
-<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">initUi</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">"""初始化界面"""</span></div><div class="line">    self.setWindowTitle(<span class="string">u'日志'</span>)</div><div class="line"></div><div class="line">    self.setColumnCount(<span class="number">2</span>)                     </div><div class="line">    self.setHorizontalHeaderLabels([<span class="string">u'时间'</span>, <span class="string">u'日志'</span>])</div><div class="line"></div><div class="line">    self.verticalHeader().setVisible(<span class="keyword">False</span>)                 <span class="comment"># 关闭左边的垂直表头</span></div><div class="line">    self.setEditTriggers(QtGui.QTableWidget.NoEditTriggers) <span class="comment"># 设为不可编辑状态</span></div><div class="line"></div><div class="line">    <span class="comment"># 自动调整列宽</span></div><div class="line">    self.horizontalHeader().setResizeMode(<span class="number">0</span>, QtGui.QHeaderView.ResizeToContents)</div><div class="line">    self.horizontalHeader().setResizeMode(<span class="number">1</span>, QtGui.QHeaderView.Stretch)</div></pre></td></tr></table></figure>
-
+</li>
+<li>
+<p>简洁易用的事件驱动引擎（vn.event），作为事件驱动型交易程序的核心</p>
+</li>
+<li>
+<p>针对如何使用API和事件驱动引擎开发交易程序的示例（vn.demo）</p>
+</li>
+<li>
+<p>开箱即用的实盘交易平台vn.trader（相比之下vn.demo仅建议学习用），整合了多种交易接口，并针对具体策略算法和功能开发提供了简洁易用的API，功能应用举例：</p>
 <ul>
-<li>首先设置该图形组件左上方的标题栏内容为“日志”（日志监控组件）</li>
-<li>我们希望显示日志时，每行显示该条日志的生成时间和具体的日志内容</li>
-<li>由于QTableWidget本身比较类似于Excel表格，左侧有垂直标题栏（默认用于显示每行行号的表头）且可以编辑，我们需要关闭这两个功能</li>
-<li>另外我们希望显示日志生成时间的列的列宽可以调整为最小（只要能看见完整的时间就行），而把显示日志内容的列设为拉升（即窗口有多宽都完全覆盖）</li>
+<li>
+<p>同时登录多个交易接口，在一套界面上监控多种市场的行情和多种资产账户的资金、持仓、委托、成交情况</p>
+</li>
+<li>
+<p>支持跨市场套利（CTP期货和LTS证券）、境内外套利（CTP期货和IB外盘）、多市场数据整合实时预测走势（CTP的股指期货数据、IB的外盘A50数据、Wind的行业指数数据）等策略应用</p>
+</li>
+<li>
+<p>CTA策略引擎模块，在保持易用性的同时，允许用户针对CTA类策略运行过程中委托的报撤行为进行细粒度控制（降低交易滑点、实现高频策略）</p>
+</li>
 </ul>
-<p><strong>注册事件监听（registerEvent）</strong></p>
-<p>这里需要稍微深入一下vn.py框架中的多线程工作机制：</p>
-<ol>
-<li>整个框架在Python环境中主要包含两个线程：主线程（运行Qt循环）和事件处理线程（运行EventEngine中的工作循环）</li>
-<li>针对用户是否需要使用GUI界面，主线程中运行的Qt循环可以选择QApplication（带GUI）或者QCoreApplication（纯cmd）</li>
-<li>. Qt循环主要负责处理所有GUI相关的操作（控件绘制、信号处理等等），用户不能在其他线程中直接改变GUI界面上的任何内容，否则可能会直接导致程序崩溃</li>
-<li>当用户希望在其他线程中对GUI进行操作时，必须依赖Qt提供的signal/slot机制，Qt循环的底层也运行着一个类似于EventEngine的事件处理机制，其他线程发出signal后会首先记录到一个队列中，然后由Qt对队列中的signal任务进行循环处理（具体请参考Qt相关的资料）</li>
-<li>事件处理线程的工作原理在之前的教程中已经专门介绍过了，这里不再重复，用户只需记住所有Qt GUI组件的事件处理函数，都必须使用一个signal和该函数相连，并且在向事件引擎中注册函数监听时，将该signal的emit方法代替原本的事件处理函数进行注册</li>
-</ol>
-<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">########################################################################</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">LogMonitor</span><span class="params">(QtGui.QTableWidget)</span>:</span></div><div class="line">    <span class="string">"""用于显示日志"""</span></div><div class="line">    signal = QtCore.pyqtSignal(type(Event()))</div></pre></td></tr></table></figure>
-
-<ul>
-<li>signal的创建需要放在类的构造中，而不能放在类的初始化函数里（Qt会直接报错）</li>
-<li>由于事件驱动引擎在调用监听函数时会传入事件对象本身作为参数，因此在创建signal时需要允许传入一个类型为Event的参数</li>
-</ul>
-<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">   </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">registerEvent</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">"""注册事件监听"""</span></div><div class="line">    <span class="comment"># Qt图形组件的GUI更新必须使用Signal/Slot机制，否则有可能导致程序崩溃</span></div><div class="line">    <span class="comment"># 因此这里先将图形更新函数作为Slot，和信号连接起来</span></div><div class="line">    <span class="comment"># 然后将信号的触发函数注册到事件驱动引擎中</span></div><div class="line">    self.signal.connect(self.updateLog)</div><div class="line">    self.__eventEngine.register(EVENT_LOG, self.signal.emit)</div></pre></td></tr></table></figure>
-
-<ul>
-<li>首先我们把signal和事件处理函数updateLog连接.</li>
-<li>然后将signal的emit方法注册到事件驱动引擎中，监听EVENT_LOG类型的事件</li>
-</ul>
-<p><strong>更新日志记录（updateLog）</strong></p>
-<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">updateLog</span><span class="params">(self, event)</span>:</span></div><div class="line">    <span class="string">"""更新日志"""</span></div><div class="line">    <span class="comment"># 获取当前时间和日志内容</span></div><div class="line">    t = time.strftime(<span class="string">'%H:%M:%S'</span>,time.localtime(time.time()))   </div><div class="line">    log = event.dict_[<span class="string">'log'</span>]                                    </div><div class="line"></div><div class="line">    <span class="comment"># 在表格最上方插入一行</span></div><div class="line">    self.insertRow(<span class="number">0</span>)              </div><div class="line"></div><div class="line">    <span class="comment"># 创建单元格</span></div><div class="line">    cellTime = QtGui.QTableWidgetItem(t)    </div><div class="line">    cellLog = QtGui.QTableWidgetItem(log)</div><div class="line"></div><div class="line">    <span class="comment"># 将单元格插入表格</span></div><div class="line">    self.setItem(<span class="number">0</span>, <span class="number">0</span>, cellTime)            </div><div class="line">    self.setItem(<span class="number">0</span>, <span class="number">1</span>, cellLog)</div></pre></td></tr></table></figure>
-
-<ul>
-<li>感觉这段代码的注释已经足够清楚，就不多废话了</li>
-</ul>
-<h2 id="总结">总结</h2>
-<p>尽管Qt库本身使用C++开发，相比之下在Python中使用PyQt构建GUI程序更为快捷、简便。基于Python动态语言的特性，在很多不是特别追求性能（GUI更新速度）的地方可以大幅减少用户的代码编写量，并且降低出错率。</p>
-<p>请记住vn.py从开始就是一款专门为交易员设计的通用型交易平台开发框架（而不止是全自动的程序化交易），在金融市场上真正能帮助交易员赚钱的绝对不是多么复杂的程序算法，而是能够完美实现交易员的交易策略并且越简单越好的工具。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/教程/">教程</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="http://vnpy.org/2015/07/09/20150709_Python量化交易平台开发教程系列7-顶层GUI界面开发（1）/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/07/09/20150709_Python量化交易平台开发教程系列7-顶层GUI界面开发（1）/" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/05/20/20150520_Python量化交易平台开发教程系列6-中层引擎设计/" title="Python量化交易平台开发教程系列6-中层引擎设计" itemprop="url">Python量化交易平台开发教程系列6-中层引擎设计</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://vnpy.org/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
-		
-  <p class="article-time">
-    <time datetime="2015-05-20T01:20:00.000Z" itemprop="datePublished"> 发表于 5月 20 2015</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>原创文章，转载请注明出处：用Python的交易员</p>
-<h2 id="前言">前言</h2>
-<p>中层引擎在设计上主要是为了进一步封装底层接口所暴露出的API函数，使得其更容易被上层的GUI和策略组件调用。本篇的内容会相对简单，主要以LTS接口DEMO为例介绍一些设计方面的思路。</p>
-<p>相关的示例都是基于vn.demo中的LTS接口DEMO，发布在：<br><a href="https://github.com/vnpy/vnpy/tree/master/vn.demo/ltsdemo" target="_blank" rel="external">https://github.com/vnpy/vnpy/tree/master/vn.demo/ltsdemo</a></p>
-<h2 id="中层引擎设计">中层引擎设计</h2>
-<h3 id="构造函数">构造函数</h3>
-<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">########################################################################</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainEngine</span>:</span></div><div class="line">    <span class="string">"""主引擎，负责对API的调度"""</span></div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""Constructor"""</span></div><div class="line">        self.ee = EventEngine()         <span class="comment"># 创建事件驱动引擎</span></div><div class="line">        </div><div class="line">        self.md = DemoMdApi(self.ee)    <span class="comment"># 创建API接口</span></div><div class="line">        <span class="comment">#self.md = DemoL2Api(self.ee)   # 如果使用L2行情就改为这行</span></div><div class="line">        self.td = DemoTdApi(self.ee)</div><div class="line">        </div><div class="line">        self.ee.start()                 <span class="comment"># 启动事件驱动引擎</span></div><div class="line">        </div><div class="line">        <span class="comment"># 循环查询持仓和账户相关</span></div><div class="line">        self.countGet = <span class="number">0</span>               <span class="comment"># 查询延时计数</span></div><div class="line">        self.lastGet = <span class="string">'Account'</span>        <span class="comment"># 上次查询的性质</span></div><div class="line">        self.ee.register(EVENT_TDLOGIN, self.initGet)  <span class="comment"># 登录成功后开始初始化查询</span></div><div class="line">        </div><div class="line">        <span class="comment"># 合约储存相关</span></div><div class="line">        self.dictInstrument = {}        <span class="comment"># 字典（保存合约查询数据）</span></div><div class="line">        self.ee.register(EVENT_INSTRUMENT, self.insertInstrument)</div></pre></td></tr></table></figure>
-
-<ol>
-<li><p>首先以主引擎成员变量的形式创建事件驱动引擎ee、行情接口md和交易接口td的对象，两个接口对象创建时传入事件驱动引擎ee对象作为构造函数的参数。</p>
 </li>
-<li><p>在创建以上三个对象后，立即启动事件驱动引擎，此后当用户调用接口的连接、登录等功能收到事件推送后，ee可以立即推送到监听这些事件的组件进行处理。</p>
+<li>
+<p><a href="http://vnpy.org">官网</a>和<a href="http://zhuanlan.zhihu.com/vn-py">知乎专栏</a>，内容目前主要是《Python量化交易平台开发教程系列》，以及vn.py项目进展的更新</p>
 </li>
-<li><p>LTS和CTP接口的持仓情况和账户情况并不会通过回调函数主动推送，只有在投资者调用查询函数时才会返回，我们的DEMO作为一个手动交易终端，选择使用循环查询的模式不断获取持仓和账户情况的更新。这里的每次查询都会占用网络带宽导致系统延时的增加，对于某些运行全自动策略的程序，可以选择不进行查询，而通过对成交、行情等数据的统计来自行计算持仓和账户情况（甚至对于某些策略可以直接忽略该步骤，进一步降低延时水平）。</p>
-</li>
-<li><p>LTS和CTP发送主动查询指令时，存在流量控制（通常限制在1秒一次查询），因此选择间隔发送查询账户和查询持仓的指令。</p>
-</li>
-<li><p>在登录成功后，我们需要查询柜台上所有可交易的合约信息，将这些信息保存到字典dictInstrument中，方便后面需要时进行查询。这里很好的体现出了Python的方便，笔者在设计封装API的回调函数时特别选择使用Python字典的形式推送信息，包含合约信息的字典收到后，可以直接插入到dictInstrument字典进行保存（字典嵌字典），查询时直接使用合约代码即可。而用C++语言开发时通常还需要用到Sqlite之类的内存数据库进行保存，麻烦了不少。</p>
+<li>
+<p>官方交流QQ群262656087，管理较严格（定期清除长期潜水的成员）</p>
 </li>
 </ol>
-<h3 id="其他主动函数">其他主动函数</h3>
-<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">login</span><span class="params">(self, userid, mdPassword, tdPassword, brokerid, mdAddress, tdAddress)</span>:</span></div><div class="line">    <span class="string">"""登陆"""</span></div><div class="line">    self.md.login(mdAddress, userid, mdPassword, brokerid)</div><div class="line">    self.td.login(tdAddress, userid, tdPassword, brokerid)</div><div class="line"></div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">subscribe</span><span class="params">(self, instrumentid, exchangeid)</span>:</span></div><div class="line">    <span class="string">"""订阅合约"""</span></div><div class="line">    self.md.subscribe(instrumentid, exchangeid)</div><div class="line">    </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">getAccount</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">"""查询账户"""</span></div><div class="line">    self.td.getAccount()</div><div class="line">    </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">getInvestor</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">"""查询投资者"""</span></div><div class="line">    self.td.getInvestor()</div><div class="line">    </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">getPosition</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">"""查询持仓"""</span></div><div class="line">    self.td.getPosition()</div><div class="line"></div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">getInstrument</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">"""获取合约"""</span></div><div class="line">    event = Event(type_=EVENT_LOG)</div><div class="line">    log = <span class="string">u'查询合约信息'</span></div><div class="line">    event.dict_[<span class="string">'log'</span>] = log</div><div class="line">    self.ee.put(event)          </div><div class="line">    </div><div class="line">    self.td.getInstrument()</div><div class="line">    </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">sendOrder</span><span class="params">(self, instrumentid, exchangeid, price, pricetype, volume, direction, offset)</span>:</span></div><div class="line">    <span class="string">"""发单"""</span></div><div class="line">    self.td.sendOrder(instrumentid, exchangeid, price, pricetype, volume, direction, offset)</div><div class="line">    </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">cancelOrder</span><span class="params">(self, instrumentid, exchangeid, orderref, frontid, sessionid)</span>:</span></div><div class="line">    <span class="string">"""撤单"""</span></div><div class="line">    self.td.cancelOrder(instrumentid, exchangeid, orderref, frontid, sessionid)</div><div class="line">    </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">getAccountPosition</span><span class="params">(self, event)</span>:</span></div><div class="line">    <span class="string">"""循环查询账户和持仓"""</span></div><div class="line">    self.countGet = self.countGet + <span class="number">1</span></div><div class="line">    </div><div class="line">    <span class="comment"># 每5秒发一次查询</span></div><div class="line">    <span class="keyword">if</span> self.countGet &gt; <span class="number">5</span>:</div><div class="line">        self.countGet = <span class="number">0</span>   <span class="comment"># 清空计数</span></div><div class="line">        </div><div class="line">        <span class="keyword">if</span> self.lastGet == <span class="string">'Account'</span>:</div><div class="line">            self.getPosition()</div><div class="line">            self.lastGet = <span class="string">'Position'</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            self.getAccount()</div><div class="line">            self.lastGet = <span class="string">'Account'</span></div><div class="line"></div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">initGet</span><span class="params">(self, event)</span>:</span></div><div class="line">    <span class="string">"""在交易服务器登录成功后，开始初始化查询"""</span></div><div class="line">    <span class="comment"># 打开设定文件setting.vn</span></div><div class="line">    f = shelve.open(<span class="string">'setting.vn'</span>)</div><div class="line">    </div><div class="line">    <span class="comment"># 尝试读取设定字典，若该字典不存在，则发出查询请求</span></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        d = f[<span class="string">'instrument'</span>]</div><div class="line">        </div><div class="line">        <span class="comment"># 如果本地保存的合约数据是今日的，则载入，否则发出查询请求</span></div><div class="line">        today = date.today()</div><div class="line">        <span class="keyword">if</span> d[<span class="string">'date'</span>] == today:</div><div class="line">            self.dictInstrument = d[<span class="string">'dictInstrument'</span>]</div><div class="line">            </div><div class="line">            event = Event(type_=EVENT_LOG)</div><div class="line">            log = <span class="string">u'合约信息读取完成'</span></div><div class="line">            event.dict_[<span class="string">'log'</span>] = log</div><div class="line">            self.ee.put(event)            </div><div class="line"></div><div class="line">            self.getInvestor()</div><div class="line">            </div><div class="line">            <span class="comment"># 开始循环查询</span></div><div class="line">            self.ee.register(EVENT_TIMER, self.getAccountPosition)                 </div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            self.getInstrument()</div><div class="line">    <span class="keyword">except</span> KeyError:</div><div class="line">        self.getInstrument()</div><div class="line">        </div><div class="line">    f.close()</div><div class="line"> </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">insertInstrument</span><span class="params">(self, event)</span>:</span></div><div class="line">    <span class="string">"""插入合约对象"""</span></div><div class="line">    data = event.dict_[<span class="string">'data'</span>]</div><div class="line">    last = event.dict_[<span class="string">'last'</span>]</div><div class="line">    </div><div class="line">    self.dictInstrument[data[<span class="string">'InstrumentID'</span>]] = data</div><div class="line">    </div><div class="line">    <span class="comment"># 合约对象查询完成后，查询投资者信息并开始循环查询</span></div><div class="line">    <span class="keyword">if</span> last:</div><div class="line">        <span class="comment"># 将查询完成的合约信息保存到本地文件，今日登录可直接使用不再查询</span></div><div class="line">        self.saveInstrument()</div><div class="line">        </div><div class="line">        event = Event(type_=EVENT_LOG)</div><div class="line">        log = <span class="string">u'合约信息查询完成'</span></div><div class="line">        event.dict_[<span class="string">'log'</span>] = log</div><div class="line">        self.ee.put(event)            </div><div class="line"></div><div class="line">        self.getInvestor()</div><div class="line">        </div><div class="line">        <span class="comment"># 开始循环查询</span></div><div class="line">        self.ee.register(EVENT_TIMER, self.getAccountPosition)              </div><div class="line">    </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">selectInstrument</span><span class="params">(self, instrumentid)</span>:</span></div><div class="line">    <span class="string">"""获取合约信息对象"""</span></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        instrument = self.dictInstrument[instrumentid]</div><div class="line">    <span class="keyword">except</span> KeyError:</div><div class="line">        instrument = <span class="keyword">None</span></div><div class="line">    <span class="keyword">return</span> instrument</div><div class="line"></div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">exit</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">"""退出"""</span></div><div class="line">    <span class="comment"># 销毁API对象</span></div><div class="line">    self.td = <span class="keyword">None</span></div><div class="line">    self.md = <span class="keyword">None</span></div><div class="line">    </div><div class="line">    <span class="comment"># 停止事件驱动引擎</span></div><div class="line">    self.ee.stop()</div><div class="line">    </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">saveInstrument</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">"""保存合约属性数据"""</span></div><div class="line">    f = shelve.open(<span class="string">'setting.vn'</span>)</div><div class="line">    d = {}</div><div class="line">    d[<span class="string">'dictInstrument'</span>] = self.dictInstrument</div><div class="line">    d[<span class="string">'date'</span>] = date.today()</div><div class="line">    f[<span class="string">'instrument'</span>] = d</div><div class="line">    f.close()</div></pre></td></tr></table></figure>
-
+<p><strong>展望一下项目2016年的计划</strong></p>
+<p>代码方面：</p>
 <ol>
-<li><p>LTS和CTP的行情和交易账户通常是由经纪商一起提供的，为了简洁起见，把两个接口的登录一起封装在了login函数中。</p>
+<li>
+<p>完善飞创、易盛等相对小众接口的添加，这块将由社区驱动，作者主要负责代码检查和管理</p>
 </li>
-<li><p>subscribe, getAccount, getPosition, getInvestor, getInstrument, sendOrder, cancelOrder都只是直接调用行情和交易接口的功能，做这种设计的目的是为了让用户在写上层组件代码时，可以直接写self.mainEngine.subscribe(‘IF1506’, ‘CFFEX’)，而不必去写self.mainEngine.md.subscribe(‘IF1506’, ‘CFFEX’)，很小的区别，但是相信我，程序规模大了后会让你烦到崩溃。</p>
+<li>
+<p>整理vn.py项目中API的具体版本号，保证封装接口的对应，这点已经有多位用户提起过，项目初期没有做详细记录所以很多API的版本号一时都较难对上</p>
 </li>
-<li><p>getAccountPosition用于实现循环查询账户和持仓，这里我设为了每5秒发一次，基本够用就好。</p>
+<li>
+<p>Linux上API的编译以及vn.trader支持</p>
 </li>
-<li><p>initGet和insertInstrument两个函数实现了登录后初始化查询相关的功能。首先登录完成后，程序用shelve模块打开本地保存的文件setting.vn，检查其中的合约信息数据，如果该数据的更新日期为今日，则直接读取使用，无需再次查询可交易合约信息（一般该信息每天日内保持不变）。否则调用getInstrument函数查询合约信息，insertInstrument函数负责将收到的合约信息插入到dictInstrument字典中，当所有合约信息都插入完成后，通过saveInstrument函数将该字典保存到setting.vn中，即可实现日内再次登录无需查询直接读取。</p>
-</li>
-<li><p>合约信息查询完成后，通常会再查询一次投资者姓名getInvestor，主要用于输出在程序的标题栏上（方便用户检查，防止登录错账户等），并将循环查询函数getAccountPosition注册到每秒触发的定时器事件监听上，开始循环查询。</p>
-</li>
-<li><p>当用户退出程序时，需要调用主引擎的exit函数，释放行情和交易API接口对象（在C++环境中会自动析构），并停止事件驱动引擎的工作线程（否则可能报线程退出错误等）。</p>
-</li>
-</ol>
-<h2 id="总结">总结</h2>
-<p>中层引擎的设计思路主要是封装底层接口，从而让用户在开发顶层GUI和策略组件时无需直接调用底层接口的主动函数，降低开发和维护的复杂度。</p>
-<p>DEMO中的这个中层引擎非常简单，功能上只实现了个循环查询（其实也可以在接口层中实现，视乎需求）。而在实际开发中，中层引擎通常会包含用户最常用的一些功能模块，比如做期权策略的会加入期权定价引擎，做期现套利的会加入持仓组合的敞口监控对冲引擎等等。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/教程/">教程</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="http://vnpy.org/2015/05/20/20150520_Python量化交易平台开发教程系列6-中层引擎设计/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/05/20/20150520_Python量化交易平台开发教程系列6-中层引擎设计/" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/05/05/20150505_Python量化交易平台开发教程系列5-底层接口对接/" title="Python量化交易平台开发教程系列5-底层接口对接" itemprop="url">Python量化交易平台开发教程系列5-底层接口对接</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://vnpy.org/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
-		
-  <p class="article-time">
-    <time datetime="2015-05-05T06:46:00.000Z" itemprop="datePublished"> 发表于 5月 5 2015</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>原创文章，转载请注明出处：用Python的交易员</p>
-<h2 id="前言">前言</h2>
-<p>从本篇教程开始，所有的开发都会在Python环境中进行（谢天谢地可以和C++说再见了）。</p>
-<p><strong>通常情况下，一个交易程序的架构会由以下三个部分组成：</strong></p>
-<ul>
-<li>底层接口：负责对接行情和交易API，将数据推送到系统核心中，以及发送指令（下单、数据请求等）</li>
-<li>中层引擎：用于整合程序中的各个组件（包括底层接口、数据库接口等等）到一个对象中，便于顶层UI调用</li>
-<li>顶层GUI：用于显示数据和调用中层引擎暴露的主动函数，实现各项具体功能</li>
-</ul>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B5algotrader_%E6%9E%84%E6%9E%B6.png" alt="AlgoTrader架构"></p>
-<p><strong>上面这张图展示的是国外的一款开源交易平台AlgoTrader的架构：</strong></p>
-<ul>
-<li>两边的Adapters代表的是底层接口（左边数据，右边交易）</li>
-<li>红色圆柱形中包括的是中层引擎架构，事件驱动方面使用了Esper复杂事件处理（CEP）引擎，同时内置了一些常用的功能引擎，如期权定价引擎、外汇对冲模块、投资组合管理模块等</li>
-<li>上方的Strategy1、2等代表的是顶层应用（算法策略、GUI界面等），通过调用中层引擎的功能来实现用户所需的业务</li>
-</ul>
-<p><strong>vn.py和AlgoTrader的比较：</strong></p>
-<p>这里对两个项目做一个简单的比较。</p>
-<p>vn.py优势：</p>
-<ul>
-<li>语言易用：Java语言比Python啰嗦</li>
-<li>架构简洁：Java的编程理念（纯面向对象，大量使用框架等）更是比Python的编程理念（人生苦短，我们的目标是搞定问题）繁琐</li>
-<li>事件驱动引擎：AlgoTrader使用的Esper引擎尽管功能强大，使用起来也过于复杂，对于国内绝大部分的量化业务而言完全用不着</li>
-<li>本地化：vn.py完全为中国市场设计，在功能设计上更符合国人的使用习惯，而AlgoTrader则是针对欧美市场设计</li>
-</ul>
-<p>AlgoTrader优势：</p>
-<ul>
-<li>静态语言：Java在开发时可以进行静态检查，同时相对较低的灵活性使得其更适合大型团队使用（即每个成员未必对项目整体非常了解）</li>
-<li>国外接口：已有大量的国外经纪商和行情提供商接口，如果用户主要做欧美市场基本可以开箱即用</li>
-<li>成熟度：AlgoTrader从2009发布至今已经有6年的历史，同时有着相当数量的机构客户</li>
-</ul>
-<p>两个项目的相似之处：</p>
-<ul>
-<li>作者在最初都是为了交易某种期权策略而开发了该项目</li>
-<li>整体框架设计类似（底层接口、中层引擎、顶层GUI）</li>
-<li>都可以非常方便的开发全自动交易策略</li>
-<li>都是开源项目，目前托管在Github上（废话），用户可以根据自己的需求随意定制相关功能</li>
-<li>都可以应用于高频交易（毫秒级延迟），不适用于超高频交易（微秒级延迟）</li>
-</ul>
-<p><strong>教程说明</strong></p>
-<p>本篇教程将会介绍底层接口的开发，后面的若干篇则是关于中层引擎和各种顶层GUI组件。</p>
-<p>相关的示例都是基于vn.demo中的LTS接口DEMO，发布在：<br><a href="https://github.com/vnpy/vnpy/tree/master/vn.demo/ltsdemo" target="_blank" rel="external">https://github.com/vnpy/vnpy/tree/master/vn.demo/ltsdemo</a></p>
-<h2 id="底层接口对接">底层接口对接</h2>
-<p>通过前面的教程，我们已经获得了和原生C++ API功能完全相同的Python封装API。通常情况下，为了将某个API对接到我们的程序中，需要以下两步：</p>
-<ol>
-<li>将API的回调函数收到的数据推送到程序的中层引擎中，等待处理</li>
-<li>将API的主动函数进行一定的简化封装，便于中层引擎调用</li>
-</ol>
-<p>vn.lts中的API接口在使用时需要由用户继承后实现回调函数对应的具体功能，下面的内容以行情接口为例。</p>
-<h3 id="接口对象设计">接口对象设计</h3>
-<figure class="highlight Python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">########################################################################</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">DemoMdApi</span><span class="params">(MdApi)</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line">    Demo中的行情API封装</div><div class="line">    封装后所有数据自动推送到事件驱动引擎中，由其负责推送到各个监听该事件的回调函数上</div><div class="line">    </div><div class="line">    对用户暴露的主动函数包括:</div><div class="line">    登陆 login</div><div class="line">    订阅合约 subscribe</div><div class="line">    """</div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, eventEngine)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line">        API对象的初始化函数</div><div class="line">        """</div><div class="line">        super(DemoMdApi, self).__init__()</div><div class="line">        </div><div class="line">        <span class="comment"># 事件引擎，所有数据都推送到其中，再由事件引擎进行分发</span></div><div class="line">        self.__eventEngine = eventEngine  </div><div class="line">        </div><div class="line">        <span class="comment"># 请求编号，由api负责管理</span></div><div class="line">        self.__reqid = <span class="number">0</span></div><div class="line">        </div><div class="line">        <span class="comment"># 以下变量用于实现连接和重连后的自动登陆</span></div><div class="line">        self.__userid = <span class="string">''</span></div><div class="line">        self.__password = <span class="string">''</span></div><div class="line">        self.__brokerid = <span class="string">''</span></div><div class="line">        </div><div class="line">        <span class="comment"># 以下集合用于重连后自动订阅之前已订阅的合约，使用集合为了防止重复</span></div><div class="line">        self.__setSubscribed = set()</div><div class="line">        </div><div class="line">        <span class="comment"># 初始化.con文件的保存目录为\mdconnection，注意这个目录必须已存在，否则会报错</span></div><div class="line">        self.createFtdcMdApi(os.getcwd() + <span class="string">'\\mdconnection\\'</span>)</div></pre></td></tr></table></figure>
-
-<ol>
-<li><p>DemoMdApi类继承自MdApi类，并实现了回调函数的具体功能。</p>
-</li>
-<li><p>创建DemoMdApi的对象时，用户需要传入的参数是事件驱动引擎对象eventEngine。</p>
-</li>
-<li><p>每次调用API的主动函数时，需要传入一个reqid的参数，作为本次请求的唯一标识，绝大部分情况下我们不需要在意每个请求的标识情况，因此选择将该参数交给DemoMdApi对象来维护，每次调用主动函数时自动加1。</p>
-</li>
-<li><p>我们在DemoMdApi的对象中保存用户名、密码和经纪商编号，用于前置机连接完成后的自动登录功能，以及断线重连相关的操作。</p>
-</li>
-<li><p>__setSubscribed对应的是一个Python集合，用于保存我们通过订阅函数订阅过的合约，在断线重连后自动进行订阅，之所以选择set而不是list是为了保证合约的唯一性，避免重复订阅（尽管重复订阅也没影响）。</p>
-</li>
-<li><p>在创建对象DemoMdApi对象的同时，自动调用createFtdcMdApi来初始化连接接口，选择使用当前目录下的mdconnection文件夹来保存.con通讯文件。</p>
+<li>
+<p>基于VirtualBox的vn.py开发环境镜像，解决部分用户反映项目初期不知该如何搭建开发环境的问题，这个镜像会由官方长期维护下去</p>
 </li>
 </ol>
-<h3 id="回调函数">回调函数</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">onFrontConnected</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""服务器连接"""</span></div><div class="line">        event = Event(type_=EVENT_LOG)</div><div class="line">        event.dict_[<span class="string">'log'</span>] = <span class="string">u'行情服务器连接成功'</span></div><div class="line">        self.__eventEngine.put(event)</div><div class="line">        </div><div class="line">        <span class="comment"># 如果用户已经填入了用户名等等，则自动尝试连接</span></div><div class="line">        <span class="keyword">if</span> self.__userid:</div><div class="line">            req = {}</div><div class="line">            req[<span class="string">'UserID'</span>] = self.__userid</div><div class="line">            req[<span class="string">'Password'</span>] = self.__password</div><div class="line">            req[<span class="string">'BrokerID'</span>] = self.__brokerid</div><div class="line">            self.__reqid = self.__reqid + <span class="number">1</span></div><div class="line">            self.reqUserLogin(req, self.__reqid)</div><div class="line"></div><div class="line">...</div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">onRspUserLogin</span><span class="params">(self, data, error, n, last)</span>:</span></div><div class="line">        <span class="string">"""登陆回报"""</span></div><div class="line">        event = Event(type_=EVENT_LOG)</div><div class="line">        </div><div class="line">        <span class="keyword">if</span> error[<span class="string">'ErrorID'</span>] == <span class="number">0</span>:</div><div class="line">            log = <span class="string">u'行情服务器登陆成功'</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            log = <span class="string">u'登陆回报，错误代码：'</span> + unicode(error[<span class="string">'ErrorID'</span>]) + <span class="string">u','</span> + <span class="string">u'错误信息：'</span> + error[<span class="string">'ErrorMsg'</span>].decode(<span class="string">'gbk'</span>)</div><div class="line">        </div><div class="line">        event.dict_[<span class="string">'log'</span>] = log</div><div class="line">        self.__eventEngine.put(event)</div><div class="line">        </div><div class="line">        <span class="comment"># 重连后自动订阅之前已经订阅过的合约</span></div><div class="line">        <span class="keyword">if</span> self.__setSubscribed:</div><div class="line">            <span class="keyword">for</span> instrument <span class="keyword">in</span> self.__setSubscribed:</div><div class="line">                self.subscribe(instrument[<span class="number">0</span>], instrument[<span class="number">1</span>])</div><div class="line"></div><div class="line">...</div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------  </span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">onRtnDepthMarketData</span><span class="params">(self, data)</span>:</span></div><div class="line">        <span class="string">"""行情推送"""</span></div><div class="line">        <span class="comment"># 行情推送收到后，同时触发常规行情事件，以及特定合约行情事件，用于满足不同类型的监听</span></div><div class="line">        </div><div class="line">        <span class="comment"># 常规行情事件</span></div><div class="line">        event1 = Event(type_=EVENT_MARKETDATA)</div><div class="line">        event1.dict_[<span class="string">'data'</span>] = data</div><div class="line">        self.__eventEngine.put(event1)</div><div class="line">        </div><div class="line">        <span class="comment"># 特定合约行情事件</span></div><div class="line">        event2 = Event(type_=(EVENT_MARKETDATA_CONTRACT+data[<span class="string">'InstrumentID'</span>]))</div><div class="line">        event2.dict_[<span class="string">'data'</span>] = data</div><div class="line">        self.__eventEngine.put(event2)</div><div class="line">...</div></pre></td></tr></table></figure>
-
+<p>文章方面：</p>
+<p>1.作者自己作为交易员的成长经历（这一年来收到好多人关于如何成为Quant、建议看什么书、怎么选学校等类似的问题，与其零散的回答不如介绍下自己的一些经历给大家参考可能更有帮助）</p>
 <ol>
-<li><p>通过回调函数收到API的数据推送后，创建不同类型的事件Event对象（来自于事件驱动引擎模块），在事件对象的数据字典dict_中保存需要具体推送的数据，然后推送到事件驱动引擎中，由其负责处理。</p>
+<li>
+<p>vn.trader的使用教程（目前基本除了代码里的注释什么都没有...）</p>
 </li>
-<li><p>回调函数收到的数据中，data和error分别对应的是保存主要数据（如行情）和错误信息的字典，n是该回调函数对应的请求号（即调用主动函数时的reqid），last是一个布尔值，代表是否为该次调用的最后返回信息。</p>
+<li>
+<p>将ta-lib（技术分析）和quantlib（金融工程和量化）整合到vn.trader中应用的教程，解决目前策略开发过程中技术指标和量化函数缺乏的问题</p>
 </li>
-<li><p>我们主要对data字典感兴趣，因此选择在事件中整体推送。</p>
-</li>
-<li><p>而error字典每次收到后应当立即检查是否包含错误信息（因为即使没有发生错误也会推送），若有则自动保存为一个日志事件（通过日志监控控件显示出来）。</p>
-</li>
-<li><p>服务器连接完成后（onFrontConnected），检查是否已经填入了用户名等登录信息，若有则自动登录（请参考后面主动函数中的示例）。</p>
-</li>
-<li><p>登陆完成后（onRspUserLogin），自动订阅__setSubscribed中之前已经订阅过的合约。</p>
-</li>
-<li><p>收到行情推送后（onRtnDepthMarketData），我们选择创建两种事件，一种是常规行情事件（通常适用于市场行情监控GUI等对所有行情推送都关注的组件），另一种是特定合约行情事件（通常适用于算法等仅关注特定合约行情的组件）。</p>
-</li>
-<li><p>当我们调用会有返回信息的主动函数时，需要传入本次请求的编号，此时我们先将__reqid自加1，再作为参数传入主动函数中。</p>
+<li>
+<p>一套关于开发基于股指交易ETF期权的CTA策略的教程（股指期货短时间内还看不到恢复的希望，咱得另谋出路）</p>
 </li>
 </ol>
-<h3 id="主动函数">主动函数</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">login</span><span class="params">(self, address, userid, password, brokerid)</span>:</span></div><div class="line">    <span class="string">"""连接服务器"""</span></div><div class="line">    self.__userid = userid</div><div class="line">    self.__password = password</div><div class="line">    self.__brokerid = brokerid</div><div class="line">    </div><div class="line">    <span class="comment"># 注册服务器地址</span></div><div class="line">    self.registerFront(address)</div><div class="line">    </div><div class="line">    <span class="comment"># 初始化连接，成功会调用onFrontConnected</span></div><div class="line">    self.init()</div><div class="line">    </div><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">subscribe</span><span class="params">(self, instrumentid, exchangeid)</span>:</span></div><div class="line">    <span class="string">"""订阅合约"""</span></div><div class="line">    req = {}</div><div class="line">    req[<span class="string">'InstrumentID'</span>] = instrumentid</div><div class="line">    req[<span class="string">'ExchangeID'</span>] = exchangeid</div><div class="line">    self.subscribeMarketData(req)</div><div class="line">    </div><div class="line">    instrument = (instrumentid, exchangeid)</div><div class="line">    self.__setSubscribed.add(instrument)</div></pre></td></tr></table></figure>
-
+<p>社区方面：</p>
 <ol>
-<li><p>主动函数仅封装了两个功能，登录login和订阅合约subscribe。这里假设通常我们不会做登出（直接杀进程）和退订合约（不一定）之类的操作，有需求的话可以自行封装对应的函数。</p>
+<li>
+<p>重新建设官方网站，目前使用的是托管在Github Pages上的Hexo静态博客，一来功能比较有限，二来有些用户反映Github时不时会被墙，考虑基于Flask重建一个托管在国内的官网</p>
 </li>
-<li><p>对于登录函数login而言，传入参数包括服务器前置机地址address，用户名userid，密码password以及经纪商代码brokerid。函数调用后，我们先将userid，password和brokerid保存下来，然后注册服务器地址registerFront，并初始化连接init。连接完成后，onFrontConnected回调函数会被自动调用，然后发生的操作请参考前一段落的回调函数工作流程。</p>
-</li>
-<li><p>LTS的API在订阅行情时，需要传入合约的代码以及合约所在的交易所（因为存在两个证券交易所相同代码的情况），而CTP的API在期货方面则不存在该问题，只需传入合约代码。发送订阅请求后，将该订阅请求保存在__setSubscribed集合中，使得断线重连时可以自动重新订阅。</p>
+<li>
+<p>有用户提出建设互动性更强的网站作为交流平台（如论坛或者知乎Q&amp;A类似的模式），这点在考虑中，主要制约因素是作者参与的时间，可能考虑和更多的资深用户合作是个好主意？</p>
 </li>
 </ol>
-<h2 id="总结">总结</h2>
-<p>在交易程序的开发中，所有的API对接原理均大同小异，除了类CTP API以外，国内的恒生接口、FIX引擎接口等等也可以同样遵照以上的原理进行对接设计。</p>
-<p>文章中的例子是行情接口，交易接口因为包含了更多的回调函数和主动函数，在设计上相对更为复杂，感兴趣读者建议直接阅读demo中的源代码，相关问题可以在vn.py框架交流群（群号：262656087）中提问。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/教程/">教程</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="http://vnpy.org/2015/05/05/20150505_Python量化交易平台开发教程系列5-底层接口对接/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/05/05/20150505_Python量化交易平台开发教程系列5-底层接口对接/" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/04/20/20150420_20150420项目开发日志/" title="2015/4/20 项目开发日志" itemprop="url">2015/4/20 项目开发日志</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://vnpy.org/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
-		
-  <p class="article-time">
-    <time datetime="2015-04-20T08:56:45.000Z" itemprop="datePublished"> 发表于 4月 20 2015</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="目前项目状态">目前项目状态</h2>
-<p>差不多一个多月的时间，完成了CTP API的vn.ctp封装，以及用于展示如何使用vn.py框架开发的vn.demo，两者均已发布到github上。</p>
-<p>接下来将会发布几篇和vn.demo相关的教程。</p>
-<h2 id="vn-demo介绍">vn.demo介绍</h2>
-<p>该demo主要用于展示如何使用vn.py框架开发交易平台，使用了vn.event和vn.lts模块。</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B4vndemo.jpg" alt="enter image description here"></p>
-<h2 id="如何使用">如何使用</h2>
-<p>常规用户可以直接运行exe文件夹下的demoMain.exe。</p>
-<p>对开发有兴趣的用户需要根据vnpy.org的教程3安装相关的开发环境，然后通过demoMain.py和demoMain.pyw（无cmd界面）运行。</p>
-<h2 id="实现功能">实现功能</h2>
-<p>demo的实现参考了盈佳和尔易的LTS交易平台，功能如下：</p>
-<ol>
-<li>行情、持仓、账户、成交、报单的监控</li>
-<li>平台的日志记录</li>
-<li>下单交易，实现了LTS提供的所有订单类型和交易类型</li>
-<li>双击报单监控中的单元格撤单，以及下单交易组件一键全撤</li>
-</ol>
-<h2 id="文件说明">文件说明</h2>
-<ul>
-<li>demoApi.py主要包含了程序的底层接口，对vn.lts中的API进行了简化封装</li>
-<li>demoEngine.py主要包含了程序的中间层，负责调用底层接口</li>
-<li>demoUi.py主要包含了用于数据监控和主动函数调用相关的GUI组件</li>
-<li>demoMain.py包含了程序的主函数入口，双击运行</li>
-<li>demoMain.pyw功能和demoMain.py一样，双击时会自动调用pythonw.exe运行（无cmd界面）</li>
-</ul>
-<h2 id="nuitka编译说明">nuitka编译说明</h2>
-<p>要执行nuikta编译，请在本文件夹下打开cmd，并输入以下命令：</p>
-<p>nuitka —recurse-all —windows-disable-console —icon=C:\vn.demo\vnpy.ico demoMain.py</p>
-<p>其中C:\vn.demo\vnpy.ico需要修改为用户vn.demo文件夹的路径。</p>
-<h2 id="LTS测试服务器地址">LTS测试服务器地址</h2>
-<p><strong>行情</strong><br>tcp://211.144.195.163:34513</p>
-<p><strong>交易</strong><br>tcp://211.144.195.163:34505</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/日志/">日志</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="http://vnpy.org/2015/04/20/20150420_20150420项目开发日志/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/04/20/20150420_20150420项目开发日志/" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/03/13/20150313_Python量化交易平台开发教程系列4-事件驱动引擎原理和使用/" title="Python量化交易平台开发教程系列4-事件驱动引擎原理和使用" itemprop="url">Python量化交易平台开发教程系列4-事件驱动引擎原理和使用</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://vnpy.org/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
-		
-  <p class="article-time">
-    <time datetime="2015-03-13T02:58:00.000Z" itemprop="datePublished"> 发表于 3月 13 2015</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>原创文章，转载请注明出处：用Python的交易员</p>
-<h2 id="前言">前言</h2>
-<p>从这篇开始，后面的教程都会基于Python（终于可以跟C++说再见了）。</p>
-<p>经过上一篇复杂繁琐的API编译后，我们已经有了一个可以在Python环境中用来收行情和发单的接口，但是尽管作者在Github上也放了简单的API功能测试代码作为接口使用方法的示例，绝大部分读者应该对于如何用这个接口去开发自己的交易系统毫无头绪。</p>
-<p>类似的情况也常常发生于当我们从万得、恒生、网上的其他开源项目（比如pyctp）等等拿到开发接口和文档示例后：</p>
-<p>看了半天觉得似乎上面讲的都懂。</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B4%E6%8E%A5%E5%8F%97%E6%8C%91%E6%88%98.jpg" alt="enter image description here"></p>
-<p>但要写个自己的系统依旧不知道从何处下手。</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B4%E4%B8%8D%E7%9F%A5%E6%89%80%E6%8E%AA.jpg" alt="enter image description here"></p>
-<p>所以在搞定交易接口后，我们开发交易系统的第一步就是要弄清楚系统的工作原理，在读完这篇教程后，你应该至少不会再对如何写一个交易系统茫然无措了。</p>
-<h2 id="事件驱动">事件驱动</h2>
-<h3 id="计算机程序分类">计算机程序分类</h3>
-<p>所有的计算机程序都可以大致分为两类：脚本型（单次运行）和连续运行型（直到用户主动退出）。</p>
-<p><strong>脚本型</strong><br>脚本型的程序包括最早的批处理文件以及使用Python做交易策略回测等等，这类程序的特点是在用户启动后会按照编程时设计好的步骤一步步运行，所有步骤运行完后自动退出。</p>
-<p><strong>连续运行型</strong><br>连续运行型的程序包含了操作系统和绝大部分我们日常使用的软件等等，这类程序启动后会处于一个无限循环中连续运行，直到用户主动退出时才会结束。</p>
-<h3 id="连续运行型程序">连续运行型程序</h3>
-<p>我们要开发的交易系统就是属于连续运行型程序，而这种程序根据其计算逻辑的运行机制不同，又可以粗略的分为时间驱动和事件驱动两种。</p>
-<p><strong>时间驱动</strong></p>
-<p>时间驱动的程序逻辑相对容易设计，简单来说就是让电脑每隔一段时间自动做一些事情。这个事情本身可以很复杂、包括很多步骤，但这些步骤都是线性的，按照顺序一步步执行下来。</p>
-<p>以下代码展示了一个非常简单的时间驱动的Python程序。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo</span><span class="params">()</span>:</span></div><div class="line">	<span class="keyword">print</span> <span class="string">u'时间驱动的程序每隔1秒运行demo函数'</span></div><div class="line"></div><div class="line"><span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">	demo()</div><div class="line">	sleep(<span class="number">1.0</span>)</div></pre></td></tr></table></figure>
-
-<p>时间驱动的程序本质上就是每隔一段时间固定运行一次脚本（上面代码中的demo函数）。尽管脚本自身可以很长、包含非常多的步骤，但是我们可以看出这种程序的运行机制相对比较简单、容易理解。</p>
-<p>举一些量化交易相关的例子：</p>
-<ol>
-<li>每隔5分钟，通过新浪财经网页的公开API读取一次沪深300成分股的价格，根据当日涨幅进行排序后输出到电脑屏幕上。</li>
-<li>每隔1秒钟，检查一次最新收到的股指期货TICK数据，更新K线和其他技术指标，检查是否满足趋势策略的下单条件，若满足则执行下单。</li>
-</ol>
-<p>对速度要求较高的量化交易方面（日内CTA策略、高频策略等等），时间驱动的程序会存在一个非常大的缺点：对数据信息在反应操作上的处理延时。例子2中，在每次逻辑脚本运行完等待的那1秒钟里，程序对于接收到的新数据信息（行情、成交推送等等）是不会做出任何反应的，只有在等待时间结束后脚本再次运行时才会进行相关的计算处理。而处理延时在量化交易中的直接后果就是money：市价单滑点、限价单错过本可成交的价格。</p>
-<p>时间驱动的程序在量化交易方面还存在一些其他的缺点：如浪费CPU的计算资源、实现异步逻辑复杂度高等等。</p>
-<p><strong>事件驱动</strong></p>
-<p>与时间驱动对应的就是事件驱动的程序：当某个新的事件被推送到程序中时（如API推送新的行情、成交），程序立即调用和这个事件相对应的处理函数进行相关的操作。</p>
-<p>上面例子2的事件驱动版：交易程序对股指TICK数据进行监听，当没有新的行情过来时，程序保持监听状态不进行任何操作；当收到新的数据时，数据处理函数立即更新K线和其他技术指标，并检查是否满足趋势策略的下单条件执行下单。</p>
-<p>对于简单的程序，我们可以采用上面测试代码中的方案，直接在API的回调函数中写入相应的逻辑。但随着程序复杂度的增加，这种方案会变得越来越不可行。假设我们有一个带有图形界面的量化交易系统，系统在某一时刻接收到了API推送的股指期货行情数据，针对这个数据系统需要进行如下处理：</p>
-<ol>
-<li>更新图表上显示的K线图形（绘图）</li>
-<li>更新行情监控表中股指期货的行情数据（表格更新）</li>
-<li>策略1需要运行一次内部算法，检查该数据是否会触发策略进行下单（运算、下单）</li>
-<li>策略2同样需要运行一次内部算法，检查该数据是否会触发策略进行下单（运算、下单）</li>
-<li>风控系统需要检查最新行情价格是否会导致账户的整体风险超限，若超限需要进行报警（运算、报警）</li>
-</ol>
-<p>此时将上面所有的操作都写到一个回调函数中无疑变成了非常差的方案，代码过长容易出错不说，可扩展性也差，每添加一个策略或者功能则又需要修改之前的源代码（有经验的读者会知道，经常修改生产代码是一种非常危险的运营管理方法）。</p>
-<p>为了解决这种情况，我们需要用到事件驱动引擎来管理不同事件的事件监听函数并执行所有和事件驱动相关的操作。</p>
-<h2 id="事件驱动引擎原理">事件驱动引擎原理</h2>
-<p>vn.py框架中的<a href="https://github.com/vnpy/vnpy/tree/master/vn.event" target="_blank" rel="external">vn.event模块</a>包含了一个可扩展的事件驱动引擎。整个引擎的实现并不复杂，除去注释、空行后大概也就100行左右的代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># encoding: UTF-8</span></div><div class="line"></div><div class="line"><span class="comment"># 系统模块</span></div><div class="line"><span class="keyword">from</span> Queue <span class="keyword">import</span> Queue, Empty</div><div class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</div><div class="line"></div><div class="line"><span class="comment"># 第三方模块</span></div><div class="line"><span class="keyword">from</span> PyQt4.QtCore <span class="keyword">import</span> QTimer</div><div class="line"></div><div class="line"><span class="comment"># 自己开发的模块</span></div><div class="line"><span class="keyword">from</span> eventType <span class="keyword">import</span> *</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">########################################################################</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">EventEngine</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line">    事件驱动引擎</div><div class="line">    事件驱动引擎中所有的变量都设置为了私有，这是为了防止不小心</div><div class="line">    从外部修改了这些变量的值或状态，导致bug。</div><div class="line">    </div><div class="line">    变量说明</div><div class="line">    __queue：私有变量，事件队列</div><div class="line">    __active：私有变量，事件引擎开关</div><div class="line">    __thread：私有变量，事件处理线程</div><div class="line">    __timer：私有变量，计时器</div><div class="line">    __handlers：私有变量，事件处理函数字典</div><div class="line">    </div><div class="line">    </div><div class="line">    方法说明</div><div class="line">    __run: 私有方法，事件处理线程连续运行用</div><div class="line">    __process: 私有方法，处理事件，调用注册在引擎中的监听函数</div><div class="line">    __onTimer：私有方法，计时器固定事件间隔触发后，向事件队列中存入计时器事件</div><div class="line">    start: 公共方法，启动引擎</div><div class="line">    stop：公共方法，停止引擎</div><div class="line">    register：公共方法，向引擎中注册监听函数</div><div class="line">    unregister：公共方法，向引擎中注销监听函数</div><div class="line">    put：公共方法，向事件队列中存入新的事件</div><div class="line">    </div><div class="line">    事件监听函数必须定义为输入参数仅为一个event对象，即：</div><div class="line">    </div><div class="line">    函数</div><div class="line">    def func(event)</div><div class="line">        ...</div><div class="line">    </div><div class="line">    对象方法</div><div class="line">    def method(self, event)</div><div class="line">        ...</div><div class="line">        </div><div class="line">    """</div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""初始化事件引擎"""</span></div><div class="line">        <span class="comment"># 事件队列</span></div><div class="line">        self.__queue = Queue()</div><div class="line">        </div><div class="line">        <span class="comment"># 事件引擎开关</span></div><div class="line">        self.__active = <span class="keyword">False</span></div><div class="line">        </div><div class="line">        <span class="comment"># 事件处理线程</span></div><div class="line">        self.__thread = Thread(target = self.__run)</div><div class="line">        </div><div class="line">        <span class="comment"># 计时器，用于触发计时器事件</span></div><div class="line">        self.__timer = QTimer()</div><div class="line">        self.__timer.timeout.connect(self.__onTimer)</div><div class="line">        </div><div class="line">        <span class="comment"># 这里的__handlers是一个字典，用来保存对应的事件调用关系</span></div><div class="line">        <span class="comment"># 其中每个键对应的值是一个列表，列表中保存了对该事件进行监听的函数功能</span></div><div class="line">        self.__handlers = {}</div><div class="line">        </div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__run</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""引擎运行"""</span></div><div class="line">        <span class="keyword">while</span> self.__active == <span class="keyword">True</span>:</div><div class="line">            <span class="keyword">try</span>:</div><div class="line">                event = self.__queue.get(block = <span class="keyword">True</span>, timeout = <span class="number">1</span>)  <span class="comment"># 获取事件的阻塞时间设为1秒</span></div><div class="line">                self.__process(event)</div><div class="line">            <span class="keyword">except</span> Empty:</div><div class="line">                <span class="keyword">pass</span></div><div class="line">            </div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__process</span><span class="params">(self, event)</span>:</span></div><div class="line">        <span class="string">"""处理事件"""</span></div><div class="line">        <span class="comment"># 检查是否存在对该事件进行监听的处理函数</span></div><div class="line">        <span class="keyword">if</span> event.type_ <span class="keyword">in</span> self.__handlers:</div><div class="line">            <span class="comment"># 若存在，则按顺序将事件传递给处理函数执行</span></div><div class="line">            [handler(event) <span class="keyword">for</span> handler <span class="keyword">in</span> self.__handlers[event.type_]]</div><div class="line">            </div><div class="line">            <span class="comment"># 以上语句为Python列表解析方式的写法，对应的常规循环写法为：</span></div><div class="line">            <span class="comment">#for handler in self.__handlers[event.type_]:</span></div><div class="line">                <span class="comment">#handler(event)    </span></div><div class="line">               </div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__onTimer</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""向事件队列中存入计时器事件"""</span></div><div class="line">        <span class="comment"># 创建计时器事件</span></div><div class="line">        event = Event(type_=EVENT_TIMER)</div><div class="line">        </div><div class="line">        <span class="comment"># 向队列中存入计时器事件</span></div><div class="line">        self.put(event)    </div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">start</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""引擎启动"""</span></div><div class="line">        <span class="comment"># 将引擎设为启动</span></div><div class="line">        self.__active = <span class="keyword">True</span></div><div class="line">        </div><div class="line">        <span class="comment"># 启动事件处理线程</span></div><div class="line">        self.__thread.start()</div><div class="line">        </div><div class="line">        <span class="comment"># 启动计时器，计时器事件间隔默认设定为1秒</span></div><div class="line">        self.__timer.start(<span class="number">1000</span>)</div><div class="line">    </div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">stop</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""停止引擎"""</span></div><div class="line">        <span class="comment"># 将引擎设为停止</span></div><div class="line">        self.__active = <span class="keyword">False</span></div><div class="line">        </div><div class="line">        <span class="comment"># 停止计时器</span></div><div class="line">        self.__timer.stop()</div><div class="line">        </div><div class="line">        <span class="comment"># 等待事件处理线程退出</span></div><div class="line">        self.__thread.join()</div><div class="line">            </div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">register</span><span class="params">(self, type_, handler)</span>:</span></div><div class="line">        <span class="string">"""注册事件处理函数监听"""</span></div><div class="line">        <span class="comment"># 尝试获取该事件类型对应的处理函数列表，若无则创建</span></div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            handlerList = self.__handlers[type_]</div><div class="line">        <span class="keyword">except</span> KeyError:</div><div class="line">            handlerList = []</div><div class="line">            self.__handlers[type_] = handlerList</div><div class="line">        </div><div class="line">        <span class="comment"># 若要注册的处理器不在该事件的处理器列表中，则注册该事件</span></div><div class="line">        <span class="keyword">if</span> handler <span class="keyword">not</span> <span class="keyword">in</span> handlerList:</div><div class="line">            handlerList.append(handler)</div><div class="line">            </div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">unregister</span><span class="params">(self, type_, handler)</span>:</span></div><div class="line">        <span class="string">"""注销事件处理函数监听"""</span></div><div class="line">        <span class="comment"># 尝试获取该事件类型对应的处理函数列表，若无则忽略该次注销请求</span></div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            handlerList = self.handlers[type_]</div><div class="line">            </div><div class="line">            <span class="comment"># 如果该函数存在于列表中，则移除</span></div><div class="line">            <span class="keyword">if</span> handler <span class="keyword">in</span> handlerList:</div><div class="line">                handlerList.remove(handler)</div><div class="line"></div><div class="line">            <span class="comment"># 如果函数列表为空，则从引擎中移除该事件类型</span></div><div class="line">            <span class="keyword">if</span> <span class="keyword">not</span> handlerList:</div><div class="line">                <span class="keyword">del</span> self.handlers[type_]</div><div class="line">        <span class="keyword">except</span> KeyError:</div><div class="line">            <span class="keyword">pass</span>     </div><div class="line">        </div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">put</span><span class="params">(self, event)</span>:</span></div><div class="line">        <span class="string">"""向事件队列中存入事件"""</span></div><div class="line">        self.__queue.put(event)</div></pre></td></tr></table></figure>
-
-
-
-<h3 id="初始化">初始化</h3>
-<p>当事件驱动引擎对象被创建时，初始化函数<strong>init</strong>会创建以下私有变量：</p>
-<ul>
-<li>__queue：用来保存事件的队列</li>
-<li>__active：用来控制引擎启动、停止的开关</li>
-<li>__thread：负责处理事件、执行具体操作的线程</li>
-<li>__timer：用来每隔一段时间触发定时事件的计时器</li>
-<li>__handlers：用来保存不同类型事件所对应的事件处理函数的字典</li>
-</ul>
-<h3 id="注册事件处理函数">注册事件处理函数</h3>
-<p>引擎提供了register方法，用来向引擎注册事件处理函数的监听，传入参数为</p>
-<ol>
-<li>type_：表示事件类型的常量字符串，由用户自行定义，注意不同事件类型间不能重复</li>
-<li>handler：当该类型的事件被触发时，用户希望进行相应操作的事件处理函数，函数的定义方法参考代码中的注释</li>
-</ol>
-<p>当用户调用register方法注册事件处理函数时，引擎会尝试获取__handlers字典中该事件类型所对应的处理函数列表（若无则创建一个空列表），并向这个列表中添加该事件处理函数。使用了Python的列表对象，用户可以很容易的控制同一个事件类型下多个事件处理函数的工作顺序，因此对某些涉及多步操作的复杂算法可以保证按照正确的顺序执行，这点是相比于某些系统0消息机制（如Qt的Signal/Slot）最大的优势。</p>
-<p>如当标的物行情发生变化时，期权高频套利算法需要执行以下操作：</p>
-<ol>
-<li>使用定价引擎先计算新的期权理论价、希腊值</li>
-<li>使用风控引擎对当前持仓的风险度汇总，并计算报价的中间价</li>
-<li>使用套利引擎基于预先设定的价差、下单手数等参数，计算具体价格并发单</li>
-</ol>
-<p>以上三步操作，只需在交易系统启动时按顺序注册监听到标的物行情事件上，就可以保证操作顺序的正确。</p>
-<p>和register对应的是unregister方法，用于注销事件处理函数的监听，传入参数相同，具体原理请参照源代码。在实际应用中，用户可以动态的组合使用register和unregister方法，只在需要监听某些事件的时候监听，完成后取消监听，从而节省CPU资源。</p>
-<p>这里让笔者吐槽一下某些国内的C++平台（当然不是指所有的），每个策略对系统里所有的订单回报进行监听，如果是自身相关的就处理，不相关的就PASS。这种写法，光是判断是否和自身相关就得多做多少无谓的判断、浪费多少CPU资源，随着策略数量的增加，浪费呈线性增加的趋势，这种平台还叫嚣做高频，唉……</p>
-<h3 id="触发事件">触发事件</h3>
-<p>用户可以通过引擎的put方法向事件队列__queue中存入事件，等待事件处理线程来进行处理，事件类的实现如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">########################################################################</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Event</span>:</span></div><div class="line">    <span class="string">"""事件对象"""</span></div><div class="line"></div><div class="line">    <span class="comment">#----------------------------------------------------------------------</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, type_=None)</span>:</span></div><div class="line">        <span class="string">"""Constructor"""</span></div><div class="line">        self.type_ = type_      <span class="comment"># 事件类型</span></div><div class="line">        self.dict_ = {}         <span class="comment"># 字典用于保存具体的事件数据</span></div></pre></td></tr></table></figure>
-
-<p>对象创建时用户可以选择传入事件类型字符串type<em>作为参数。dict</em>字典用于保存具体事件相关的数据信息，以供事件处理函数进行操作。</p>
-<h3 id="事件处理线程的连续运行">事件处理线程的连续运行</h3>
-<p>事件引擎的事件处理线程<strong>thread中执行连续运行工作的函数为</strong>run：当事件引擎的开关<strong>active没有被关闭时，引擎尝试从事件队列中读取最新的事件，若读取成功则立即调用</strong>process函数处理该事件，若无法读取（队列为空）则进入阻塞状态节省CPU资源，当阻塞时间（默认为1秒）结束时再次进入以上循环。</p>
-<p><strong>process函数工作时，首先检查事件对象的事件类型在</strong>handlers字典中是否存在，若存在（说明有事件处理函数在监听该事件）则按照注册顺序调用监听函数列表中的事件处理函数进行相关操作。</p>
-<h3 id="计时器">计时器</h3>
-<p>事件引擎中的<strong>timer是一个PyQt中的QTimer对象，提供的功能非常简单：每隔一段时间（由用户设定）自动运行函数</strong>onTimer。__onTimer函数会创建一个类型为EVENT_TIMER（在eventType.py文件中定义）的事件对象，并调用引擎的put方法存入到事件队列中。</p>
-<p>敏感的读者可能已经意识到了，这个计时器本质上是一个由时间驱动的功能。尽管我们在前文中提到了事件驱动在量化交易平台开发中的重要性，但不可否认某些交易功能的实现必须基于时间驱动，例如：下单后若2秒不成交则立即撤单、每隔5分钟将当日的成交记录保存到数据库中等。这类功能在实现时就可以选择使用事件处理函数对EVENT_TIMER类型的计时器事件进行监听（参考下一章节“事件驱动引擎使用”中的示例）。</p>
-<h3 id="启动、停止">启动、停止</h3>
-<p>用户可以通过start和stop两个方法来启动和停止事件驱动引擎，原理很简单读者可以直接参考源代码。</p>
-<p>当启动计时器时，事件间隔默认设定为了1秒（1000毫秒），这个参数用户可以视乎自己的需求进行调整。假设用户使用时间驱动的函数工作间隔为分钟级，则可以选择将参数设置为60秒（600000毫秒），以此类推。</p>
-<h2 id="事件驱动引擎使用">事件驱动引擎使用</h2>
-<p>同样在eventEngine.py中，包含了一段测试代码test函数，用来展示事件驱动引擎的使用方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#----------------------------------------------------------------------</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></div><div class="line">    <span class="string">"""测试函数"""</span></div><div class="line">    <span class="keyword">import</span> sys</div><div class="line">    <span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</div><div class="line">    <span class="keyword">from</span> PyQt4.QtCore <span class="keyword">import</span> QCoreApplication</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">simpletest</span><span class="params">(event)</span>:</span></div><div class="line">        <span class="keyword">print</span> <span class="string">u'处理每秒触发的计时器事件：%s'</span> % str(datetime.now())</div><div class="line">    </div><div class="line">    app = QCoreApplication(sys.argv)</div><div class="line">    </div><div class="line">    ee = EventEngine()</div><div class="line">    ee.register(EVENT_TIMER, simpletest)</div><div class="line">    ee.start()</div><div class="line">    </div><div class="line">    app.exec_()</div><div class="line">    </div><div class="line">    </div><div class="line"><span class="comment"># 直接运行脚本可以进行测试</span></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    test()</div></pre></td></tr></table></figure>
-
-<p>test函数整体上包含了这几步：</p>
-<ol>
-<li>导入相关的包（sys、datetime、PyQt4），注意由于EventEngine的实现中使用了PyQt4的QTimer类，因此整个程序的运行必须包含在Qt事件循环中，即使用QCoreApplication（或者PyQt4.QtGui中的QApplication）的exec_()方法在程序主线程中启动事件循环。</li>
-<li>定义一个简单的函数simpletest，该函数包含一个输入参数event对象，函数被调用后会打印一段字符以及当前的时间</li>
-<li>创建QCoreApplication对象app</li>
-<li>创建事件驱动引擎EventEngine对象ee</li>
-<li>向引擎中注册simpletest函数对定时器事件EVENT_TIMER的监听</li>
-<li>启动事件驱动引擎</li>
-<li>启动Qt事件循环</li>
-</ol>
-<p>整体上看，当用户开发自己的程序时，需要修改的只是第2步和第5步：创建自己的事件处理函数并将这些函数注册到相应的事件类型上进行监听。</p>
-<h2 id="总结">总结</h2>
-<p>有了API接口和事件驱动引擎，接下来我们可以开始开发自己的平台了，后面的几篇教程将会一步步展示一个简单的LTS交易平台的开发过程。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/教程/">教程</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="http://vnpy.org/2015/03/13/20150313_Python量化交易平台开发教程系列4-事件驱动引擎原理和使用/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/03/13/20150313_Python量化交易平台开发教程系列4-事件驱动引擎原理和使用/" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/03/12/20150312_Python量化交易平台开发教程系列3-vn.py项目中API封装的编译/" title="Python量化交易平台开发教程系列3-vn.py项目中API封装的编译" itemprop="url">Python量化交易平台开发教程系列3-vn.py项目中API封装的编译</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://vnpy.org/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
-		
-  <p class="article-time">
-    <time datetime="2015-03-12T02:02:28.000Z" itemprop="datePublished"> 发表于 3月 12 2015</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>原创文章，转载请注明出处：用Python的交易员</p>
-<h2 id="前言">前言</h2>
-<p>经历了两篇的理论折磨后，本篇教程开始进入实际操作的环节，这里作者假设读者是毫无C++经验的用户，操作一步步配图，还有问题的来<a href="https://github.com/vnpy/vnpy" target="_blank" rel="external">vn.py项目的github主页</a>上提问。</p>
-<p>本篇将会包含的内容：</p>
-<ol>
-<li>安装Anaconda （一次安装搞定95%以上量化相关包的Python发行版）</li>
-<li>安装Visual Studio</li>
-<li>编译Boost库</li>
-<li>编译vn.lts</li>
-</ol>
-<h2 id="安装Anaconda">安装Anaconda</h2>
-<p>在<a href="http://repo.continuum.io/archive/index.html" target="_blank" rel="external">Anaconda历史版本</a>中下载1.9.2（win 32位版本）。</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3anaconda.jpg" alt="enter image description here"></p>
-<p>下载好后双击安装，流程没有特别需要注意的，安装文件夹作者选的是D:\Anaconda，读者可以自己选择，注意最后一步编译vn.lts中设置时的文件夹必须是这里的安装文件夹。</p>
-<p>为什么不用最新版本：尝试过使用2.1.0版，发现有一些包在我的电脑上存在兼容性问题（可能因为中文支持不好），需要修改一些.py文件里的源代码，太过麻烦，而且1.9.2到2.1.0的区别非常小。</p>
-<p>为什么不用64位版本：同样是因为发生过兼容性的问题，不怕麻烦的读者可以自己折腾看看。</p>
-<h2 id="安装Visual_Studio">安装Visual Studio</h2>
-<p>在<a href="https://www.visualstudio.com/downloads/download-visual-studio-vs" target="_blank" rel="external">Visual Studio下载</a>中下载Community 2013 with Update 4，注意选择简体中文（英文好的随意）。</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/教程3vs2013_cn.jpg" alt="enter image description here"></p>
-<p>下好了同样正常安装，安装文件夹随意，这个对后面编译没有影响。</p>
-<p>不想用2013的其他版本的VS应该也都没问题，作者还测试过2010。</p>
-<h2 id="编译Boost库">编译Boost库</h2>
-<h3 id="下载解压缩">下载解压缩</h3>
-<p>在<a href="http://sourceforge.net/projects/boost/files/boost/1.57.0/" target="_blank" rel="external">Source Forge</a>下载Boost 1.57.0，Source Forge下载速度较慢，建议选择7z格式。</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3boost%20download.jpg" alt="enter image description here"></p>
-<p>下载完成后进行解压缩，将Boost库放到D:\boost_1_57_0文件夹下，注意最后一步编译vn.lts同样会用到这个文件夹。</p>
-<h3 id="Visual_Studio_命令提示">Visual Studio 命令提示</h3>
-<p>打开Visual Studio 2013，在菜单栏的“工具”下找到“Visual Studio 命令提示”打开，如下图。</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3vs%20cmd.jpg" alt="enter image description here"></p>
-<p>打开后的窗口就是个cmd命令窗口，接下来我们需要在其中敲入一些命令。</p>
-<p>记得我们之前Boost库放在了D:\boost_1_57_0这个文件夹下，首先我们要切换到这个文件夹，逐行输入以下命令，输完后记得回车：</p>
-<pre><code><span class="attribute">d</span>: <span class="string"></span>
-
-<span class="bash"><span class="built_in">cd</span>\boost_1_57_0</span>
-</code></pre><p>此时cmd里的显示应该类似于：<br><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3boost%20cmd.jpg" alt="enter image description here"></p>
-<h3 id="booststrap-bat">booststrap.bat</h3>
-<p>然后输入以下内容，用于生成b2.exe文件：</p>
-<pre><code>bootstrap.bat
-</code></pre><p>成功后显示为：<br><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3bootstrap.jpg" alt="enter image description here"></p>
-<h3 id="b2-exe">b2.exe</h3>
-<p>接下来编译boost库，—toolset=msvc-12.0是因为作者使用的是VS2013, —build-type=complete编译整个boost库，因为项目中不止用到boost.python：</p>
-<pre><code>b2 --toolset=msvc-<span class="number">12.0</span> --build-<span class="built_in">type</span>=<span class="built_in">complete</span>
-</code></pre><p>这一步耗时会较长，视乎你的电脑性能，作者这里耗时大约20多分钟，过程中也会出现很多奇怪的输出，忽略就好，成功后会看到：</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3boost%20complete.jpg" alt="enter image description here"></p>
-<p>这里D:\boost_1_57_0\stage\lib中就是我们编译好的Boost库。</p>
-<h2 id="编译vn-lts">编译vn.lts</h2>
-<p>本教程中的例子是行情API（vnltsmd）。</p>
-<h3 id="下载vn-py">下载vn.py</h3>
-<p>vn.py项目托管在Github上，主页为<a href="https://github.com/vnpy/vnpy" target="_blank" rel="external">https://github.com/vnpy/vnpy</a>，点击主页右侧的“Download ZIP”下载（下图红框）。</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3github.jpg" alt="enter image description here"></p>
-<p>解压缩zip文件，将vn.lts\ltsapi文件夹下的所有文件（.so文件除外）以及vn.lts\vnltsmd\pyltsmd文件夹下的所有文件，复制到一个新的文件夹中（假设命名为new），内容如下图所示：</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3folder.jpg" alt="enter image description here"></p>
-<h3 id="创建VS项目">创建VS项目</h3>
-<p>打开VS2013后，点击菜单栏的“文件” -&gt; “新建” -&gt; “项目”， 在弹出的窗口中的左侧选择“模板” -&gt; “Visual C++” -&gt; “Win32” -&gt; “Win32项目”，下方的名称填入“vnltsmd”， 位置填入“D:\”（参见下图）。</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3vs2013%20project.jpg" alt="enter image description here"></p>
-<p>点击“确定”后，弹出Win32应用程序向导，点击“下一步”，应用程序类型选择为“DLL”，点击“完成”。</p>
-<h3 id="添加文件">添加文件</h3>
-<p>在左侧的解决方案管理器中，将已有的文件全部删除。然后右键点击vnltsmd，选择“添加” -&gt; “现有项”， 将之前new文件夹中所有的文件添加进来，如下图：</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3vs2013%20project%20setting.jpg" alt="enter image description here"></p>
-<p>添加完成后的解决方案如下图：</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3solution%20files.jpg" alt="enter image description here"></p>
-<h3 id="配置项目">配置项目</h3>
-<p>点击上方工具栏中的解决方案配置选项框（默认显示应该是“Debug”），选择“Release”，如下图红色方框：<br><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E9%85%8D%E7%BD%AE.jpg" alt="enter image description here"></p>
-<p>右键点击方案管理器中的vnltsmd，选择“属性”，打开“vnltsmd属性页”对话框。</p>
-<p>选择“配置属性” -&gt; “VC++目录” ，如下图：</p>
-<p><img src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3vc++%E7%9B%AE%E5%BD%952.jpg" alt="enter image description here"></p>
-<p>在包含目录中添加：</p>
-<ul>
-<li>D:\boost_1_57_0</li>
-<li>D:\Anaconda\include</li>
-<li>new文件夹</li>
-</ul>
-<p>在引用目录中添加：</p>
-<ul>
-<li>D:\boost_1_57_0\libs\</li>
-<li>D:\Anaconda\libs</li>
-<li>new文件夹</li>
-</ul>
-<p>然后点击“链接器”，在附加库目录中添加：</p>
-<ul>
-<li>D:\boost_1_57_0\stage\lib</li>
-<li>D:\Anaconda\libs</li>
-<li>new文件夹</li>
-</ul>
-<p>最后点击“C/C++” -&gt; “预编译头”，将“预编译头”设置为“不使用预编译头”。</p>
-<p>都设置完了记得点“确定”，不然又得重弄一遍。</p>
-<h3 id="编译">编译</h3>
-<p>终于完成了繁琐的项目创建和配置，此时按下F7，VS就会开始自动编译创建项目。显示如下内容说明编译成功：</p>
-<pre><code><span class="number">1</span>&gt;------ 已启动生成:  项目: <span class="function_or_atom">vnltsmd</span>, 配置: <span class="variable">Release</span> <span class="variable">Win32</span> ------
-<span class="prompt">1&gt; </span> <span class="function_or_atom">dllmain</span>.<span class="function_or_atom">cpp</span>
-<span class="prompt">1&gt; </span> <span class="function_or_atom">stdafx</span>.<span class="function_or_atom">cpp</span>
-<span class="prompt">1&gt; </span> <span class="function_or_atom">vnltsmd</span>.<span class="function_or_atom">cpp</span>
-<span class="prompt">1&gt; </span>    正在创建库 <span class="variable">D</span>:\<span class="function_or_atom">vnltsmd</span>\<span class="variable">Release</span>\<span class="function_or_atom">vnltsmd</span>.<span class="function_or_atom">lib</span> 和对象 <span class="variable">D</span>:\<span class="function_or_atom">vnltsmd</span>\<span class="variable">Release</span>\<span class="function_or_atom">vnltsmd</span>.<span class="function_or_atom">exp</span>
-<span class="prompt">1&gt; </span> 正在生成代码
-<span class="prompt">1&gt; </span> 已完成代码的生成
-<span class="prompt">1&gt; </span> <span class="function_or_atom">vnltsmd</span>.<span class="function_or_atom">vcxproj</span> <span class="arrow">-&gt;</span> <span class="variable">D</span>:\<span class="function_or_atom">vnltsmd</span>\<span class="variable">Release</span>\<span class="function_or_atom">vnltsmd</span>.<span class="function_or_atom">dll</span>
-========== 生成:  成功 <span class="number">1</span> 个，失败 <span class="number">0</span> 个，最新 <span class="number">0</span> 个，跳过 <span class="number">0</span> 个 ==========
-</code></pre><p>这时候我们到D:\vnltsmd\Release\文件夹下，找到vnltsmd.dll这个文件，将后缀名从.dll改为.pyd，就可以直接在python中导入使用了。</p>
-<p>从Github上下载的文件解压缩后的文件夹内，找到vn.lts\vnltsmd\test文件夹，将改名后的vnltsmd.pyd复制到该文件夹下覆盖原本的同名文件，就可以使用mdtest.py进行测试了，注意要在mdtest.py中先填入你的LTS用户名和密码。</p>
-<h2 id="总结">总结</h2>
-<p>本篇教程如果读者从头到尾按照步骤一步步做下来应该是可以保证编译出.pyd文件的，上文示例中使用的是行情API，交易API的编译方法相同。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/教程/">教程</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="http://vnpy.org/2015/03/12/20150312_Python量化交易平台开发教程系列3-vn.py项目中API封装的编译/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/03/12/20150312_Python量化交易平台开发教程系列3-vn.py项目中API封装的编译/" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/03/09/20150309_Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计/" title="Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计" itemprop="url">Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://vnpy.org/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
-		
-  <p class="article-time">
-    <time datetime="2015-03-09T03:49:28.000Z" itemprop="datePublished"> 发表于 3月 9 2015</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>原创文章，转载请注明出处：用Python的交易员</p>
-<p>(本篇教程包含的内容太多也太复杂，有不少读者反应看不懂，因为本身也不是使用vn.py必须掌握的知识，这篇教程暂时处于半完成状态，等多收集些读者的建议后会再做一个比较大的修订）</p>
-<h2 id="为什么要封装API">为什么要封装API</h2>
-<p>直接原因就是C++的API没法直接在Python里用，不过这个回答有点太简单，这里我们稍微做一些拓展解释：</p>
-<ol>
-<li>C++ API中很多函数的调用参数是ApiStruct.h（参见上一篇）中定义的结构体，而在Python中我们既无法直接创建这些结构体（主动函数），也无法提取结构体中包含的数据（回调函数）。</li>
-<li>Python虚拟机是基于C语言实现的，所有的Python对象，哪怕只是一个整数或者字符串，在C的环境中都是一个PyObject对象（好吧，我知道C里没有对象，只有结构体，但估计90%的读者都不在乎这个区别）。用户如果在Python中直接传递一个参数到C++环境里，C++是无法识别的（Python：买入1手股指, C++：你要买入多少？）。</li>
-<li>Python只能加载封装为PyObject对象的模块，因此原生C++的API在Python中连加载都加载不了。</li>
-</ol>
-<h2 id="封装后API的工作流程">封装后API的工作流程</h2>
-<h3 id="主动函数">主动函数</h3>
-<ol>
-<li>用户在Python程序中调用封装API的主动函数，并直接传入Python变量（PyObject对象）作为参数。</li>
-<li>封装API将Python变量转换成C++变量。</li>
-<li>封装API调用原生API的主动函数，并传入C++变量作为参数。</li>
-</ol>
-<h3 id="回调函数">回调函数</h3>
-<ol>
-<li>交易柜台通过原生API的C++回调函数推送数据信息，传入参数为C++变量</li>
-<li>封装API将C++变量转换为Python变量</li>
-<li>封装API调用封装后的回调函数向用户的Python程序中推送数据，传入参数为Python变量</li>
-</ol>
-<h3 id="名词定义">名词定义</h3>
-<ul>
-<li>封装API：指的是经过封装后，可以直接在Python中使用的API</li>
-<li>原生API：指的是由软件公司提供，在C++中使用的API</li>
-<li>Python变量：包含Python中的数字、字符串、对象等等</li>
-<li>C++变量：包含C++中的内置数据类型和结构体等</li>
-</ul>
-<h2 id="从Python的角度看原生API的一些问题">从Python的角度看原生API的一些问题</h2>
-<p>上一篇教程后读者应该对C++ API的结构和使用方法有了基础的了解，这篇教程主要介绍的是对原生的C++ API进行Python封装时的设计和思路，这些构成了<a href="https://github.com/vnpy/vnpy" target="_blank" rel="external">vn.py</a>开源项目中vn.lts（华宝证券LTS柜台API封装）的基础。首先让我们来从Python的角度看看原生API的一些问题：</p>
-<ol>
-<li>原生的API中每个功能分为了两个类：分别是包含回调函数的Spi类和主动函数的Api类，这种设计能让用户更好的分清不同的功能。但是从面向对象的角度，把两个类封装到一起更为方便，实际使用中绝大部分C++的用户也会将接口整合到一个类里面（可以参见网上很多CTP开发的示例代码），因此Python的API中，我们也会将Spi和Api两个类的功能封装到一个类中。</li>
-<li>原生的API中回调函数被触发后必须快速返回，否则会导致其他数据的推送被阻塞，阻塞时间长了还有可能导致API发生崩溃，因此回调函数中不适合包含耗时较长的计算逻辑。例如某个TICK行情推送后，如果用户在回调函数中写了一些比较复杂的计算（循环计算等等），耗时超过3秒（这个数字只是笔者的一个经验），则在这个3秒中，其他的行情推送用户是收不到的（被阻塞了），且很可能3秒后会出现API崩溃（程序死掉）。这里的解决方案是使用生产者-消费者模型，在API中包含一个缓冲队列，当回调函数收到新的数据信息时只是简单存入缓冲队列中并立即返回，而数据信息的处理和向Python中的推送则由另一个工作线程来执行。</li>
-<li>API的函数中使用了大量的结构体用于数据传送，这在C++而言是非常自然的设计，但是对Python封装会造成不小的麻烦，所有的结构体都要封装成对应的Python类，工作量太大也非常容易出错。这点我们可以利用Python相对于C++更为高级的数据结构来解决，Python中的dict字典本质是一个哈希表，但是同一个字典内键和值的类型允许不同，这个特性使得字典可以非常方便的用来代替C++的结构体。</li>
-</ol>
-<p>明确了以上的问题后，我们就可以开始着手设计Python API的结构了。</p>
-<h2 id="Python_API的结构设计">Python API的结构设计</h2>
-<p>这里使用行情API作为示例。</p>
-<p>…表示省略的代码。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//API的继承实现</span></div><div class="line"><span class="keyword">class</span> MdApi : <span class="keyword">public</span> CSecurityFtdcMdSpi</div><div class="line">{</div><div class="line"><span class="keyword">private</span>:</div><div class="line">	CSecurityFtdcMdApi* api;			<span class="comment">//API对象</span></div><div class="line">	thread *task_thread;				<span class="comment">//工作线程指针（向python中推送数据）</span></div><div class="line">	ConcurrentQueue&lt;Task&gt; task_queue;	<span class="comment">//任务队列</span></div><div class="line"></div><div class="line"><span class="keyword">public</span>:</div><div class="line">	MdApi()</div><div class="line">	{</div><div class="line">		function0&lt;<span class="keyword">void</span>&gt; f = boost::bind(&MdApi::processTask, <span class="keyword">this</span>);</div><div class="line">		thread t(f);</div><div class="line">		<span class="keyword">this</span>-&gt;task_thread = &t;</div><div class="line">	};</div><div class="line"></div><div class="line">	~MdApi()</div><div class="line">	{</div><div class="line">	};</div><div class="line"></div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">//登录请求响应</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnRspUserLogin(CSecurityFtdcRspUserLoginField *pRspUserLogin, CSecurityFtdcRspInfoField *pRspInfo, <span class="keyword">int</span> nRequestID, <span class="keyword">bool</span> bIsLast);</div><div class="line"></div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">//数据任务处理函数（在工作线程中运行）</span></div><div class="line">	<span class="keyword">void</span> processTask();</div><div class="line"></div><div class="line">	...</div><div class="line">	</div><div class="line">	<span class="comment">//处理登陆请求响应</span></div><div class="line">	<span class="keyword">void</span> processRspUserLogin(Task task);</div><div class="line"></div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">//该回调函数在Python中继承</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> onRspUserLogin(dict data, dict error, <span class="keyword">int</span> id, <span class="keyword">bool</span> last) {};</div><div class="line"></div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">//请求登陆的主动函数</span></div><div class="line">	<span class="keyword">int</span> reqUserLogin(dict req, <span class="keyword">int</span> nRequestID);</div><div class="line"></div><div class="line">	...</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>（以上代码截取自vnltsmd.h文件）</p>
-<p>注意原生API的函数名开头都是大写字母，为了便于分辨以及符合Python的PEP8编码规则，作者的函数都以小写字母开头。上面的代码中采用的示例是用户登陆UserLogin这个功能。</p>
-<h3 id="封装中的类和函数命名规则">封装中的类和函数命名规则</h3>
-<ul>
-<li>封装后的Python API的类取名为MdApi，注意这个不是原生API中的CSecurityFtdcMdApi。</li>
-<li>原生API中以On开头的回调函数（如OnRspUserLogin）对应的Python API的回调函数直接改为以on开头（如onRspUserLogin）。</li>
-<li>原生API中的主动函数（如ReqUserLogin）对应的封装后API中的主动函数改为首字母小写（如reqUserLogin)。</li>
-</ul>
-<h3 id="MdApi的成员变量">MdApi的成员变量</h3>
-<ul>
-<li>api：原生API中的CSecurityFtdcMdApi对象，用于实现主动函数的调用。</li>
-<li>task_thread：一个boost线程指针，用于实现任务线程的工作。        </li>
-<li>task_queue：一个线程安全的任务队列。</li>
-</ul>
-<h3 id="工作步骤（后面会有具体函数的实现细节）">工作步骤（后面会有具体函数的实现细节）</h3>
-<ol>
-<li>用户在Python中调用reqUserLogin函数，传入参数为包含登陆信息（用户名、密码）的字典req以及本次请求号nRequestID，该函数自动将字典中的信息提取并创建原生API使用的结构体后，调用原生API的主动函数ReqUserLogin来进行登录。</li>
-<li>登录成功后，原生API会调用OnRspUserLogin的回调函数返回登录信息（注意这里On是大写），在回调函数里，只是简单的把结构体数据保存到一个任务对象Task中，并推送到任务队列里。</li>
-<li>工作线程中运行的函数是processTask，该函数负责检查任务队列中是否有新的任务，如果有则调用对应的process函数进行处理，如果没有则阻塞等待。</li>
-<li>processTask函数检查到任务队列中OnRspUserLogin推送的一个任务后，调用processRspUserLogin函数进行处理。该函数首先从结构体中提取数据并转换为Python字典，然后调用onRspUserLogin函数（这里的on是小写）推送到Python环境中，onRspUserLogin函数由用户在Python中继承实现。</li>
-</ol>
-<h2 id="Python_API的函数实现">Python API的函数实现</h2>
-<p>仍然使用之前的示例进行函数实现的讲解，包括MdApi的构造、析构函数，主动函数（reqUserLogin等），原生API回调函数（OnRspUserLogin等）和任务处理函数（processTask和processRspUserLogin等）。</p>
-<h3 id="构造、析构函数">构造、析构函数</h3>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">MdApi()</div><div class="line">{</div><div class="line">	function0&lt;<span class="keyword">void</span>&gt; f = boost::bind(&MdApi::processTask, <span class="keyword">this</span>);</div><div class="line">	thread t(f);</div><div class="line">	<span class="keyword">this</span>-&gt;task_thread = &t;</div><div class="line">};</div><div class="line"></div><div class="line">~MdApi()</div><div class="line">{</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>（以上代码截取自vnltsmd.h文件）</p>
-<p>构造函数中仅包含了创建一个工作函数为processTask的工作线程，并将该线程的指针绑定到task_thread上。</p>
-<p>析构函数为空，用户在退出前应当主动调用安全退出函数（参见源代码中的exit）。</p>
-<h3 id="主动函数-1">主动函数</h3>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> MdApi::reqUserLogin(dict req, <span class="keyword">int</span> nRequestID)</div><div class="line">{</div><div class="line">	<span class="comment">//创建原生API函数调用需要的结构体</span></div><div class="line">	CSecurityFtdcReqUserLoginField myreq = CSecurityFtdcReqUserLoginField();</div><div class="line">	<span class="comment">//初始化这个结构体的内存</span></div><div class="line">	<span class="built_in">memset</span>(&myreq, <span class="number">0</span>, <span class="keyword">sizeof</span>(myreq));</div><div class="line">	<span class="comment">//提取字典中的内容并复制到结构体中</span></div><div class="line">	getChar(req, <span class="string">"MacAddress"</span>, myreq.MacAddress);</div><div class="line">	getChar(req, <span class="string">"UserProductInfo"</span>, myreq.UserProductInfo);</div><div class="line">	getChar(req, <span class="string">"UserID"</span>, myreq.UserID);</div><div class="line">	getChar(req, <span class="string">"AuthCode"</span>, myreq.AuthCode);</div><div class="line">	getChar(req, <span class="string">"TradingDay"</span>, myreq.TradingDay);</div><div class="line">	getChar(req, <span class="string">"InterfaceProductInfo"</span>, myreq.InterfaceProductInfo);</div><div class="line">	getChar(req, <span class="string">"BrokerID"</span>, myreq.BrokerID);</div><div class="line">	getChar(req, <span class="string">"ClientIPAddress"</span>, myreq.ClientIPAddress);</div><div class="line">	getChar(req, <span class="string">"OneTimePassword"</span>, myreq.OneTimePassword);</div><div class="line">	getChar(req, <span class="string">"ProtocolInfo"</span>, myreq.ProtocolInfo);</div><div class="line">	getChar(req, <span class="string">"Password"</span>, myreq.Password);</div><div class="line">	<span class="comment">//将结构体的指针和代表请求编号的整数作为参数调用原生API的函数</span></div><div class="line">	<span class="keyword">int</span> i = <span class="keyword">this</span>-&gt;api-&gt;ReqUserLogin(&myreq, nRequestID);</div><div class="line">	<span class="comment">//返回原生API函数的调用结果</span></div><div class="line">	<span class="keyword">return</span> i;</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>（以上代码截取自vnltsmd.cpp文件）</p>
-<p>原生API中的请求登录函数为ReqUserLogin，传入的参数一共包含两个：一个CSecurityFtdcReqUserLoginField 结构体的指针，一个代表请求编号的整数。</p>
-<p>封装后的API函数为reqUserLogin，传入参数同样为两个：一个Python字典对象、一个整数。reqUserLogin函数会从Python字典对象中根据键值依次提取结构体中对应的数据。如结构体中有一个成员叫做BrokerID，则使用getChar函数从字典对象中提取”BrokerID”键对应的值。</p>
-<p>getChar函数的实现如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//d为Python字典对象</span></div><div class="line"><span class="comment">//key为d中想要提取的数据的键名</span></div><div class="line"><span class="comment">//value为最终需要这个数据的结构体成员的指针</span></div><div class="line"><span class="keyword">void</span> getChar(dict d, <span class="built_in">string</span> key, <span class="keyword">char</span> *value)</div><div class="line">{</div><div class="line">	<span class="comment">//首先检查字典中是否存在key这个键</span></div><div class="line">	<span class="keyword">if</span> (d.has_key(key))</div><div class="line">	{</div><div class="line">		<span class="comment">//提取key这个键对应的值，即Python对象o</span></div><div class="line">		object o = d[key];</div><div class="line"></div><div class="line">		<span class="comment">//生成从o中提取std::string类的提取器</span></div><div class="line">		extract&lt;<span class="built_in">string</span>&gt; x(o);</div><div class="line">		</div><div class="line">		<span class="comment">//检查提取器是否能提取出数据</span></div><div class="line">		<span class="keyword">if</span> (x.check())</div><div class="line">		{</div><div class="line">			<span class="comment">//执行解包器，提取string对象s</span></div><div class="line">			<span class="built_in">string</span> s = x();</div><div class="line">			</div><div class="line">			<span class="comment">//从s中获取字符串指针buffer</span></div><div class="line">			<span class="keyword">const</span> <span class="keyword">char</span> *buffer = s.c_str();</div><div class="line">			</div><div class="line">			<span class="comment">//将字符串指针指向的字符串数组复制到结构体成员的指针上</span></div><div class="line">			<span class="comment">//对字符串指针赋值必须使用strcpy_s, vs2013使用strcpy编译通不过</span></div><div class="line">			<span class="comment">//+1应该是因为C++字符串的结尾符号？不是特别确定，不加这个1会出错</span></div><div class="line">			strcpy_s(value, <span class="built_in">strlen</span>(buffer) + <span class="number">1</span>, buffer);</div><div class="line">		}</div><div class="line">	}</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>（以上代码截取自vnltsmd.cpp文件）</p>
-<p>由于原生API中用到的底层数据类型主要包括四种：char字符、char[]字符串数组、int整数、double浮点数，可以对应的Python中的数据类型为：string、int、float。因此设计了三个函数getChar、getInt、getDouble来从Python对象中提取所需的C++数据，getInt、getDouble请参见源代码。</p>
-<h3 id="原生API的回调函数">原生API的回调函数</h3>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> MdApi::OnRspUserLogin(CSecurityFtdcRspUserLoginField *pRspUserLogin, CSecurityFtdcRspInfoField *pRspInfo, <span class="keyword">int</span> nRequestID, <span class="keyword">bool</span> bIsLast)</div><div class="line">{</div><div class="line">	Task task = Task();</div><div class="line">	task.task_name = ONRSPUSERLOGIN;</div><div class="line">	task.task_data = *pRspUserLogin;</div><div class="line">	<span class="keyword">if</span> (pRspInfo)</div><div class="line">	{</div><div class="line">		task.task_error = *pRspInfo;</div><div class="line">	}</div><div class="line">	<span class="keyword">else</span></div><div class="line">	{</div><div class="line">		CSecurityFtdcRspInfoField empty_error = CSecurityFtdcRspInfoField();</div><div class="line">		<span class="built_in">memset</span>(&empty_error, <span class="number">0</span>, <span class="keyword">sizeof</span>(empty_error));</div><div class="line">		task.task_error = empty_error;</div><div class="line">	}</div><div class="line">	task.task_id = nRequestID;</div><div class="line">	task.task_last = bIsLast;</div><div class="line">	<span class="keyword">this</span>-&gt;task_queue.push(task);</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>（以上代码截取自vnltsmd.cpp文件）</p>
-<p>当登录成功后，原生API中的回调函数OnRspUserLogin会被自动调用，通知用户登录相关的信息，传入参数包括四个，分别为CSecurityFtdcRspUserLoginField结构体指针（用户本次登录的相关信息）pRspUserLogin，CSecurityFtdcRspInfoField结构体指针（登录是否存在错误的相关信息）pRspInfo，整数（登陆请求编号）nRequestID和布尔值（是否为该请求的最后一次通知）bIsLast。</p>
-<p>在回调函数中，我们通过创建一个Task对象来保存这些信息，并推入task_queue中，等待工作线程的提取处理。其中，由于pRspInfo可能存在空指针的情况，所以需要进行判断，若指针为空，则在Task对象上绑定一个内容为空的CSecurityFtdcRspInfoField结构体（这步等于一个异常情况的处理）。ONRSPUSERLOGIN是一个整数常量（在头文件中定义），用于标识该Task对象包含的是哪个回调函数返回的信息。</p>
-<p>Task对象的定义如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//任务结构体</span></div><div class="line"><span class="keyword">struct</span> Task</div><div class="line">{</div><div class="line">	<span class="keyword">int</span> task_name;		<span class="comment">//回调函数名称对应的常量</span></div><div class="line">	any task_data;		<span class="comment">//数据结构体</span></div><div class="line">	any task_error;		<span class="comment">//错误结构体</span></div><div class="line">	<span class="keyword">int</span> task_id;		<span class="comment">//请求id</span></div><div class="line">	<span class="keyword">bool</span> task_last;		<span class="comment">//是否为最后返回</span></div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>（以上代码截取自vnltsmd.h文件）</p>
-<p>其中any是boost库中的any类，作用是定义一个可以存放任意类型数据的变量（有点类似于Python里的变量），但是当用户尝试从该变量中获取原本的数据时，需要知道原本数据的类型。原生API中不同回调函数返回的参数类型是不同的，因此为了提高代码的简洁性选择使用boost.any这个泛型类。</p>
-<h3 id="任务处理函数">任务处理函数</h3>
-<p>首先是负责从任务队列中提取任务，并根据任务名称的不同使用对应的函数进行处理的processTask函数：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">///-------------------------------------------------------------------------------------</span></div><div class="line"><span class="comment">///工作线程从队列中取出数据，转化为python对象后，进行推送</span></div><div class="line"><span class="comment">///-------------------------------------------------------------------------------------</span></div><div class="line"><span class="keyword">void</span> MdApi::processTask()</div><div class="line">{</div><div class="line">	<span class="keyword">while</span> (<span class="number">1</span>)</div><div class="line">	{</div><div class="line">		Task task = <span class="keyword">this</span>-&gt;task_queue.wait_and_pop();</div><div class="line"></div><div class="line">		<span class="keyword">switch</span> (task.task_name)</div><div class="line">		{</div><div class="line">			...</div><div class="line"></div><div class="line">			<span class="keyword">case</span> ONRSPUSERLOGIN:</div><div class="line">			{</div><div class="line">				<span class="keyword">this</span>-&gt;processRspUserLogin(task);</div><div class="line">				<span class="keyword">break</span>;</div><div class="line">			}</div><div class="line"></div><div class="line">			...</div><div class="line">		};</div><div class="line">	}</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>（以上代码截取自vnltsmd.cpp文件）</p>
-<p>使用while (1)的方式让processTask处于无限循环中不断运行，从task_queue队列中提取任务对象task后，使用swtich根据任务的回调函数名称task_name，调用对应的函数处理该任务。上面的例子中，当程序检查task_name是ONRSPUSERLOGIN这个常量值后，就会调用processRspUserLogin函数进行处理，其代码如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> MdApi::processRspUserLogin(Task task)</div><div class="line">{</div><div class="line">	CSecurityFtdcRspUserLoginField task_data = any_cast&lt;CSecurityFtdcRspUserLoginField&gt;(task.task_data);</div><div class="line">	dict data;</div><div class="line">	data[<span class="string">"MaxOrderRef"</span>] = task_data.MaxOrderRef;</div><div class="line">	data[<span class="string">"UserID"</span>] = task_data.UserID;</div><div class="line">	data[<span class="string">"TradingDay"</span>] = task_data.TradingDay;</div><div class="line">	data[<span class="string">"SessionID"</span>] = task_data.SessionID;</div><div class="line">	data[<span class="string">"SystemName"</span>] = task_data.SystemName;</div><div class="line">	data[<span class="string">"FrontID"</span>] = task_data.FrontID;</div><div class="line">	data[<span class="string">"BrokerID"</span>] = task_data.BrokerID;</div><div class="line">	data[<span class="string">"LoginTime"</span>] = task_data.LoginTime;</div><div class="line"></div><div class="line">	CSecurityFtdcRspInfoField task_error = any_cast&lt;CSecurityFtdcRspInfoField&gt;(task.task_error);</div><div class="line">	dict error;</div><div class="line">	error[<span class="string">"ErrorMsg"</span>] = task_error.ErrorMsg;</div><div class="line">	error[<span class="string">"ErrorID"</span>] = task_error.ErrorID;</div><div class="line"></div><div class="line">	<span class="keyword">this</span>-&gt;onRspUserLogin(data, error, task.task_id, task.task_last);</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>（以上代码截取自vnltsmd.cpp文件）</p>
-<p>any_cast函数由boost.any库提供，作用之前提到的从any变量中提取出用户需要的数据类型来。dict类由boost.python库提供，使用dict可以直接创建Python环境中的字典，同时当我们使用d[key] = value这种语句进行赋值时，dict中的key和value均会自动转换为对应的Python对象。当我们将返回的业务信息CSecurityFtdcRspUserLoginField结构体和错误信息结构体CSecurityFtdcRspInfoField分别转换为data和error这两个Python字典后，我们就可以通过onRspUserLogin回调函数推送到Python环境中了。</p>
-<h1 id="总结">总结</h1>
-<p>之前几段示例代码展示的是用户登陆这个简单业务操作，包括了从用户在Python中调用主动函数到柜台通过回调函数返回信息再推送到Python中的全过程。文章主要是对源代码中的注释起到一个更为细致的解释作用。同样这篇内容对于想用vn.py做量化平台开发的用户而言不是必须掌握的东西，放在这里主要是考虑教程的完整性，看不懂的就先跳过吧。</p>
-<p>下一章是vn.py平台中API部分的编译方法，github上项目里的.pyd文件可能由于你的操作系统或者编译器和作者本人的不同没法直接使用，必须自行编译，整个教程会包含一步步的截图和说明，包教包会（还不会的可以到github上提问 :p ）。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/教程/">教程</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="http://vnpy.org/2015/03/09/20150309_Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/03/09/20150309_Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计/" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/03/05/20150305_Python量化交易平台开发教程系列1-类CTP交易API的工作原理/" title="Python量化交易平台开发教程系列1-类CTP交易API的工作原理" itemprop="url">Python量化交易平台开发教程系列1-类CTP交易API的工作原理</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://vnpy.org/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
-		
-  <p class="article-time">
-    <time datetime="2015-03-05T06:28:49.000Z" itemprop="datePublished"> 发表于 3月 5 2015</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>原创文章，转载请注明出处：用Python的交易员</p>
-<h2 id="类CTP交易API简介">类CTP交易API简介</h2>
-<p>国内程序化交易技术的爆发式发展几乎就是起源于上期技术公司基于CTP柜台推出了交易API，使得用户可以随意开发自己的交易软件直接连接到交易柜台上进行交易，同时CTP API的设计模式也成为了许多其他柜台上交易API的设计标准，本人已知的类CTP交易API包括：</p>
-<ol>
-<li>上期CTP  </li>
-<li>飞马  </li>
-<li>华宝证券LTS</li>
-<li>飞创Xspeed</li>
-<li>金仕达</li>
-<li>恒生UFT</li>
-</ol>
-<p>所以这个教程系列选择从类CTP交易API中的LTS API开始来介绍API的Python封装方法，真正掌握了以后想要做其他类型API（比如恒生的T2)的封装也只是大同小异而已。</p>
-<h2 id="LTS_API文件说明">LTS API文件说明</h2>
-<p>通常当用户从网上下载API的压缩包，解压后会看到以下的文件：<br><img src="http://7x2w1m.com1.z0.glb.clouddn.com/API文件列表.jpg" alt=""></p>
-<ul>
-<li>.h文件：C++的头文件，包含了API的内部结构信息，开发C++程序时需要包含在项目内</li>
-<li>.dll文件：windows下的动态链接库文件，API的实体，开发C++程序编译和链接时用，使用开发好的程序时也必须放在程序的文件夹内  </li>
-<li>.lib文件：windows下的库文件，编译和链接时用，程序开发好后无需放在程序的文件夹内</li>
-<li>.so文件：linux下的动态链接库文件，其他同.dll文件</li>
-</ul>
-<p>找不到压缩包的读者可以在这里直接看<a href="https://github.com/vnpy/vnpy/tree/master/vn.lts/ltsapi" title="https://github.com/vnpy/vnpy/tree/master/vn.lts/ltsapi" target="_blank" rel="external">https://github.com/vnpy/vnpy/tree/master/vn.lts/ltsapi</a>。</p>
-<h2 id="-h头文件介绍">.h头文件介绍</h2>
-<p>.dll、.lib、.so文件都是编译好的二进制文件，无法打开，所以从用户角度我们只需关注.h文件中的内容。对于不同的API而言，.h文件的前缀可能有所区别，如LTS是SecurityFtdc，CTP是ThostFtdc，下面分别介绍这4个.h文件。</p>
-<h3 id="ApiDataType-h">ApiDataType.h</h3>
-<p>该文件中包含了对API中用到的常量的定义，如以下代码定义了一个产品类型常量对应的字符：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="preprocessor">#<span class="keyword">define</span> SECURITY_FTDC_PC_Futures '1'</span></div></pre></td></tr></table></figure>
-
-<p>以及类型的定义，如以下代码定义了产品名称类型是一个长度为21个字符的字符串：  </p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">char</span> TSecurityFtdcProductNameType[<span class="number">21</span>];</div></pre></td></tr></table></figure>
-
-<h3 id="ApiStruct-h">ApiStruct.h</h3>
-<p>该文件中包含了API中用到的结构体的定义，如以下代码定义了交易所这个结构体的构成：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">///交易所</span></div><div class="line"><span class="keyword">struct</span> CSecurityFtdcExchangeField</div><div class="line">{</div><div class="line">	<span class="comment">///交易所代码</span></div><div class="line">	TSecurityFtdcExchangeIDType	ExchangeID;</div><div class="line">	<span class="comment">///交易所名称</span></div><div class="line">	TSecurityFtdcExchangeNameType	ExchangeName;</div><div class="line">	<span class="comment">///交易所属性</span></div><div class="line">	TSecurityFtdcExchangePropertyType	ExchangeProperty;</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>例如TSecurityFtdcExchangeIDType这个类型的定义，可以在ApiDataType.h中找到。</p>
-<h3 id="MdApi-h">MdApi.h</h3>
-<p>该文件中包含了API中的行情相关组件的定义，文件通常开头会有一段这样的内容：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="preprocessor">#<span class="keyword">if</span> !defined(SECURITY_FTDCMDAPI_H)</span></div><div class="line"><span class="preprocessor">#<span class="keyword">define</span> SECURITY_FTDCMDAPI_H</span></div><div class="line"></div><div class="line"><span class="preprocessor">#<span class="keyword">if</span> _MSC_VER &gt; 1000</span></div><div class="line"><span class="preprocessor">#<span class="keyword">pragma</span> once</span></div><div class="line"><span class="preprocessor">#<span class="keyword">endif</span> <span class="comment">// _MSC_VER &gt; 1000</span></span></div><div class="line"></div><div class="line"><span class="preprocessor">#<span class="keyword">include</span> "SecurityFtdcUserApiStruct.h"</span></div><div class="line"></div><div class="line"><span class="preprocessor">#<span class="keyword">if</span> defined(ISLIB) && defined(WIN32)</span></div><div class="line"><span class="preprocessor">#ifdef LIB_MD_API_EXPORT</span></div><div class="line"><span class="preprocessor">#<span class="keyword">define</span> MD_API_EXPORT __declspec(dllexport)</span></div><div class="line"><span class="preprocessor">#<span class="keyword">else</span></span></div><div class="line"><span class="preprocessor">#<span class="keyword">define</span> MD_API_EXPORT __declspec(dllimport)</span></div><div class="line"><span class="preprocessor">#<span class="keyword">endif</span></span></div><div class="line"><span class="preprocessor">#<span class="keyword">else</span></span></div><div class="line"><span class="preprocessor">#<span class="keyword">define</span> MD_API_EXPORT </span></div><div class="line"><span class="preprocessor">#<span class="keyword">endif</span></span></div></pre></td></tr></table></figure>
-
-<p>这些内容主要是一些和操作系统、编译环境相关的定义，一般用户忽略就好（作者其实也不太懂…）。</p>
-<p>然后是两个类CSecurityFtdcMdSpi和CSecurityFtdcMdApi的定义。</p>
-<h4 id="CSecurityFtdcMdSpi">CSecurityFtdcMdSpi</h4>
-<p>MdSpi类中包含了行情功能相关的回调函数接口，什么是回调函数呢？简单来说就是由于柜台端向用户端发送信息后才会被系统自动调用的函数（非用户主动调用），对应的主动函数会在下面介绍。CSecurityFtdcMdSpi大概看起来是这么个样子：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> CSecurityFtdcMdSpi</div><div class="line">{</div><div class="line"><span class="keyword">public</span>:</div><div class="line">	......</div><div class="line"></div><div class="line">	<span class="comment">///登录请求响应</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnRspUserLogin(CSecurityFtdcRspUserLoginField *pRspUserLogin, CSecurityFtdcRspInfoField *pRspInfo, <span class="keyword">int</span> nRequestID, <span class="keyword">bool</span> bIsLast) {};</div><div class="line"></div><div class="line">	......</div><div class="line"></div><div class="line">	<span class="comment">///深度行情通知</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnRtnDepthMarketData(CSecurityFtdcDepthMarketDataField *pDepthMarketData) {};</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>……省略了部分代码。从上面的代码中可以注意到：</p>
-<ol>
-<li>回调函数都是以On开头。</li>
-<li>柜台端向用户端发送的信息经过API处理后，传给我们的是一个结构体的指针，如CSecurityFtdcRspUserLoginField *pRspUserLogin，这里的pRspUserLogin就是一个C++的指针类型，其指向的结构体对象是CSecurityFtdcRspUserLoginField结构的，而该结构的定义可以在ApiStruct.h中找到。</li>
-<li>不同的回调函数，传过来的参数数量是不同的，OnRspUserLogin中传入的参数包括两个结构体指针，以及一个整数（代表该响应对应的用户请求号）和一个布尔值（该响应是否是这个请求号的最后一次响应）。</li>
-</ol>
-<h4 id="CSecurityFtdcMdApi">CSecurityFtdcMdApi</h4>
-<p>MdApi类中包含了行情功能相关的主动函数结构，顾名思义，主动函数指的是由用户负责进行调用的函数，用于向柜台端发送各种请求和指令，大概样子如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> MD_API_EXPORT CSecurityFtdcMdApi</div><div class="line">{</div><div class="line"><span class="keyword">public</span>:</div><div class="line">	<span class="comment">///创建MdApi</span></div><div class="line">	<span class="comment">///@param pszFlowPath 存贮订阅信息文件的目录，默认为当前目录</span></div><div class="line">	<span class="comment">///@return 创建出的UserApi</span></div><div class="line">	<span class="comment">///modify for udp marketdata</span></div><div class="line">	<span class="keyword">static</span> CSecurityFtdcMdApi *CreateFtdcMdApi(<span class="keyword">const</span> <span class="keyword">char</span> *pszFlowPath = <span class="string">""</span>);</div><div class="line">	</div><div class="line">	......</div><div class="line">	</div><div class="line">	<span class="comment">///注册回调接口</span></div><div class="line">	<span class="comment">///@param pSpi 派生自回调接口类的实例</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> RegisterSpi(CSecurityFtdcMdSpi *pSpi) = <span class="number">0</span>;</div><div class="line">	</div><div class="line">	<span class="comment">///订阅行情。</span></div><div class="line">	<span class="comment">///@param ppInstrumentID 合约ID  </span></div><div class="line">	<span class="comment">///@param nCount 要订阅/退订行情的合约个数</span></div><div class="line">	<span class="comment">///@remark </span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">int</span> SubscribeMarketData(<span class="keyword">char</span> *ppInstrumentID[], <span class="keyword">int</span> nCount, <span class="keyword">char</span>* pExchageID) = <span class="number">0</span>;</div><div class="line"></div><div class="line">	......</div><div class="line"></div><div class="line">	<span class="comment">///用户登录请求</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">int</span> ReqUserLogin(CSecurityFtdcReqUserLoginField *pReqUserLoginField, <span class="keyword">int</span> nRequestID) = <span class="number">0</span>;</div><div class="line">	</div><div class="line">	......</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>以上代码中，需要注意的重点包括：</p>
-<ol>
-<li>MdApi对象不应该直接创建，而应该通过调用类的静态方法CreateFtdcMdApi创建，传入参数为你希望保存API的通讯用的.con文件的目录（可以选择留空，则.con文件会被放在程序所在的文件夹下）。</li>
-<li>创建MdSpi对象后，需要使用MdApi对象的RegisterSpi方法将该MdSpi对象的指针注册到MdApi上，也就是告诉MdApi从柜台端收到数据后应该通过哪个对象的回调函数推送给用户。从API的这个设计上作者猜测MdApi中后包含了和柜台端通讯、接收和发送数据包的功能，而MdSpi仅仅是用来实现一个通过回调函数向用户程序推送数据的接口。</li>
-<li>绝大部分主动函数（以Req开头）在调用时都会用到一个整数类型的参数nRequestID，该参数在整个API的调用中应当保持递增唯一性，从而在收到回调函数推送的数据时，可以知道是由哪次操作引起的。</li>
-</ol>
-<h3 id="TraderApi-h">TraderApi.h</h3>
-<p>该文件中包含了API中的交易相关组件的定义，文件同样以一段看不懂的定义开头，然后包含了两个类CSecurityFtdcTraderSpi和CSecurityFtdcTraderApi，这两个类和MdApi中的两个类在结构上非常接近，区别仅仅在于类包含的方法函数上。</p>
-<h4 id="CSecurityFtdcTraderSpi">CSecurityFtdcTraderSpi</h4>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> CSecurityFtdcTraderSpi</div><div class="line">{</div><div class="line"><span class="keyword">public</span>:</div><div class="line">	<span class="comment">///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnFrontConnected(){};</div><div class="line">	</div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">///错误应答</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnRspError(CSecurityFtdcRspInfoField *pRspInfo, <span class="keyword">int</span> nRequestID, <span class="keyword">bool</span> bIsLast) {};</div><div class="line"></div><div class="line">	<span class="comment">///登录请求响应</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnRspUserLogin(CSecurityFtdcRspUserLoginField *pRspUserLogin, CSecurityFtdcRspInfoField *pRspInfo, <span class="keyword">int</span> nRequestID, <span class="keyword">bool</span> bIsLast) {};</div><div class="line"></div><div class="line">	...</div><div class="line"></div><div class="line">	<span class="comment">///报单通知</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnRtnOrder(CSecurityFtdcOrderField *pOrder) {};</div><div class="line"></div><div class="line">	...</div><div class="line">	</div><div class="line">	<span class="comment">///报单录入错误回报</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> OnErrRtnOrderInsert(CSecurityFtdcInputOrderField *pInputOrder, CSecurityFtdcRspInfoField *pRspInfo) {};</div><div class="line"></div><div class="line">	...</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>Spi（包括MdSpi和TraderSpi）类的回调函数基本上可以分为以下四种：</p>
-<ol>
-<li>以On…开头，这种回调函数通常是返回API连接相关的信息内容，与业务逻辑无关，返回值（即回调函数的参数）通常为空或是简单的整数类型。</li>
-<li>以OnRsp…开头，这种回调函数通常是针对用户的某次特定业务逻辑操作返回信息内容，返回值通常会包括4个参数：业务逻辑相关结构体的指针，错误信息结构体的指针，本次操作的请求号整数，是否是本次操作最后返回信息的布尔值。其中OnRspError主要用于一些通用错误信息的返回，因此返回的值中不包含业务逻辑相关结构体指针，只有3个返回值。</li>
-<li>以OnRtn…开头，这种回调函数返回的通常是由柜台向用户主动推送的信息内容，如客户报单状态的变化、成交情况的变化、市场行情等等，因此返回值通常只有1个参数，为推送信息内容结构体的指针。</li>
-<li>以OnErrRtn…开头，这种回调函数通常由于用户进行的某种业务逻辑操作请求（挂单、撤单等等）在交易所端触发了错误，如用户发出撤单指令、但是该订单在交易所端已经成交，返回值通常是2个参数，即业务逻辑相关结构体的指针和错误信息的指针。</li>
-</ol>
-<h4 id="CSecurityFtdcTraderApi">CSecurityFtdcTraderApi</h4>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> TRADER_API_EXPORT CSecurityFtdcTraderApi</div><div class="line">{</div><div class="line"><span class="keyword">public</span>:</div><div class="line">	<span class="comment">///创建TraderApi</span></div><div class="line">	<span class="comment">///@param pszFlowPath 存贮订阅信息文件的目录，默认为当前目录</span></div><div class="line">	<span class="comment">///@return 创建出的UserApi</span></div><div class="line">	<span class="keyword">static</span> CSecurityFtdcTraderApi *CreateFtdcTraderApi(<span class="keyword">const</span> <span class="keyword">char</span> *pszFlowPath = <span class="string">""</span>);</div><div class="line">	</div><div class="line">	...</div><div class="line">	</div><div class="line">	<span class="comment">///初始化</span></div><div class="line">	<span class="comment">///@remark 初始化运行环境,只有调用后,接口才开始工作</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">void</span> Init() = <span class="number">0</span>;</div><div class="line">	</div><div class="line">	...</div><div class="line">	</div><div class="line">	<span class="comment">///用户登录请求</span></div><div class="line">	<span class="keyword">virtual</span> <span class="keyword">int</span> ReqUserLogin(CSecurityFtdcReqUserLoginField *pReqUserLoginField, <span class="keyword">int</span> nRequestID) = <span class="number">0</span>;</div><div class="line"></div><div class="line">	...</div><div class="line">};</div></pre></td></tr></table></figure>
-
-<p>Api类包括的主动函数通常分为以下三种：</p>
-<ol>
-<li>Create…，类的静态方法，用于创建API对象，传入参数是用来保存API通讯.con文件的文件夹路径。</li>
-<li>Req…开头的函数，可以由用户主动调用的业务逻辑请求，传入参数通常包括2个：业务请求结构体指针和一个请求号的整数。</li>
-<li>其他非Req…开头的函数，包括初始化、订阅数据流等等参数较为简单的功能，传入参数的数量和类型视乎函数功能不一定。</li>
-</ol>
-<h2 id="API工作流程">API工作流程</h2>
-<p>简单介绍一下MdApi和TraderApi的一般工作流程，这里不会包含太多细节，仅仅是让读者有一个概念。</p>
-<h3 id="MdApi">MdApi</h3>
-<ol>
-<li>创建MdSpi对象</li>
-<li>调用MdApi类以Create开头的静态方法，创建MdApi对象</li>
-<li>调用MdApi对象的RegisterSpi方法注册MdSpi对象的指针</li>
-<li>调用MdApi对象的RegisterFront方法注册行情柜台的前置机地址</li>
-<li>调用MdApi对象的Init方法初始化到前置机的连接，连接成功后会通过MdSpi对象的OnFrontConnected回调函数通知用户</li>
-<li>等待连接成功的通知后，可以调用MdApi的ReqUserLogin方法登陆，登陆成功后会通过MdSpi对象的OnRspUserLogin通知用户</li>
-<li>登陆成功后就可以开始订阅合约了，使用MdApi对象的SubscribeMarketData方法，传入参数为想要订阅的合约的代码</li>
-<li>订阅成功后，当合约有新的行情时，会通过MdApi的OnRtnDepthMarketData回调函数通知用户</li>
-<li>用户的某次请求发生错误时，会通过OnRspError通知用户。</li>
-<li>MdApi同样提供了退订合约、登出的功能，一般退出程序时就直接杀进程（不太安全）</li>
-</ol>
-<h3 id="TraderApi">TraderApi</h3>
-<ol>
-<li>TraderApi和MdApi类似，以下仅仅介绍不同点</li>
-<li>注册TraderSpi对象的指针后，需要调用TraderApi对象的SubscribePrivateTopic和SubscribePublicTopic方法去选择公开和私有数据流的重传方法（这一步MdApi没有）</li>
-<li>对于期货柜台而言（CTP、恒生UFT期货等），在每日第一次登陆成功后需要先查询前一日的结算单，等待结算单查询结果返回后，确认结算单，才可以进行后面的操作；而证券柜台LTS无此要求</li>
-<li>上一步完成后，用户可以调用ReqQryInstrument的方法查询柜台上所有可以交易的合约信息（包括代码、中文名、涨跌停、最小价位变动、合约乘数等大量细节），一般是在这里获得合约信息列表后，再去MdApi中订阅合约；经常有人问为什么在MdApi中找不到查询可供订阅的合约代码的函数，这里尤其要注意，必须通过TraderApi来获取</li>
-<li>当用户的报单、成交状态发生变化时，TraderApi会自动通过OnRtnOrder、OnRtnTrade通知用户，无需额外订阅</li>
-</ol>
-<h2 id="总结">总结</h2>
-<p>第一篇教程到这里已经接近结束了，如果你是一个没有任何交易API开发经验的读者，并且坚持看了下来，此时你心中很可能有这么个想法：我X，API开发这么复杂？？？！！！</p>
-<p>相信我，这是人之常情（某些读者如果觉得很好理解那作者真是佩服你了），作者刚开始的时候大概在CTP API的头文件和网上的教程资料、示例中纠结了3个多月而不得入门，当时也没有任何C++的开发经验（我是金融工程出生，大学里编程只学了VBA和Matlab，还几乎都是些算法方面的内容），边学语言边研究怎么开发，真心痛苦。</p>
-<p>在这里，我想告诉读者的一个好消息是：还剩两篇教程，我们基本就可以和C++ say goodbye，进入Python灵活快速开发的世界了。同时对于绝大部分不打算自己去封装API的读者，这三篇文章可以走马观花的过一遍，不会影响任何你未来对于vn.py框架的使用。</p>
-<p>当然，对于有恒心和毅力的读者，100%自己掌握API的封装技术是一项绝对值得投入时间和精力的事情。在很多人的观念中Python并不适合用来开发低延迟的交易平台，这里作者可以用亲身经验告诉你：那只是在纯用Python的情况下。作为一门胶水语言，Python最大的特点之一就是易于通过混合编程来进行拓展，用户可以在真正需要优化的地方进行最深度的定制优化，把自己有限的时间、精力花在刀刃上。在交易API层面，可以定制的地方包括C++层面的数据结构改变、数据预处理、回调函数传递顺序调整等等诸多的优化，这些只有在你完全掌握API的封装后才能办得到。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/教程/">教程</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="http://vnpy.org/2015/03/05/20150305_Python量化交易平台开发教程系列1-类CTP交易API的工作原理/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/03/05/20150305_Python量化交易平台开发教程系列1-类CTP交易API的工作原理/" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/03/04/20150304_Python量化交易平台开发教程系列0-引言/" title="Python量化交易平台开发教程系列0-引言" itemprop="url">Python量化交易平台开发教程系列0-引言</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="http://vnpy.org/about" title="用python的交易员" target="_blank" itemprop="author">用python的交易员</a>
-		
-  <p class="article-time">
-    <time datetime="2015-03-04T02:58:42.000Z" itemprop="datePublished"> 发表于 3月 4 2015</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>原创文章，转载请注明出处：用Python的交易员</p>
-<h2 id="为什么用Python来开发量化交易平台">为什么用Python来开发量化交易平台</h2>
-<p>目前本人所在的公司一共有三款平台，分别基于C++， C#和Python。其中C#和Python平台都是由交易员开发；C++平台则是由专职IT团队作为一个通用平台开发，内部组件进行了封装（交易员不可见），对外提供行情、交易的API用于策略开发（除了C++ 外也包括C#和Python可用的API）。</p>
-<p>理论上这款C++平台应该是最为稳定和强大的，由专业人士设计，同时采用封装核心，暴露API，支持组件模块开发，linux服务器运行的形式。</p>
-<p>但是在实际运用中，交易团队表达了一个强烈的观点：这个平台实在是太难用了！ </p>
-<ol>
-<li>由IT团队设计的API功能非常强大，但是也太过繁琐，导致学习曲线极为陡峭。  </li>
-<li>为了追求速度，没有设计原生GUI（本来就为了在Linux服务器上跑），但是今天绝大多数的非超高频（追求微秒级延迟的那种）交易策略，几乎都需要有人实时监控，你总不能让交易员盯着个linux shell上不断print出来的内容或者盘中去翻日志吧，这个运维风险就扛不起。尽管可以作为插件的形式开发GUI，但C++本身的GUI开发还是较为复杂的，非专业IT很难搞的定。  </li>
-<li>交易员团队的需求变化很快，通常等不及IT去排班开发，最好是今天收盘有个点子，明天开盘就能开始接实盘数据验证，没问题后天就能上实盘。比如去年四季度的分级基金套利机会就是稍纵即逝，那段时间如果能快速开发完成一套专门的监控套利系统，抓住的利润绝对会比用excel接wind数据来的多不少。  </li>
-<li>某些业务逻辑确实太过复杂，交易员想解释让IT明白，无奈IT并不是太擅长某些金融领域（比如期权高频套利的整个业务框架），交流成本太高。</li>
-</ol>
-<p>用web开发来做比较的话，C++实现的量化交易平台像是java在网络开发领域的地位，强大（几乎无所不能）、稳定（无数大公司的支持），但是也很臃肿（你一两个人开发试试）。</p>
-<p>以上的原因促成了我坚持使用Python开发一个交易平台，这款平台的定位好比于node.js为前端工程师（用户体验的直接缔造者）提供了一个简洁又不失强大的后端平台，主要的目标用户群是中小型量化团队（根据我的经验，绝大部分的券商自营、期货资管和基金量化部门都不大）、专业的交易员团队（可以雇得起少量专职IT）以及一部分打算从互联网领域转行来的程序猿们（Python在互联网公司用的不少）。</p>
-<h2 id="Python在量化平台开发方面的优缺点">Python在量化平台开发方面的优缺点</h2>
-<h3 id="优点">优点</h3>
-<ol>
-<li>动态语言的快速开发特性，封接口有boost.Python，写GUI有PyQt，时间序列有numpy，等等，几乎你想干的事都有现成的库可以用，这里吐槽下公司大牛自己写C++里的简单移动平均（SMA）算法，确实比常规实现快不少，但似乎对pnl没什么直接帮助。</li>
-<li>学习成本低，这点算是个共识了吧？</li>
-<li>真需要低延迟的时候，胶水语言很容易通过其他语言拓展：cython, ctypes, boost.Python等等。</li>
-<li>运行速度足够快，也许和C++比起来确实慢了不少，但是就我的经验来看，这点速度延迟对90%的策略pnl毫无影响。</li>
-</ol>
-<h3 id="缺点">缺点</h3>
-<ol>
-<li>GIL，该死的全局锁导致Python无法有效利用多核CPU的性能，尽管可以通过拓展绕过去，但还是没有其他语言原生多线程利用多核的方案来的简便。</li>
-<li>没有静态类型检查，重构的时候确实有点痛苦，不过一个良好的编程范式可以有效解决这个问题。</li>
-<li>不适合用来搞超高频策略（追求微秒级延迟的差异），得承认这点Python确实搞不过C++。常规基于TICK级数据的策略没问题。</li>
-</ol>
-<h2 id="为什么会有这个系列">为什么会有这个系列</h2>
-<p>2015年的春节期间突然萌发了启动一个开源量化交易平台开发框架项目的想法，原因包括：  </p>
-<ol>
-<li>国内很多的机构和个人量化投资者，在受够了一些商业软件的束缚后（TB、金字塔等）想基于柜台API进行直接开发，然后在C++的.h头文件、网上一些不成体系的开发指南、不知道如何构建程序核心架构等等问题中赚的一头雾水后放弃。  </li>
-<li>国外有相当多类似的项目，比如AlgoTrader、Tradelink、Marketcetera等等开源交易平台有着大量的用户和活跃的社区。目前国内据我所知只有海风的AT平台项目（基于C#），QuantBox项目当前更多只是一个柜台API的统一化封装（当然封装的非常漂亮，有兴趣的建议直接看看源代码）。  </li>
-<li>在本人的整个求学经历中，发现最佳的学习方式之一就是自己当老师，当你试着把某种知识教给别人时，你对这种知识的掌握会更加细致深入。  </li>
-<li>抛砖引玉，本人是交易员出身，编程算是半路出家，不专业的地方很多，通过这个项目和业内人士多多交流。  </li>
-<li>TB之类的商业软件不算，国内目前最大量化交易社区应该是C#（交易）和Matlab（研发），而能兼顾交易和研发的Python社区居然十分弱小，实在是不能忍。</li>
-</ol>
-<p>授人以鱼不如授人以渔，目前这个项目<strong><a href="http://github.com/vnpy/vnpy" target="_blank" rel="external">vn.py</a></strong>已经发布在了github上，包含了基于华宝证券LTS API的Python封装和事件驱动引擎，鱼竿准备好了，剩下的就是学习如何钓鱼。一方面也是因为自己之前在学习过程中遇到的最大问题之一就是目前国内缺乏一个成体系的量化平台开发教程，所以发布项目后的下一步工作就是编写这个教程系列。</p>
-<h2 id="系列内容安排">系列内容安排</h2>
-<p>整个系列文章目前预计包含的内容如下：  </p>
-<ol>
-<li>类CTP交易API的工作原理  </li>
-<li>类CTP交易API的Python封装设计</li>
-<li>vn.py项目中API封装的编译，其他交易API的封装</li>
-<li>事件驱动引擎原理和使用</li>
-<li>华宝LTS交易平台开发：登陆、订阅市场行情</li>
-<li>华宝LTS交易平台开发：交易功能</li>
-<li>华宝LTS交易平台开发：持仓、交易、下单监控</li>
-</ol>
-<h2 id="联系作者">联系作者</h2>
-<p>本人的知乎号：<a href="http://www.zhihu.com/people/traderusingPython" target="_blank" rel="external">用Python的交易员</a>，可以通过知乎私信联系到我，一些和开源项目、教程相关的问题交流也会发在知乎上。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/教程/">教程</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="http://vnpy.org/2015/03/04/20150304_Python量化交易平台开发教程系列0-引言/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/03/04/20150304_Python量化交易平台开发教程系列0-引言/" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-
-  <nav id="page-nav" class="clearfix">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
-  </nav>
-
-</div>
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
-
-<div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
-<aside class="clearfix">
-
-  
-<div class="categorieslist">
-	<p class="asidetitle">分类</p>
-		<ul>
-		
-			<li><a href="/categories/教程/" title="教程">教程<sup>9</sup></a></li>
-		
-			<li><a href="/categories/日志/" title="日志">日志<sup>2</sup></a></li>
-		
-		</ul>
-</div>
-
-
-  
-
-  <div class="linkslist">
-  <p class="asidetitle">友情链接</p>
-    <ul>
-        
-          <li>
-            
-            	<a href="https://github.com/vnpy/vnpy" target="_blank" title="vn.py on GitHub">vn.py on GitHub</a>
-            
-          </li>
-        
-          <li>
-            
-            	<a href="http://vnpybbs.com" target="_blank" title="vn.py论坛">vn.py论坛</a>
-            
-          </li>
-        
-    </ul>
-</div>
-
-  <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
-</div>
-
-</aside>
-</div>
-    </div>
-    <footer><div id="footer" >
-	
-	<div class="line">
-		<span></span>
-		<div class="author"></div>
-	</div>
-	
-	
-	<section class="info">
-		<p> Talk is cheap, show me the code. <br/>
-			</p>
-	</section>
-	 
-	<div class="social-font" class="clearfix">
-		
-		
-		<a href="https://github.com/vnpy" target="_blank" class="icon-github" title="github"></a>
-		
-		
-		
-		
-		
-		
-		
-		<a href="https://www.zhihu.com/people/traderusingpython" target="_blank" class="icon-zhihu" title="知乎"></a>
-		
-		
-		
-		<a href="mailto:vn.py@foxmail.com" target="_blank" class="icon-email" title="Email Me"></a>
-		
-	</div>
-		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
-		
-		<a href="http://vnpy.org/about" target="_blank" title="用python的交易员">用python的交易员</a>
-		
-		</p>
-</div>
-</footer>
-    <script src="/js/jquery-2.0.3.min.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
-
-<script type="text/javascript">
-$(document).ready(function(){ 
-  $('.navbar').click(function(){
-    $('header nav').toggleClass('shownav');
-  });
-  var myWidth = 0;
-  function getSize(){
-    if( typeof( window.innerWidth ) == 'number' ) {
-      myWidth = window.innerWidth;
-    } else if( document.documentElement && document.documentElement.clientWidth) {
-      myWidth = document.documentElement.clientWidth;
-    };
-  };
-  var m = $('#main'),
-      a = $('#asidepart'),
-      c = $('.closeaside'),
-      o = $('.openaside');
-  $(window).resize(function(){
-    getSize(); 
-    if (myWidth >= 1024) {
-      $('header nav').removeClass('shownav');
-    }else
-    {
-      m.removeClass('moveMain');
-      a.css('display', 'block').removeClass('fadeOut');
-      o.css('display', 'none');
-        
-    }
-  });
-  c.click(function(){
-    a.addClass('fadeOut').css('display', 'none');
-    o.css('display', 'block').addClass('fadeIn');
-    m.addClass('moveMain');
-  });
-  o.click(function(){
-    o.css('display', 'none').removeClass('beforeFadeIn');
-    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
-    m.removeClass('moveMain');
-  });
-  $(window).scroll(function(){
-    o.css("top",Math.max(80,260-$(this).scrollTop()));
-  });
-});
-</script>
-
-
-
-
-<script type="text/javascript">
-  var duoshuoQuery = {short_name:"vnpy"};
-  (function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = '//static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0] 
-    || document.getElementsByTagName('body')[0]).appendChild(ds);
-  })();
-</script> 
-
-
-
-
-
-
-
-
-
-<!-- Analytics Begin -->
-
-
-
-<script type="text/javascript">
-var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fe8c7573f82d43fa50c895a8e28c49ceb' type='text/javascript'%3E%3C/script%3E"));
-</script>
-
-
-
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254558631'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s23.cnzz.com/z_stat.php%3Fid%3D1254558631' type='text/javascript'%3E%3C/script%3E"));</script>
-
-<!-- Analytics End -->
-
-<!-- Totop Begin -->
-
-	<div id="totop">
-	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
-	</div>
-	<script src="/js/totop.js"></script>
-
-<!-- Totop End -->
-
-<!-- MathJax Begin -->
-<!-- mathjax config similar to math.stackexchange -->
-
-
-<!-- MathJax End -->
-
-  </body>
- </html>
+<p><strong>最后，2016年，Happy Trading!!!</strong></p>
+<hr />
+<h3>联系作者</h3>
+<p>作者知乎名：用python的交易员，想要联系作者可以通过知乎私信</p>
+<hr />
+<h3>License</h3>
+<p>MIT</p>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="http://www.zhihu.com/people/traderusingpython">作者知乎</a></li>
+                            <li><a href="http://github.com/vnpy/vnpy">Github</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+        <meta charset="utf-8" />
+        <title>Python量化交易平台开发教程系列4-事件驱动引擎原理和使用</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">vn.py </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/jiao-cheng.html">教程</a></li>
+                    <li><a href="/category/ri-zhi.html">日志</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/basic-tutorial-4.html" rel="bookmark"
+           title="Permalink to Python量化交易平台开发教程系列4-事件驱动引擎原理和使用">Python量化交易平台开发教程系列4-事件驱动引擎原理和使用</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-03-13T10:58:00+08:00">
+                Published: 周五 13 三月 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yong-pythonde-jiao-yi-yuan.html">用Python的交易员</a>
+        </address>
+<p>In <a href="/category/jiao-cheng.html">教程</a>.</p>
+
+</footer><!-- /.post-info -->      <p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>前言</h2>
+<p>从这篇开始，后面的教程都会基于Python（终于可以跟C++说再见了）。</p>
+<p>经过上一篇复杂繁琐的API编译后，我们已经有了一个可以在Python环境中用来收行情和发单的接口，但是尽管作者在Github上也放了简单的API功能测试代码作为接口使用方法的示例，绝大部分读者应该对于如何用这个接口去开发自己的交易系统毫无头绪。</p>
+<p>类似的情况也常常发生于当我们从万得、恒生、网上的其他开源项目（比如pyctp）等等拿到开发接口和文档示例后：</p>
+<p>看了半天觉得似乎上面讲的都懂。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B4%E6%8E%A5%E5%8F%97%E6%8C%91%E6%88%98.jpg" /></p>
+<p>但要写个自己的系统依旧不知道从何处下手。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B4%E4%B8%8D%E7%9F%A5%E6%89%80%E6%8E%AA.jpg" /></p>
+<p>所以在搞定交易接口后，我们开发交易系统的第一步就是要弄清楚系统的工作原理，在读完这篇教程后，你应该至少不会再对如何写一个交易系统茫然无措了。</p>
+<h2>事件驱动</h2>
+<h3>计算机程序分类</h3>
+<p>所有的计算机程序都可以大致分为两类：脚本型（单次运行）和连续运行型（直到用户主动退出）。</p>
+<p><strong>脚本型</strong>
+脚本型的程序包括最早的批处理文件以及使用Python做交易策略回测等等，这类程序的特点是在用户启动后会按照编程时设计好的步骤一步步运行，所有步骤运行完后自动退出。</p>
+<p><strong>连续运行型</strong>
+连续运行型的程序包含了操作系统和绝大部分我们日常使用的软件等等，这类程序启动后会处于一个无限循环中连续运行，直到用户主动退出时才会结束。</p>
+<h3>连续运行型程序</h3>
+<p>我们要开发的交易系统就是属于连续运行型程序，而这种程序根据其计算逻辑的运行机制不同，又可以粗略的分为时间驱动和事件驱动两种。</p>
+<p><strong>时间驱动</strong></p>
+<p>时间驱动的程序逻辑相对容易设计，简单来说就是让电脑每隔一段时间自动做一些事情。这个事情本身可以很复杂、包括很多步骤，但这些步骤都是线性的，按照顺序一步步执行下来。</p>
+<p>以下代码展示了一个非常简单的时间驱动的Python程序。</p>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+
+<span class="k">def</span> <span class="nf">demo</span><span class="p">():</span>
+    <span class="k">print</span> <span class="s">u&#39;时间驱动的程序每隔1秒运行demo函数&#39;</span>
+
+<span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">demo</span><span class="p">()</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+
+
+<p>时间驱动的程序本质上就是每隔一段时间固定运行一次脚本（上面代码中的demo函数）。尽管脚本自身可以很长、包含非常多的步骤，但是我们可以看出这种程序的运行机制相对比较简单、容易理解。</p>
+<p>举一些量化交易相关的例子：</p>
+<ol>
+<li>每隔5分钟，通过新浪财经网页的公开API读取一次沪深300成分股的价格，根据当日涨幅进行排序后输出到电脑屏幕上。</li>
+<li>每隔1秒钟，检查一次最新收到的股指期货TICK数据，更新K线和其他技术指标，检查是否满足趋势策略的下单条件，若满足则执行下单。</li>
+</ol>
+<p>对速度要求较高的量化交易方面（日内CTA策略、高频策略等等），时间驱动的程序会存在一个非常大的缺点：对数据信息在反应操作上的处理延时。例子2中，在每次逻辑脚本运行完等待的那1秒钟里，程序对于接收到的新数据信息（行情、成交推送等等）是不会做出任何反应的，只有在等待时间结束后脚本再次运行时才会进行相关的计算处理。而处理延时在量化交易中的直接后果就是money：市价单滑点、限价单错过本可成交的价格。</p>
+<p>时间驱动的程序在量化交易方面还存在一些其他的缺点：如浪费CPU的计算资源、实现异步逻辑复杂度高等等。</p>
+<p><strong>事件驱动</strong></p>
+<p>与时间驱动对应的就是事件驱动的程序：当某个新的事件被推送到程序中时（如API推送新的行情、成交），程序立即调用和这个事件相对应的处理函数进行相关的操作。</p>
+<p>上面例子2的事件驱动版：交易程序对股指TICK数据进行监听，当没有新的行情过来时，程序保持监听状态不进行任何操作；当收到新的数据时，数据处理函数立即更新K线和其他技术指标，并检查是否满足趋势策略的下单条件执行下单。</p>
+<p>对于简单的程序，我们可以采用上面测试代码中的方案，直接在API的回调函数中写入相应的逻辑。但随着程序复杂度的增加，这种方案会变得越来越不可行。假设我们有一个带有图形界面的量化交易系统，系统在某一时刻接收到了API推送的股指期货行情数据，针对这个数据系统需要进行如下处理：</p>
+<ol>
+<li>更新图表上显示的K线图形（绘图）</li>
+<li>更新行情监控表中股指期货的行情数据（表格更新）</li>
+<li>策略1需要运行一次内部算法，检查该数据是否会触发策略进行下单（运算、下单）</li>
+<li>策略2同样需要运行一次内部算法，检查该数据是否会触发策略进行下单（运算、下单）</li>
+<li>风控系统需要检查最新行情价格是否会导致账户的整体风险超限，若超限需要进行报警（运算、报警）</li>
+</ol>
+<p>此时将上面所有的操作都写到一个回调函数中无疑变成了非常差的方案，代码过长容易出错不说，可扩展性也差，每添加一个策略或者功能则又需要修改之前的源代码（有经验的读者会知道，经常修改生产代码是一种非常危险的运营管理方法）。</p>
+<p>为了解决这种情况，我们需要用到事件驱动引擎来管理不同事件的事件监听函数并执行所有和事件驱动相关的操作。</p>
+<h2>事件驱动引擎原理</h2>
+<p>vn.py框架中的<a href="https://github.com/vnpy/vnpy/tree/master/vn.event">vn.event模块</a>包含了一个可扩展的事件驱动引擎。整个引擎的实现并不复杂，除去注释、空行后大概也就100行左右的代码：</p>
+<div class="highlight"><pre><span class="c"># encoding: UTF-8</span>
+
+<span class="c"># 系统模块</span>
+<span class="kn">from</span> <span class="nn">Queue</span> <span class="kn">import</span> <span class="n">Queue</span><span class="p">,</span> <span class="n">Empty</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+
+<span class="c"># 第三方模块</span>
+<span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QTimer</span>
+
+<span class="c"># 自己开发的模块</span>
+<span class="kn">from</span> <span class="nn">eventType</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="c">########################################################################</span>
+<span class="k">class</span> <span class="nc">EventEngine</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    事件驱动引擎</span>
+<span class="sd">    事件驱动引擎中所有的变量都设置为了私有，这是为了防止不小心</span>
+<span class="sd">    从外部修改了这些变量的值或状态，导致bug。</span>
+
+<span class="sd">    变量说明</span>
+<span class="sd">    __queue：私有变量，事件队列</span>
+<span class="sd">    __active：私有变量，事件引擎开关</span>
+<span class="sd">    __thread：私有变量，事件处理线程</span>
+<span class="sd">    __timer：私有变量，计时器</span>
+<span class="sd">    __handlers：私有变量，事件处理函数字典</span>
+
+
+<span class="sd">    方法说明</span>
+<span class="sd">    __run: 私有方法，事件处理线程连续运行用</span>
+<span class="sd">    __process: 私有方法，处理事件，调用注册在引擎中的监听函数</span>
+<span class="sd">    __onTimer：私有方法，计时器固定事件间隔触发后，向事件队列中存入计时器事件</span>
+<span class="sd">    start: 公共方法，启动引擎</span>
+<span class="sd">    stop：公共方法，停止引擎</span>
+<span class="sd">    register：公共方法，向引擎中注册监听函数</span>
+<span class="sd">    unregister：公共方法，向引擎中注销监听函数</span>
+<span class="sd">    put：公共方法，向事件队列中存入新的事件</span>
+
+<span class="sd">    事件监听函数必须定义为输入参数仅为一个event对象，即：</span>
+
+<span class="sd">    函数</span>
+<span class="sd">    def func(event)</span>
+<span class="sd">        ...</span>
+
+<span class="sd">    对象方法</span>
+<span class="sd">    def method(self, event)</span>
+<span class="sd">        ...</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;初始化事件引擎&quot;&quot;&quot;</span>
+        <span class="c"># 事件队列</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
+
+        <span class="c"># 事件引擎开关</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__active</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="c"># 事件处理线程</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__run</span><span class="p">)</span>
+
+        <span class="c"># 计时器，用于触发计时器事件</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__timer</span> <span class="o">=</span> <span class="n">QTimer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__onTimer</span><span class="p">)</span>
+
+        <span class="c"># 这里的__handlers是一个字典，用来保存对应的事件调用关系</span>
+        <span class="c"># 其中每个键对应的值是一个列表，列表中保存了对该事件进行监听的函数功能</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__handlers</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">__run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;引擎运行&quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">__active</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">event</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__queue</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">block</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">timeout</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>  <span class="c"># 获取事件的阻塞时间设为1秒</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__process</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">Empty</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">__process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;处理事件&quot;&quot;&quot;</span>
+        <span class="c"># 检查是否存在对该事件进行监听的处理函数</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handlers</span><span class="p">:</span>
+            <span class="c"># 若存在，则按顺序将事件传递给处理函数执行</span>
+            <span class="p">[</span><span class="n">handler</span><span class="p">(</span><span class="n">event</span><span class="p">)</span> <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handlers</span><span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">type_</span><span class="p">]]</span>
+
+            <span class="c"># 以上语句为Python列表解析方式的写法，对应的常规循环写法为：</span>
+            <span class="c">#for handler in self.__handlers[event.type_]:</span>
+                <span class="c">#handler(event)</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">__onTimer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;向事件队列中存入计时器事件&quot;&quot;&quot;</span>
+        <span class="c"># 创建计时器事件</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="n">type_</span><span class="o">=</span><span class="n">EVENT_TIMER</span><span class="p">)</span>
+
+        <span class="c"># 向队列中存入计时器事件</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;引擎启动&quot;&quot;&quot;</span>
+        <span class="c"># 将引擎设为启动</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__active</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="c"># 启动事件处理线程</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="c"># 启动计时器，计时器事件间隔默认设定为1秒</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__timer</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;停止引擎&quot;&quot;&quot;</span>
+        <span class="c"># 将引擎设为停止</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__active</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="c"># 停止计时器</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+        <span class="c"># 等待事件处理线程退出</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">handler</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;注册事件处理函数监听&quot;&quot;&quot;</span>
+        <span class="c"># 尝试获取该事件类型对应的处理函数列表，若无则创建</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">handlerList</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handlers</span><span class="p">[</span><span class="n">type_</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">handlerList</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__handlers</span><span class="p">[</span><span class="n">type_</span><span class="p">]</span> <span class="o">=</span> <span class="n">handlerList</span>
+
+        <span class="c"># 若要注册的处理器不在该事件的处理器列表中，则注册该事件</span>
+        <span class="k">if</span> <span class="n">handler</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">handlerList</span><span class="p">:</span>
+            <span class="n">handlerList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">unregister</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">handler</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;注销事件处理函数监听&quot;&quot;&quot;</span>
+        <span class="c"># 尝试获取该事件类型对应的处理函数列表，若无则忽略该次注销请求</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">handlerList</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handlers</span><span class="p">[</span><span class="n">type_</span><span class="p">]</span>
+
+            <span class="c"># 如果该函数存在于列表中，则移除</span>
+            <span class="k">if</span> <span class="n">handler</span> <span class="ow">in</span> <span class="n">handlerList</span><span class="p">:</span>
+                <span class="n">handlerList</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+
+            <span class="c"># 如果函数列表为空，则从引擎中移除该事件类型</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">handlerList</span><span class="p">:</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">handlers</span><span class="p">[</span><span class="n">type_</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;向事件队列中存入事件&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</pre></div>
+
+
+<h3>初始化</h3>
+<p>当事件驱动引擎对象被创建时，初始化函数__init__会创建以下私有变量：</p>
+<ul>
+<li>__queue：用来保存事件的队列</li>
+<li>__active：用来控制引擎启动、停止的开关</li>
+<li>__thread：负责处理事件、执行具体操作的线程</li>
+<li>__timer：用来每隔一段时间触发定时事件的计时器</li>
+<li>__handlers：用来保存不同类型事件所对应的事件处理函数的字典</li>
+</ul>
+<h3>注册事件处理函数</h3>
+<p>引擎提供了register方法，用来向引擎注册事件处理函数的监听，传入参数为</p>
+<ol>
+<li>type_：表示事件类型的常量字符串，由用户自行定义，注意不同事件类型间不能重复</li>
+<li>handler：当该类型的事件被触发时，用户希望进行相应操作的事件处理函数，函数的定义方法参考代码中的注释</li>
+</ol>
+<p>当用户调用register方法注册事件处理函数时，引擎会尝试获取__handlers字典中该事件类型所对应的处理函数列表（若无则创建一个空列表），并向这个列表中添加该事件处理函数。使用了Python的列表对象，用户可以很容易的控制同一个事件类型下多个事件处理函数的工作顺序，因此对某些涉及多步操作的复杂算法可以保证按照正确的顺序执行，这点是相比于某些系统0消息机制（如Qt的Signal/Slot）最大的优势。</p>
+<p>如当标的物行情发生变化时，期权高频套利算法需要执行以下操作：</p>
+<ol>
+<li>使用定价引擎先计算新的期权理论价、希腊值</li>
+<li>使用风控引擎对当前持仓的风险度汇总，并计算报价的中间价</li>
+<li>使用套利引擎基于预先设定的价差、下单手数等参数，计算具体价格并发单</li>
+</ol>
+<p>以上三步操作，只需在交易系统启动时按顺序注册监听到标的物行情事件上，就可以保证操作顺序的正确。</p>
+<p>和register对应的是unregister方法，用于注销事件处理函数的监听，传入参数相同，具体原理请参照源代码。在实际应用中，用户可以动态的组合使用register和unregister方法，只在需要监听某些事件的时候监听，完成后取消监听，从而节省CPU资源。</p>
+<p>这里让笔者吐槽一下某些国内的C++平台（当然不是指所有的），每个策略对系统里所有的订单回报进行监听，如果是自身相关的就处理，不相关的就PASS。这种写法，光是判断是否和自身相关就得多做多少无谓的判断、浪费多少CPU资源，随着策略数量的增加，浪费呈线性增加的趋势，这种平台还叫嚣做高频，唉......</p>
+<h3>触发事件</h3>
+<p>用户可以通过引擎的put方法向事件队列__queue中存入事件，等待事件处理线程来进行处理，事件类的实现如下：</p>
+<div class="highlight"><pre><span class="c">########################################################################</span>
+<span class="k">class</span> <span class="nc">Event</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;事件对象&quot;&quot;&quot;</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="n">type_</span>      <span class="c"># 事件类型</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dict_</span> <span class="o">=</span> <span class="p">{}</span>         <span class="c"># 字典用于保存具体的事件数据</span>
+</pre></div>
+
+
+<p>对象创建时用户可以选择传入事件类型字符串type_作为参数。dict_字典用于保存具体事件相关的数据信息，以供事件处理函数进行操作。</p>
+<h3>事件处理线程的连续运行</h3>
+<p>事件引擎的事件处理线程__thread中执行连续运行工作的函数为__run：当事件引擎的开关__active没有被关闭时，引擎尝试从事件队列中读取最新的事件，若读取成功则立即调用__process函数处理该事件，若无法读取（队列为空）则进入阻塞状态节省CPU资源，当阻塞时间（默认为1秒）结束时再次进入以上循环。</p>
+<p>__process函数工作时，首先检查事件对象的事件类型在__handlers字典中是否存在，若存在（说明有事件处理函数在监听该事件）则按照注册顺序调用监听函数列表中的事件处理函数进行相关操作。</p>
+<h3>计时器</h3>
+<p>事件引擎中的__timer是一个PyQt中的QTimer对象，提供的功能非常简单：每隔一段时间（由用户设定）自动运行函数__onTimer。__onTimer函数会创建一个类型为EVENT_TIMER（在eventType.py文件中定义）的事件对象，并调用引擎的put方法存入到事件队列中。</p>
+<p>敏感的读者可能已经意识到了，这个计时器本质上是一个由时间驱动的功能。尽管我们在前文中提到了事件驱动在量化交易平台开发中的重要性，但不可否认某些交易功能的实现必须基于时间驱动，例如：下单后若2秒不成交则立即撤单、每隔5分钟将当日的成交记录保存到数据库中等。这类功能在实现时就可以选择使用事件处理函数对EVENT_TIMER类型的计时器事件进行监听（参考下一章节“事件驱动引擎使用”中的示例）。</p>
+<h3>启动、停止</h3>
+<p>用户可以通过start和stop两个方法来启动和停止事件驱动引擎，原理很简单读者可以直接参考源代码。</p>
+<p>当启动计时器时，事件间隔默认设定为了1秒（1000毫秒），这个参数用户可以视乎自己的需求进行调整。假设用户使用时间驱动的函数工作间隔为分钟级，则可以选择将参数设置为60秒（600000毫秒），以此类推。</p>
+<h2>事件驱动引擎使用</h2>
+<p>同样在eventEngine.py中，包含了一段测试代码test函数，用来展示事件驱动引擎的使用方法：</p>
+<div class="highlight"><pre><span class="c">#----------------------------------------------------------------------</span>
+<span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;测试函数&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+    <span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QCoreApplication</span>
+
+    <span class="k">def</span> <span class="nf">simpletest</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">u&#39;处理每秒触发的计时器事件：</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QCoreApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+
+    <span class="n">ee</span> <span class="o">=</span> <span class="n">EventEngine</span><span class="p">()</span>
+    <span class="n">ee</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">EVENT_TIMER</span><span class="p">,</span> <span class="n">simpletest</span><span class="p">)</span>
+    <span class="n">ee</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+
+
+<span class="c"># 直接运行脚本可以进行测试</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">test</span><span class="p">()</span>
+</pre></div>
+
+
+<p>test函数整体上包含了这几步：</p>
+<ol>
+<li>导入相关的包（sys、datetime、PyQt4），注意由于EventEngine的实现中使用了PyQt4的QTimer类，因此整个程序的运行必须包含在Qt事件循环中，即使用QCoreApplication（或者PyQt4.QtGui中的QApplication）的exec_()方法在程序主线程中启动事件循环。</li>
+<li>定义一个简单的函数simpletest，该函数包含一个输入参数event对象，函数被调用后会打印一段字符以及当前的时间</li>
+<li>创建QCoreApplication对象app</li>
+<li>创建事件驱动引擎EventEngine对象ee</li>
+<li>向引擎中注册simpletest函数对定时器事件EVENT_TIMER的监听</li>
+<li>启动事件驱动引擎</li>
+<li>启动Qt事件循环</li>
+</ol>
+<p>整体上看，当用户开发自己的程序时，需要修改的只是第2步和第5步：创建自己的事件处理函数并将这些函数注册到相应的事件类型上进行监听。</p>
+<h2>总结</h2>
+<p>有了API接口和事件驱动引擎，接下来我们可以开始开发自己的平台了，后面的几篇教程将会一步步展示一个简单的LTS交易平台的开发过程。</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="http://www.zhihu.com/people/traderusingpython">作者知乎</a></li>
+                            <li><a href="http://github.com/vnpy/vnpy">Github</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

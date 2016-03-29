@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+        <meta charset="utf-8" />
+        <title>Python量化交易平台开发教程系列3-vn.py项目中API封装的编译</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">vn.py </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/jiao-cheng.html">教程</a></li>
+                    <li><a href="/category/ri-zhi.html">日志</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/basic-tutorial-3.html" rel="bookmark"
+           title="Permalink to Python量化交易平台开发教程系列3-vn.py项目中API封装的编译">Python量化交易平台开发教程系列3-vn.py项目中API封装的编译</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-03-12T10:02:28+08:00">
+                Published: 周四 12 三月 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yong-pythonde-jiao-yi-yuan.html">用Python的交易员</a>
+        </address>
+<p>In <a href="/category/jiao-cheng.html">教程</a>.</p>
+
+</footer><!-- /.post-info -->      <p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>前言</h2>
+<p>经历了两篇的理论折磨后，本篇教程开始进入实际操作的环节，这里作者假设读者是毫无C++经验的用户，操作一步步配图，还有问题的来<a href="https://github.com/vnpy/vnpy">vn.py项目的github主页</a>上提问。</p>
+<p>本篇将会包含的内容：
+1. 安装Anaconda （一次安装搞定95%以上量化相关包的Python发行版）
+2. 安装Visual Studio
+3. 编译Boost库
+4. 编译vn.lts</p>
+<h2>安装Anaconda</h2>
+<p>在<a href="http://repo.continuum.io/archive/index.html">Anaconda历史版本</a>中下载1.9.2（win 32位版本）。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3anaconda.jpg" /></p>
+<p>下载好后双击安装，流程没有特别需要注意的，安装文件夹作者选的是D:\Anaconda，读者可以自己选择，注意最后一步编译vn.lts中设置时的文件夹必须是这里的安装文件夹。</p>
+<p>为什么不用最新版本：尝试过使用2.1.0版，发现有一些包在我的电脑上存在兼容性问题（可能因为中文支持不好），需要修改一些.py文件里的源代码，太过麻烦，而且1.9.2到2.1.0的区别非常小。</p>
+<p>为什么不用64位版本：同样是因为发生过兼容性的问题，不怕麻烦的读者可以自己折腾看看。</p>
+<h2>安装Visual Studio</h2>
+<p>在<a href="https://www.visualstudio.com/downloads/download-visual-studio-vs">Visual Studio下载</a>中下载Community 2013 with Update 4，注意选择简体中文（英文好的随意）。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/教程3vs2013_cn.jpg" /></p>
+<p>下好了同样正常安装，安装文件夹随意，这个对后面编译没有影响。</p>
+<p>不想用2013的其他版本的VS应该也都没问题，作者还测试过2010。</p>
+<h2>编译Boost库</h2>
+<h3>下载解压缩</h3>
+<p>在<a href="http://sourceforge.net/projects/boost/files/boost/1.57.0/">Source Forge</a>下载Boost 1.57.0，Source Forge下载速度较慢，建议选择7z格式。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3boost%20download.jpg" /></p>
+<p>下载完成后进行解压缩，将Boost库放到D:\boost_1_57_0文件夹下，注意最后一步编译vn.lts同样会用到这个文件夹。</p>
+<h3>Visual Studio 命令提示</h3>
+<p>打开Visual Studio 2013，在菜单栏的“工具”下找到“Visual Studio 命令提示”打开，如下图。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3vs%20cmd.jpg" /></p>
+<p>打开后的窗口就是个cmd命令窗口，接下来我们需要在其中敲入一些命令。</p>
+<p>记得我们之前Boost库放在了D:\boost_1_57_0这个文件夹下，首先我们要切换到这个文件夹，逐行输入以下命令，输完后记得回车：</p>
+<div class="highlight"><pre><span class="n">d</span><span class="o">:</span>
+
+<span class="n">cd</span><span class="o">\</span><span class="n">boost_1_57_0</span>
+</pre></div>
+
+
+<p>此时cmd里的显示应该类似于：
+<img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3boost%20cmd.jpg" /></p>
+<h3>booststrap.bat</h3>
+<p>然后输入以下内容，用于生成b2.exe文件：</p>
+<div class="highlight"><pre><span class="n">bootstrap</span><span class="p">.</span><span class="n">bat</span>
+</pre></div>
+
+
+<p>成功后显示为：
+<img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3bootstrap.jpg" /></p>
+<h3>b2.exe</h3>
+<p>接下来编译boost库，--toolset=msvc-12.0是因为作者使用的是VS2013, --build-type=complete编译整个boost库，因为项目中不止用到boost.python：</p>
+<div class="highlight"><pre><span class="n">b2</span> <span class="o">--</span><span class="n">toolset</span><span class="o">=</span><span class="n">msvc</span><span class="o">-</span><span class="mf">12.0</span> <span class="o">--</span><span class="n">build</span><span class="o">-</span><span class="n">type</span><span class="o">=</span><span class="n">complete</span>
+</pre></div>
+
+
+<p>这一步耗时会较长，视乎你的电脑性能，作者这里耗时大约20多分钟，过程中也会出现很多奇怪的输出，忽略就好，成功后会看到：</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3boost%20complete.jpg" /></p>
+<p>这里D:\boost_1_57_0\stage\lib中就是我们编译好的Boost库。</p>
+<h2>编译vn.lts</h2>
+<p>本教程中的例子是行情API（vnltsmd）。</p>
+<h3>下载vn.py</h3>
+<p>vn.py项目托管在Github上，主页为<a href="https://github.com/vnpy/vnpy">https://github.com/vnpy/vnpy</a>，点击主页右侧的“Download ZIP”下载（下图红框）。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3github.jpg" /></p>
+<p>解压缩zip文件，将vn.lts\ltsapi文件夹下的所有文件（.so文件除外）以及vn.lts\vnltsmd\pyltsmd文件夹下的所有文件，复制到一个新的文件夹中（假设命名为new），内容如下图所示：</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3folder.jpg" /></p>
+<h3>创建VS项目</h3>
+<p>打开VS2013后，点击菜单栏的“文件” -&gt; “新建” -&gt; “项目”， 在弹出的窗口中的左侧选择“模板” -&gt; “Visual C++” -&gt; “Win32” -&gt; “Win32项目”，下方的名称填入“vnltsmd”， 位置填入“D:\”（参见下图）。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3vs2013%20project.jpg" /></p>
+<p>点击“确定”后，弹出Win32应用程序向导，点击“下一步”，应用程序类型选择为“DLL”，点击“完成”。</p>
+<h3>添加文件</h3>
+<p>在左侧的解决方案管理器中，将已有的文件全部删除。然后右键点击vnltsmd，选择“添加” -&gt; “现有项”， 将之前new文件夹中所有的文件添加进来，如下图：</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3vs2013%20project%20setting.jpg" /></p>
+<p>添加完成后的解决方案如下图：</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3solution%20files.jpg" /></p>
+<h3>配置项目</h3>
+<p>点击上方工具栏中的解决方案配置选项框（默认显示应该是“Debug”），选择“Release”，如下图红色方框：
+<img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E9%85%8D%E7%BD%AE.jpg" /></p>
+<p>右键点击方案管理器中的vnltsmd，选择“属性”，打开“vnltsmd属性页”对话框。</p>
+<p>选择“配置属性” -&gt; "VC++目录” ，如下图：</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3vc++%E7%9B%AE%E5%BD%952.jpg" /></p>
+<p>在包含目录中添加：</p>
+<ul>
+<li>D:\boost_1_57_0</li>
+<li>D:\Anaconda\include</li>
+<li>new文件夹</li>
+</ul>
+<p>在引用目录中添加：</p>
+<ul>
+<li>D:\boost_1_57_0\libs\</li>
+<li>D:\Anaconda\libs</li>
+<li>new文件夹</li>
+</ul>
+<p>然后点击“链接器”，在附加库目录中添加：</p>
+<ul>
+<li>D:\boost_1_57_0\stage\lib</li>
+<li>D:\Anaconda\libs</li>
+<li>new文件夹</li>
+</ul>
+<p>最后点击“C/C++” -&gt; "预编译头”，将“预编译头”设置为“不使用预编译头”。</p>
+<p>都设置完了记得点“确定”，不然又得重弄一遍。</p>
+<h3>编译</h3>
+<p>终于完成了繁琐的项目创建和配置，此时按下F7，VS就会开始自动编译创建项目。显示如下内容说明编译成功：</p>
+<div class="highlight"><pre><span class="mi">1</span><span class="o">&gt;------</span> <span class="err">已启动生成</span><span class="o">:</span>  <span class="err">项目</span><span class="o">:</span> <span class="n">vnltsmd</span><span class="p">,</span> <span class="err">配置</span><span class="o">:</span> <span class="n">Release</span> <span class="n">Win32</span> <span class="o">------</span>
+<span class="mi">1</span><span class="o">&gt;</span>  <span class="n">dllmain</span><span class="p">.</span><span class="n">cpp</span>
+<span class="mi">1</span><span class="o">&gt;</span>  <span class="n">stdafx</span><span class="p">.</span><span class="n">cpp</span>
+<span class="mi">1</span><span class="o">&gt;</span>  <span class="n">vnltsmd</span><span class="p">.</span><span class="n">cpp</span>
+<span class="mi">1</span><span class="o">&gt;</span>     <span class="err">正在创建库</span> <span class="n">D</span><span class="o">:</span><span class="err">\</span><span class="n">vnltsmd</span><span class="err">\</span><span class="n">Release</span><span class="err">\</span><span class="n">vnltsmd</span><span class="p">.</span><span class="n">lib</span> <span class="err">和对象</span> <span class="n">D</span><span class="o">:</span><span class="err">\</span><span class="n">vnltsmd</span><span class="err">\</span><span class="n">Release</span><span class="err">\</span><span class="n">vnltsmd</span><span class="p">.</span><span class="n">exp</span>
+<span class="mi">1</span><span class="o">&gt;</span>  <span class="err">正在生成代码</span>
+<span class="mi">1</span><span class="o">&gt;</span>  <span class="err">已完成代码的生成</span>
+<span class="mi">1</span><span class="o">&gt;</span>  <span class="n">vnltsmd</span><span class="p">.</span><span class="n">vcxproj</span> <span class="o">-&gt;</span> <span class="n">D</span><span class="o">:</span><span class="err">\</span><span class="n">vnltsmd</span><span class="err">\</span><span class="n">Release</span><span class="err">\</span><span class="n">vnltsmd</span><span class="p">.</span><span class="n">dll</span>
+<span class="o">==========</span> <span class="err">生成</span><span class="o">:</span>  <span class="err">成功</span> <span class="mi">1</span> <span class="err">个，失败</span> <span class="mi">0</span> <span class="err">个，最新</span> <span class="mi">0</span> <span class="err">个，跳过</span> <span class="mi">0</span> <span class="err">个</span> <span class="o">==========</span>
+</pre></div>
+
+
+<p>这时候我们到D:\vnltsmd\Release\文件夹下，找到vnltsmd.dll这个文件，将后缀名从.dll改为.pyd，就可以直接在python中导入使用了。</p>
+<p>从Github上下载的文件解压缩后的文件夹内，找到vn.lts\vnltsmd\test文件夹，将改名后的vnltsmd.pyd复制到该文件夹下覆盖原本的同名文件，就可以使用mdtest.py进行测试了，注意要在mdtest.py中先填入你的LTS用户名和密码。</p>
+<h2>总结</h2>
+<p>本篇教程如果读者从头到尾按照步骤一步步做下来应该是可以保证编译出.pyd文件的，上文示例中使用的是行情API，交易API的编译方法相同。</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="http://www.zhihu.com/people/traderusingpython">作者知乎</a></li>
+                            <li><a href="http://github.com/vnpy/vnpy">Github</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

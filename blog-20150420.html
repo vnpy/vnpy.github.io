@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+        <meta charset="utf-8" />
+        <title>2015/4/20 项目开发日志</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">vn.py </a></h1>
+                <nav><ul>
+                    <li><a href="/category/jiao-cheng.html">教程</a></li>
+                    <li class="active"><a href="/category/ri-zhi.html">日志</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/blog-20150420.html" rel="bookmark"
+           title="Permalink to 2015/4/20 项目开发日志">2015/4/20 项目开发日志</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-04-20T16:56:45+08:00">
+                Published: 周一 20 四月 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yong-pythonde-jiao-yi-yuan.html">用Python的交易员</a>
+        </address>
+<p>In <a href="/category/ri-zhi.html">日志</a>.</p>
+
+</footer><!-- /.post-info -->      <h2>目前项目状态</h2>
+<p>差不多一个多月的时间，完成了CTP API的vn.ctp封装，以及用于展示如何使用vn.py框架开发的vn.demo，两者均已发布到github上。</p>
+<p>接下来将会发布几篇和vn.demo相关的教程。</p>
+<h2>vn.demo介绍</h2>
+<p>该demo主要用于展示如何使用vn.py框架开发交易平台，使用了vn.event和vn.lts模块。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B4vndemo.jpg" /></p>
+<h2>如何使用</h2>
+<p>常规用户可以直接运行exe文件夹下的demoMain.exe。</p>
+<p>对开发有兴趣的用户需要根据vnpy.org的教程3安装相关的开发环境，然后通过demoMain.py和demoMain.pyw（无cmd界面）运行。</p>
+<h2>实现功能</h2>
+<p>demo的实现参考了盈佳和尔易的LTS交易平台，功能如下：</p>
+<ol>
+<li>行情、持仓、账户、成交、报单的监控</li>
+<li>平台的日志记录</li>
+<li>下单交易，实现了LTS提供的所有订单类型和交易类型</li>
+<li>双击报单监控中的单元格撤单，以及下单交易组件一键全撤</li>
+</ol>
+<h2>文件说明</h2>
+<ul>
+<li>demoApi.py主要包含了程序的底层接口，对vn.lts中的API进行了简化封装</li>
+<li>demoEngine.py主要包含了程序的中间层，负责调用底层接口</li>
+<li>demoUi.py主要包含了用于数据监控和主动函数调用相关的GUI组件</li>
+<li>demoMain.py包含了程序的主函数入口，双击运行</li>
+<li>demoMain.pyw功能和demoMain.py一样，双击时会自动调用pythonw.exe运行（无cmd界面）</li>
+</ul>
+<h2>nuitka编译说明</h2>
+<p>要执行nuikta编译，请在本文件夹下打开cmd，并输入以下命令：</p>
+<p>nuitka --recurse-all --windows-disable-console --icon=C:\vn.demo\vnpy.ico demoMain.py</p>
+<p>其中C:\vn.demo\vnpy.ico需要修改为用户vn.demo文件夹的路径。</p>
+<h2>LTS测试服务器地址</h2>
+<p><strong>行情</strong>
+tcp://211.144.195.163:34513</p>
+<p><strong>交易</strong>
+tcp://211.144.195.163:34505</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="http://www.zhihu.com/people/traderusingpython">作者知乎</a></li>
+                            <li><a href="http://github.com/vnpy/vnpy">Github</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

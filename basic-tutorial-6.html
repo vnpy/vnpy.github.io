@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+        <meta charset="utf-8" />
+        <title>Python量化交易平台开发教程系列6-中层引擎设计</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">vn.py </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/jiao-cheng.html">教程</a></li>
+                    <li><a href="/category/ri-zhi.html">日志</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/basic-tutorial-6.html" rel="bookmark"
+           title="Permalink to Python量化交易平台开发教程系列6-中层引擎设计">Python量化交易平台开发教程系列6-中层引擎设计</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-05-20T09:20:00+08:00">
+                Published: 周三 20 五月 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yong-pythonde-jiao-yi-yuan.html">用Python的交易员</a>
+        </address>
+<p>In <a href="/category/jiao-cheng.html">教程</a>.</p>
+
+</footer><!-- /.post-info -->      <p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>前言</h2>
+<p>中层引擎在设计上主要是为了进一步封装底层接口所暴露出的API函数，使得其更容易被上层的GUI和策略组件调用。本篇的内容会相对简单，主要以LTS接口DEMO为例介绍一些设计方面的思路。</p>
+<p>相关的示例都是基于vn.demo中的LTS接口DEMO，发布在：
+<a href="https://github.com/vnpy/vnpy/tree/master/vn.demo/ltsdemo">https://github.com/vnpy/vnpy/tree/master/vn.demo/ltsdemo</a></p>
+<h2>中层引擎设计</h2>
+<h3>构造函数</h3>
+<div class="highlight"><pre><span class="c">########################################################################</span>
+<span class="k">class</span> <span class="nc">MainEngine</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;主引擎，负责对API的调度&quot;&quot;&quot;</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ee</span> <span class="o">=</span> <span class="n">EventEngine</span><span class="p">()</span>         <span class="c"># 创建事件驱动引擎</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">md</span> <span class="o">=</span> <span class="n">DemoMdApi</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ee</span><span class="p">)</span>    <span class="c"># 创建API接口</span>
+        <span class="c">#self.md = DemoL2Api(self.ee)   # 如果使用L2行情就改为这行</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">td</span> <span class="o">=</span> <span class="n">DemoTdApi</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ee</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ee</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>                 <span class="c"># 启动事件驱动引擎</span>
+
+        <span class="c"># 循环查询持仓和账户相关</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">countGet</span> <span class="o">=</span> <span class="mi">0</span>               <span class="c"># 查询延时计数</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastGet</span> <span class="o">=</span> <span class="s">&#39;Account&#39;</span>        <span class="c"># 上次查询的性质</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ee</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">EVENT_TDLOGIN</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initGet</span><span class="p">)</span>  <span class="c"># 登录成功后开始初始化查询</span>
+
+        <span class="c"># 合约储存相关</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dictInstrument</span> <span class="o">=</span> <span class="p">{}</span>        <span class="c"># 字典（保存合约查询数据）</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ee</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">EVENT_INSTRUMENT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">insertInstrument</span><span class="p">)</span>
+</pre></div>
+
+
+<ol>
+<li>
+<p>首先以主引擎成员变量的形式创建事件驱动引擎ee、行情接口md和交易接口td的对象，两个接口对象创建时传入事件驱动引擎ee对象作为构造函数的参数。</p>
+</li>
+<li>
+<p>在创建以上三个对象后，立即启动事件驱动引擎，此后当用户调用接口的连接、登录等功能收到事件推送后，ee可以立即推送到监听这些事件的组件进行处理。</p>
+</li>
+<li>
+<p>LTS和CTP接口的持仓情况和账户情况并不会通过回调函数主动推送，只有在投资者调用查询函数时才会返回，我们的DEMO作为一个手动交易终端，选择使用循环查询的模式不断获取持仓和账户情况的更新。这里的每次查询都会占用网络带宽导致系统延时的增加，对于某些运行全自动策略的程序，可以选择不进行查询，而通过对成交、行情等数据的统计来自行计算持仓和账户情况（甚至对于某些策略可以直接忽略该步骤，进一步降低延时水平）。</p>
+</li>
+<li>
+<p>LTS和CTP发送主动查询指令时，存在流量控制（通常限制在1秒一次查询），因此选择间隔发送查询账户和查询持仓的指令。</p>
+</li>
+<li>
+<p>在登录成功后，我们需要查询柜台上所有可交易的合约信息，将这些信息保存到字典dictInstrument中，方便后面需要时进行查询。这里很好的体现出了Python的方便，笔者在设计封装API的回调函数时特别选择使用Python字典的形式推送信息，包含合约信息的字典收到后，可以直接插入到dictInstrument字典进行保存（字典嵌字典），查询时直接使用合约代码即可。而用C++语言开发时通常还需要用到Sqlite之类的内存数据库进行保存，麻烦了不少。</p>
+</li>
+</ol>
+<h3>其他主动函数</h3>
+<div class="highlight"><pre>    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userid</span><span class="p">,</span> <span class="n">mdPassword</span><span class="p">,</span> <span class="n">tdPassword</span><span class="p">,</span> <span class="n">brokerid</span><span class="p">,</span> <span class="n">mdAddress</span><span class="p">,</span> <span class="n">tdAddress</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;登陆&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">md</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">mdAddress</span><span class="p">,</span> <span class="n">userid</span><span class="p">,</span> <span class="n">mdPassword</span><span class="p">,</span> <span class="n">brokerid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">td</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">tdAddress</span><span class="p">,</span> <span class="n">userid</span><span class="p">,</span> <span class="n">tdPassword</span><span class="p">,</span> <span class="n">brokerid</span><span class="p">)</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instrumentid</span><span class="p">,</span> <span class="n">exchangeid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;订阅合约&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">md</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">instrumentid</span><span class="p">,</span> <span class="n">exchangeid</span><span class="p">)</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">getAccount</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;查询账户&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">td</span><span class="o">.</span><span class="n">getAccount</span><span class="p">()</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">getInvestor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;查询投资者&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">td</span><span class="o">.</span><span class="n">getInvestor</span><span class="p">()</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">getPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;查询持仓&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">td</span><span class="o">.</span><span class="n">getPosition</span><span class="p">()</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">getInstrument</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;获取合约&quot;&quot;&quot;</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="n">type_</span><span class="o">=</span><span class="n">EVENT_LOG</span><span class="p">)</span>
+        <span class="n">log</span> <span class="o">=</span> <span class="s">u&#39;查询合约信息&#39;</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">dict_</span><span class="p">[</span><span class="s">&#39;log&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">log</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ee</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">td</span><span class="o">.</span><span class="n">getInstrument</span><span class="p">()</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">sendOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instrumentid</span><span class="p">,</span> <span class="n">exchangeid</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">pricetype</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;发单&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">td</span><span class="o">.</span><span class="n">sendOrder</span><span class="p">(</span><span class="n">instrumentid</span><span class="p">,</span> <span class="n">exchangeid</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">pricetype</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">cancelOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instrumentid</span><span class="p">,</span> <span class="n">exchangeid</span><span class="p">,</span> <span class="n">orderref</span><span class="p">,</span> <span class="n">frontid</span><span class="p">,</span> <span class="n">sessionid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;撤单&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">td</span><span class="o">.</span><span class="n">cancelOrder</span><span class="p">(</span><span class="n">instrumentid</span><span class="p">,</span> <span class="n">exchangeid</span><span class="p">,</span> <span class="n">orderref</span><span class="p">,</span> <span class="n">frontid</span><span class="p">,</span> <span class="n">sessionid</span><span class="p">)</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">getAccountPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;循环查询账户和持仓&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">countGet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">countGet</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="c"># 每5秒发一次查询</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">countGet</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">countGet</span> <span class="o">=</span> <span class="mi">0</span>   <span class="c"># 清空计数</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastGet</span> <span class="o">==</span> <span class="s">&#39;Account&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">getPosition</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lastGet</span> <span class="o">=</span> <span class="s">&#39;Position&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">getAccount</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lastGet</span> <span class="o">=</span> <span class="s">&#39;Account&#39;</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">initGet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;在交易服务器登录成功后，开始初始化查询&quot;&quot;&quot;</span>
+        <span class="c"># 打开设定文件setting.vn</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">shelve</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;setting.vn&#39;</span><span class="p">)</span>
+
+        <span class="c"># 尝试读取设定字典，若该字典不存在，则发出查询请求</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;instrument&#39;</span><span class="p">]</span>
+
+            <span class="c"># 如果本地保存的合约数据是今日的，则载入，否则发出查询请求</span>
+            <span class="n">today</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s">&#39;date&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">today</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dictInstrument</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s">&#39;dictInstrument&#39;</span><span class="p">]</span>
+
+                <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="n">type_</span><span class="o">=</span><span class="n">EVENT_LOG</span><span class="p">)</span>
+                <span class="n">log</span> <span class="o">=</span> <span class="s">u&#39;合约信息读取完成&#39;</span>
+                <span class="n">event</span><span class="o">.</span><span class="n">dict_</span><span class="p">[</span><span class="s">&#39;log&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">log</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ee</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">getInvestor</span><span class="p">()</span>
+
+                <span class="c"># 开始循环查询</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ee</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">EVENT_TIMER</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAccountPosition</span><span class="p">)</span>                 
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">getInstrument</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">getInstrument</span><span class="p">()</span>
+
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">insertInstrument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;插入合约对象&quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">dict_</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">]</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">dict_</span><span class="p">[</span><span class="s">&#39;last&#39;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dictInstrument</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;InstrumentID&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">data</span>
+
+        <span class="c"># 合约对象查询完成后，查询投资者信息并开始循环查询</span>
+        <span class="k">if</span> <span class="n">last</span><span class="p">:</span>
+            <span class="c"># 将查询完成的合约信息保存到本地文件，今日登录可直接使用不再查询</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">saveInstrument</span><span class="p">()</span>
+
+            <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="n">type_</span><span class="o">=</span><span class="n">EVENT_LOG</span><span class="p">)</span>
+            <span class="n">log</span> <span class="o">=</span> <span class="s">u&#39;合约信息查询完成&#39;</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">dict_</span><span class="p">[</span><span class="s">&#39;log&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">log</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ee</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">getInvestor</span><span class="p">()</span>
+
+            <span class="c"># 开始循环查询</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ee</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">EVENT_TIMER</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAccountPosition</span><span class="p">)</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">selectInstrument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instrumentid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;获取合约信息对象&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">instrument</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dictInstrument</span><span class="p">[</span><span class="n">instrumentid</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">instrument</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">return</span> <span class="n">instrument</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">exit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;退出&quot;&quot;&quot;</span>
+        <span class="c"># 销毁API对象</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">td</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">md</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="c"># 停止事件驱动引擎</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ee</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">saveInstrument</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;保存合约属性数据&quot;&quot;&quot;</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">shelve</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;setting.vn&#39;</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">d</span><span class="p">[</span><span class="s">&#39;dictInstrument&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dictInstrument</span>
+        <span class="n">d</span><span class="p">[</span><span class="s">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+        <span class="n">f</span><span class="p">[</span><span class="s">&#39;instrument&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
+
+<ol>
+<li>
+<p>LTS和CTP的行情和交易账户通常是由经纪商一起提供的，为了简洁起见，把两个接口的登录一起封装在了login函数中。</p>
+</li>
+<li>
+<p>subscribe, getAccount, getPosition, getInvestor, getInstrument, sendOrder, cancelOrder都只是直接调用行情和交易接口的功能，做这种设计的目的是为了让用户在写上层组件代码时，可以直接写self.mainEngine.subscribe('IF1506', 'CFFEX')，而不必去写self.mainEngine.md.subscribe('IF1506', 'CFFEX')，很小的区别，但是相信我，程序规模大了后会让你烦到崩溃。</p>
+</li>
+<li>
+<p>getAccountPosition用于实现循环查询账户和持仓，这里我设为了每5秒发一次，基本够用就好。</p>
+</li>
+<li>
+<p>initGet和insertInstrument两个函数实现了登录后初始化查询相关的功能。首先登录完成后，程序用shelve模块打开本地保存的文件setting.vn，检查其中的合约信息数据，如果该数据的更新日期为今日，则直接读取使用，无需再次查询可交易合约信息（一般该信息每天日内保持不变）。否则调用getInstrument函数查询合约信息，insertInstrument函数负责将收到的合约信息插入到dictInstrument字典中，当所有合约信息都插入完成后，通过saveInstrument函数将该字典保存到setting.vn中，即可实现日内再次登录无需查询直接读取。</p>
+</li>
+<li>
+<p>合约信息查询完成后，通常会再查询一次投资者姓名getInvestor，主要用于输出在程序的标题栏上（方便用户检查，防止登录错账户等），并将循环查询函数getAccountPosition注册到每秒触发的定时器事件监听上，开始循环查询。</p>
+</li>
+<li>
+<p>当用户退出程序时，需要调用主引擎的exit函数，释放行情和交易API接口对象（在C++环境中会自动析构），并停止事件驱动引擎的工作线程（否则可能报线程退出错误等）。</p>
+</li>
+</ol>
+<h2>总结</h2>
+<p>中层引擎的设计思路主要是封装底层接口，从而让用户在开发顶层GUI和策略组件时无需直接调用底层接口的主动函数，降低开发和维护的复杂度。</p>
+<p>DEMO中的这个中层引擎非常简单，功能上只实现了个循环查询（其实也可以在接口层中实现，视乎需求）。而在实际开发中，中层引擎通常会包含用户最常用的一些功能模块，比如做期权策略的会加入期权定价引擎，做期现套利的会加入持仓组合的敞口监控对冲引擎等等。</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="http://www.zhihu.com/people/traderusingpython">作者知乎</a></li>
+                            <li><a href="http://github.com/vnpy/vnpy">Github</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
