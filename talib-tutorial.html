@@ -1,40 +1,105 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh"
+>
 <head>
-        <meta charset="utf-8" />
-        <title>使用TA-Lib在vn.trader上开发CTA交易策略</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+    <title>使用TA-Lib在vn.trader上开发CTA交易策略 - vn.py</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+
+    <link href="/images/favicon.png" rel="icon">
+
+<link rel="canonical" href="/talib-tutorial.html">
+
+        <meta name="author" content="用Python的交易员" />
+        <meta name="description" content="TA-Lib简介 作为一套被业界广泛应用的开源技术分析库（包含技术指标计算和K线模式识别等），TA-Lib自2001年发布以来已经有了十多年的历史。TA-Lib中一共包含大约125个技术指标的计算函数，同时提供了包括C/C++、Java、Perl、Python等多种语言的API。 有什么用 简单来说TA-Lib就是提供了一堆经过长期实践检验的技术指标计算函数。基于现成的计算函数，开发新策略雏形、快速验证某个灵感的时间可以大幅缩短，否则想象一下每开发个策略都要自己实现要用的技术指标，未免太浪费时间。 但是除此以外，TA-Lib还可以有一些其他的用法，举两个例子。 百科全书 坚持每天收盘后选一个自己没用过的指标，输入数据，画个图、跑个回测，开发量化策略很很多其他的技术一样都是熟能生巧。 另外，所有的技术指标在被开发出来的时候，背后都有一定的金融逻辑原理（行为金融学）的支撑，生搬硬套固然不可取，但是放着前人经验完全不看，整天凭自己的空想就弄个机器学习算法在数据上瞎折腾岂不是更浪费时间？ Alpha库 很大一部分CTA类的策略可以总结为几个简单的逻辑框架，比如趋势策略通常可以分解成以下部分：趋势信号（通常是基于某几个参数计算出来的指标值超过某个阈值）、信号过滤（和趋势信号类似）、出场方案（固定点数/百分比的止盈和止损，移动止损）。 因此把逻辑框架的代码搭好后，就可以通过机器学习算法来实现一种自动的策略开发方式： 从TA-Lib中选取两个指标分别作为趋势信号和信号过滤，结合止损、止盈方案 ..." />
+
+        <meta property="og:site_name" content="vn.py" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="使用TA-Lib在vn.trader上开发CTA交易策略"/>
+        <meta property="og:url" content="/talib-tutorial.html"/>
+        <meta property="og:description" content="TA-Lib简介 作为一套被业界广泛应用的开源技术分析库（包含技术指标计算和K线模式识别等），TA-Lib自2001年发布以来已经有了十多年的历史。TA-Lib中一共包含大约125个技术指标的计算函数，同时提供了包括C/C++、Java、Perl、Python等多种语言的API。 有什么用 简单来说TA-Lib就是提供了一堆经过长期实践检验的技术指标计算函数。基于现成的计算函数，开发新策略雏形、快速验证某个灵感的时间可以大幅缩短，否则想象一下每开发个策略都要自己实现要用的技术指标，未免太浪费时间。 但是除此以外，TA-Lib还可以有一些其他的用法，举两个例子。 百科全书 坚持每天收盘后选一个自己没用过的指标，输入数据，画个图、跑个回测，开发量化策略很很多其他的技术一样都是熟能生巧。 另外，所有的技术指标在被开发出来的时候，背后都有一定的金融逻辑原理（行为金融学）的支撑，生搬硬套固然不可取，但是放着前人经验完全不看，整天凭自己的空想就弄个机器学习算法在数据上瞎折腾岂不是更浪费时间？ Alpha库 很大一部分CTA类的策略可以总结为几个简单的逻辑框架，比如趋势策略通常可以分解成以下部分：趋势信号（通常是基于某几个参数计算出来的指标值超过某个阈值）、信号过滤（和趋势信号类似）、出场方案（固定点数/百分比的止盈和止损，移动止损）。 因此把逻辑框架的代码搭好后，就可以通过机器学习算法来实现一种自动的策略开发方式： 从TA-Lib中选取两个指标分别作为趋势信号和信号过滤，结合止损、止盈方案 ..."/>
+        <meta property="article:published_time" content="2016-03-01" />
+            <meta property="article:section" content="文章" />
+            <meta property="article:author" content="用Python的交易员" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.readable.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/monokai.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+
 </head>
+<body>
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="/">vn.py </a></h1>
-                <nav><ul>
-    
-                        <li><a href="/pages/jiao-cheng.html">教程</a></li>
-    
-                        <li><a href="/pages/ri-zhi.html">日志</a></li>
-                    <li class="active"><a href="/category/wen-zhang.html">文章</a></li>
-                </ul>
-                </nav>
-        </header><!-- /#banner -->
-<section id="content" class="body">
-  <article>
-    <header>
-      <h1 class="entry-title">
-        <a href="/talib-tutorial.html" rel="bookmark"
-           title="Permalink to 使用TA-Lib在vn.trader上开发CTA交易策略">使用TA-Lib在vn.trader上开发CTA交易策略</a></h1>
-    </header>
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+<img src="/images/favicon.png" width=""/> vn.py            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                         <li><a href="/pages/quick-start.html">
+                             Quick Start
+                          </a></li>
+                         <li><a href="/pages/jiao-cheng.html">
+                             教程
+                          </a></li>
+                         <li><a href="/pages/ri-zhi.html">
+                             日志
+                          </a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
 
-    <div class="entry-content">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/talib-tutorial.html"
+                       rel="bookmark"
+                       title="Permalink to 使用TA-Lib在vn.trader上开发CTA交易策略">
+                        使用TA-Lib在vn.trader上开发CTA交易策略
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
 <footer class="post-info">
-        <span>2016-03-01(周二)</span>
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2016-03-01T13:58:42+08:00"> 2016-03-01(周二)</time>
+    </span>
 
-</footer><!-- /.post-info -->      <h2>TA-Lib简介</h2>
+
+
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <h2>TA-Lib简介</h2>
 <p>作为一套被业界广泛应用的开源技术分析库（包含技术指标计算和K线模式识别等），TA-Lib自2001年发布以来已经有了十多年的历史。TA-Lib中一共包含大约125个技术指标的计算函数，同时提供了包括C/C++、Java、Perl、Python等多种语言的API。</p>
 <h2>有什么用</h2>
 <p>简单来说TA-Lib就是提供了一堆经过长期实践检验的技术指标计算函数。基于现成的计算函数，开发新策略雏形、快速验证某个灵感的时间可以大幅缩短，否则想象一下每开发个策略都要自己实现要用的技术指标，未免太浪费时间。</p>
@@ -281,29 +346,115 @@
 <p>将上面的代码保存到一个talibDemo.py文件中后，参考vn.trader下ctaAlgo文件夹内的ctaBacktesting.py运行回测，也可以通过ctaSetting.py进行配置后，在vn.trader中进行模拟交易。</p>
 <p>从上面的DEMO中我们可以看到，talib中的技术指标函数主要接受一个numpy数组作为原始数据及若干个指标算法中的参数作为输入，返回的数据也是一个numpy数组，使用起来非常方便。</p>
 <p>注意缓存数据时使用的是Python列表而非numpy数组，主要原因是numpy数组的append方法本质是结合原数组中的数据和新的数据生成一个新的数组对象，相对于列表的append开销要高很多。</p>
-    </div><!-- /.entry-content -->
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
 
-  </article>
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="http://github.com/vnpy/vnpy"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+              </ul>
+            </li>
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.trader" target="_blank">
+                交易平台
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.event" target="_blank">
+                事件引擎
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ctp" target="_blank">
+                CTP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.xspeed" target="_blank">
+                飞创接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.femas" target="_blank">
+                飞马接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://github.com/vnpy/vnpy/tree/master/vn.lts" target="_blank">
+                LTS接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksotp" target="_blank">
+                金仕达期权接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksgold" target="_blank">
+                金仕达黄金接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.sgit" target="_blank">
+                飞鼠接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.oanda" target="_blank">
+                OANDA接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.datayes" target="_blank">
+                通联数据接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.demo" target="_blank">
+                开发DEMO
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
 </section>
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>blogroll</h2>
-                        <ul>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                        </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2016 用Python的交易员
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
 
-                            <li><a href="http://github.com/vnpy/vnpy">Github</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
 
-        <footer id="contentinfo" class="body">
-                <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme <a href="https://github.com/blueicefield/pelican-blueidea/">blueidea</a>, inspired by the default theme.</p>
-        </footer><!-- /#contentinfo -->
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
 
 </body>
 </html>

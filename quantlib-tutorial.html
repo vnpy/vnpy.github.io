@@ -1,40 +1,105 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh"
+>
 <head>
-        <meta charset="utf-8" />
-        <title>在Python中使用QuantLib</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+    <title>在Python中使用QuantLib - vn.py</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+
+    <link href="/images/favicon.png" rel="icon">
+
+<link rel="canonical" href="/quantlib-tutorial.html">
+
+        <meta name="author" content="用Python的交易员" />
+        <meta name="description" content="Quantlib简介 相比TA-Lib在技术分析领域的地位，QuantLib在金融工程领域的地位可以说有过之而无不及。 参考其官方网站，QuantLib中包含的的模块如下（其中个人感觉国内比较有用的添加了中文注释）： Currencies and FX rates（货币相关） Date and time calculations（日期和时间计算） Calendars Day counters Design patterns Financial instruments Finite-differences framework Lattice methods Math tools 1-D Interpolations and corresponding traits One-dimensional solvers Optimizers（优化器） Monte Carlo framework （蒙特卡洛模拟框架） Numeric types Output manipulators Pricing engines（定价引擎 ..." />
+
+        <meta property="og:site_name" content="vn.py" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="在Python中使用QuantLib"/>
+        <meta property="og:url" content="/quantlib-tutorial.html"/>
+        <meta property="og:description" content="Quantlib简介 相比TA-Lib在技术分析领域的地位，QuantLib在金融工程领域的地位可以说有过之而无不及。 参考其官方网站，QuantLib中包含的的模块如下（其中个人感觉国内比较有用的添加了中文注释）： Currencies and FX rates（货币相关） Date and time calculations（日期和时间计算） Calendars Day counters Design patterns Financial instruments Finite-differences framework Lattice methods Math tools 1-D Interpolations and corresponding traits One-dimensional solvers Optimizers（优化器） Monte Carlo framework （蒙特卡洛模拟框架） Numeric types Output manipulators Pricing engines（定价引擎 ..."/>
+        <meta property="article:published_time" content="2016-03-15" />
+            <meta property="article:section" content="文章" />
+            <meta property="article:author" content="用Python的交易员" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.readable.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/monokai.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+
 </head>
+<body>
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="/">vn.py </a></h1>
-                <nav><ul>
-    
-                        <li><a href="/pages/jiao-cheng.html">教程</a></li>
-    
-                        <li><a href="/pages/ri-zhi.html">日志</a></li>
-                    <li class="active"><a href="/category/wen-zhang.html">文章</a></li>
-                </ul>
-                </nav>
-        </header><!-- /#banner -->
-<section id="content" class="body">
-  <article>
-    <header>
-      <h1 class="entry-title">
-        <a href="/quantlib-tutorial.html" rel="bookmark"
-           title="Permalink to 在Python中使用QuantLib">在Python中使用QuantLib</a></h1>
-    </header>
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+<img src="/images/favicon.png" width=""/> vn.py            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                         <li><a href="/pages/quick-start.html">
+                             Quick Start
+                          </a></li>
+                         <li><a href="/pages/jiao-cheng.html">
+                             教程
+                          </a></li>
+                         <li><a href="/pages/ri-zhi.html">
+                             日志
+                          </a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
 
-    <div class="entry-content">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/quantlib-tutorial.html"
+                       rel="bookmark"
+                       title="Permalink to 在Python中使用QuantLib">
+                        在Python中使用QuantLib
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
 <footer class="post-info">
-        <span>2016-03-15(周二)</span>
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2016-03-15T16:25:42+08:00"> 2016-03-15(周二)</time>
+    </span>
 
-</footer><!-- /.post-info -->      <h2>Quantlib简介</h2>
+
+
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <h2>Quantlib简介</h2>
 <p>相比TA-Lib在技术分析领域的地位，QuantLib在金融工程领域的地位可以说有过之而无不及。</p>
 <p>参考其<a href="http://quantlib.org/reference/modules.html">官方网站</a>，QuantLib中包含的的模块如下（其中个人感觉国内比较有用的添加了中文注释）：</p>
 <blockquote>
@@ -233,29 +298,115 @@ python setup.py install
 <p>越来越多的国内买方机构（券商资管、信托、基金和私募等）开始参与到OTC期权的市场，OTC期权以灵活著称，不但可交易的品种更多（沪深300、中证500、黄金、铜等），可供选择的期权类型也更多（灵活到期时间、奇异期权）。</p>
 <p>目前大部分机构依旧采用传统的EXCEL来记录和管理，通常需要手动输入行情数据（也可以使用Wind接口接入实时行情），使用较为麻烦也无法做到实时的一些交易对冲。同时由于EXCEL VBA的局限性，对于障碍期权等奇异期权，买家往往无法自己进行估值，必须依赖于OTC做市商给出的数字。</p>
 <p>结合vn.py和QuantLib，交易员可以构建连通场内外的期权交易系统，使用数据库而不是EXCEL来管理持仓和风险，并基于实时行情来计算当前持仓的希腊值敞口，结合场内的期货和现货（ETF、股票等）来实现日内对冲，从而真正实现三维立体的交易模式。</p>
-    </div><!-- /.entry-content -->
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
 
-  </article>
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="http://github.com/vnpy/vnpy"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+              </ul>
+            </li>
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.trader" target="_blank">
+                交易平台
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.event" target="_blank">
+                事件引擎
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ctp" target="_blank">
+                CTP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.xspeed" target="_blank">
+                飞创接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.femas" target="_blank">
+                飞马接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://github.com/vnpy/vnpy/tree/master/vn.lts" target="_blank">
+                LTS接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksotp" target="_blank">
+                金仕达期权接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksgold" target="_blank">
+                金仕达黄金接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.sgit" target="_blank">
+                飞鼠接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.oanda" target="_blank">
+                OANDA接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.datayes" target="_blank">
+                通联数据接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.demo" target="_blank">
+                开发DEMO
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
 </section>
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>blogroll</h2>
-                        <ul>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                        </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2016 用Python的交易员
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
 
-                            <li><a href="http://github.com/vnpy/vnpy">Github</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
 
-        <footer id="contentinfo" class="body">
-                <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme <a href="https://github.com/blueicefield/pelican-blueidea/">blueidea</a>, inspired by the default theme.</p>
-        </footer><!-- /#contentinfo -->
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
 
 </body>
 </html>

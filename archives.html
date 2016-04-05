@@ -1,80 +1,240 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh"
+>
 <head>
-        <meta charset="utf-8" />
-        <title>vn.py</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+    <title>Archives - vn.py</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+
+    <link href="/images/favicon.png" rel="icon">
+
+
+        <meta name="author" content="用Python的交易员" />
+
+    <!-- Open Graph tags -->
+        <meta property="og:site_name" content="vn.py" />
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="vn.py"/>
+        <meta property="og:url" content=""/>
+        <meta property="og:description" content="vn.py"/>
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.readable.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/monokai.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+
 </head>
+<body>
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="/">vn.py </a></h1>
-                <nav><ul>
-    
-                        <li><a href="/pages/jiao-cheng.html">教程</a></li>
-    
-                        <li><a href="/pages/ri-zhi.html">日志</a></li>
-                    <li><a href="/category/wen-zhang.html">文章</a></li>
-                </ul>
-                </nav>
-        </header><!-- /#banner -->
-<section id="content" class="body">
-<h1>Archives for vn.py</h1>
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+<img src="/images/favicon.png" width=""/> vn.py            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                         <li><a href="/pages/quick-start.html">
+                             Quick Start
+                          </a></li>
+                         <li><a href="/pages/jiao-cheng.html">
+                             教程
+                          </a></li>
+                         <li><a href="/pages/ri-zhi.html">
+                             日志
+                          </a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
 
-<dl>
-    <dt>2016-03-15(周二)</dt>
-    <dd><a href="/quantlib-tutorial.html">在Python中使用QuantLib</a></dd>
-    <dt>2016-03-01(周二)</dt>
-    <dd><a href="/talib-tutorial.html">使用TA-Lib在vn.trader上开发CTA交易策略</a></dd>
-    <dt>2016-02-15(周一)</dt>
-    <dd><a href="/blog-2016-plan.html">2016年vn.py项目计划</a></dd>
-    <dt>2015-07-14(周二)</dt>
-    <dd><a href="/basic-tutorial-8.html">Python量化交易平台开发教程系列8-顶层GUI界面开发（2）</a></dd>
-    <dt>2015-07-09(周四)</dt>
-    <dd><a href="/basic-tutorial-7.html">Python量化交易平台开发教程系列7-顶层GUI界面开发（1）</a></dd>
-    <dt>2015-05-20(周三)</dt>
-    <dd><a href="/basic-tutorial-6.html">Python量化交易平台开发教程系列6-中层引擎设计</a></dd>
-    <dt>2015-05-05(周二)</dt>
-    <dd><a href="/basic-tutorial-5.html">Python量化交易平台开发教程系列5-底层接口对接</a></dd>
-    <dt>2015-04-20(周一)</dt>
-    <dd><a href="/blog-20150420.html">2015/4/20 项目开发日志</a></dd>
-    <dt>2015-03-13(周五)</dt>
-    <dd><a href="/basic-tutorial-4.html">Python量化交易平台开发教程系列4-事件驱动引擎原理和使用</a></dd>
-    <dt>2015-03-12(周四)</dt>
-    <dd><a href="/basic-tutorial-3.html">Python量化交易平台开发教程系列3-vn.py项目中API封装的编译</a></dd>
-    <dt>2015-03-09(周一)</dt>
-    <dd><a href="/basic-tutorial-2.html">Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计</a></dd>
-    <dt>2015-03-05(周四)</dt>
-    <dd><a href="/basic-tutorial-1.html">Python量化交易平台开发教程系列1-类CTP交易API的工作原理</a></dd>
-    <dt>2015-03-04(周三)</dt>
-    <dd><a href="/basic-tutorial-0.html">Python量化交易平台开发教程系列0-引言</a></dd>
-    <dt>2015-03-03(周二)</dt>
-    <dd><a href="/blog-20150303.html">2015/3/3 项目开发日志</a></dd>
-</dl>
+    <section id="content">
+        <h1>Archives for vn.py</h1>
+        <div id="archives">
+                <p>
+                    <span class="categories-timestamp"><time datetime="2016-03-15T16:25:42+08:00">2016-03-15(周二)</time></span>
+                    <a href="/quantlib-tutorial.html">在Python中使用QuantLib</a>
+                </p>
+                <p>
+                    <span class="categories-timestamp"><time datetime="2016-03-01T13:58:42+08:00">2016-03-01(周二)</time></span>
+                    <a href="/talib-tutorial.html">使用TA-Lib在vn.trader上开发CTA交易策略</a>
+                </p>
+                <p>
+                    <span class="categories-timestamp"><time datetime="2016-02-15T13:45:45+08:00">2016-02-15(周一)</time></span>
+                    <a href="/blog-2016-plan.html">2016年vn.py项目计划</a>
+                </p>
+                <p>
+                    <span class="categories-timestamp"><time datetime="2015-07-14T13:20:00+08:00">2015-07-14(周二)</time></span>
+                    <a href="/basic-tutorial-8.html">Python量化交易平台开发教程系列8-顶层GUI界面开发（2）</a>
+                </p>
+                <p>
+                    <span class="categories-timestamp"><time datetime="2015-07-09T16:20:00+08:00">2015-07-09(周四)</time></span>
+                    <a href="/basic-tutorial-7.html">Python量化交易平台开发教程系列7-顶层GUI界面开发（1）</a>
+                </p>
+                <p>
+                    <span class="categories-timestamp"><time datetime="2015-05-20T09:20:00+08:00">2015-05-20(周三)</time></span>
+                    <a href="/basic-tutorial-6.html">Python量化交易平台开发教程系列6-中层引擎设计</a>
+                </p>
+                <p>
+                    <span class="categories-timestamp"><time datetime="2015-05-05T14:46:00+08:00">2015-05-05(周二)</time></span>
+                    <a href="/basic-tutorial-5.html">Python量化交易平台开发教程系列5-底层接口对接</a>
+                </p>
+                <p>
+                    <span class="categories-timestamp"><time datetime="2015-04-20T16:56:45+08:00">2015-04-20(周一)</time></span>
+                    <a href="/blog-20150420.html">2015/4/20 项目开发日志</a>
+                </p>
+                <p>
+                    <span class="categories-timestamp"><time datetime="2015-03-13T10:58:00+08:00">2015-03-13(周五)</time></span>
+                    <a href="/basic-tutorial-4.html">Python量化交易平台开发教程系列4-事件驱动引擎原理和使用</a>
+                </p>
+                <p>
+                    <span class="categories-timestamp"><time datetime="2015-03-12T10:02:28+08:00">2015-03-12(周四)</time></span>
+                    <a href="/basic-tutorial-3.html">Python量化交易平台开发教程系列3-vn.py项目中API封装的编译</a>
+                </p>
+                <p>
+                    <span class="categories-timestamp"><time datetime="2015-03-09T11:49:28+08:00">2015-03-09(周一)</time></span>
+                    <a href="/basic-tutorial-2.html">Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计</a>
+                </p>
+                <p>
+                    <span class="categories-timestamp"><time datetime="2015-03-05T14:28:49+08:00">2015-03-05(周四)</time></span>
+                    <a href="/basic-tutorial-1.html">Python量化交易平台开发教程系列1-类CTP交易API的工作原理</a>
+                </p>
+                <p>
+                    <span class="categories-timestamp"><time datetime="2015-03-04T10:58:42+08:00">2015-03-04(周三)</time></span>
+                    <a href="/basic-tutorial-0.html">Python量化交易平台开发教程系列0-引言</a>
+                </p>
+                <p>
+                    <span class="categories-timestamp"><time datetime="2015-03-03T18:16:45+08:00">2015-03-03(周二)</time></span>
+                    <a href="/blog-20150303.html">2015/3/3 项目开发日志</a>
+                </p>
+        </div>
+    </section>
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="http://github.com/vnpy/vnpy"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+              </ul>
+            </li>
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.trader" target="_blank">
+                交易平台
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.event" target="_blank">
+                事件引擎
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ctp" target="_blank">
+                CTP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.xspeed" target="_blank">
+                飞创接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.femas" target="_blank">
+                飞马接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://github.com/vnpy/vnpy/tree/master/vn.lts" target="_blank">
+                LTS接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksotp" target="_blank">
+                金仕达期权接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksgold" target="_blank">
+                金仕达黄金接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.sgit" target="_blank">
+                飞鼠接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.oanda" target="_blank">
+                OANDA接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.datayes" target="_blank">
+                通联数据接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.demo" target="_blank">
+                开发DEMO
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
 </section>
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>blogroll</h2>
-                        <ul>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                        </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2016 用Python的交易员
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
 
-                            <li><a href="http://github.com/vnpy/vnpy">Github</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
 
-        <footer id="contentinfo" class="body">
-                <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme <a href="https://github.com/blueicefield/pelican-blueidea/">blueidea</a>, inspired by the default theme.</p>
-        </footer><!-- /#contentinfo -->
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
 
 </body>
 </html>
