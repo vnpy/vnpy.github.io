@@ -51,14 +51,20 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                         <li><a href="/pages/quick-start.html">
+                         <li><a href="/pages/quickstart.html">
                              Quick Start
                           </a></li>
-                         <li><a href="/pages/jiao-cheng.html">
+                         <li><a href="/pages/tutorial.html">
                              教程
                           </a></li>
-                         <li><a href="/pages/ri-zhi.html">
+                         <li><a href="/pages/blog.html">
                              日志
+                          </a></li>
+                         <li><a href="/pages/screenshot.html">
+                             截图
+                          </a></li>
+                         <li><a href="/pages/community.html">
+                             社区
                           </a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -69,7 +75,20 @@
     </div>
 </div> <!-- /.navbar -->
 <!-- Banner -->
-<!-- End Banner -->
+<style>
+	#banner{
+	    background-image:url("/images/banner.png");
+	}
+</style>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1>vn.py</h1>
+				<p class="intro">Developed by traders, for traders.</p>
+		</div>
+	</div>
+</div><!-- End Banner -->
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
@@ -123,9 +142,15 @@
 <li>
 <p>开箱即用的实盘交易平台vn.trader（相比之下vn.demo仅建议学习用），整合了多种交易接口，并针对具体策略算法和功能开发提供了简洁易用的API，功能应用举例：</p>
 <ul>
-<li>同时登录多个交易接口，在一套界面上监控多种市场的行情和多种资产账户的资金、持仓、委托、成交情况</li>
-<li>支持跨市场套利（CTP期货和LTS证券）、境内外套利（CTP期货和IB外盘）、多市场数据整合实时预测走势（CTP的股指期货数据、IB的外盘A50数据、Wind的行业指数数据）等策略应用</li>
-<li>CTA策略引擎模块，在保持易用性的同时，允许用户针对CTA类策略运行过程中委托的报撤行为进行细粒度控制（降低交易滑点、实现高频策略）</li>
+<li>
+<p>同时登录多个交易接口，在一套界面上监控多种市场的行情和多种资产账户的资金、持仓、委托、成交情况</p>
+</li>
+<li>
+<p>支持跨市场套利（CTP期货和LTS证券）、境内外套利（CTP期货和IB外盘）、多市场数据整合实时预测走势（CTP的股指期货数据、IB的外盘A50数据、Wind的行业指数数据）等策略应用</p>
+</li>
+<li>
+<p>CTA策略引擎模块，在保持易用性的同时，允许用户针对CTA类策略运行过程中委托的报撤行为进行细粒度控制（降低交易滑点、实现高频策略）</p>
+</li>
 </ul>
 </li>
 <li>
@@ -136,19 +161,45 @@
 </li>
 </ol>
 <h2>展望一下项目2016年的计划</h2>
-<p>代码方面：
-1. 完善飞创、易盛等相对小众接口的添加，这块将由社区驱动，作者主要负责代码检查和管理
-2. 整理vn.py项目中API的具体版本号，保证封装接口的对应，这点已经有多位用户提起过，项目初期没有做详细记录所以很多API的版本号一时都较难对上
-3. Linux上API的编译以及vn.trader支持
-4. 基于VirtualBox的vn.py开发环境镜像，解决部分用户反映项目初期不知该如何搭建开发环境的问题，这个镜像会由官方长期维护下去</p>
-<p>文章方面：
-1. 作者自己作为交易员的成长经历（这一年来收到好多人关于如何成为Quant、建议看什么书、怎么选学校等类似的问题，与其零散的回答不如介绍下自己的一些经历给大家参考可能更有帮助）
-2. vn.trader的使用教程（目前基本除了代码里的注释什么都没有...）
-3. 将ta-lib（技术分析）和quantlib（金融工程和量化）整合到vn.trader中应用的教程，解决目前策略开发过程中技术指标和量化函数缺乏的问题
-4. 一套关于开发基于股指交易ETF期权的CTA策略的教程（股指期货短时间内还看不到恢复的希望，咱得另谋出路）</p>
-<p>社区方面：
-1. 重新建设官方网站，目前使用的是托管在Github Pages上的Hexo静态博客，一来功能比较有限，二来有些用户反映Github时不时会被墙，考虑基于Flask重建一个托管在国内的官网
-2. 有用户提出建设互动性更强的网站作为交流平台（如论坛或者知乎Q&amp;A类似的模式），这点在考虑中，主要制约因素是作者参与的时间，可能考虑和更多的资深用户合作是个好主意？</p>
+<p>代码方面：</p>
+<ol>
+<li>
+<p>完善飞创、易盛等相对小众接口的添加，这块将由社区驱动，作者主要负责代码检查和管理</p>
+</li>
+<li>
+<p>整理vn.py项目中API的具体版本号，保证封装接口的对应，这点已经有多位用户提起过，项目初期没有做详细记录所以很多API的版本号一时都较难对上</p>
+</li>
+<li>
+<p>Linux上API的编译以及vn.trader支持</p>
+</li>
+<li>
+<p>基于VirtualBox的vn.py开发环境镜像，解决部分用户反映项目初期不知该如何搭建开发环境的问题，这个镜像会由官方长期维护下去</p>
+</li>
+</ol>
+<p>文章方面：</p>
+<ol>
+<li>
+<p>作者自己作为交易员的成长经历（这一年来收到好多人关于如何成为Quant、建议看什么书、怎么选学校等类似的问题，与其零散的回答不如介绍下自己的一些经历给大家参考可能更有帮助）</p>
+</li>
+<li>
+<p>vn.trader的使用教程（目前基本除了代码里的注释什么都没有...）</p>
+</li>
+<li>
+<p>将ta-lib（技术分析）和quantlib（金融工程和量化）整合到vn.trader中应用的教程，解决目前策略开发过程中技术指标和量化函数缺乏的问题</p>
+</li>
+<li>
+<p>一套关于开发基于股指交易ETF期权的CTA策略的教程（股指期货短时间内还看不到恢复的希望，咱得另谋出路）</p>
+</li>
+</ol>
+<p>社区方面：</p>
+<ol>
+<li>
+<p>重新建设官方网站，目前使用的是托管在Github Pages上的Hexo静态博客，一来功能比较有限，二来有些用户反映Github时不时会被墙，考虑基于Flask重建一个托管在国内的官网</p>
+</li>
+<li>
+<p>有用户提出建设互动性更强的网站作为交流平台（如论坛或者知乎Q&amp;A类似的模式），这点在考虑中，主要制约因素是作者参与的时间，可能考虑和更多的资深用户合作是个好主意？</p>
+</li>
+</ol>
 <h2>最后，2016年，Happy Trading!!!</h2>
             </div>
             <!-- /.entry-content -->
@@ -259,6 +310,7 @@
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
 <script src="/theme/js/respond.min.js"></script>
 
+    <script src="/theme/js/bodypadding.js"></script>
 
 </body>
 </html>

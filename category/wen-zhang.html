@@ -48,14 +48,20 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                         <li><a href="/pages/quick-start.html">
+                         <li><a href="/pages/quickstart.html">
                              Quick Start
                           </a></li>
-                         <li><a href="/pages/jiao-cheng.html">
+                         <li><a href="/pages/tutorial.html">
                              教程
                           </a></li>
-                         <li><a href="/pages/ri-zhi.html">
+                         <li><a href="/pages/blog.html">
                              日志
+                          </a></li>
+                         <li><a href="/pages/screenshot.html">
+                             截图
+                          </a></li>
+                         <li><a href="/pages/community.html">
+                             社区
                           </a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -66,11 +72,44 @@
     </div>
 </div> <!-- /.navbar -->
 <!-- Banner -->
-<!-- End Banner -->
+<style>
+	#banner{
+	    background-image:url("/images/banner.png");
+	}
+</style>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1>vn.py</h1>
+				<p class="intro">Developed by traders, for traders.</p>
+		</div>
+	</div>
+</div><!-- End Banner -->
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
 
+            <article>
+                <h2><a href="/faq.html">常见问题</a></h2>
+                <div class="summary"><hr />
+<h3>Python 3版本？</h3>
+<p>答：目前Python 3的全局锁GIL性能远逊于Python 2，导致运行速度整体低20-40%不等，同时过去半年有一些社区反馈信息表示Python 3的坑太多，因此官方暂无支持计划。</p>
+<h3>Linux版本？</h3>
+<p>答：目前已经有社区贡献版本的linux编译工具，作者测试可用，包括详细教程的官方版本将会在2016年完成</p>
+<h3>如何获得LTS测试账户?</h3>
+<p>答：LTS是华宝证券目前独占的证券交易柜台，实盘账户的开户需要500万资金（特殊情况会有例外），测试账户可以联系他们的客服申请。服务器地址、经纪商编号等在获取账户后华宝证券都会提供。</p>
+<h3>如何获得CTP测试账户？</h3>
+<p>答：推荐上期技术开发的这个网站  http://simnow.sfit.com.cn/  可以选择自己未来打算使用的期货公司开立仿真账号。</p>
+<h3>为什么Demo中exe文件夹下的demoMain.exe文件运行报错？</h3>
+<p>答：请将exe文件夹复制到一个没有中文的路径名下（如C:\exe），再运行demoMain.exe。出现这个情况的原因是将Python文件打包时使用的nuitka工具对中文支持有问题。</p>
+<h3>是否提供历史行情数据？</h3>
+<p>答：用户可以使用vn.datayes模块和vn.trader中的CTA功能来建立历史行情数据库。</p>
+<h3>尝试连接CTP或LTS接口时，出现”empty ...</h3>
+                    <a class="btn btn-default btn-xs" href="/faq.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
             <article>
                 <h2><a href="/quantlib-tutorial.html">在Python中使用QuantLib</a></h2>
                 <div class="summary"><h2>Quantlib简介</h2>
@@ -136,11 +175,11 @@
 <h2>有什么用</h2>
 <p>简单来说TA-Lib就是提供了一堆经过长期实践检验的技术指标计算函数。基于现成的计算函数，开发新策略雏形、快速验证某个灵感的时间可以大幅缩短，否则想象一下每开发个策略都要自己实现要用的技术指标，未免太浪费时间。</p>
 <p>但是除此以外，TA-Lib还可以有一些其他的用法，举两个例子。</p>
-<p><strong>百科全书 </strong>
-坚持每天收盘后选一个自己没用过的指标，输入数据，画个图、跑个回测，开发量化策略很很多其他的技术一样都是熟能生巧。</p>
+<p><strong>百科全书 </strong></p>
+<p>坚持每天收盘后选一个自己没用过的指标，输入数据，画个图、跑个回测，开发量化策略很很多其他的技术一样都是熟能生巧。</p>
 <p>另外，所有的技术指标在被开发出来的时候，背后都有一定的金融逻辑原理（行为金融学）的支撑，生搬硬套固然不可取，但是放着前人经验完全不看，整天凭自己的空想就弄个机器学习算法在数据上瞎折腾岂不是更浪费时间？</p>
-<p><strong>Alpha库</strong>
-很大一部分CTA类的策略可以总结为几个简单的逻辑框架，比如趋势策略通常可以分解成以下部分：趋势信号（通常是基于某几个参数计算出来的指标值超过某个阈值）、信号过滤（和趋势信号类似）、出场方案（固定点数/百分比的止盈和止损，移动止损）。</p>
+<p><strong>Alpha库</strong></p>
+<p>很大一部分CTA类的策略可以总结为几个简单的逻辑框架，比如趋势策略通常可以分解成以下部分：趋势信号（通常是基于某几个参数计算出来的指标值超过某个阈值）、信号过滤（和趋势信号类似）、出场方案（固定点数/百分比的止盈和止损，移动止损）。</p>
 <p>因此把逻辑框架的代码搭好后，就可以通过机器学习算法来实现一种自动的策略开发方式：</p>
 <ol>
 <li>
@@ -212,14 +251,21 @@
 <h2>PyQt</h2>
 <p>目前Python上主要的GUI开发工具包括：tkinter、PyQt、PyGTK和wxPython，笔者选择PyQt的主要原因是：</p>
 <ol>
-<li>Anaconda中已经包含（早期版本中包含的是LGPL协议的Pyside，稳定性不如PyQt）</li>
-<li>另一个内置GUI库tkinter的功能太弱</li>
+<li>
+<p>Anaconda中已经包含（早期版本中包含的是LGPL协议的Pyside，稳定性不如PyQt）</p>
+</li>
+<li>
+<p>另一个内置GUI库tkinter的功能太弱</p>
+</li>
 </ol>
 <p>网上对这四款GUI开发工具比较分析的文章很多，有兴趣的读者可以自己搜搜看。</p>
 <p>接下来的几篇GUI开发教程会假设读者已经对PyQt开发有了一定的了解，主要针对和量化交易平台开发相关的部分，需要补充基础知识的读者建议参考以下资源：</p>
 <ol>
-<li>zetcode.com，上面的教程简单明了，从头到尾做一遍对PyQt的工作原理基本就有个全面的了解了</li>
-<li>Rapid ...</li></ol>
+<li>
+<p>zetcode.com，上面的教程简单明了，从头到尾做一遍对PyQt的工作原理基本就有个全面的了解了</p>
+</li>
+<li>
+<p>Rapid ...</p></li></ol>
                     <a class="btn btn-default btn-xs" href="/basic-tutorial-7.html">more ...</a>
                 </div>
             </article>
@@ -256,23 +302,38 @@
 <p>从本篇教程开始，所有的开发都会在Python环境中进行（谢天谢地可以和C++说再见了）。</p>
 <p><strong>通常情况下，一个交易程序的架构会由以下三个部分组成：</strong></p>
 <ul>
-<li>底层接口：负责对接行情和交易API，将数据推送到系统核心中，以及发送指令（下单、数据请求等）</li>
-<li>中层引擎：用于整合程序中的各个组件（包括底层接口、数据库接口等等）到一个对象中，便于顶层UI调用</li>
-<li>顶层GUI：用于显示数据和调用中层引擎暴露的主动函数，实现各项具体功能</li>
+<li>
+<p>底层接口：负责对接行情和交易API，将数据推送到系统核心中，以及发送指令（下单、数据请求等）</p>
+</li>
+<li>
+<p>中层引擎：用于整合程序中的各个组件（包括底层接口、数据库接口等等）到一个对象中，便于顶层UI调用</p>
+</li>
+<li>
+<p>顶层GUI：用于显示数据和调用中层引擎暴露的主动函数，实现各项具体功能</p>
+</li>
 </ul>
 <p><img alt="AlgoTrader架构" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B5algotrader_%E6%9E%84%E6%9E%B6.png" /></p>
 <p><strong>上面这张图展示的是国外的一款开源交易平台AlgoTrader的架构：</strong></p>
 <ul>
-<li>两边的Adapters代表的是底层接口（左边数据，右边交易）</li>
-<li>红色圆柱形中包括的是中层引擎架构，事件驱动方面使用了Esper复杂事件处理（CEP）引擎，同时内置了一些常用的功能引擎，如期权定价引擎、外汇对冲模块、投资组合管理模块等</li>
-<li>上方的Strategy1、2等代表的是顶层应用（算法策略、GUI界面等），通过调用中层引擎的功能来实现用户所需的业务</li>
+<li>
+<p>两边的Adapters代表的是底层接口（左边数据，右边交易）</p>
+</li>
+<li>
+<p>红色圆柱形中包括的是中层引擎架构，事件驱动方面使用了Esper复杂事件处理（CEP）引擎，同时内置了一些常用的功能引擎，如期权定价引擎、外汇对冲模块、投资组合管理模块等</p>
+</li>
+<li>
+<p>上方的Strategy1、2等代表的是顶层应用（算法策略、GUI界面等），通过调用中层引擎的功能来实现用户所需的业务</p>
+</li>
 </ul>
 <p><strong>vn.py和AlgoTrader的比较：</strong></p>
 <p>这里对两个项目做一个简单的比较。</p>
 <p>vn.py优势：</p>
 <ul>
-<li>语言易用：Java语言比Python啰嗦</li>
-<li>架构简洁 ...</li></ul>
+<li>
+<p>语言易用：Java语言比Python啰嗦</p>
+</li>
+<li>
+<p>架构简洁 ...</p></li></ul>
                     <a class="btn btn-default btn-xs" href="/basic-tutorial-5.html">more ...</a>
                 </div>
             </article>
@@ -291,10 +352,18 @@
 <h2>实现功能</h2>
 <p>demo的实现参考了盈佳和尔易的LTS交易平台，功能如下：</p>
 <ol>
-<li>行情、持仓、账户、成交、报单的监控</li>
-<li>平台的日志记录</li>
-<li>下单交易，实现了LTS提供的所有订单类型和交易类型</li>
-<li>双击报单监控中的单元格撤单，以及下单交易组件一键全撤</li>
+<li>
+<p>行情、持仓、账户、成交、报单的监控</p>
+</li>
+<li>
+<p>平台的日志记录</p>
+</li>
+<li>
+<p>下单交易，实现了LTS提供的所有订单类型和交易类型</p>
+</li>
+<li>
+<p>双击报单监控中的单元格撤单，以及下单交易组件一键全撤</p>
+</li>
 </ol>
 <h2>文件说明</h2>
 <ul>
@@ -320,35 +389,16 @@
 <h2>事件驱动</h2>
 <h3>计算机程序分类</h3>
 <p>所有的计算机程序都可以大致分为两类：脚本型（单次运行）和连续运行型（直到用户主动退出）。</p>
-<p><strong>脚本型</strong>
-脚本型的程序包括最早的批处理文件以及使用Python做交易策略回测等等，这类程序的特点是在用户启动后会按照编程时设计好的步骤一步步运行，所有步骤运行完后自动退出。</p>
-<p><strong>连续运行型</strong>
-连续运行型的程序包含了操作系统和绝大部分我们日常使用的软件等等，这类程序启动后会处于一个无限循环中连续运行，直到用户主动退出时才会结束。</p>
+<p><strong>脚本型</strong></p>
+<p>脚本型的程序包括最早的批处理文件以及使用Python做交易策略回测等等，这类程序的特点是在用户启动后会按照编程时设计好的步骤一步步运行，所有步骤运行完后自动退出。</p>
+<p><strong>连续运行型</strong></p>
+<p>连续运行型的程序包含了操作系统和绝大部分我们日常使用的软件等等，这类程序启动后会处于一个无限循环中连续运行，直到用户主动退出时才会结束。</p>
 <h3>连续运行型程序</h3>
 <p>我们要开发的交易系统就是属于连续运行型程序，而这种程序根据其计算逻辑的运行机制不同，又可以粗略的分为时间驱动和事件驱动两种。</p>
 <p><strong>时间驱动</strong></p>
 <p>时间驱动的程序逻辑相对容易设计，简单来说就是让电脑每隔一段时间自动做一些事情。这个事情本身可以很复杂、包括很多步骤，但这些步骤都是线性的，按照顺序一步步执行下来。</p>
 <p>以下代码展示了一个非常简单的时间驱动的Python程序 ...</p>
                     <a class="btn btn-default btn-xs" href="/basic-tutorial-4.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="/basic-tutorial-3.html">Python量化交易平台开发教程系列3-vn.py项目中API封装的编译</a></h2>
-                <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
-<h2>前言</h2>
-<p>经历了两篇的理论折磨后，本篇教程开始进入实际操作的环节，这里作者假设读者是毫无C++经验的用户，操作一步步配图，还有问题的来<a href="https://github.com/vnpy/vnpy">vn.py项目的github主页</a>上提问。</p>
-<p>本篇将会包含的内容：
-1. 安装Anaconda （一次安装搞定95%以上量化相关包的Python发行版）
-2. 安装Visual Studio
-3. 编译Boost库
-4. 编译vn.lts</p>
-<h2>安装Anaconda</h2>
-<p>在<a href="http://repo.continuum.io/archive/index.html">Anaconda历史版本</a>中下载1.9.2（win 32位版本）。</p>
-<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3anaconda.jpg" /></p>
-<p>下载好后双击安装，流程没有特别需要注意的，安装文件夹作者选的是D:\Anaconda，读者可以自己选择，注意最后一步编译vn.lts中设置时的文件夹必须是这里的安装文件夹。</p>
-<p>为什么不用最新版本：尝试过使用2.1.0版，发现有一些包在我的电脑上存在兼容性问题（可能因为中文支持不好），需要修改一些.py文件里的源代码，太过麻烦 ...</p>
-                    <a class="btn btn-default btn-xs" href="/basic-tutorial-3.html">more ...</a>
                 </div>
             </article>
             <hr/>
@@ -466,6 +516,7 @@
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
 <script src="/theme/js/respond.min.js"></script>
 
+    <script src="/theme/js/bodypadding.js"></script>
 
 </body>
 </html>

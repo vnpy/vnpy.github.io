@@ -48,14 +48,20 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                         <li><a href="/pages/quick-start.html">
+                         <li><a href="/pages/quickstart.html">
                              Quick Start
                           </a></li>
-                         <li><a href="/pages/jiao-cheng.html">
+                         <li><a href="/pages/tutorial.html">
                              教程
                           </a></li>
-                         <li><a href="/pages/ri-zhi.html">
+                         <li><a href="/pages/blog.html">
                              日志
+                          </a></li>
+                         <li><a href="/pages/screenshot.html">
+                             截图
+                          </a></li>
+                         <li><a href="/pages/community.html">
+                             社区
                           </a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -66,24 +72,78 @@
     </div>
 </div> <!-- /.navbar -->
 <!-- Banner -->
-<!-- End Banner -->
+<style>
+	#banner{
+	    background-image:url("/images/banner.png");
+	}
+</style>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1>vn.py</h1>
+				<p class="intro">Developed by traders, for traders.</p>
+		</div>
+	</div>
+</div><!-- End Banner -->
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
 
             <article>
+                <h2><a href="/basic-tutorial-3.html">Python量化交易平台开发教程系列3-vn.py项目中API封装的编译</a></h2>
+                <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>前言</h2>
+<p>经历了两篇的理论折磨后，本篇教程开始进入实际操作的环节，这里作者假设读者是毫无C++经验的用户，操作一步步配图，还有问题的来<a href="https://github.com/vnpy/vnpy">vn.py项目的github主页</a>上提问。</p>
+<p>本篇将会包含的内容：</p>
+<ol>
+<li>
+<p>安装Anaconda （一次安装搞定95%以上量化相关包的Python发行版）</p>
+</li>
+<li>
+<p>安装Visual Studio</p>
+</li>
+<li>
+<p>编译Boost库</p>
+</li>
+<li>
+<p>编译vn.lts</p>
+</li>
+</ol>
+<h2>安装Anaconda</h2>
+<p>在<a href="http://repo.continuum.io/archive/index.html">Anaconda历史版本</a>中下载1.9.2（win 32位版本）。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3anaconda.jpg" /></p>
+<p>下载好后双击安装，流程没有特别需要注意的，安装文件夹作者选的是D:\Anaconda，读者可以自己选择，注意最后一步编译vn.lts中设置时的文件夹必须是这里的安装文件夹。</p>
+<p>为什么不用最新版本：尝试过使用2.1.0版，发现有一些包在我的电脑上存在兼容性问题（可能因为中文支持不好），需要修改一些.py文件里的源代码，太过麻烦，而且1.9.2到2.1 ...</p>
+                    <a class="btn btn-default btn-xs" href="/basic-tutorial-3.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="/basic-tutorial-2.html">Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计</a></h2>
                 <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
 <p>(本篇教程包含的内容太多也太复杂，有不少读者反应看不懂，因为本身也不是使用vn.py必须掌握的知识，这篇教程暂时处于半完成状态，等多收集些读者的建议后会再做一个比较大的修订）</p>
 <h2>为什么要封装API</h2>
-<p>直接原因就是C++的API没法直接在Python里用，不过这个回答有点太简单，这里我们稍微做一些拓展解释：
-1. C++ API中很多函数的调用参数是ApiStruct.h（参见上一篇）中定义的结构体，而在Python中我们既无法直接创建这些结构体（主动函数），也无法提取结构体中包含的数据（回调函数）。
-2. Python虚拟机是基于C语言实现的，所有的Python对象，哪怕只是一个整数或者字符串，在C的环境中都是一个PyObject对象（好吧，我知道C里没有对象，只有结构体，但估计90%的读者都不在乎这个区别）。用户如果在Python中直接传递一个参数到C++环境里，C++是无法识别的（Python：买入1手股指, C++：你要买入多少？）。
-3. Python只能加载封装为PyObject对象的模块，因此原生C++的API在Python中连加载都加载不了。</p>
+<p>直接原因就是C++的API没法直接在Python里用，不过这个回答有点太简单，这里我们稍微做一些拓展解释：</p>
+<ol>
+<li>
+<p>C++ API中很多函数的调用参数是ApiStruct.h（参见上一篇）中定义的结构体，而在Python中我们既无法直接创建这些结构体（主动函数），也无法提取结构体中包含的数据（回调函数）。</p>
+</li>
+<li>
+<p>Python虚拟机是基于C语言实现的，所有的Python对象，哪怕只是一个整数或者字符串，在C的环境中都是一个PyObject对象（好吧，我知道C里没有对象，只有结构体，但估计90%的读者都不在乎这个区别）。用户如果在Python中直接传递一个参数到C++环境里，C++是无法识别的（Python：买入1手股指, C++：你要买入多少？）。</p>
+</li>
+<li>
+<p>Python只能加载封装为PyObject对象的模块，因此原生C++的API在Python中连加载都加载不了。</p>
+</li>
+</ol>
 <h2>封装后API的工作流程</h2>
 <h3>主动函数</h3>
 <ol>
-<li>用户在Python程序中调用封装API的主动函数，并直接传入Python变量 ...</li></ol>
+<li>
+<p>用户在Python程序中调用封装API的主动函数，并直接传入Python变量（PyObject对象）作为参数。</p>
+</li>
+<li>
+<p>封装API将Python变量转换成C ...</p></li></ol>
                     <a class="btn btn-default btn-xs" href="/basic-tutorial-2.html">more ...</a>
                 </div>
             </article>
@@ -94,12 +154,24 @@
 <h2>类CTP交易API简介</h2>
 <p>国内程序化交易技术的爆发式发展几乎就是起源于上期技术公司基于CTP柜台推出了交易API，使得用户可以随意开发自己的交易软件直接连接到交易柜台上进行交易，同时CTP API的设计模式也成为了许多其他柜台上交易API的设计标准，本人已知的类CTP交易API包括：</p>
 <ol>
-<li>上期CTP  </li>
-<li>飞马  </li>
-<li>华宝证券LTS</li>
-<li>飞创Xspeed</li>
-<li>金仕达</li>
-<li>恒生UFT</li>
+<li>
+<p>上期CTP  </p>
+</li>
+<li>
+<p>飞马  </p>
+</li>
+<li>
+<p>华宝证券LTS</p>
+</li>
+<li>
+<p>飞创Xspeed</p>
+</li>
+<li>
+<p>金仕达</p>
+</li>
+<li>
+<p>恒生UFT</p>
+</li>
 </ol>
 <p>所以这个教程系列选择从类CTP交易API中的LTS API开始来介绍API的Python封装方法，真正掌握了以后想要做其他类型API（比如恒生的T2)的封装也只是大同小异而已。</p>
 <h2>LTS API文件说明</h2>
@@ -139,9 +211,15 @@
             <article>
                 <h2><a href="/blog-20150303.html">2015/3/3 项目开发日志</a></h2>
                 <div class="summary"><h2>目前项目状态</h2>
-<p>目前完成：<br />
-1. 华宝证券的LTS API的Python封装，发布在vn.lts文件夹下<br />
-2. 事件驱动引擎，发布在vn.event文件夹下  </p>
+<p>目前完成：  </p>
+<ol>
+<li>
+<p>华宝证券的LTS API的Python封装，发布在vn.lts文件夹下  </p>
+</li>
+<li>
+<p>事件驱动引擎，发布在vn.event文件夹下  </p>
+</li>
+</ol>
 <h3>vn.lts</h3>
 <p>ltsapi：华宝证券官方的LTS C++ API<br />
 pyscript：用于自动生成重复度较高的封装代码的Python脚本<br />
@@ -152,10 +230,18 @@ vnltstd：交易API的封装源代码和测试脚本  </p>
 eventEngine：包含事件驱动引擎实现  </p>
 <h2>下一步计划</h2>
 <ol>
-<li>API封装、编译、使用方面的教程</li>
-<li>事件驱动引擎原理、使用方面的教程</li>
-<li>基于API和引擎开发的LTS交易客户平台（因为华宝没有提供官方的LTS交易软件，目前的两个实现分别是基于C++的尔易终端和基于.COM封装的盈佳终端）</li>
-<li>策略引擎接口</li>
+<li>
+<p>API封装、编译、使用方面的教程</p>
+</li>
+<li>
+<p>事件驱动引擎原理、使用方面的教程</p>
+</li>
+<li>
+<p>基于API和引擎开发的LTS交易客户平台（因为华宝没有提供官方的LTS交易软件，目前的两个实现分别是基于C++的尔易终端和基于.COM封装的盈佳终端）</p>
+</li>
+<li>
+<p>策略引擎接口</p>
+</li>
 </ol>
 <h2>联系作者</h2>
 <p>作者知乎名：用Python的交易员，想要联系作者可以通过知乎私信。</p>
@@ -278,6 +364,7 @@ eventEngine：包含事件驱动引擎实现  </p>
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
 <script src="/theme/js/respond.min.js"></script>
 
+    <script src="/theme/js/bodypadding.js"></script>
 
 </body>
 </html>

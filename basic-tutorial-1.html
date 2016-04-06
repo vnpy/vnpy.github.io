@@ -51,14 +51,20 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                         <li><a href="/pages/quick-start.html">
+                         <li><a href="/pages/quickstart.html">
                              Quick Start
                           </a></li>
-                         <li><a href="/pages/jiao-cheng.html">
+                         <li><a href="/pages/tutorial.html">
                              教程
                           </a></li>
-                         <li><a href="/pages/ri-zhi.html">
+                         <li><a href="/pages/blog.html">
                              日志
+                          </a></li>
+                         <li><a href="/pages/screenshot.html">
+                             截图
+                          </a></li>
+                         <li><a href="/pages/community.html">
+                             社区
                           </a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -69,7 +75,20 @@
     </div>
 </div> <!-- /.navbar -->
 <!-- Banner -->
-<!-- End Banner -->
+<style>
+	#banner{
+	    background-image:url("/images/banner.png");
+	}
+</style>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1>vn.py</h1>
+				<p class="intro">Developed by traders, for traders.</p>
+		</div>
+	</div>
+</div><!-- End Banner -->
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
@@ -103,12 +122,24 @@
 <h2>类CTP交易API简介</h2>
 <p>国内程序化交易技术的爆发式发展几乎就是起源于上期技术公司基于CTP柜台推出了交易API，使得用户可以随意开发自己的交易软件直接连接到交易柜台上进行交易，同时CTP API的设计模式也成为了许多其他柜台上交易API的设计标准，本人已知的类CTP交易API包括：</p>
 <ol>
-<li>上期CTP  </li>
-<li>飞马  </li>
-<li>华宝证券LTS</li>
-<li>飞创Xspeed</li>
-<li>金仕达</li>
-<li>恒生UFT</li>
+<li>
+<p>上期CTP  </p>
+</li>
+<li>
+<p>飞马  </p>
+</li>
+<li>
+<p>华宝证券LTS</p>
+</li>
+<li>
+<p>飞创Xspeed</p>
+</li>
+<li>
+<p>金仕达</p>
+</li>
+<li>
+<p>恒生UFT</p>
+</li>
 </ol>
 <p>所以这个教程系列选择从类CTP交易API中的LTS API开始来介绍API的Python封装方法，真正掌握了以后想要做其他类型API（比如恒生的T2)的封装也只是大同小异而已。</p>
 <h2>LTS API文件说明</h2>
@@ -195,9 +226,15 @@
 
 <p>......省略了部分代码。从上面的代码中可以注意到：</p>
 <ol>
-<li>回调函数都是以On开头。</li>
-<li>柜台端向用户端发送的信息经过API处理后，传给我们的是一个结构体的指针，如CSecurityFtdcRspUserLoginField *pRspUserLogin，这里的pRspUserLogin就是一个C++的指针类型，其指向的结构体对象是CSecurityFtdcRspUserLoginField结构的，而该结构的定义可以在ApiStruct.h中找到。</li>
-<li>不同的回调函数，传过来的参数数量是不同的，OnRspUserLogin中传入的参数包括两个结构体指针，以及一个整数（代表该响应对应的用户请求号）和一个布尔值（该响应是否是这个请求号的最后一次响应）。</li>
+<li>
+<p>回调函数都是以On开头。</p>
+</li>
+<li>
+<p>柜台端向用户端发送的信息经过API处理后，传给我们的是一个结构体的指针，如CSecurityFtdcRspUserLoginField *pRspUserLogin，这里的pRspUserLogin就是一个C++的指针类型，其指向的结构体对象是CSecurityFtdcRspUserLoginField结构的，而该结构的定义可以在ApiStruct.h中找到。</p>
+</li>
+<li>
+<p>不同的回调函数，传过来的参数数量是不同的，OnRspUserLogin中传入的参数包括两个结构体指针，以及一个整数（代表该响应对应的用户请求号）和一个布尔值（该响应是否是这个请求号的最后一次响应）。</p>
+</li>
 </ol>
 <h4>CSecurityFtdcMdApi</h4>
 <p>MdApi类中包含了行情功能相关的主动函数结构，顾名思义，主动函数指的是由用户负责进行调用的函数，用于向柜台端发送各种请求和指令，大概样子如下：</p>
@@ -234,9 +271,15 @@
 
 <p>以上代码中，需要注意的重点包括：</p>
 <ol>
-<li>MdApi对象不应该直接创建，而应该通过调用类的静态方法CreateFtdcMdApi创建，传入参数为你希望保存API的通讯用的.con文件的目录（可以选择留空，则.con文件会被放在程序所在的文件夹下）。</li>
-<li>创建MdSpi对象后，需要使用MdApi对象的RegisterSpi方法将该MdSpi对象的指针注册到MdApi上，也就是告诉MdApi从柜台端收到数据后应该通过哪个对象的回调函数推送给用户。从API的这个设计上作者猜测MdApi中后包含了和柜台端通讯、接收和发送数据包的功能，而MdSpi仅仅是用来实现一个通过回调函数向用户程序推送数据的接口。</li>
-<li>绝大部分主动函数（以Req开头）在调用时都会用到一个整数类型的参数nRequestID，该参数在整个API的调用中应当保持递增唯一性，从而在收到回调函数推送的数据时，可以知道是由哪次操作引起的。</li>
+<li>
+<p>MdApi对象不应该直接创建，而应该通过调用类的静态方法CreateFtdcMdApi创建，传入参数为你希望保存API的通讯用的.con文件的目录（可以选择留空，则.con文件会被放在程序所在的文件夹下）。</p>
+</li>
+<li>
+<p>创建MdSpi对象后，需要使用MdApi对象的RegisterSpi方法将该MdSpi对象的指针注册到MdApi上，也就是告诉MdApi从柜台端收到数据后应该通过哪个对象的回调函数推送给用户。从API的这个设计上作者猜测MdApi中后包含了和柜台端通讯、接收和发送数据包的功能，而MdSpi仅仅是用来实现一个通过回调函数向用户程序推送数据的接口。</p>
+</li>
+<li>
+<p>绝大部分主动函数（以Req开头）在调用时都会用到一个整数类型的参数nRequestID，该参数在整个API的调用中应当保持递增唯一性，从而在收到回调函数推送的数据时，可以知道是由哪次操作引起的。</p>
+</li>
 </ol>
 <h3>TraderApi.h</h3>
 <p>该文件中包含了API中的交易相关组件的定义，文件同样以一段看不懂的定义开头，然后包含了两个类CSecurityFtdcTraderSpi和CSecurityFtdcTraderApi，这两个类和MdApi中的两个类在结构上非常接近，区别仅仅在于类包含的方法函数上。</p>
@@ -272,10 +315,18 @@
 
 <p>Spi（包括MdSpi和TraderSpi）类的回调函数基本上可以分为以下四种：</p>
 <ol>
-<li>以On...开头，这种回调函数通常是返回API连接相关的信息内容，与业务逻辑无关，返回值（即回调函数的参数）通常为空或是简单的整数类型。</li>
-<li>以OnRsp...开头，这种回调函数通常是针对用户的某次特定业务逻辑操作返回信息内容，返回值通常会包括4个参数：业务逻辑相关结构体的指针，错误信息结构体的指针，本次操作的请求号整数，是否是本次操作最后返回信息的布尔值。其中OnRspError主要用于一些通用错误信息的返回，因此返回的值中不包含业务逻辑相关结构体指针，只有3个返回值。</li>
-<li>以OnRtn...开头，这种回调函数返回的通常是由柜台向用户主动推送的信息内容，如客户报单状态的变化、成交情况的变化、市场行情等等，因此返回值通常只有1个参数，为推送信息内容结构体的指针。</li>
-<li>以OnErrRtn...开头，这种回调函数通常由于用户进行的某种业务逻辑操作请求（挂单、撤单等等）在交易所端触发了错误，如用户发出撤单指令、但是该订单在交易所端已经成交，返回值通常是2个参数，即业务逻辑相关结构体的指针和错误信息的指针。</li>
+<li>
+<p>以On...开头，这种回调函数通常是返回API连接相关的信息内容，与业务逻辑无关，返回值（即回调函数的参数）通常为空或是简单的整数类型。</p>
+</li>
+<li>
+<p>以OnRsp...开头，这种回调函数通常是针对用户的某次特定业务逻辑操作返回信息内容，返回值通常会包括4个参数：业务逻辑相关结构体的指针，错误信息结构体的指针，本次操作的请求号整数，是否是本次操作最后返回信息的布尔值。其中OnRspError主要用于一些通用错误信息的返回，因此返回的值中不包含业务逻辑相关结构体指针，只有3个返回值。</p>
+</li>
+<li>
+<p>以OnRtn...开头，这种回调函数返回的通常是由柜台向用户主动推送的信息内容，如客户报单状态的变化、成交情况的变化、市场行情等等，因此返回值通常只有1个参数，为推送信息内容结构体的指针。</p>
+</li>
+<li>
+<p>以OnErrRtn...开头，这种回调函数通常由于用户进行的某种业务逻辑操作请求（挂单、撤单等等）在交易所端触发了错误，如用户发出撤单指令、但是该订单在交易所端已经成交，返回值通常是2个参数，即业务逻辑相关结构体的指针和错误信息的指针。</p>
+</li>
 </ol>
 <h4>CSecurityFtdcTraderApi</h4>
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">TRADER_API_EXPORT</span> <span class="n">CSecurityFtdcTraderApi</span>
@@ -303,31 +354,67 @@
 
 
 <p>Api类包括的主动函数通常分为以下三种：
-1. Create...，类的静态方法，用于创建API对象，传入参数是用来保存API通讯.con文件的文件夹路径。
-2. Req...开头的函数，可以由用户主动调用的业务逻辑请求，传入参数通常包括2个：业务请求结构体指针和一个请求号的整数。
-3. 其他非Req...开头的函数，包括初始化、订阅数据流等等参数较为简单的功能，传入参数的数量和类型视乎函数功能不一定。</p>
+1. Create...，类的静态方法，用于创建API对象，传入参数是用来保存API通讯.con文件的文件夹路径。</p>
+<ol>
+<li>
+<p>Req...开头的函数，可以由用户主动调用的业务逻辑请求，传入参数通常包括2个：业务请求结构体指针和一个请求号的整数。</p>
+</li>
+<li>
+<p>其他非Req...开头的函数，包括初始化、订阅数据流等等参数较为简单的功能，传入参数的数量和类型视乎函数功能不一定。</p>
+</li>
+</ol>
 <h2>API工作流程</h2>
 <p>简单介绍一下MdApi和TraderApi的一般工作流程，这里不会包含太多细节，仅仅是让读者有一个概念。</p>
 <h3>MdApi</h3>
 <ol>
-<li>创建MdSpi对象</li>
-<li>调用MdApi类以Create开头的静态方法，创建MdApi对象</li>
-<li>调用MdApi对象的RegisterSpi方法注册MdSpi对象的指针</li>
-<li>调用MdApi对象的RegisterFront方法注册行情柜台的前置机地址</li>
-<li>调用MdApi对象的Init方法初始化到前置机的连接，连接成功后会通过MdSpi对象的OnFrontConnected回调函数通知用户</li>
-<li>等待连接成功的通知后，可以调用MdApi的ReqUserLogin方法登陆，登陆成功后会通过MdSpi对象的OnRspUserLogin通知用户</li>
-<li>登陆成功后就可以开始订阅合约了，使用MdApi对象的SubscribeMarketData方法，传入参数为想要订阅的合约的代码</li>
-<li>订阅成功后，当合约有新的行情时，会通过MdApi的OnRtnDepthMarketData回调函数通知用户</li>
-<li>用户的某次请求发生错误时，会通过OnRspError通知用户。</li>
-<li>MdApi同样提供了退订合约、登出的功能，一般退出程序时就直接杀进程（不太安全）</li>
+<li>
+<p>创建MdSpi对象</p>
+</li>
+<li>
+<p>调用MdApi类以Create开头的静态方法，创建MdApi对象</p>
+</li>
+<li>
+<p>调用MdApi对象的RegisterSpi方法注册MdSpi对象的指针</p>
+</li>
+<li>
+<p>调用MdApi对象的RegisterFront方法注册行情柜台的前置机地址</p>
+</li>
+<li>
+<p>调用MdApi对象的Init方法初始化到前置机的连接，连接成功后会通过MdSpi对象的OnFrontConnected回调函数通知用户</p>
+</li>
+<li>
+<p>等待连接成功的通知后，可以调用MdApi的ReqUserLogin方法登陆，登陆成功后会通过MdSpi对象的OnRspUserLogin通知用户</p>
+</li>
+<li>
+<p>登陆成功后就可以开始订阅合约了，使用MdApi对象的SubscribeMarketData方法，传入参数为想要订阅的合约的代码</p>
+</li>
+<li>
+<p>订阅成功后，当合约有新的行情时，会通过MdApi的OnRtnDepthMarketData回调函数通知用户</p>
+</li>
+<li>
+<p>用户的某次请求发生错误时，会通过OnRspError通知用户。</p>
+</li>
+<li>
+<p>MdApi同样提供了退订合约、登出的功能，一般退出程序时就直接杀进程（不太安全）</p>
+</li>
 </ol>
 <h3>TraderApi</h3>
 <ol>
-<li>TraderApi和MdApi类似，以下仅仅介绍不同点</li>
-<li>注册TraderSpi对象的指针后，需要调用TraderApi对象的SubscribePrivateTopic和SubscribePublicTopic方法去选择公开和私有数据流的重传方法（这一步MdApi没有）</li>
-<li>对于期货柜台而言（CTP、恒生UFT期货等），在每日第一次登陆成功后需要先查询前一日的结算单，等待结算单查询结果返回后，确认结算单，才可以进行后面的操作；而证券柜台LTS无此要求</li>
-<li>上一步完成后，用户可以调用ReqQryInstrument的方法查询柜台上所有可以交易的合约信息（包括代码、中文名、涨跌停、最小价位变动、合约乘数等大量细节），一般是在这里获得合约信息列表后，再去MdApi中订阅合约；经常有人问为什么在MdApi中找不到查询可供订阅的合约代码的函数，这里尤其要注意，必须通过TraderApi来获取</li>
-<li>当用户的报单、成交状态发生变化时，TraderApi会自动通过OnRtnOrder、OnRtnTrade通知用户，无需额外订阅</li>
+<li>
+<p>TraderApi和MdApi类似，以下仅仅介绍不同点</p>
+</li>
+<li>
+<p>注册TraderSpi对象的指针后，需要调用TraderApi对象的SubscribePrivateTopic和SubscribePublicTopic方法去选择公开和私有数据流的重传方法（这一步MdApi没有）</p>
+</li>
+<li>
+<p>对于期货柜台而言（CTP、恒生UFT期货等），在每日第一次登陆成功后需要先查询前一日的结算单，等待结算单查询结果返回后，确认结算单，才可以进行后面的操作；而证券柜台LTS无此要求</p>
+</li>
+<li>
+<p>上一步完成后，用户可以调用ReqQryInstrument的方法查询柜台上所有可以交易的合约信息（包括代码、中文名、涨跌停、最小价位变动、合约乘数等大量细节），一般是在这里获得合约信息列表后，再去MdApi中订阅合约；经常有人问为什么在MdApi中找不到查询可供订阅的合约代码的函数，这里尤其要注意，必须通过TraderApi来获取</p>
+</li>
+<li>
+<p>当用户的报单、成交状态发生变化时，TraderApi会自动通过OnRtnOrder、OnRtnTrade通知用户，无需额外订阅</p>
+</li>
 </ol>
 <h2>总结</h2>
 <p>第一篇教程到这里已经接近结束了，如果你是一个没有任何交易API开发经验的读者，并且坚持看了下来，此时你心中很可能有这么个想法：我X，API开发这么复杂？？？！！！</p>
@@ -443,6 +530,7 @@
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
 <script src="/theme/js/respond.min.js"></script>
 
+    <script src="/theme/js/bodypadding.js"></script>
 
 </body>
 </html>

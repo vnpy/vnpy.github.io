@@ -51,14 +51,20 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                         <li><a href="/pages/quick-start.html">
+                         <li><a href="/pages/quickstart.html">
                              Quick Start
                           </a></li>
-                         <li><a href="/pages/jiao-cheng.html">
+                         <li><a href="/pages/tutorial.html">
                              教程
                           </a></li>
-                         <li><a href="/pages/ri-zhi.html">
+                         <li><a href="/pages/blog.html">
                              日志
+                          </a></li>
+                         <li><a href="/pages/screenshot.html">
+                             截图
+                          </a></li>
+                         <li><a href="/pages/community.html">
+                             社区
                           </a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -69,7 +75,20 @@
     </div>
 </div> <!-- /.navbar -->
 <!-- Banner -->
-<!-- End Banner -->
+<style>
+	#banner{
+	    background-image:url("/images/banner.png");
+	}
+</style>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1>vn.py</h1>
+				<p class="intro">Developed by traders, for traders.</p>
+		</div>
+	</div>
+</div><!-- End Banner -->
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
@@ -208,9 +227,7 @@
 <p>QuantLib功能强大的同时安装也较为复杂，其官方网站仅提供了源代码，需要用户自行编译，完成后还需要编译QuantLib的SWIG封装从而实现Python调用。</p>
 <p>除了官方提供的SWIG封装外，Enthought公司在Github上还有一个名为pyql的Cython封装项目，号称速度更快，API设计更Pythonic，但是这里作者提醒：</p>
 <blockquote>
-<blockquote>
 <p>除非真的特别喜好折腾，否则轻易不要跳pyql的坑！安装过程相当复杂（涉及到修改QuantLib的C++源代码），pyql在github上的安装教程中的步骤也有一些错误，作者跳坑后花了两周都没爬出来，老老实实回去用SWIG封装了。</p>
-</blockquote>
 </blockquote>
 <p>下面开始一步步的介绍安装步骤：</p>
 <ol>
@@ -225,15 +242,13 @@
 </li>
 <li>
 <p>设置以下环境变量（不会的请参考<a href="http://jingyan.baidu.com/article/3ea51489e1c2b752e61bbad0.html">设置环境变量</a>）：</p>
-</li>
-<li>
-<p>QL_DIR：D:\QuantLib-1.7</p>
-</li>
+<ul>
+<li>QL_DIR：D:\QuantLib-1.7</li>
 <li>myanaconda：D:\Anaconda</li>
 <li>myboost：D:\boost_1_60_0</li>
 <li>myswig：D:\swigwin-3.0.8</li>
-<li>
-<p>myqlswig：D:\QuantLib-SWIG-1.7</p>
+<li>myqlswig：D:\QuantLib-SWIG-1.7</li>
+</ul>
 </li>
 <li>
 <p>编译安装QuantLib，打开cmd，切换到D盘（输入D:，因为上面的所有文件夹都在D盘），点击窗口左上角的图标，选择“编辑-&gt;粘贴“，将下方的批处理命令复制到cmd中运行（可以一次性全部复制，也可以逐行复制运行，注意全部复制时，若运行到某一步卡住，可以尝试按回车执行这一步的命令）：</p>
@@ -259,7 +274,9 @@ msbuild /p:AdditionalLibPaths<span class="o">=</span><span class="s2">&quot;%myb
 </li>
 <li>
 <p>编译安装QuantLib-SWIG，将下方的批处理命令复制到cmd中运行（运行方法和上一步相同）：</p>
-<div class="highlight"><pre><span class="nb">set </span><span class="nv">VS100COMNTOOLS</span><span class="o">=</span>%VS120COMNTOOLS%
+<div class="highlight"><pre>REM 把编译工具设置为使用VS2013
+<span class="nb">set </span><span class="nv">VS100COMNTOOLS</span><span class="o">=</span>%VS120COMNTOOLS%
+<span class="nb">set </span><span class="nv">VS90COMNTOOLS</span><span class="o">=</span>%VS120COMNTOOLS%
 
 REM 打开VS命令行工具来设置编译所需的环境变量
 <span class="s2">&quot;%VS120COMNTOOLS%\VsDevCmd.bat&quot;</span>
@@ -407,6 +424,7 @@ python setup.py install
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
 <script src="/theme/js/respond.min.js"></script>
 
+    <script src="/theme/js/bodypadding.js"></script>
 
 </body>
 </html>

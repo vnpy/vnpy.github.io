@@ -51,14 +51,20 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                         <li><a href="/pages/quick-start.html">
+                         <li><a href="/pages/quickstart.html">
                              Quick Start
                           </a></li>
-                         <li><a href="/pages/jiao-cheng.html">
+                         <li><a href="/pages/tutorial.html">
                              教程
                           </a></li>
-                         <li><a href="/pages/ri-zhi.html">
+                         <li><a href="/pages/blog.html">
                              日志
+                          </a></li>
+                         <li><a href="/pages/screenshot.html">
+                             截图
+                          </a></li>
+                         <li><a href="/pages/community.html">
+                             社区
                           </a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -69,7 +75,20 @@
     </div>
 </div> <!-- /.navbar -->
 <!-- Banner -->
-<!-- End Banner -->
+<style>
+	#banner{
+	    background-image:url("/images/banner.png");
+	}
+</style>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1>vn.py</h1>
+				<p class="intro">Developed by traders, for traders.</p>
+		</div>
+	</div>
+</div><!-- End Banner -->
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
@@ -292,8 +311,12 @@
 
 <p>和上面的类C++写法相比，之前Python写法的优势就很明显了：</p>
 <ul>
-<li>代码行数显著减少（绝大部分都是重复内容），降低了coding时出错的概率，省下很多debug的时间</li>
-<li>dictLabels可以直接作为配置来使用（类似于Java中使用很多配置文件），当需要增加或者移除某个字段时，用户只需更改dictLabels中的内容而无需改变initUi和updateAccount（这才是浪费无数debug时间的地方），同时修改的配置和本身的程序代码一样都是Python源代码文件（不像Java使用XML等其他文件进行配置）</li>
+<li>
+<p>代码行数显著减少（绝大部分都是重复内容），降低了coding时出错的概率，省下很多debug的时间</p>
+</li>
+<li>
+<p>dictLabels可以直接作为配置来使用（类似于Java中使用很多配置文件），当需要增加或者移除某个字段时，用户只需更改dictLabels中的内容而无需改变initUi和updateAccount（这才是浪费无数debug时间的地方），同时修改的配置和本身的程序代码一样都是Python源代码文件（不像Java使用XML等其他文件进行配置）</p>
+</li>
 </ul>
 <p>当然也存在一个缺点：理论上list遍历的使用降低了性能（GUI的更新耗时更长），但是作者以一个实际用户的经验可以告诉大家，这个性能上的牺牲微乎其微，考虑到vn.py的应用场景，这个缺点几乎可以忽略。</p>
 <p>（限于作者本身的C++水平，以上这段编程语言的比较可能有不正确之处，欢迎读者指出。）</p>
@@ -417,9 +440,15 @@
 
 
 <ol>
-<li>主动调用组件通常在工作原理上较为简单，用户只需在界面上放置所需的组件（按钮、下拉框等），并将组件的信号和中层引擎暴露的功能函数连接上（参考上面的initUi和login方法）</li>
-<li>对于一些我们希望保存下来省去每次输入麻烦的信息，这里推荐Python的shelve库，可以直接将Python中的数据对象以二进制的方式保存在文件中（文件后缀名可以自行定义）</li>
-<li>在登录组件第一次创建时，我们从硬盘上的setting.vn文件中尝试读取登录账号等设置内容，同时每次在关闭该窗口时closeEvent方法会被自动触发，保存当前文本框中的设置内容到文件中</li>
+<li>
+<p>主动调用组件通常在工作原理上较为简单，用户只需在界面上放置所需的组件（按钮、下拉框等），并将组件的信号和中层引擎暴露的功能函数连接上（参考上面的initUi和login方法）</p>
+</li>
+<li>
+<p>对于一些我们希望保存下来省去每次输入麻烦的信息，这里推荐Python的shelve库，可以直接将Python中的数据对象以二进制的方式保存在文件中（文件后缀名可以自行定义）</p>
+</li>
+<li>
+<p>在登录组件第一次创建时，我们从硬盘上的setting.vn文件中尝试读取登录账号等设置内容，同时每次在关闭该窗口时closeEvent方法会被自动触发，保存当前文本框中的设置内容到文件中</p>
+</li>
 </ol>
 <h2>总结</h2>
 <p>系列7和8两篇教程中已经基本覆盖了GUI界面开发的核心原理，剩下的更多细节以及开发中的一些奇技淫巧就留给读者自己去研究vn.py项目的源代码了，毕竟对于这套教程的目标读者，有能力去开发适合自己交易策略的量化平台才是最终目标：now it's time to get your hands dirty。 </p>
@@ -533,6 +562,7 @@
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
 <script src="/theme/js/respond.min.js"></script>
 
+    <script src="/theme/js/bodypadding.js"></script>
 
 </body>
 </html>

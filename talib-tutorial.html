@@ -51,14 +51,20 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                         <li><a href="/pages/quick-start.html">
+                         <li><a href="/pages/quickstart.html">
                              Quick Start
                           </a></li>
-                         <li><a href="/pages/jiao-cheng.html">
+                         <li><a href="/pages/tutorial.html">
                              教程
                           </a></li>
-                         <li><a href="/pages/ri-zhi.html">
+                         <li><a href="/pages/blog.html">
                              日志
+                          </a></li>
+                         <li><a href="/pages/screenshot.html">
+                             截图
+                          </a></li>
+                         <li><a href="/pages/community.html">
+                             社区
                           </a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -69,7 +75,20 @@
     </div>
 </div> <!-- /.navbar -->
 <!-- Banner -->
-<!-- End Banner -->
+<style>
+	#banner{
+	    background-image:url("/images/banner.png");
+	}
+</style>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1>vn.py</h1>
+				<p class="intro">Developed by traders, for traders.</p>
+		</div>
+	</div>
+</div><!-- End Banner -->
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
@@ -104,11 +123,11 @@
 <h2>有什么用</h2>
 <p>简单来说TA-Lib就是提供了一堆经过长期实践检验的技术指标计算函数。基于现成的计算函数，开发新策略雏形、快速验证某个灵感的时间可以大幅缩短，否则想象一下每开发个策略都要自己实现要用的技术指标，未免太浪费时间。</p>
 <p>但是除此以外，TA-Lib还可以有一些其他的用法，举两个例子。</p>
-<p><strong>百科全书 </strong>
-坚持每天收盘后选一个自己没用过的指标，输入数据，画个图、跑个回测，开发量化策略很很多其他的技术一样都是熟能生巧。</p>
+<p><strong>百科全书 </strong></p>
+<p>坚持每天收盘后选一个自己没用过的指标，输入数据，画个图、跑个回测，开发量化策略很很多其他的技术一样都是熟能生巧。</p>
 <p>另外，所有的技术指标在被开发出来的时候，背后都有一定的金融逻辑原理（行为金融学）的支撑，生搬硬套固然不可取，但是放着前人经验完全不看，整天凭自己的空想就弄个机器学习算法在数据上瞎折腾岂不是更浪费时间？</p>
-<p><strong>Alpha库</strong>
-很大一部分CTA类的策略可以总结为几个简单的逻辑框架，比如趋势策略通常可以分解成以下部分：趋势信号（通常是基于某几个参数计算出来的指标值超过某个阈值）、信号过滤（和趋势信号类似）、出场方案（固定点数/百分比的止盈和止损，移动止损）。</p>
+<p><strong>Alpha库</strong></p>
+<p>很大一部分CTA类的策略可以总结为几个简单的逻辑框架，比如趋势策略通常可以分解成以下部分：趋势信号（通常是基于某几个参数计算出来的指标值超过某个阈值）、信号过滤（和趋势信号类似）、出场方案（固定点数/百分比的止盈和止损，移动止损）。</p>
 <p>因此把逻辑框架的代码搭好后，就可以通过机器学习算法来实现一种自动的策略开发方式：</p>
 <ol>
 <li>
@@ -455,6 +474,7 @@
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
 <script src="/theme/js/respond.min.js"></script>
 
+    <script src="/theme/js/bodypadding.js"></script>
 
 </body>
 </html>
