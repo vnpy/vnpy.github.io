@@ -105,6 +105,19 @@
             <article>
                 <h2><a href="/faq.html">常见问题</a></h2>
                 <div class="summary"><hr />
+<h3>vn.py是否提供历史数据？</h3>
+<p>答：作为开源项目，vn.py本身不提供历史数据服务器，但是提供了几个历史数据的解决方案：</p>
+<ol>
+<li>
+<p>vn.trader下的IF0000_1min.csv包含了三年多的股指期货连续合约的一分钟数据，用户可以使用ctaHistoryData.py中的脚本函数将该数据导入MongoDB后用于回测；</p>
+</li>
+<li>
+<p>ctaHistoryData.py中同时提供了从通联数据的API接口一键下载建立本地数据库的函数，用户使用前需要购买相应的数据授权；</p>
+</li>
+<li>
+<p>vn.trader中的dataRecorder模块可以用于将每日的Tick行情数据收集后汇总成1分钟K线并插入MongoDB数据库，数据格式和ctaAlgo模块中使用的通用，该模块默认关闭，可以通过文件夹下的DR_setting.json来进行配置。</p>
+</li>
+</ol>
 <h3>是否能在Mac下使用？</h3>
 <p>答：不能，目前国内的柜台API接口只提供Windows和Linux下的接口，封装后的vn.py接口也只能在对应的操作系统使用。</p>
 <h3>是否提供Windows下的64位Python的封装？</h3>
@@ -112,12 +125,7 @@
 <h3>Python 3版本？</h3>
 <p>答：目前Python 3的全局锁GIL性能远逊于Python 2，导致运行速度整体低20-40%不等，同时过去半年有一些社区反馈信息表示Python 3的坑太多，因此官方暂无支持计划。</p>
 <h3>Linux版本？</h3>
-<p>答：目前已经有社区贡献版本的linux编译工具，作者测试可用，包括详细教程的官方版本将会在2016年完成</p>
-<h3>如何获得LTS测试账户?</h3>
-<p>答：LTS是华宝证券目前独占的证券交易柜台，实盘账户的开户需要500万资金（特殊情况会有例外），测试账户可以联系他们的客服申请。服务器地址、经纪商编号等在获取账户后华宝证券都会提供。</p>
-<h3>如何获得CTP测试账户？</h3>
-<p>答：推荐上期技术开发的这个网站  http://simnow.sfit.com.cn/  可以选择自己未来打算使用的期货公司开立仿真账号。</p>
-<h3>为什么Demo中exe文件夹下的demoMain ...</h3>
+<p>答 ...</p>
                     <a class="btn btn-default btn-xs" href="/faq.html">more ...</a>
                 </div>
             </article>
