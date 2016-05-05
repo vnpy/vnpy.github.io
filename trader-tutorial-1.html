@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh"
+>
+<head>
+    <title>vn.trader使用教程系列1-安装和配置 - vn.py</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href="/images/favicon.png" rel="icon">
+
+<link rel="canonical" href="/trader-tutorial-1.html">
+
+        <meta name="author" content="用Python的交易员" />
+        <meta name="description" content="原创文章，转载请注明出处：用Python的交易员 vn.trader使用教程系列1-安装和配置 2016年已经快要过去一半，目前vn.py项目的交易平台vn.trader已经基本定型，在发布v1.0以前不再会有新的功能模块添加，接下来的时间将会主要集中精力在修复一些小bug方面，同时针对新用户推出这个《vn.trader使用教程系列》，帮助大家更快上手使用。 安装运行环境 和大多数商业软件的傻瓜式一路“下一步”的安装方法不同，vn.trader运行环境的安装需要用户自行操作的地方较多：Python运行时环境、各项插件、数据库等等。 这里介绍的是较为简洁方便、适合新手的Windows通用安装流程，精力旺盛的资深用户可以自行选择其他的安装方式，但是如果你最后失败了，回到这个流程一步步做下去保证可以运行起来： 准备一台Windows 7 64位系统的电脑 安装Anaconda：下载Python 2.7 32位版本，注意必须是32位 安装MongoDB：下载Windows 64-bit 2008 R2+版本 安装pymongo：在cmd中运行pip install ..." />
+
+        <meta property="og:site_name" content="vn.py" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="vn.trader使用教程系列1-安装和配置"/>
+        <meta property="og:url" content="/trader-tutorial-1.html"/>
+        <meta property="og:description" content="原创文章，转载请注明出处：用Python的交易员 vn.trader使用教程系列1-安装和配置 2016年已经快要过去一半，目前vn.py项目的交易平台vn.trader已经基本定型，在发布v1.0以前不再会有新的功能模块添加，接下来的时间将会主要集中精力在修复一些小bug方面，同时针对新用户推出这个《vn.trader使用教程系列》，帮助大家更快上手使用。 安装运行环境 和大多数商业软件的傻瓜式一路“下一步”的安装方法不同，vn.trader运行环境的安装需要用户自行操作的地方较多：Python运行时环境、各项插件、数据库等等。 这里介绍的是较为简洁方便、适合新手的Windows通用安装流程，精力旺盛的资深用户可以自行选择其他的安装方式，但是如果你最后失败了，回到这个流程一步步做下去保证可以运行起来： 准备一台Windows 7 64位系统的电脑 安装Anaconda：下载Python 2.7 32位版本，注意必须是32位 安装MongoDB：下载Windows 64-bit 2008 R2+版本 安装pymongo：在cmd中运行pip install ..."/>
+        <meta property="article:published_time" content="2016-05-05" />
+            <meta property="article:section" content="文章" />
+            <meta property="article:author" content="用Python的交易员" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.readable.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/monokai.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "//hm.baidu.com/hm.js?e8c7573f82d43fa50c895a8e28c49ceb";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+<img src="/images/favicon.png" width=""/> vn.py            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                         <li><a href="/pages/quickstart.html">
+                             Quick Start
+                          </a></li>
+                         <li><a href="/pages/tutorial.html">
+                             教程
+                          </a></li>
+                         <li><a href="/pages/blog.html">
+                             日志
+                          </a></li>
+                         <li><a href="/pages/screenshot.html">
+                             截图
+                          </a></li>
+                         <li><a href="/pages/community.html">
+                             社区
+                          </a></li>
+                         <li><a href="/pages/api.html">
+                             API接口
+                          </a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<style>
+	#banner{
+	    background-image:url("/images/banner.png");
+	}
+</style>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1>vn.py</h1>
+				<p class="intro">Developed by traders, for traders.</p>
+		</div>
+	</div>
+</div><!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/trader-tutorial-1.html"
+                       rel="bookmark"
+                       title="Permalink to vn.trader使用教程系列1-安装和配置">
+                        vn.trader使用教程系列1-安装和配置
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2016-05-05T13:13:00+08:00"> 2016-05-05(周四)</time>
+    </span>
+
+
+
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>原创文章，转载请注明出处：用Python的交易员</p>
+<h1>vn.trader使用教程系列1-安装和配置</h1>
+<p>2016年已经快要过去一半，目前vn.py项目的交易平台vn.trader已经基本定型，在发布v1.0以前不再会有新的功能模块添加，接下来的时间将会主要集中精力在修复一些小bug方面，同时针对新用户推出这个《vn.trader使用教程系列》，帮助大家更快上手使用。</p>
+<h2>安装运行环境</h2>
+<p>和大多数商业软件的傻瓜式一路“下一步”的安装方法不同，vn.trader运行环境的安装需要用户自行操作的地方较多：Python运行时环境、各项插件、数据库等等。</p>
+<p>这里介绍的是较为简洁方便、适合新手的Windows通用安装流程，精力旺盛的资深用户可以自行选择其他的安装方式，但是如果你最后失败了，回到这个流程一步步做下去保证可以运行起来：</p>
+<ol>
+<li>准备一台Windows 7 64位系统的电脑</li>
+<li>安装<a href="http://www.continuum.io/downloads">Anaconda</a>：下载Python 2.7 32位版本，注意必须是32位</li>
+<li>安装<a href="http://www.mongodb.org/downloads#production">MongoDB</a>：下载Windows 64-bit 2008 R2+版本</li>
+<li>安装pymongo：在cmd中运行pip install pymongo</li>
+<li>参考<a href="http://jingyan.baidu.com/article/6b97984dbeef881ca2b0bf3e.html">这里</a>，将MongoDB注册为Windows服务并启动</li>
+<li>安装<a href="https://www.microsoft.com/en-gb/download/details.aspx?id=40784">Visual C++ Redistributable Packages for VS2013</a>，中英文随意，为了未来使用方便把x86和x64的都给撞了</li>
+<li>安装QDarkStyleSheet（非常漂亮的PyQt黑色主题）：在cmd中运行pip install qdarkstyle</li>
+<li>在<a href="http://github.com/vnpy/vnpy">vn.py项目的Github主页</a>选择Download ZIP下载项目代码，并解压到C:\vnpy</li>
+<li>打开C:\vnpy\vn.trader文件夹，准备进行下一步的交易接口配置</li>
+</ol>
+<p>除了上述建议的环境外，目前已经有社区用户在以下环境中成功运行（通常需要重新编译API和修改部分代码）：</p>
+<ul>
+<li>Anaconda 64位版本</li>
+<li>Windows 8/10</li>
+<li>VS2015</li>
+<li>Ubuntu/Debian</li>
+<li>Mac（只能使用IB和Oanda接口）</li>
+</ul>
+<p>未来vn.py项目组官方会加入对Ubuntu 16.04环境的支持，其他环境用户就只有自行折腾了，这里强烈建议想专心做交易的朋友不要轻易入坑。</p>
+<h2>交易接口配置（账号、密码、服务器地址）</h2>
+<p>完成运行环境的安装后，我们需要配置交易接口，每个接口的功能如下：</p>
+<table>
+<thead>
+<tr>
+<th>接口</th>
+<th>名称</th>
+<th>相关品种</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ctpGateway</td>
+<td>CTP</td>
+<td>期货、期货期权、证券期权</td>
+<td>行情、交易</td>
+</tr>
+<tr>
+<td>ltsGateway</td>
+<td>LTS</td>
+<td>证券、证券期权</td>
+<td>行情、交易</td>
+</tr>
+<tr>
+<td>xspeedGateway</td>
+<td>飞创</td>
+<td>期货、期货期权</td>
+<td>行情、交易</td>
+</tr>
+<tr>
+<td>femasGateway</td>
+<td>飞马</td>
+<td>中金所期货和期货期权</td>
+<td>行情、交易</td>
+</tr>
+<tr>
+<td>ksotpGateway</td>
+<td>金仕达期权</td>
+<td>期货、期货期权、证券期权</td>
+<td>行情、交易</td>
+</tr>
+<tr>
+<td>ksgoldGateway</td>
+<td>金仕达黄金</td>
+<td>金交所贵金属</td>
+<td>行情、交易</td>
+</tr>
+<tr>
+<td>sgitGateway</td>
+<td>飞鼠</td>
+<td>期货、金交所贵金属</td>
+<td>行情、交易</td>
+</tr>
+<tr>
+<td>oandaGateway</td>
+<td>OANDA</td>
+<td>外汇、CFD</td>
+<td>行情、交易</td>
+</tr>
+<tr>
+<td>ibGateway</td>
+<td>盈透证券</td>
+<td>外盘证券、期货、期权、外汇、债券等</td>
+<td>行情、交易</td>
+</tr>
+<tr>
+<td>windGateway</td>
+<td>万得</td>
+<td>证券、期货、外汇、期权、债券、指数等</td>
+<td>行情</td>
+</tr>
+</tbody>
+</table>
+<p>目前vn.trader基本实现了国内外全品种的交易，期货的接口最多（CTP、飞马、飞创等），股票的接口目前只有LTS，金交所贵金属的接口飞鼠性能较强，但很多银行提供的接口是金仕达黄金，做外盘交易推荐使用盈透证券（功能最强大），如果是刚入门交易的可以试试OANDA（10美元就能开实盘账户并且正常交易）。</p>
+<p>这里以最常用的CTP接口举例介绍如何配置交易接口。</p>
+<p>首先需要有一个CTP的仿真或者实盘账户，本着对自己钱包负责的态度，我建议新手从仿真账户开始，可以在<a href="http://simnow.com.cn/">SimNow</a>官网注册，完成后记好账号和密码。</p>
+<p>然后前往<a href="http://simnow.com.cn/">该页面</a>查询SimNow的服务器地址和经纪商编码（BrokerID），Trade Front对应交易服务器地址，Market Front对应行情服务器地址，从标准CTP的服务器中选一个就可以。</p>
+<p>使用代码编辑器（如Sublime Text、VS Code等，不要用WingIDE之类的IDE，可能有文本编码问题）打开vn.trader/ctpGateway文件夹下的CTP_connect.json，可以看到如下内容：</p>
+<div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;brokerID&quot;</span><span class="o">:</span> <span class="s">&quot;9999&quot;</span><span class="p">,</span> 
+    <span class="s">&quot;tdAddress&quot;</span><span class="o">:</span> <span class="s">&quot;tcp://180.168.146.187:10000&quot;</span><span class="p">,</span> 
+    <span class="s">&quot;password&quot;</span><span class="o">:</span> <span class="s">&quot;simnow申请&quot;</span><span class="p">,</span> 
+    <span class="s">&quot;mdAddress&quot;</span><span class="o">:</span> <span class="s">&quot;tcp://180.168.212.228:41213&quot;</span><span class="p">,</span> 
+    <span class="s">&quot;userID&quot;</span><span class="o">:</span> <span class="s">&quot;simnow申请&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>分别修改每个字段为之前步骤中我们记录下来的信息：</p>
+<ul>
+<li>brokerID：经纪商编码</li>
+<li>tdAddress：交易服务器地址（服务器地址：端口号），修改时注意不要少了tcp://</li>
+<li>mdAddress：行情服务器地址，同样注意不要少了tcp://</li>
+<li>userID：账号</li>
+<li>password：密码</li>
+</ul>
+<p>保存后就完成了接口的配置。</p>
+<p>注意事项：</p>
+<ol>
+<li>编辑json时，一定要使用代码编辑器（推荐Sublime Text），使用IDE大概率会出现文本编码问题（JSON文件无法打开）；</li>
+<li>修改服务器地址时不要少了tcp://，这是迄今为止发现用户最常犯的错误之一，会导致接口初始化时程序直接崩溃；</li>
+<li>如果已经有了CTP的实盘账户，可以通过下载期货公司的快期交易软件，登录时点击测速和代理，查询实盘服务器的地址和端口号，而经纪商编码brokerID可以百度查询或者咨询期货公司的客户经理。</li>
+</ol>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="http://github.com/vnpy/vnpy"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+              </ul>
+            </li>
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.trader" target="_blank">
+                交易平台
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.event" target="_blank">
+                事件引擎
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ctp" target="_blank">
+                CTP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.xspeed" target="_blank">
+                飞创接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.femas" target="_blank">
+                飞马接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://github.com/vnpy/vnpy/tree/master/vn.lts" target="_blank">
+                LTS接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksotp" target="_blank">
+                金仕达期权接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksgold" target="_blank">
+                金仕达黄金接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.sgit" target="_blank">
+                飞鼠接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.oanda" target="_blank">
+                OANDA接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.datayes" target="_blank">
+                通联数据接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.demo" target="_blank">
+                开发DEMO
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2016 用Python的交易员
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
+    <script src="/theme/js/bodypadding.js"></script>
+
+</body>
+</html>
