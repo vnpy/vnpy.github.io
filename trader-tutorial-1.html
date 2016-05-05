@@ -138,27 +138,56 @@
 <p>和大多数商业软件的傻瓜式一路“下一步”的安装方法不同，vn.trader运行环境的安装需要用户自行操作的地方较多：Python运行时环境、各项插件、数据库等等。</p>
 <p>这里介绍的是较为简洁方便、适合新手的Windows通用安装流程，精力旺盛的资深用户可以自行选择其他的安装方式，但是如果你最后失败了，回到这个流程一步步做下去保证可以运行起来：</p>
 <ol>
-<li>准备一台Windows 7 64位系统的电脑</li>
-<li>安装<a href="http://www.continuum.io/downloads">Anaconda</a>：下载Python 2.7 32位版本，注意必须是32位</li>
-<li>安装<a href="http://www.mongodb.org/downloads#production">MongoDB</a>：下载Windows 64-bit 2008 R2+版本</li>
-<li>安装pymongo：在cmd中运行pip install pymongo</li>
-<li>参考<a href="http://jingyan.baidu.com/article/6b97984dbeef881ca2b0bf3e.html">这里</a>，将MongoDB注册为Windows服务并启动</li>
-<li>安装<a href="https://www.microsoft.com/en-gb/download/details.aspx?id=40784">Visual C++ Redistributable Packages for VS2013</a>，中英文随意，为了未来使用方便把x86和x64的都给撞了</li>
-<li>安装QDarkStyleSheet（非常漂亮的PyQt黑色主题）：在cmd中运行pip install qdarkstyle</li>
-<li>在<a href="http://github.com/vnpy/vnpy">vn.py项目的Github主页</a>选择Download ZIP下载项目代码，并解压到C:\vnpy</li>
-<li>打开C:\vnpy\vn.trader文件夹，准备进行下一步的交易接口配置</li>
+<li>
+<p>准备一台Windows 7 64位系统的电脑</p>
+</li>
+<li>
+<p>安装<a href="http://www.continuum.io/downloads">Anaconda</a>：下载Python 2.7 32位版本，注意必须是32位</p>
+</li>
+<li>
+<p>安装<a href="http://www.mongodb.org/downloads#production">MongoDB</a>：下载Windows 64-bit 2008 R2+版本</p>
+</li>
+<li>
+<p>安装pymongo：在cmd中运行pip install pymongo</p>
+</li>
+<li>
+<p>参考<a href="http://jingyan.baidu.com/article/6b97984dbeef881ca2b0bf3e.html">这里</a>，将MongoDB注册为Windows服务并启动</p>
+</li>
+<li>
+<p>安装<a href="https://www.microsoft.com/en-gb/download/details.aspx?id=40784">Visual C++ Redistributable Packages for VS2013</a>，中英文随意，为了未来使用方便把x86和x64的都给撞了</p>
+</li>
+<li>
+<p>安装QDarkStyleSheet（非常漂亮的PyQt黑色主题）：在cmd中运行pip install qdarkstyle</p>
+</li>
+<li>
+<p>在<a href="http://github.com/vnpy/vnpy">vn.py项目的Github主页</a>选择Download ZIP下载项目代码，并解压到C:\vnpy</p>
+</li>
+<li>
+<p>打开C:\vnpy\vn.trader文件夹，准备进行下一步的交易接口配置</p>
+</li>
 </ol>
 <p>除了上述建议的环境外，目前已经有社区用户在以下环境中成功运行（通常需要重新编译API和修改部分代码）：</p>
 <ul>
-<li>Anaconda 64位版本</li>
-<li>Windows 8/10</li>
-<li>VS2015</li>
-<li>Ubuntu/Debian</li>
-<li>Mac（只能使用IB和Oanda接口）</li>
+<li>
+<p>Anaconda 64位版本</p>
+</li>
+<li>
+<p>Windows 8/10</p>
+</li>
+<li>
+<p>VS2015</p>
+</li>
+<li>
+<p>Ubuntu/Debian</p>
+</li>
+<li>
+<p>Mac（只能使用IB和Oanda接口）</p>
+</li>
 </ul>
 <p>未来vn.py项目组官方会加入对Ubuntu 16.04环境的支持，其他环境用户就只有自行折腾了，这里强烈建议想专心做交易的朋友不要轻易入坑。</p>
 <h2>交易接口配置（账号、密码、服务器地址）</h2>
 <p>完成运行环境的安装后，我们需要配置交易接口，每个接口的功能如下：</p>
+<hr />
 <table>
 <thead>
 <tr>
@@ -231,6 +260,7 @@
 </tr>
 </tbody>
 </table>
+<hr />
 <p>目前vn.trader基本实现了国内外全品种的交易，期货的接口最多（CTP、飞马、飞创等），股票的接口目前只有LTS，金交所贵金属的接口飞鼠性能较强，但很多银行提供的接口是金仕达黄金，做外盘交易推荐使用盈透证券（功能最强大），如果是刚入门交易的可以试试OANDA（10美元就能开实盘账户并且正常交易）。</p>
 <p>这里以最常用的CTP接口举例介绍如何配置交易接口。</p>
 <p>首先需要有一个CTP的仿真或者实盘账户，本着对自己钱包负责的态度，我建议新手从仿真账户开始，可以在<a href="http://simnow.com.cn/">SimNow</a>官网注册，完成后记好账号和密码。</p>
@@ -248,18 +278,34 @@
 
 <p>分别修改每个字段为之前步骤中我们记录下来的信息：</p>
 <ul>
-<li>brokerID：经纪商编码</li>
-<li>tdAddress：交易服务器地址（服务器地址：端口号），修改时注意不要少了tcp://</li>
-<li>mdAddress：行情服务器地址，同样注意不要少了tcp://</li>
-<li>userID：账号</li>
-<li>password：密码</li>
+<li>
+<p>brokerID：经纪商编码</p>
+</li>
+<li>
+<p>tdAddress：交易服务器地址（服务器地址：端口号），修改时注意不要少了tcp://</p>
+</li>
+<li>
+<p>mdAddress：行情服务器地址，同样注意不要少了tcp://</p>
+</li>
+<li>
+<p>userID：账号</p>
+</li>
+<li>
+<p>password：密码</p>
+</li>
 </ul>
 <p>保存后就完成了接口的配置。</p>
 <p>注意事项：</p>
 <ol>
-<li>编辑json时，一定要使用代码编辑器（推荐Sublime Text），使用IDE大概率会出现文本编码问题（JSON文件无法打开）；</li>
-<li>修改服务器地址时不要少了tcp://，这是迄今为止发现用户最常犯的错误之一，会导致接口初始化时程序直接崩溃；</li>
-<li>如果已经有了CTP的实盘账户，可以通过下载期货公司的快期交易软件，登录时点击测速和代理，查询实盘服务器的地址和端口号，而经纪商编码brokerID可以百度查询或者咨询期货公司的客户经理。</li>
+<li>
+<p>编辑json时，一定要使用代码编辑器（推荐Sublime Text），使用IDE大概率会出现文本编码问题（JSON文件无法打开）；</p>
+</li>
+<li>
+<p>修改服务器地址时不要少了tcp://，这是迄今为止发现用户最常犯的错误之一，会导致接口初始化时程序直接崩溃；</p>
+</li>
+<li>
+<p>如果已经有了CTP的实盘账户，可以通过下载期货公司的快期交易软件，登录时点击测速和代理，查询实盘服务器的地址和端口号，而经纪商编码brokerID可以百度查询或者咨询期货公司的客户经理。</p>
+</li>
 </ol>
             </div>
             <!-- /.entry-content -->
