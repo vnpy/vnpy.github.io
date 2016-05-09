@@ -104,9 +104,61 @@
         <div class="col-sm-9">
 
             <article>
+                <h2><a href="/trader-tutorial-3.html">vn.trader使用教程系列3-策略算法</a></h2>
+                <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>风控模块</h2>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E9%A3%8E%E9%99%A9%E7%AE%A1%E7%90%86.JPG" /></p>
+<p>点击菜单栏的功能-&gt;风险管理后，可以打开如上图所示的界面。风控模块主要提供的是针对高频策略和短周期CTA策略的事前风控功能，防止由于错误的算法逻辑导致类似光大乌龙指的事件（就算亏不了几十亿，一下子把账户亏掉一半也是很痛苦的...）。</p>
+<p><strong>开关</strong></p>
+<p>工作状态按钮用于控制风控模块的运行状态。处于“运行中”状态时，每笔委托在发出前会执行模块中定义好的多个风控条件检查，全部符合条件（参考下文的详细介绍）才能正常通过，只要有一条不符合该委托都会被拒绝，并且会在日志中输出具体的风控信息。处于“未启动”状态时，则会忽略所有的风控检查，允许委托直接发出。</p>
+<p><strong>流控</strong></p>
+<p>流控主要控制的是单位时间内允许发出的最大的委托笔数，图中所示的限制是每1秒允许最多发出4笔委托，如果发送第5笔就会被拒绝，从而防止某些成交触发的交易信号由于逻辑错误被重复触发，在1秒内发出几十笔的情况。</p>
+<p>清空流控计数按钮可以把当前的流控计数清0。</p>
+<p><strong>单笔委托</strong></p>
+<p>单笔委托上限比较容易理解，控制的是每一笔委托允许的最大合约手数，防止由于逻辑或者参数设置错误导致开仓太多合约的风险。</p>
+<p><strong>总成交</strong></p>
+<p>总成交上限控制的是每日允许的总成交的合约数量（不是成交笔数），针对的是无人值守的情况下，策略算法出现逻辑错误开始频繁的买卖（比如每秒开多1手，再平多1手，不断重复），导致在手续费和买卖价差上快速亏损的情况。</p>
+<p>清空总成交技术按钮可以把当前的总成交技术清0。</p>
+<p><strong>活动订单</strong></p>
+<p>活动订单上限限制的是当前系统内所有的未成交和部分成交的委托数量 ...</p>
+                    <a class="btn btn-default btn-xs" href="/trader-tutorial-3.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="/trader-tutorial-2.html">vn.trader使用教程系列2-基础交易</a></h2>
+                <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>窗口组件</h2>
+<p><img alt="主窗口" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E4%B8%BB%E7%AA%97%E5%8F%A3.JPG" /></p>
+<p>双击vn.trader文件夹下的vtMain.py后，会看到以上的程序主窗口，无法双击的用户一般是Anaconda安装时的.py文件打开方式问题，右键vtMain.py后-&gt;打开方式-&gt;选择Anaconda文件夹下的python.exe后就可以打开。</p>
+<p>在上一篇教程中设置好CTP接口的帐号密码等信息后，点击菜单上的系统-&gt;连接CTP即可连接到CTP柜台。算法交易等相关的功能会涉及数据库相关的操作，点击系统-&gt;连接数据库后vn.trader会自动连接上MongoDB数据库（需要将MongoDB注册为系统服务）。</p>
+<p>窗口中间部分的组件均可以随意改变位置，也可以拖动变为顶层悬浮窗口，正常退出（点击右上方的X按钮）后会自动保存当前的窗口设置。最下方的状态栏显示了当前的CPU和内存使用率，便于监控当前的系统资源占用情况。</p>
+<p>各组件的功能如下：</p>
+<ul>
+<li>
+<p>交易：发送和撤销交易委托、订阅行情等（参考下一章节）</p>
+</li>
+<li>
+<p>行情：显示行情Tick数据推送</p>
+</li>
+<li>
+<p>委托：显示委托回报相关的数据推送（注意视乎接口不同，大部分失败的委托并不会显示）</p>
+</li>
+<li>
+<p>成交：显示成交相关的数据推送</p>
+</li>
+<li>
+<p>持仓：显示持仓查询的数据结果（采用轮询查询的方式，非实时）</p>
+</li>
+<li>
+<p>资金：显示账户资金查询的数据结果（采用轮询查询的方式 ...</p></li></ul>
+                    <a class="btn btn-default btn-xs" href="/trader-tutorial-2.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="/trader-tutorial-1.html">vn.trader使用教程系列1-安装和配置</a></h2>
                 <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
-<h1>vn.trader使用教程系列1-安装和配置</h1>
 <p>2016年已经快要过去一半，目前vn.py项目的交易平台vn.trader已经基本定型，在发布v1.0以前不再会有新的功能模块添加，接下来的时间将会主要集中精力在修复一些小bug方面，同时针对新用户推出这个《vn.trader使用教程系列》，帮助大家更快上手使用。</p>
 <h2>安装运行环境</h2>
 <p>和大多数商业软件的傻瓜式一路“下一步”的安装方法不同，vn.trader运行环境的安装需要用户自行操作的地方较多：Python运行时环境、各项插件、数据库等等。</p>
@@ -122,7 +174,10 @@
 <p>安装<a href="http://www.mongodb.org/downloads#production">MongoDB</a>：下载Windows 64-bit 2008 R2+版本</p>
 </li>
 <li>
-<p>安装pymongo：在cmd中运行pip install ...</p></li></ol>
+<p>安装pymongo：在cmd中运行pip install pymongo</p>
+</li>
+<li>
+<p>参考 ...</p></li></ol>
                     <a class="btn btn-default btn-xs" href="/trader-tutorial-1.html">more ...</a>
                 </div>
             </article>
@@ -337,85 +392,6 @@
         <span class="c">#self.md = DemoL2Api(self.ee)   # 如果使用L2行情就改为这行</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">td</span> <span class="o">=</span> <span class="n">DemoTdApi ...</span></pre></div>
                     <a class="btn btn-default btn-xs" href="/basic-tutorial-6.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="/basic-tutorial-5.html">Python量化交易平台开发教程系列5-底层接口对接</a></h2>
-                <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
-<h2>前言</h2>
-<p>从本篇教程开始，所有的开发都会在Python环境中进行（谢天谢地可以和C++说再见了）。</p>
-<p><strong>通常情况下，一个交易程序的架构会由以下三个部分组成：</strong></p>
-<ul>
-<li>
-<p>底层接口：负责对接行情和交易API，将数据推送到系统核心中，以及发送指令（下单、数据请求等）</p>
-</li>
-<li>
-<p>中层引擎：用于整合程序中的各个组件（包括底层接口、数据库接口等等）到一个对象中，便于顶层UI调用</p>
-</li>
-<li>
-<p>顶层GUI：用于显示数据和调用中层引擎暴露的主动函数，实现各项具体功能</p>
-</li>
-</ul>
-<p><img alt="AlgoTrader架构" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B5algotrader_%E6%9E%84%E6%9E%B6.png" /></p>
-<p><strong>上面这张图展示的是国外的一款开源交易平台AlgoTrader的架构：</strong></p>
-<ul>
-<li>
-<p>两边的Adapters代表的是底层接口（左边数据，右边交易）</p>
-</li>
-<li>
-<p>红色圆柱形中包括的是中层引擎架构，事件驱动方面使用了Esper复杂事件处理（CEP）引擎，同时内置了一些常用的功能引擎，如期权定价引擎、外汇对冲模块、投资组合管理模块等</p>
-</li>
-<li>
-<p>上方的Strategy1、2等代表的是顶层应用（算法策略、GUI界面等），通过调用中层引擎的功能来实现用户所需的业务</p>
-</li>
-</ul>
-<p><strong>vn.py和AlgoTrader的比较：</strong></p>
-<p>这里对两个项目做一个简单的比较。</p>
-<p>vn.py优势：</p>
-<ul>
-<li>
-<p>语言易用：Java语言比Python啰嗦</p>
-</li>
-<li>
-<p>架构简洁 ...</p></li></ul>
-                    <a class="btn btn-default btn-xs" href="/basic-tutorial-5.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="/blog-20150420.html">2015/4/20 项目开发日志</a></h2>
-                <div class="summary"><h2>目前项目状态</h2>
-<p>差不多一个多月的时间，完成了CTP API的vn.ctp封装，以及用于展示如何使用vn.py框架开发的vn.demo，两者均已发布到github上。</p>
-<p>接下来将会发布几篇和vn.demo相关的教程。</p>
-<h2>vn.demo介绍</h2>
-<p>该demo主要用于展示如何使用vn.py框架开发交易平台，使用了vn.event和vn.lts模块。</p>
-<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B4vndemo.jpg" /></p>
-<h2>如何使用</h2>
-<p>常规用户可以直接运行exe文件夹下的demoMain.exe。</p>
-<p>对开发有兴趣的用户需要根据vnpy.org的教程3安装相关的开发环境，然后通过demoMain.py和demoMain.pyw（无cmd界面）运行。</p>
-<h2>实现功能</h2>
-<p>demo的实现参考了盈佳和尔易的LTS交易平台，功能如下：</p>
-<ol>
-<li>
-<p>行情、持仓、账户、成交、报单的监控</p>
-</li>
-<li>
-<p>平台的日志记录</p>
-</li>
-<li>
-<p>下单交易，实现了LTS提供的所有订单类型和交易类型</p>
-</li>
-<li>
-<p>双击报单监控中的单元格撤单，以及下单交易组件一键全撤</p>
-</li>
-</ol>
-<h2>文件说明</h2>
-<ul>
-<li>demoApi.py主要包含了程序的底层接口，对vn.lts中的API进行了简化封装</li>
-<li>demoEngine.py主要包含了程序的中间层，负责调用底层接口</li>
-<li>demoUi ...</li></ul>
-                    <a class="btn btn-default btn-xs" href="/blog-20150420.html">more ...</a>
                 </div>
             </article>
             <hr/>

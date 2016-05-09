@@ -103,6 +103,85 @@
         <div class="col-sm-9">
 
             <article>
+                <h2><a href="/basic-tutorial-5.html">Python量化交易平台开发教程系列5-底层接口对接</a></h2>
+                <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>前言</h2>
+<p>从本篇教程开始，所有的开发都会在Python环境中进行（谢天谢地可以和C++说再见了）。</p>
+<p><strong>通常情况下，一个交易程序的架构会由以下三个部分组成：</strong></p>
+<ul>
+<li>
+<p>底层接口：负责对接行情和交易API，将数据推送到系统核心中，以及发送指令（下单、数据请求等）</p>
+</li>
+<li>
+<p>中层引擎：用于整合程序中的各个组件（包括底层接口、数据库接口等等）到一个对象中，便于顶层UI调用</p>
+</li>
+<li>
+<p>顶层GUI：用于显示数据和调用中层引擎暴露的主动函数，实现各项具体功能</p>
+</li>
+</ul>
+<p><img alt="AlgoTrader架构" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B5algotrader_%E6%9E%84%E6%9E%B6.png" /></p>
+<p><strong>上面这张图展示的是国外的一款开源交易平台AlgoTrader的架构：</strong></p>
+<ul>
+<li>
+<p>两边的Adapters代表的是底层接口（左边数据，右边交易）</p>
+</li>
+<li>
+<p>红色圆柱形中包括的是中层引擎架构，事件驱动方面使用了Esper复杂事件处理（CEP）引擎，同时内置了一些常用的功能引擎，如期权定价引擎、外汇对冲模块、投资组合管理模块等</p>
+</li>
+<li>
+<p>上方的Strategy1、2等代表的是顶层应用（算法策略、GUI界面等），通过调用中层引擎的功能来实现用户所需的业务</p>
+</li>
+</ul>
+<p><strong>vn.py和AlgoTrader的比较：</strong></p>
+<p>这里对两个项目做一个简单的比较。</p>
+<p>vn.py优势：</p>
+<ul>
+<li>
+<p>语言易用：Java语言比Python啰嗦</p>
+</li>
+<li>
+<p>架构简洁 ...</p></li></ul>
+                    <a class="btn btn-default btn-xs" href="/basic-tutorial-5.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="/blog-20150420.html">2015/4/20 项目开发日志</a></h2>
+                <div class="summary"><h2>目前项目状态</h2>
+<p>差不多一个多月的时间，完成了CTP API的vn.ctp封装，以及用于展示如何使用vn.py框架开发的vn.demo，两者均已发布到github上。</p>
+<p>接下来将会发布几篇和vn.demo相关的教程。</p>
+<h2>vn.demo介绍</h2>
+<p>该demo主要用于展示如何使用vn.py框架开发交易平台，使用了vn.event和vn.lts模块。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B4vndemo.jpg" /></p>
+<h2>如何使用</h2>
+<p>常规用户可以直接运行exe文件夹下的demoMain.exe。</p>
+<p>对开发有兴趣的用户需要根据vnpy.org的教程3安装相关的开发环境，然后通过demoMain.py和demoMain.pyw（无cmd界面）运行。</p>
+<h2>实现功能</h2>
+<p>demo的实现参考了盈佳和尔易的LTS交易平台，功能如下：</p>
+<ol>
+<li>
+<p>行情、持仓、账户、成交、报单的监控</p>
+</li>
+<li>
+<p>平台的日志记录</p>
+</li>
+<li>
+<p>下单交易，实现了LTS提供的所有订单类型和交易类型</p>
+</li>
+<li>
+<p>双击报单监控中的单元格撤单，以及下单交易组件一键全撤</p>
+</li>
+</ol>
+<h2>文件说明</h2>
+<ul>
+<li>demoApi.py主要包含了程序的底层接口，对vn.lts中的API进行了简化封装</li>
+<li>demoEngine.py主要包含了程序的中间层，负责调用底层接口</li>
+<li>demoUi ...</li></ul>
+                    <a class="btn btn-default btn-xs" href="/blog-20150420.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="/basic-tutorial-4.html">Python量化交易平台开发教程系列4-事件驱动引擎原理和使用</a></h2>
                 <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
 <h2>前言</h2>
