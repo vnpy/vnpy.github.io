@@ -103,6 +103,35 @@
         <div class="col-sm-9">
 
             <article>
+                <h2><a href="/blog-1.0-release.html">vn.py框架v1.0发布</a></h2>
+                <div class="summary"><p>vn.py框架终于迎来了v1.0的正式发布，离2月份宣布2016年的项目计划已经过去了三个月的时间，比起当时也取得了不少的进展。</p>
+<p>代码方面：</p>
+<ol>
+<li>增加了vn.xspeed（飞创）、vn.sgit（飞鼠）和vn.oanda（OANDA）接口</li>
+<li>整理了vn.py项目中包括的所有API的具体信息（版本号、获得渠道、特性等）</li>
+<li>在Linux上成功编译了vn.ctp和vn.lts接口，并加入了vn.trader中</li>
+<li>vn.trader中增加了风控模块和行情数据记录模块，以及一系列的bug修复和特性更新</li>
+<li>使用Ubuntu 16.04 LTS以及一系列最新的软件包建立了开箱即用的VirtualBox镜像</li>
+</ol>
+<p>文章方面：</p>
+<ol>
+<li>关于在vn.trader中使用ta-lib和quantlib的教程</li>
+<li>vn.trader的使用教程系列</li>
+<li>国内常见交易接口的介绍</li>
+</ol>
+<p>社区方面：</p>
+<ol>
+<li>使用pelican重新建设的官方网站，比起原来Hexo开发的更加简洁美观</li>
+<li>上海地区的两次线下活动，主要介绍了vn.trader的相关使用和开发</li>
+<li>官方交流群的成员活跃度和讨论专业程度不断上升</li>
+</ol>
+<p>计划中剩下的一些工作也会在今年内逐步完成。</p>
+<p>尽管2016年到目前的市场形势都不是太好，但是只有在行业低谷期做好准备的人才能抓住未来的行情，所以现在未尝不是一个好好修炼内功的机会 ...</p>
+                    <a class="btn btn-default btn-xs" href="/blog-1.0-release.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="/trader-tutorial-3.html">vn.trader使用教程系列3-策略算法</a></h2>
                 <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
 <h2>风控模块</h2>
@@ -366,31 +395,6 @@
 <li>
 <p>Rapid ...</p></li></ol>
                     <a class="btn btn-default btn-xs" href="/basic-tutorial-7.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="/basic-tutorial-6.html">Python量化交易平台开发教程系列6-中层引擎设计</a></h2>
-                <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
-<h2>前言</h2>
-<p>中层引擎在设计上主要是为了进一步封装底层接口所暴露出的API函数，使得其更容易被上层的GUI和策略组件调用。本篇的内容会相对简单，主要以LTS接口DEMO为例介绍一些设计方面的思路。</p>
-<p>相关的示例都是基于vn.demo中的LTS接口DEMO，发布在：
-<a href="https://github.com/vnpy/vnpy/tree/master/vn.demo/ltsdemo">https://github.com/vnpy/vnpy/tree/master/vn.demo/ltsdemo</a></p>
-<h2>中层引擎设计</h2>
-<h3>构造函数</h3>
-<div class="highlight"><pre><span class="c">########################################################################</span>
-<span class="k">class</span> <span class="nc">MainEngine</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;主引擎，负责对API的调度&quot;&quot;&quot;</span>
-
-    <span class="c">#----------------------------------------------------------------------</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ee</span> <span class="o">=</span> <span class="n">EventEngine</span><span class="p">()</span>         <span class="c"># 创建事件驱动引擎</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">md</span> <span class="o">=</span> <span class="n">DemoMdApi</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ee</span><span class="p">)</span>    <span class="c"># 创建API接口</span>
-        <span class="c">#self.md = DemoL2Api(self.ee)   # 如果使用L2行情就改为这行</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">td</span> <span class="o">=</span> <span class="n">DemoTdApi ...</span></pre></div>
-                    <a class="btn btn-default btn-xs" href="/basic-tutorial-6.html">more ...</a>
                 </div>
             </article>
             <hr/>

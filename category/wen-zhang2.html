@@ -104,6 +104,31 @@
         <div class="col-sm-9">
 
             <article>
+                <h2><a href="/basic-tutorial-6.html">Python量化交易平台开发教程系列6-中层引擎设计</a></h2>
+                <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>前言</h2>
+<p>中层引擎在设计上主要是为了进一步封装底层接口所暴露出的API函数，使得其更容易被上层的GUI和策略组件调用。本篇的内容会相对简单，主要以LTS接口DEMO为例介绍一些设计方面的思路。</p>
+<p>相关的示例都是基于vn.demo中的LTS接口DEMO，发布在：
+<a href="https://github.com/vnpy/vnpy/tree/master/vn.demo/ltsdemo">https://github.com/vnpy/vnpy/tree/master/vn.demo/ltsdemo</a></p>
+<h2>中层引擎设计</h2>
+<h3>构造函数</h3>
+<div class="highlight"><pre><span class="c">########################################################################</span>
+<span class="k">class</span> <span class="nc">MainEngine</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;主引擎，负责对API的调度&quot;&quot;&quot;</span>
+
+    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ee</span> <span class="o">=</span> <span class="n">EventEngine</span><span class="p">()</span>         <span class="c"># 创建事件驱动引擎</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">md</span> <span class="o">=</span> <span class="n">DemoMdApi</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ee</span><span class="p">)</span>    <span class="c"># 创建API接口</span>
+        <span class="c">#self.md = DemoL2Api(self.ee)   # 如果使用L2行情就改为这行</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">td</span> <span class="o">=</span> <span class="n">DemoTdApi ...</span></pre></div>
+                    <a class="btn btn-default btn-xs" href="/basic-tutorial-6.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="/basic-tutorial-5.html">Python量化交易平台开发教程系列5-底层接口对接</a></h2>
                 <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
 <h2>前言</h2>
