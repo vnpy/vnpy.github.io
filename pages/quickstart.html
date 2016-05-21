@@ -14,13 +14,13 @@
 <link rel="canonical" href="/pages/quickstart.html">
 
         <meta name="author" content="用Python的交易员" />
-        <meta name="description" content="对于大部分用户来说，无需自行编译API接口，可以直接使用vn.trader进行交易和策略开发： 准备一台Windows 7 64位系统的电脑 安装Anaconda：下载Python 2.7 32位版本，注意必须是32位 安装MongoDB：下载Windows 64-bit 2008 R2+版本 安装pymongo：在cmd中运行pip install pymongo 参考这里，将MongoDB注册为Windows服务并启动 安装Visual C++ Redistributable Packages for VS2013，中英文随意 在vn.py项目的Github主页选择Download ZIP下载项目代码，并解压到C:\vnpy 在SimNow注册CTP仿真账号，记下你的账号、密码、经纪商编号 ..." />
+        <meta name="description" content="对于大部分用户来说，无需自行编译API接口，建议可以直接使用vn.trader进行交易和策略开发。 Windows 7 使用步骤 准备一台Windows 7 64位系统的电脑 安装Anaconda：下载Python 2.7 32位版本，注意必须是32位 安装MongoDB：下载Windows 64-bit 2008 R2+版本 安装pymongo：在cmd中运行pip install pymongo 参考这里，将MongoDB注册为Windows服务并启动 安装Visual C++ Redistributable Packages for VS2013，中英文随意 在vn.py项目的Github主页选择Download ZIP下载项目代码，并解压到C:\vnpy 在SimNow注册CTP仿真账号，记下你的 ..." />
 
     <meta property="og:site_name" content="vn.py" />
     <meta property="og:type" content="article"/>
     <meta property="og:title" content="Quick Start"/>
     <meta property="og:url" content="/pages/quickstart.html"/>
-    <meta property="og:description" content="对于大部分用户来说，无需自行编译API接口，可以直接使用vn.trader进行交易和策略开发： 准备一台Windows 7 64位系统的电脑 安装Anaconda：下载Python 2.7 32位版本，注意必须是32位 安装MongoDB：下载Windows 64-bit 2008 R2+版本 安装pymongo：在cmd中运行pip install pymongo 参考这里，将MongoDB注册为Windows服务并启动 安装Visual C++ Redistributable Packages for VS2013，中英文随意 在vn.py项目的Github主页选择Download ZIP下载项目代码，并解压到C:\vnpy 在SimNow注册CTP仿真账号，记下你的账号、密码、经纪商编号 ..." />
+    <meta property="og:description" content="对于大部分用户来说，无需自行编译API接口，建议可以直接使用vn.trader进行交易和策略开发。 Windows 7 使用步骤 准备一台Windows 7 64位系统的电脑 安装Anaconda：下载Python 2.7 32位版本，注意必须是32位 安装MongoDB：下载Windows 64-bit 2008 R2+版本 安装pymongo：在cmd中运行pip install pymongo 参考这里，将MongoDB注册为Windows服务并启动 安装Visual C++ Redistributable Packages for VS2013，中英文随意 在vn.py项目的Github主页选择Download ZIP下载项目代码，并解压到C:\vnpy 在SimNow注册CTP仿真账号，记下你的 ..." />
 
 
     <!-- Bootstrap -->
@@ -108,7 +108,9 @@
         
         <div class="entry-content">
             <hr />
-<p>对于大部分用户来说，无需自行编译API接口，可以直接使用vn.trader进行交易和策略开发：</p>
+<p>对于大部分用户来说，无需自行编译API接口，建议可以直接使用vn.trader进行交易和策略开发。</p>
+<h2>Windows 7</h2>
+<p><strong>使用步骤</strong></p>
 <ol>
 <li>
 <p>准备一台Windows 7 64位系统的电脑</p>
@@ -138,11 +140,45 @@
 <p>把C:\vnpy\vn.trader\ctpGateway\CTP_connect.json中的账号、密码、服务器等修改为上一步注册完成后你的信息（注意使用专门的编程编辑器，如Sublime Text等，防止json编码出错）</p>
 </li>
 <li>
-<p>双击运行C:\vnpy\vn.trader\vtMain.py，开始交易！</p>
+<p>双击运行C:\vnpy\vn.trader\vtMain.py，开始交易！无法双击的用户可以右键点击后选择打开方式，使用Anaconda文件夹下的python.exe运行。</p>
 </li>
 </ol>
 <p>对于想研究API封装的用户，可以参考教程里的入门部分一步步操作。</p>
-<p>其他作者建议使用的软件工具：</p>
+<h2>Ubuntu 16.04 LTS（开箱即用镜像）</h2>
+<p><strong>使用步骤</strong></p>
+<ol>
+<li>
+<p>在<a href="http://www.virtualbox.org/wiki/Downloads">VirtualBox网站</a>下载安装最新版的VirtualBox，安装程序会自动判断操作系统是32或者64位，并安装对应的版本</p>
+</li>
+<li>
+<p>下载<a href="http://pan.baidu.com/s/1slePePn">镜像文件</a>，其中vnpy.zip是主压缩文件，其他带有编号的是压缩分卷，解压vnpy.zip到某个文件夹中</p>
+</li>
+<li>
+<p>打开VirtualBox，点击菜单栏的管理-&gt;导入虚拟电脑，找到上一步解压缩文件夹中的vnpy.ova，将该镜像导入到软件中</p>
+</li>
+<li>
+<p>在左侧的列表中选中vn.py虚拟机，点击启动后，就可以看到Ubuntu的运行界面了，管理员账号：vnpy，密码：vnpy</p>
+</li>
+</ol>
+<p><strong>镜像说明</strong></p>
+<ol>
+<li>
+<p>该Ubuntu环境支持CTP、LTS、IB和OANDA的交易接口</p>
+</li>
+<li>
+<p>MongoDB已经安装好并设置为开机启动，可以使用桌面上的Robomongo来管理数据库</p>
+</li>
+<li>
+<p>双击桌面的"修改CTP_connect.json"，修改账号、密码、服务器和经纪商代码的信息后，即可开始使用CTP接口交易</p>
+</li>
+<li>
+<p>IB的TWS平台可以使用模拟交易账户登录，账号：edemo，密码：demouser（注意该行情是虚拟的数据，只能用于测试）</p>
+</li>
+<li>
+<p>LTS和OANDA接口相关的设置需要在vn.trader文件夹下对应的gateway文件夹中修改json配置文件</p>
+</li>
+</ol>
+<h2>其他作者建议使用的软件工具</h2>
 <ul>
 <li>
 <p><a href="http://wingware.com/">WingIDE</a>：非常好用的Python集成开发环境（作者就是用它写的vn.py）</p>
