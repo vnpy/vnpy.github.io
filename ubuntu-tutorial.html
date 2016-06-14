@@ -2,7 +2,7 @@
 <html lang="zh"
 >
 <head>
-    <title>Authors - vn.py</title>
+    <title>vn.trader的Ubuntu运行环境搭建教程 - vn.py</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -11,15 +11,19 @@
 
     <link href="/images/favicon.png" rel="icon">
 
+<link rel="canonical" href="/ubuntu-tutorial.html">
 
         <meta name="author" content="用Python的交易员" />
+        <meta name="description" content="vn.trader的Ubuntu运行环境搭建教程 作者：量衍投资 转载请注明来源：维恩的派（www.vnpie.com） 准备Ubuntu 建议使用一个新安装干净的Ubuntu环境（如果你一定要使用老环境也行，万一不幸掉坑后再回到这步就好），我这里使用的环境如下： 版本：Ubuntu 16.04 LTS 语言：简体中文 时区：Shanghai 硬件：VirtualBox虚拟机（64位，分配4G内存） 安装Anaconda 在Continuum官网下载Python 2.7版本Linux 64-Bit的Anaconda，我这里下载完成后的文件名为Anaconda2-4.0.0-Linux-x86_64.sh。 打开Terminal（终端），进入文件所在的目录，输入如下命令： bash Anaconda2-4.0.0-Linux-x86_64.sh ..." />
 
-    <!-- Open Graph tags -->
         <meta property="og:site_name" content="vn.py" />
-        <meta property="og:type" content="website"/>
-        <meta property="og:title" content="vn.py"/>
-        <meta property="og:url" content=""/>
-        <meta property="og:description" content="vn.py"/>
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="vn.trader的Ubuntu运行环境搭建教程"/>
+        <meta property="og:url" content="/ubuntu-tutorial.html"/>
+        <meta property="og:description" content="vn.trader的Ubuntu运行环境搭建教程 作者：量衍投资 转载请注明来源：维恩的派（www.vnpie.com） 准备Ubuntu 建议使用一个新安装干净的Ubuntu环境（如果你一定要使用老环境也行，万一不幸掉坑后再回到这步就好），我这里使用的环境如下： 版本：Ubuntu 16.04 LTS 语言：简体中文 时区：Shanghai 硬件：VirtualBox虚拟机（64位，分配4G内存） 安装Anaconda 在Continuum官网下载Python 2.7版本Linux 64-Bit的Anaconda，我这里下载完成后的文件名为Anaconda2-4.0.0-Linux-x86_64.sh。 打开Terminal（终端），进入文件所在的目录，输入如下命令： bash Anaconda2-4.0.0-Linux-x86_64.sh ..."/>
+        <meta property="article:published_time" content="2016-05-09" />
+            <meta property="article:section" content="文章" />
+            <meta property="article:author" content="用Python的交易员" />
 
 
     <!-- Bootstrap -->
@@ -102,8 +106,91 @@
     <div class="row">
         <div class="col-sm-9">
 
-    <h1>Authors on vn.py</h1>
-        <li><a href="/author/yong-pythonde-jiao-yi-yuan.html">用Python的交易员</a> (20)</li>
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/ubuntu-tutorial.html"
+                       rel="bookmark"
+                       title="Permalink to vn.trader的Ubuntu运行环境搭建教程">
+                        vn.trader的Ubuntu运行环境搭建教程
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2016-05-09T16:10:42+08:00"> 2016-05-09(周一)</time>
+    </span>
+
+
+
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <h1>vn.trader的Ubuntu运行环境搭建教程</h1>
+<p>作者：量衍投资</p>
+<p>转载请注明来源：维恩的派（www.vnpie.com）</p>
+<h2>准备Ubuntu</h2>
+<p>建议使用一个新安装干净的Ubuntu环境（如果你一定要使用老环境也行，万一不幸掉坑后再回到这步就好），我这里使用的环境如下：</p>
+<ul>
+<li>版本：Ubuntu 16.04 LTS</li>
+<li>语言：简体中文</li>
+<li>时区：Shanghai</li>
+<li>硬件：VirtualBox虚拟机（64位，分配4G内存）</li>
+</ul>
+<h2>安装Anaconda</h2>
+<p>在<a href="https://www.continuum.io/downloads">Continuum官网</a>下载Python 2.7版本Linux 64-Bit的Anaconda，我这里下载完成后的文件名为Anaconda2-4.0.0-Linux-x86_64.sh。</p>
+<p>打开Terminal（终端），进入文件所在的目录，输入如下命令：</p>
+<div class="highlight"><pre><span class="n">bash</span> <span class="n">Anaconda2</span><span class="o">-</span><span class="mf">4.0.0</span><span class="o">-</span><span class="n">Linux</span><span class="o">-</span><span class="n">x86_64</span><span class="p">.</span><span class="n">sh</span>
+</pre></div>
+
+
+<p>设置方面除了最后一个选择可以一路回车，到最后一项设置是否要将Anaconda添加到bash的PATH中时，注意选yes，安装成功后如下图所示：</p>
+<p><img alt="Anaconda" src="http://7x2w1m.com1.z0.glb.clouddn.com/anaconda.JPG" /></p>
+<p>下一步重启系统，打开Terminal后运行Python，如下图所示说明安装成功（注意最上方显示中有Anaconda相关信息）：</p>
+<p><img alt="Terminal" src="http://7x2w1m.com1.z0.glb.clouddn.com/terminal.JPG" /></p>
+<h2>安装其他依赖</h2>
+<p>使用pip安装MongoDB驱动和Qt黑色主题，注意不要加sudo:</p>
+<div class="highlight"><pre><span class="n">pip</span> <span class="n">install</span> <span class="n">pymongo</span> <span class="n">qdarkstyle</span>
+</pre></div>
+
+
+<p>使用apt-get安装编译API相关的工具：</p>
+<div class="highlight"><pre><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">git</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span> <span class="n">libboost</span><span class="o">-</span><span class="n">all</span><span class="o">-</span><span class="n">dev</span> <span class="n">python</span><span class="o">-</span><span class="n">dev</span> <span class="n">cmake</span>
+</pre></div>
+
+
+<h2>运行vn.trader</h2>
+<p>使用git从Github上下载vn.py框架：</p>
+<div class="highlight"><pre><span class="n">git</span> <span class="n">clone</span> <span class="n">http</span><span class="o">:</span><span class="c1">//github.com/vnpy/vnpy.git</span>
+</pre></div>
+
+
+<p>完成后，切换到vn.trader文件夹下（cd vnpy/vn.trader），输入命令：</p>
+<div class="highlight"><pre><span class="n">python</span> <span class="n">vtMain</span><span class="p">.</span><span class="n">py</span>
+</pre></div>
+
+
+<p>当当~~~~，深沉内敛的黑色主界面出现了：</p>
+<p><img alt="MainWindow" src="http://7x2w1m.com1.z0.glb.clouddn.com/mainwindow.JPG" /></p>
+<p>注意菜单栏系统下的连接选项中只有CTP、LTS和OANDA三个接口，这是因为当前项目里只编译了vn.ctp和vn.lts的Ubuntu版本，而vn.oanda是基于REST API的纯Python接口，可以直接跨平台使用。</p>
+<h2>总结</h2>
+<p>试着使用Ubuntu后，不得不承认确实Linux在编程方面比Windows更加友好，看过vn.py的Windows开发环境搭建教程的用户应该记得其步骤还是相当繁琐的（boost占了相当一部分），而Ubuntu下基本只有三步：安装Anaconda、pip和apt-get，纯命令行操作用着很爽。</p>
+<p>安装完上面的这套环境后，想要折腾一下自己编译API的用户可以进入vn.ctp文件夹下，输入：</p>
+<div class="highlight"><pre><span class="p">.</span><span class="o">/</span><span class="n">build</span><span class="p">.</span><span class="n">sh</span>
+</pre></div>
+
+
+<p>然后就编译好了，简直非常之爽（当然写CMakeLists.txt的时候还是挺麻烦），编译好的接口在build/lib文件夹下。</p>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
         </div>
         <div class="col-sm-3" id="sidebar">
             <aside>

@@ -154,6 +154,27 @@
             </article>
             <hr/>
             <article>
+                <h2><a href="/ubuntu-tutorial.html">vn.trader的Ubuntu运行环境搭建教程</a></h2>
+                <div class="summary"><h1>vn.trader的Ubuntu运行环境搭建教程</h1>
+<p>作者：量衍投资</p>
+<p>转载请注明来源：维恩的派（www.vnpie.com）</p>
+<h2>准备Ubuntu</h2>
+<p>建议使用一个新安装干净的Ubuntu环境（如果你一定要使用老环境也行，万一不幸掉坑后再回到这步就好），我这里使用的环境如下：</p>
+<ul>
+<li>版本：Ubuntu 16.04 LTS</li>
+<li>语言：简体中文</li>
+<li>时区：Shanghai</li>
+<li>硬件：VirtualBox虚拟机（64位，分配4G内存）</li>
+</ul>
+<h2>安装Anaconda</h2>
+<p>在<a href="https://www.continuum.io/downloads">Continuum官网</a>下载Python 2.7版本Linux 64-Bit的Anaconda，我这里下载完成后的文件名为Anaconda2-4.0.0-Linux-x86_64.sh。</p>
+<p>打开Terminal（终端），进入文件所在的目录，输入如下命令：</p>
+<div class="highlight"><pre><span class="n">bash</span> <span class="n">Anaconda2</span><span class="o">-</span><span class="mf">4.0.0</span><span class="o">-</span><span class="n">Linux</span><span class="o">-</span><span class="n">x86_64</span><span class="p">.</span><span class="n">sh ...</span></pre></div>
+                    <a class="btn btn-default btn-xs" href="/ubuntu-tutorial.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="/trader-tutorial-3.html">vn.trader使用教程系列3-策略算法</a></h2>
                 <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
 <h2>风控模块</h2>
@@ -388,35 +409,6 @@
     <span class="n">dictLabels</span><span class="p">[</span><span class="s">&#39;FrozenCommission&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;冻结手续费&#39;</span>
     <span class="n">dictLabels</span><span class="p">[</span><span class="s">&#39;FrozenTransferFee ...</span></pre></div>
                     <a class="btn btn-default btn-xs" href="/basic-tutorial-8.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="/basic-tutorial-7.html">Python量化交易平台开发教程系列7-顶层GUI界面开发（1）</a></h2>
-                <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
-<h2>前言</h2>
-<p>终于有时间来写第一篇顶层GUI界面开发相关的教程了，之前实在是事情太多，跟各位读者抱个歉。</p>
-<p>整合底层接口的各项功能到中层引擎中后，当我们开发顶层应用时（GUI或者策略算法），只需知道中层引擎对外提供的主动API函数以及事件引擎中相关的事件类型和数据形式即可。</p>
-<p>在GUI和策略算法这两个主要类型的顶层应用中，作者选择先介绍GUI开发的原因是：目前国内支持用户定制化开发GUI界面的量化平台少之又少，而包含一个比较全面的GUI开发教程的则据我所知还没有。随着国内越来越多的衍生品推出（期权、分级基金、未来的反向基金），很多新型的交易策略从全自动转向了半自动，经常需要交易员的手动干预（启动暂停策略、盘中微调参数等），以及投资组合层面的风险管理（期权希腊值、分级基金行业暴露等），这种情况下传统上仅支持策略算法开发的量化交易平台变得越发难以满足交易员的需求（包括作者本人），所以估计这方面的文章更能填补当前市场需求的空缺（笑...）。</p>
-<h2>PyQt</h2>
-<p>目前Python上主要的GUI开发工具包括：tkinter、PyQt、PyGTK和wxPython，笔者选择PyQt的主要原因是：</p>
-<ol>
-<li>
-<p>Anaconda中已经包含（早期版本中包含的是LGPL协议的Pyside，稳定性不如PyQt）</p>
-</li>
-<li>
-<p>另一个内置GUI库tkinter的功能太弱</p>
-</li>
-</ol>
-<p>网上对这四款GUI开发工具比较分析的文章很多，有兴趣的读者可以自己搜搜看。</p>
-<p>接下来的几篇GUI开发教程会假设读者已经对PyQt开发有了一定的了解，主要针对和量化交易平台开发相关的部分，需要补充基础知识的读者建议参考以下资源：</p>
-<ol>
-<li>
-<p>zetcode.com，上面的教程简单明了，从头到尾做一遍对PyQt的工作原理基本就有个全面的了解了</p>
-</li>
-<li>
-<p>Rapid ...</p></li></ol>
-                    <a class="btn btn-default btn-xs" href="/basic-tutorial-7.html">more ...</a>
                 </div>
             </article>
             <hr/>
