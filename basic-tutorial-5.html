@@ -222,7 +222,7 @@
 </ol>
 <p>vn.lts中的API接口在使用时需要由用户继承后实现回调函数对应的具体功能，下面的内容以行情接口为例。</p>
 <h3>接口对象设计</h3>
-<div class="highlight"><pre><span class="c">########################################################################</span>
+<div class="highlight"><pre><span></span><span class="c1">########################################################################</span>
 <span class="k">class</span> <span class="nc">DemoMdApi</span><span class="p">(</span><span class="n">MdApi</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Demo中的行情API封装</span>
@@ -233,29 +233,29 @@
 <span class="sd">    订阅合约 subscribe</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eventEngine</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        API对象的初始化函数</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">DemoMdApi</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
 
-        <span class="c"># 事件引擎，所有数据都推送到其中，再由事件引擎进行分发</span>
+        <span class="c1"># 事件引擎，所有数据都推送到其中，再由事件引擎进行分发</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__eventEngine</span> <span class="o">=</span> <span class="n">eventEngine</span>
 
-        <span class="c"># 请求编号，由api负责管理</span>
+        <span class="c1"># 请求编号，由api负责管理</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__reqid</span> <span class="o">=</span> <span class="mi">0</span>
 
-        <span class="c"># 以下变量用于实现连接和重连后的自动登陆</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__userid</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__password</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__brokerid</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="c1"># 以下变量用于实现连接和重连后的自动登陆</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__userid</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__password</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__brokerid</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 
-        <span class="c"># 以下集合用于重连后自动订阅之前已订阅的合约，使用集合为了防止重复</span>
+        <span class="c1"># 以下集合用于重连后自动订阅之前已订阅的合约，使用集合为了防止重复</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__setSubscribed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
-        <span class="c"># 初始化.con文件的保存目录为\mdconnection，注意这个目录必须已存在，否则会报错</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">createFtdcMdApi</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">mdconnection</span><span class="se">\\</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="c1"># 初始化.con文件的保存目录为\mdconnection，注意这个目录必须已存在，否则会报错</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">createFtdcMdApi</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">mdconnection</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
 
@@ -280,57 +280,57 @@
 </li>
 </ol>
 <h3>回调函数</h3>
-<div class="highlight"><pre>    <span class="c">#----------------------------------------------------------------------</span>
+<div class="highlight"><pre><span></span>    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">onFrontConnected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;服务器连接&quot;&quot;&quot;</span>
         <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="n">type_</span><span class="o">=</span><span class="n">EVENT_LOG</span><span class="p">)</span>
-        <span class="n">event</span><span class="o">.</span><span class="n">dict_</span><span class="p">[</span><span class="s">&#39;log&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;行情服务器连接成功&#39;</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">dict_</span><span class="p">[</span><span class="s1">&#39;log&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">u&#39;行情服务器连接成功&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__eventEngine</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
 
-        <span class="c"># 如果用户已经填入了用户名等等，则自动尝试连接</span>
+        <span class="c1"># 如果用户已经填入了用户名等等，则自动尝试连接</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__userid</span><span class="p">:</span>
             <span class="n">req</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="n">req</span><span class="p">[</span><span class="s">&#39;UserID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__userid</span>
-            <span class="n">req</span><span class="p">[</span><span class="s">&#39;Password&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__password</span>
-            <span class="n">req</span><span class="p">[</span><span class="s">&#39;BrokerID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__brokerid</span>
+            <span class="n">req</span><span class="p">[</span><span class="s1">&#39;UserID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__userid</span>
+            <span class="n">req</span><span class="p">[</span><span class="s1">&#39;Password&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__password</span>
+            <span class="n">req</span><span class="p">[</span><span class="s1">&#39;BrokerID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__brokerid</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__reqid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__reqid</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reqUserLogin</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__reqid</span><span class="p">)</span>
 
 <span class="o">...</span>
 
-    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">onRspUserLogin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">last</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;登陆回报&quot;&quot;&quot;</span>
         <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="n">type_</span><span class="o">=</span><span class="n">EVENT_LOG</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">error</span><span class="p">[</span><span class="s">&#39;ErrorID&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">log</span> <span class="o">=</span> <span class="s">u&#39;行情服务器登陆成功&#39;</span>
+        <span class="k">if</span> <span class="n">error</span><span class="p">[</span><span class="s1">&#39;ErrorID&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">log</span> <span class="o">=</span> <span class="s1">u&#39;行情服务器登陆成功&#39;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">log</span> <span class="o">=</span> <span class="s">u&#39;登陆回报，错误代码：&#39;</span> <span class="o">+</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="s">&#39;ErrorID&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="s">u&#39;,&#39;</span> <span class="o">+</span> <span class="s">u&#39;错误信息：&#39;</span> <span class="o">+</span> <span class="n">error</span><span class="p">[</span><span class="s">&#39;ErrorMsg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;gbk&#39;</span><span class="p">)</span>
+            <span class="n">log</span> <span class="o">=</span> <span class="s1">u&#39;登陆回报，错误代码：&#39;</span> <span class="o">+</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="s1">&#39;ErrorID&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="s1">u&#39;,&#39;</span> <span class="o">+</span> <span class="s1">u&#39;错误信息：&#39;</span> <span class="o">+</span> <span class="n">error</span><span class="p">[</span><span class="s1">&#39;ErrorMsg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;gbk&#39;</span><span class="p">)</span>
 
-        <span class="n">event</span><span class="o">.</span><span class="n">dict_</span><span class="p">[</span><span class="s">&#39;log&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">log</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">dict_</span><span class="p">[</span><span class="s1">&#39;log&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">log</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__eventEngine</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
 
-        <span class="c"># 重连后自动订阅之前已经订阅过的合约</span>
+        <span class="c1"># 重连后自动订阅之前已经订阅过的合约</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__setSubscribed</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">instrument</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__setSubscribed</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">instrument</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">instrument</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
 <span class="o">...</span>
 
-    <span class="c">#----------------------------------------------------------------------  </span>
+    <span class="c1">#----------------------------------------------------------------------  </span>
     <span class="k">def</span> <span class="nf">onRtnDepthMarketData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;行情推送&quot;&quot;&quot;</span>
-        <span class="c"># 行情推送收到后，同时触发常规行情事件，以及特定合约行情事件，用于满足不同类型的监听</span>
+        <span class="c1"># 行情推送收到后，同时触发常规行情事件，以及特定合约行情事件，用于满足不同类型的监听</span>
 
-        <span class="c"># 常规行情事件</span>
+        <span class="c1"># 常规行情事件</span>
         <span class="n">event1</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="n">type_</span><span class="o">=</span><span class="n">EVENT_MARKETDATA</span><span class="p">)</span>
-        <span class="n">event1</span><span class="o">.</span><span class="n">dict_</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="n">event1</span><span class="o">.</span><span class="n">dict_</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__eventEngine</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">event1</span><span class="p">)</span>
 
-        <span class="c"># 特定合约行情事件</span>
-        <span class="n">event2</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="n">type_</span><span class="o">=</span><span class="p">(</span><span class="n">EVENT_MARKETDATA_CONTRACT</span><span class="o">+</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;InstrumentID&#39;</span><span class="p">]))</span>
-        <span class="n">event2</span><span class="o">.</span><span class="n">dict_</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="c1"># 特定合约行情事件</span>
+        <span class="n">event2</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="n">type_</span><span class="o">=</span><span class="p">(</span><span class="n">EVENT_MARKETDATA_CONTRACT</span><span class="o">+</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;InstrumentID&#39;</span><span class="p">]))</span>
+        <span class="n">event2</span><span class="o">.</span><span class="n">dict_</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__eventEngine</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">event2</span><span class="p">)</span>
 <span class="o">...</span>
 </pre></div>
@@ -363,25 +363,25 @@
 </li>
 </ol>
 <h3>主动函数</h3>
-<div class="highlight"><pre>    <span class="c">#----------------------------------------------------------------------</span>
+<div class="highlight"><pre><span></span>    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">userid</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">brokerid</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;连接服务器&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__userid</span> <span class="o">=</span> <span class="n">userid</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__password</span> <span class="o">=</span> <span class="n">password</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__brokerid</span> <span class="o">=</span> <span class="n">brokerid</span>
 
-        <span class="c"># 注册服务器地址</span>
+        <span class="c1"># 注册服务器地址</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">registerFront</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
 
-        <span class="c"># 初始化连接，成功会调用onFrontConnected</span>
+        <span class="c1"># 初始化连接，成功会调用onFrontConnected</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
 
-    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instrumentid</span><span class="p">,</span> <span class="n">exchangeid</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;订阅合约&quot;&quot;&quot;</span>
         <span class="n">req</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">req</span><span class="p">[</span><span class="s">&#39;InstrumentID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrumentid</span>
-        <span class="n">req</span><span class="p">[</span><span class="s">&#39;ExchangeID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exchangeid</span>
+        <span class="n">req</span><span class="p">[</span><span class="s1">&#39;InstrumentID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrumentid</span>
+        <span class="n">req</span><span class="p">[</span><span class="s1">&#39;ExchangeID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exchangeid</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subscribeMarketData</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
 
         <span class="n">instrument</span> <span class="o">=</span> <span class="p">(</span><span class="n">instrumentid</span><span class="p">,</span> <span class="n">exchangeid</span><span class="p">)</span>

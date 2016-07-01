@@ -169,18 +169,18 @@
 <p>.dll、.lib、.so文件都是编译好的二进制文件，无法打开，所以从用户角度我们只需关注.h文件中的内容。对于不同的API而言，.h文件的前缀可能有所区别，如LTS是SecurityFtdc，CTP是ThostFtdc，下面分别介绍这4个.h文件。</p>
 <h3>ApiDataType.h</h3>
 <p>该文件中包含了对API中用到的常量的定义，如以下代码定义了一个产品类型常量对应的字符：</p>
-<div class="highlight"><pre><span class="cp">#define SECURITY_FTDC_PC_Futures &#39;1&#39;</span>
+<div class="highlight"><pre><span></span><span class="cp">#define SECURITY_FTDC_PC_Futures &#39;1&#39;</span>
 </pre></div>
 
 
 <p>以及类型的定义，如以下代码定义了产品名称类型是一个长度为21个字符的字符串：  </p>
-<div class="highlight"><pre><span class="k">typedef</span> <span class="kt">char</span> <span class="n">TSecurityFtdcProductNameType</span><span class="p">[</span><span class="mi">21</span><span class="p">];</span>
+<div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="kt">char</span> <span class="n">TSecurityFtdcProductNameType</span><span class="p">[</span><span class="mi">21</span><span class="p">];</span>
 </pre></div>
 
 
 <h3>ApiStruct.h</h3>
 <p>该文件中包含了API中用到的结构体的定义，如以下代码定义了交易所这个结构体的构成：</p>
-<div class="highlight"><pre><span class="c1">///交易所</span>
+<div class="highlight"><pre><span></span><span class="c1">///交易所</span>
 <span class="k">struct</span> <span class="n">CSecurityFtdcExchangeField</span>
 <span class="p">{</span>
     <span class="c1">///交易所代码</span>
@@ -196,14 +196,14 @@
 <p>例如TSecurityFtdcExchangeIDType这个类型的定义，可以在ApiDataType.h中找到。</p>
 <h3>MdApi.h</h3>
 <p>该文件中包含了API中的行情相关组件的定义，文件通常开头会有一段这样的内容：</p>
-<div class="highlight"><pre><span class="cp">#if !defined(SECURITY_FTDCMDAPI_H)</span>
+<div class="highlight"><pre><span></span><span class="cp">#if !defined(SECURITY_FTDCMDAPI_H)</span>
 <span class="cp">#define SECURITY_FTDCMDAPI_H</span>
 
 <span class="cp">#if _MSC_VER &gt; 1000</span>
 <span class="cp">#pragma once</span>
 <span class="cp">#endif </span><span class="c1">// _MSC_VER &gt; 1000</span>
 
-<span class="cp">#include &quot;SecurityFtdcUserApiStruct.h&quot;</span>
+<span class="cp">#include</span> <span class="cpf">&quot;SecurityFtdcUserApiStruct.h&quot;</span><span class="cp"></span>
 
 <span class="cp">#if defined(ISLIB) &amp;&amp; defined(WIN32)</span>
 <span class="cp">#ifdef LIB_MD_API_EXPORT</span>
@@ -221,9 +221,9 @@
 <p>然后是两个类CSecurityFtdcMdSpi和CSecurityFtdcMdApi的定义。</p>
 <h4>CSecurityFtdcMdSpi</h4>
 <p>MdSpi类中包含了行情功能相关的回调函数接口，什么是回调函数呢？简单来说就是由于柜台端向用户端发送信息后才会被系统自动调用的函数（非用户主动调用），对应的主动函数会在下面介绍。CSecurityFtdcMdSpi大概看起来是这么个样子：</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">CSecurityFtdcMdSpi</span>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CSecurityFtdcMdSpi</span>
 <span class="p">{</span>
-<span class="nl">public:</span>
+<span class="k">public</span><span class="o">:</span>
     <span class="p">......</span>
 
     <span class="c1">///登录请求响应</span>
@@ -251,9 +251,9 @@
 </ol>
 <h4>CSecurityFtdcMdApi</h4>
 <p>MdApi类中包含了行情功能相关的主动函数结构，顾名思义，主动函数指的是由用户负责进行调用的函数，用于向柜台端发送各种请求和指令，大概样子如下：</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">MD_API_EXPORT</span> <span class="n">CSecurityFtdcMdApi</span>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MD_API_EXPORT</span> <span class="n">CSecurityFtdcMdApi</span>
 <span class="p">{</span>
-<span class="nl">public:</span>
+<span class="k">public</span><span class="o">:</span>
     <span class="c1">///创建MdApi</span>
     <span class="c1">///@param pszFlowPath 存贮订阅信息文件的目录，默认为当前目录</span>
     <span class="c1">///@return 创建出的UserApi</span>
@@ -270,7 +270,7 @@
     <span class="c1">///@param ppInstrumentID 合约ID  </span>
     <span class="c1">///@param nCount 要订阅/退订行情的合约个数</span>
     <span class="c1">///@remark </span>
-    <span class="k">virtual</span> <span class="kt">int</span> <span class="n">SubscribeMarketData</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">ppInstrumentID</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">nCount</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">pExchageID</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="kt">int</span> <span class="nf">SubscribeMarketData</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">ppInstrumentID</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">nCount</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">pExchageID</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 
     <span class="p">......</span>
 
@@ -297,9 +297,9 @@
 <h3>TraderApi.h</h3>
 <p>该文件中包含了API中的交易相关组件的定义，文件同样以一段看不懂的定义开头，然后包含了两个类CSecurityFtdcTraderSpi和CSecurityFtdcTraderApi，这两个类和MdApi中的两个类在结构上非常接近，区别仅仅在于类包含的方法函数上。</p>
 <h4>CSecurityFtdcTraderSpi</h4>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">CSecurityFtdcTraderSpi</span>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CSecurityFtdcTraderSpi</span>
 <span class="p">{</span>
-<span class="nl">public:</span>
+<span class="k">public</span><span class="o">:</span>
     <span class="c1">///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。</span>
     <span class="k">virtual</span> <span class="kt">void</span> <span class="n">OnFrontConnected</span><span class="p">(){};</span>
 
@@ -342,9 +342,9 @@
 </li>
 </ol>
 <h4>CSecurityFtdcTraderApi</h4>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">TRADER_API_EXPORT</span> <span class="n">CSecurityFtdcTraderApi</span>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TRADER_API_EXPORT</span> <span class="n">CSecurityFtdcTraderApi</span>
 <span class="p">{</span>
-<span class="nl">public:</span>
+<span class="k">public</span><span class="o">:</span>
     <span class="c1">///创建TraderApi</span>
     <span class="c1">///@param pszFlowPath 存贮订阅信息文件的目录，默认为当前目录</span>
     <span class="c1">///@return 创建出的UserApi</span>

@@ -265,13 +265,13 @@
 <p>首先需要有一个CTP的仿真或者实盘账户，本着对自己钱包负责的态度，我建议新手从仿真账户开始，可以在<a href="http://simnow.com.cn/">SimNow</a>官网注册，完成后记好账号和密码。</p>
 <p>然后前往<a href="http://simnow.com.cn/">该页面</a>查询SimNow的服务器地址和经纪商编码（BrokerID），Trade Front对应交易服务器地址，Market Front对应行情服务器地址，从标准CTP的服务器中选一个就可以。</p>
 <p>使用代码编辑器（如Sublime Text、VS Code等，不要用WingIDE之类的IDE，可能有文本编码问题）打开vn.trader/ctpGateway文件夹下的CTP_connect.json，可以看到如下内容：</p>
-<div class="highlight"><pre><span class="p">{</span>
-    <span class="s">&quot;brokerID&quot;</span><span class="o">:</span> <span class="s">&quot;9999&quot;</span><span class="p">,</span> 
-    <span class="s">&quot;tdAddress&quot;</span><span class="o">:</span> <span class="s">&quot;tcp://180.168.146.187:10000&quot;</span><span class="p">,</span> 
-    <span class="s">&quot;password&quot;</span><span class="o">:</span> <span class="s">&quot;simnow申请&quot;</span><span class="p">,</span> 
-    <span class="s">&quot;mdAddress&quot;</span><span class="o">:</span> <span class="s">&quot;tcp://180.168.212.228:41213&quot;</span><span class="p">,</span> 
-    <span class="s">&quot;userID&quot;</span><span class="o">:</span> <span class="s">&quot;simnow申请&quot;</span>
-<span class="p">}</span>
+<div class="highlight"><pre><span></span>{
+    &quot;brokerID&quot;: &quot;9999&quot;, 
+    &quot;tdAddress&quot;: &quot;tcp://180.168.146.187:10000&quot;, 
+    &quot;password&quot;: &quot;simnow申请&quot;, 
+    &quot;mdAddress&quot;: &quot;tcp://180.168.212.228:41213&quot;, 
+    &quot;userID&quot;: &quot;simnow申请&quot;
+}
 </pre></div>
 
 

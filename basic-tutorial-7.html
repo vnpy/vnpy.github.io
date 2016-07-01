@@ -184,12 +184,12 @@
 <p>日志监控组件主要用于输出程序运行过程中有关当前程序运行状态的信息。</p>
 <p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B7%E6%97%A5%E5%BF%97.jpg" /></p>
 <p>整个实现代码如下：</p>
-<div class="highlight"><pre><span class="c">########################################################################</span>
+<div class="highlight"><pre><span></span><span class="c1">########################################################################</span>
 <span class="k">class</span> <span class="nc">LogMonitor</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidget</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;用于显示日志&quot;&quot;&quot;</span>
     <span class="n">signal</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">Event</span><span class="p">()))</span>
 
-    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eventEngine</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">LogMonitor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
@@ -198,45 +198,45 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">initUi</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">registerEvent</span><span class="p">()</span>
 
-    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">initUi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;初始化界面&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s">u&#39;日志&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s1">u&#39;日志&#39;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>                     
-        <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">([</span><span class="s">u&#39;时间&#39;</span><span class="p">,</span> <span class="s">u&#39;日志&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">([</span><span class="s1">u&#39;时间&#39;</span><span class="p">,</span> <span class="s1">u&#39;日志&#39;</span><span class="p">])</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">verticalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>                 <span class="c"># 关闭左边的垂直表头</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setEditTriggers</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidget</span><span class="o">.</span><span class="n">NoEditTriggers</span><span class="p">)</span> <span class="c"># 设为不可编辑状态</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>                 <span class="c1"># 关闭左边的垂直表头</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setEditTriggers</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidget</span><span class="o">.</span><span class="n">NoEditTriggers</span><span class="p">)</span> <span class="c1"># 设为不可编辑状态</span>
 
-        <span class="c"># 自动调整列宽</span>
+        <span class="c1"># 自动调整列宽</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setResizeMode</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QHeaderView</span><span class="o">.</span><span class="n">ResizeToContents</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setResizeMode</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QHeaderView</span><span class="o">.</span><span class="n">Stretch</span><span class="p">)</span>
 
-    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">registerEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;注册事件监听&quot;&quot;&quot;</span>
-        <span class="c"># Qt图形组件的GUI更新必须使用Signal/Slot机制，否则有可能导致程序崩溃</span>
-        <span class="c"># 因此这里先将图形更新函数作为Slot，和信号连接起来</span>
-        <span class="c"># 然后将信号的触发函数注册到事件驱动引擎中</span>
+        <span class="c1"># Qt图形组件的GUI更新必须使用Signal/Slot机制，否则有可能导致程序崩溃</span>
+        <span class="c1"># 因此这里先将图形更新函数作为Slot，和信号连接起来</span>
+        <span class="c1"># 然后将信号的触发函数注册到事件驱动引擎中</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updateLog</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__eventEngine</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">EVENT_LOG</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">emit</span><span class="p">)</span>
 
-    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">updateLog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;更新日志&quot;&quot;&quot;</span>
-        <span class="c"># 获取当前时间和日志内容</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%H:%M:%S&#39;</span><span class="p">,</span><span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()))</span>   
-        <span class="n">log</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">dict_</span><span class="p">[</span><span class="s">&#39;log&#39;</span><span class="p">]</span>
+        <span class="c1"># 获取当前时间和日志内容</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">,</span><span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()))</span>   
+        <span class="n">log</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">dict_</span><span class="p">[</span><span class="s1">&#39;log&#39;</span><span class="p">]</span>
 
-        <span class="c"># 在表格最上方插入一行</span>
+        <span class="c1"># 在表格最上方插入一行</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">insertRow</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
-        <span class="c"># 创建单元格</span>
+        <span class="c1"># 创建单元格</span>
         <span class="n">cellTime</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>    
         <span class="n">cellLog</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">log</span><span class="p">)</span>
 
-        <span class="c"># 将单元格插入表格</span>
+        <span class="c1"># 将单元格插入表格</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">cellTime</span><span class="p">)</span>            
         <span class="bp">self</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cellLog</span><span class="p">)</span>
 </pre></div>
@@ -244,7 +244,7 @@
 
 <p>接下来逐段讲解：</p>
 <p><strong>对象初始化（<strong>init</strong>）</strong></p>
-<div class="highlight"><pre>    <span class="c">#----------------------------------------------------------------------</span>
+<div class="highlight"><pre><span></span>    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eventEngine</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">LogMonitor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
@@ -264,18 +264,18 @@
 </li>
 </ul>
 <p><strong>初始化界面（initUi）</strong></p>
-<div class="highlight"><pre>    <span class="c">#----------------------------------------------------------------------</span>
+<div class="highlight"><pre><span></span>    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">initUi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;初始化界面&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s">u&#39;日志&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s1">u&#39;日志&#39;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>                     
-        <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">([</span><span class="s">u&#39;时间&#39;</span><span class="p">,</span> <span class="s">u&#39;日志&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">([</span><span class="s1">u&#39;时间&#39;</span><span class="p">,</span> <span class="s1">u&#39;日志&#39;</span><span class="p">])</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">verticalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>                 <span class="c"># 关闭左边的垂直表头</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setEditTriggers</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidget</span><span class="o">.</span><span class="n">NoEditTriggers</span><span class="p">)</span> <span class="c"># 设为不可编辑状态</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>                 <span class="c1"># 关闭左边的垂直表头</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setEditTriggers</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidget</span><span class="o">.</span><span class="n">NoEditTriggers</span><span class="p">)</span> <span class="c1"># 设为不可编辑状态</span>
 
-        <span class="c"># 自动调整列宽</span>
+        <span class="c1"># 自动调整列宽</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setResizeMode</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QHeaderView</span><span class="o">.</span><span class="n">ResizeToContents</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setResizeMode</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QHeaderView</span><span class="o">.</span><span class="n">Stretch</span><span class="p">)</span>
 </pre></div>
@@ -312,7 +312,7 @@
 </li>
 <li>
 <p>事件处理线程的工作原理在之前的教程中已经专门介绍过了，这里不再重复，用户只需记住所有Qt GUI组件的事件处理函数，都必须使用一个signal和该函数相连，并且在向事件引擎中注册函数监听时，将该signal的emit方法代替原本的事件处理函数进行注册</p>
-<div class="highlight"><pre><span class="c">########################################################################</span>
+<div class="highlight"><pre><span></span><span class="c1">########################################################################</span>
 <span class="k">class</span> <span class="nc">LogMonitor</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidget</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;用于显示日志&quot;&quot;&quot;</span>
     <span class="n">signal</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">Event</span><span class="p">()))</span>
@@ -325,12 +325,12 @@
 </li>
 <li>
 <p>由于事件驱动引擎在调用监听函数时会传入事件对象本身作为参数，因此在创建signal时需要允许传入一个类型为Event的参数</p>
-<div class="highlight"><pre>    <span class="c">#----------------------------------------------------------------------</span>
+<div class="highlight"><pre><span></span>    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">registerEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;注册事件监听&quot;&quot;&quot;</span>
-        <span class="c"># Qt图形组件的GUI更新必须使用Signal/Slot机制，否则有可能导致程序崩溃</span>
-        <span class="c"># 因此这里先将图形更新函数作为Slot，和信号连接起来</span>
-        <span class="c"># 然后将信号的触发函数注册到事件驱动引擎中</span>
+        <span class="c1"># Qt图形组件的GUI更新必须使用Signal/Slot机制，否则有可能导致程序崩溃</span>
+        <span class="c1"># 因此这里先将图形更新函数作为Slot，和信号连接起来</span>
+        <span class="c1"># 然后将信号的触发函数注册到事件驱动引擎中</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updateLog</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__eventEngine</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">EVENT_LOG</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">emit</span><span class="p">)</span>
 </pre></div>
@@ -345,21 +345,21 @@
 </li>
 </ol>
 <p><strong>更新日志记录（updateLog）</strong></p>
-<div class="highlight"><pre>    <span class="c">#----------------------------------------------------------------------</span>
+<div class="highlight"><pre><span></span>    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">updateLog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;更新日志&quot;&quot;&quot;</span>
-        <span class="c"># 获取当前时间和日志内容</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%H:%M:%S&#39;</span><span class="p">,</span><span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()))</span>   
-        <span class="n">log</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">dict_</span><span class="p">[</span><span class="s">&#39;log&#39;</span><span class="p">]</span>
+        <span class="c1"># 获取当前时间和日志内容</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">,</span><span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()))</span>   
+        <span class="n">log</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">dict_</span><span class="p">[</span><span class="s1">&#39;log&#39;</span><span class="p">]</span>
 
-        <span class="c"># 在表格最上方插入一行</span>
+        <span class="c1"># 在表格最上方插入一行</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">insertRow</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
-        <span class="c"># 创建单元格</span>
+        <span class="c1"># 创建单元格</span>
         <span class="n">cellTime</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>    
         <span class="n">cellLog</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">log</span><span class="p">)</span>
 
-        <span class="c"># 将单元格插入表格</span>
+        <span class="c1"># 将单元格插入表格</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">cellTime</span><span class="p">)</span>            
         <span class="bp">self</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cellLog</span><span class="p">)</span>
 </pre></div>

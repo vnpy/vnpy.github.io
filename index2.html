@@ -140,17 +140,17 @@
 <a href="https://github.com/vnpy/vnpy/tree/master/vn.demo/ltsdemo">https://github.com/vnpy/vnpy/tree/master/vn.demo/ltsdemo</a></p>
 <h2>中层引擎设计</h2>
 <h3>构造函数</h3>
-<div class="highlight"><pre><span class="c">########################################################################</span>
+<div class="highlight"><pre><span></span><span class="c1">########################################################################</span>
 <span class="k">class</span> <span class="nc">MainEngine</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;主引擎，负责对API的调度&quot;&quot;&quot;</span>
 
-    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ee</span> <span class="o">=</span> <span class="n">EventEngine</span><span class="p">()</span>         <span class="c"># 创建事件驱动引擎</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ee</span> <span class="o">=</span> <span class="n">EventEngine</span><span class="p">()</span>         <span class="c1"># 创建事件驱动引擎</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">md</span> <span class="o">=</span> <span class="n">DemoMdApi</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ee</span><span class="p">)</span>    <span class="c"># 创建API接口</span>
-        <span class="c">#self.md = DemoL2Api(self.ee)   # 如果使用L2行情就改为这行</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">md</span> <span class="o">=</span> <span class="n">DemoMdApi</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ee</span><span class="p">)</span>    <span class="c1"># 创建API接口</span>
+        <span class="c1">#self.md = DemoL2Api(self.ee)   # 如果使用L2行情就改为这行</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">td</span> <span class="o">=</span> <span class="n">DemoTdApi ...</span></pre></div>
                     <a class="btn btn-default btn-xs" href="/basic-tutorial-6.html">more ...</a>
                 </div>

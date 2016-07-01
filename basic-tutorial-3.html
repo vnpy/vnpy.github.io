@@ -170,7 +170,7 @@
 <p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3vs%20cmd.jpg" /></p>
 <p>打开后的窗口就是个cmd命令窗口，接下来我们需要在其中敲入一些命令。</p>
 <p>记得我们之前Boost库放在了D:\boost_1_57_0这个文件夹下，首先我们要切换到这个文件夹，逐行输入以下命令，输完后记得回车：</p>
-<div class="highlight"><pre><span class="n">d</span><span class="o">:</span>
+<div class="highlight"><pre><span></span><span class="n">d</span><span class="o">:</span>
 
 <span class="n">cd</span><span class="o">\</span><span class="n">boost_1_57_0</span>
 </pre></div>
@@ -180,7 +180,7 @@
 <img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3boost%20cmd.jpg" /></p>
 <h3>booststrap.bat</h3>
 <p>然后输入以下内容，用于生成b2.exe文件：</p>
-<div class="highlight"><pre><span class="n">bootstrap</span><span class="p">.</span><span class="n">bat</span>
+<div class="highlight"><pre><span></span>bootstrap.bat
 </pre></div>
 
 
@@ -188,7 +188,7 @@
 <p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3bootstrap.jpg" /></p>
 <h3>b2.exe</h3>
 <p>接下来编译boost库，--toolset=msvc-12.0是因为作者使用的是VS2013, --build-type=complete编译整个boost库，因为项目中不止用到boost.python：</p>
-<div class="highlight"><pre><span class="n">b2</span> <span class="o">--</span><span class="n">toolset</span><span class="o">=</span><span class="n">msvc</span><span class="o">-</span><span class="mf">12.0</span> <span class="o">--</span><span class="n">build</span><span class="o">-</span><span class="n">type</span><span class="o">=</span><span class="n">complete</span>
+<div class="highlight"><pre><span></span>b2 --toolset=msvc-12.0 --build-type=complete
 </pre></div>
 
 
@@ -239,15 +239,15 @@
 <p>都设置完了记得点“确定”，不然又得重弄一遍。</p>
 <h3>编译</h3>
 <p>终于完成了繁琐的项目创建和配置，此时按下F7，VS就会开始自动编译创建项目。显示如下内容说明编译成功：</p>
-<div class="highlight"><pre><span class="mi">1</span><span class="o">&gt;------</span> <span class="err">已启动生成</span><span class="o">:</span>  <span class="err">项目</span><span class="o">:</span> <span class="n">vnltsmd</span><span class="p">,</span> <span class="err">配置</span><span class="o">:</span> <span class="n">Release</span> <span class="n">Win32</span> <span class="o">------</span>
-<span class="mi">1</span><span class="o">&gt;</span>  <span class="n">dllmain</span><span class="p">.</span><span class="n">cpp</span>
-<span class="mi">1</span><span class="o">&gt;</span>  <span class="n">stdafx</span><span class="p">.</span><span class="n">cpp</span>
-<span class="mi">1</span><span class="o">&gt;</span>  <span class="n">vnltsmd</span><span class="p">.</span><span class="n">cpp</span>
-<span class="mi">1</span><span class="o">&gt;</span>     <span class="err">正在创建库</span> <span class="n">D</span><span class="o">:</span><span class="err">\</span><span class="n">vnltsmd</span><span class="err">\</span><span class="n">Release</span><span class="err">\</span><span class="n">vnltsmd</span><span class="p">.</span><span class="n">lib</span> <span class="err">和对象</span> <span class="n">D</span><span class="o">:</span><span class="err">\</span><span class="n">vnltsmd</span><span class="err">\</span><span class="n">Release</span><span class="err">\</span><span class="n">vnltsmd</span><span class="p">.</span><span class="n">exp</span>
-<span class="mi">1</span><span class="o">&gt;</span>  <span class="err">正在生成代码</span>
-<span class="mi">1</span><span class="o">&gt;</span>  <span class="err">已完成代码的生成</span>
-<span class="mi">1</span><span class="o">&gt;</span>  <span class="n">vnltsmd</span><span class="p">.</span><span class="n">vcxproj</span> <span class="o">-&gt;</span> <span class="n">D</span><span class="o">:</span><span class="err">\</span><span class="n">vnltsmd</span><span class="err">\</span><span class="n">Release</span><span class="err">\</span><span class="n">vnltsmd</span><span class="p">.</span><span class="n">dll</span>
-<span class="o">==========</span> <span class="err">生成</span><span class="o">:</span>  <span class="err">成功</span> <span class="mi">1</span> <span class="err">个，失败</span> <span class="mi">0</span> <span class="err">个，最新</span> <span class="mi">0</span> <span class="err">个，跳过</span> <span class="mi">0</span> <span class="err">个</span> <span class="o">==========</span>
+<div class="highlight"><pre><span></span>1&gt;------ 已启动生成:  项目: vnltsmd, 配置: Release Win32 ------
+1&gt;  dllmain.cpp
+1&gt;  stdafx.cpp
+1&gt;  vnltsmd.cpp
+1&gt;     正在创建库 D:\vnltsmd\Release\vnltsmd.lib 和对象 D:\vnltsmd\Release\vnltsmd.exp
+1&gt;  正在生成代码
+1&gt;  已完成代码的生成
+1&gt;  vnltsmd.vcxproj -&gt; D:\vnltsmd\Release\vnltsmd.dll
+========== 生成:  成功 1 个，失败 0 个，最新 0 个，跳过 0 个 ==========
 </pre></div>
 
 

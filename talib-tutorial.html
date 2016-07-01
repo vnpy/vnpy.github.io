@@ -193,7 +193,7 @@
 <p>一定要尝试自己编译的用户，可以根据<a href="http://mrjbq7.github.io/ta-lib/install.html">该项目的网站</a>上的教程来安装。作者的两台电脑，一台直接安装成功，另一台安装了MinGW的电脑则报GCC编译错误（其实自己编译没有任何意义，感谢加州大学欧文分校打包的whl文件，省去了很多麻烦）。</p>
 <h2>DEMO</h2>
 <p>下面这个策略DEMO可以直接在vn.trader的CTA模块中使用（回测、模拟交易），请不要用于实盘！</p>
-<div class="highlight"><pre><span class="c"># encoding: UTF-8</span>
+<div class="highlight"><pre><span></span><span class="c1"># encoding: UTF-8</span>
 
 <span class="kn">import</span> <span class="nn">talib</span> <span class="kn">as</span> <span class="nn">ta</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
@@ -202,58 +202,58 @@
 <span class="kn">from</span> <span class="nn">ctaTemplate</span> <span class="kn">import</span> <span class="n">CtaTemplate</span>
 
 
-<span class="c">########################################################################</span>
+<span class="c1">########################################################################</span>
 <span class="k">class</span> <span class="nc">TalibDoubleSmaDemo</span><span class="p">(</span><span class="n">CtaTemplate</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;基于Talib模块的双指数均线策略Demo&quot;&quot;&quot;</span>
 
-    <span class="n">className</span> <span class="o">=</span> <span class="s">&#39;TalibDoubleSmaDemo&#39;</span>
-    <span class="n">author</span> <span class="o">=</span> <span class="s">u&#39;ideaplat&#39;</span>
+    <span class="n">className</span> <span class="o">=</span> <span class="s1">&#39;TalibDoubleSmaDemo&#39;</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="s1">u&#39;ideaplat&#39;</span>
 
-    <span class="c"># 策略参数</span>
-    <span class="n">fastPeriod</span> <span class="o">=</span> <span class="mi">5</span>      <span class="c"># 快速均线参数</span>
-    <span class="n">slowPeriod</span> <span class="o">=</span> <span class="mi">20</span>     <span class="c"># 慢速均线参数</span>
-    <span class="n">initDays</span> <span class="o">=</span> <span class="mi">5</span>        <span class="c"># 初始化数据所用的天数</span>
+    <span class="c1"># 策略参数</span>
+    <span class="n">fastPeriod</span> <span class="o">=</span> <span class="mi">5</span>      <span class="c1"># 快速均线参数</span>
+    <span class="n">slowPeriod</span> <span class="o">=</span> <span class="mi">20</span>     <span class="c1"># 慢速均线参数</span>
+    <span class="n">initDays</span> <span class="o">=</span> <span class="mi">5</span>        <span class="c1"># 初始化数据所用的天数</span>
 
-    <span class="c"># 策略变量</span>
+    <span class="c1"># 策略变量</span>
     <span class="n">bar</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="n">barMinute</span> <span class="o">=</span> <span class="n">EMPTY_STRING</span>
 
-    <span class="n">closeHistory</span> <span class="o">=</span> <span class="p">[]</span>       <span class="c"># 缓存K线收盘价的数组</span>
-    <span class="n">maxHistory</span> <span class="o">=</span> <span class="mi">50</span>         <span class="c"># 最大缓存数量</span>
+    <span class="n">closeHistory</span> <span class="o">=</span> <span class="p">[]</span>       <span class="c1"># 缓存K线收盘价的数组</span>
+    <span class="n">maxHistory</span> <span class="o">=</span> <span class="mi">50</span>         <span class="c1"># 最大缓存数量</span>
 
-    <span class="n">fastMa0</span> <span class="o">=</span> <span class="n">EMPTY_FLOAT</span>   <span class="c"># 当前最新的快速均线数值</span>
-    <span class="n">fastMa1</span> <span class="o">=</span> <span class="n">EMPTY_FLOAT</span>   <span class="c"># 上一根的快速均线数值</span>
+    <span class="n">fastMa0</span> <span class="o">=</span> <span class="n">EMPTY_FLOAT</span>   <span class="c1"># 当前最新的快速均线数值</span>
+    <span class="n">fastMa1</span> <span class="o">=</span> <span class="n">EMPTY_FLOAT</span>   <span class="c1"># 上一根的快速均线数值</span>
 
-    <span class="n">slowMa0</span> <span class="o">=</span> <span class="n">EMPTY_FLOAT</span>   <span class="c"># 慢速均线数值</span>
+    <span class="n">slowMa0</span> <span class="o">=</span> <span class="n">EMPTY_FLOAT</span>   <span class="c1"># 慢速均线数值</span>
     <span class="n">slowMa1</span> <span class="o">=</span> <span class="n">EMPTY_FLOAT</span>
 
 
-    <span class="c"># 参数列表，保存了参数的名称</span>
-    <span class="n">paramList</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">,</span>
-                 <span class="s">&#39;className&#39;</span><span class="p">,</span>
-                 <span class="s">&#39;author&#39;</span><span class="p">,</span>
-                 <span class="s">&#39;vtSymbol&#39;</span><span class="p">,</span>
-                 <span class="s">&#39;fastPeriod&#39;</span><span class="p">,</span>
-                 <span class="s">&#39;slowPeriod&#39;</span><span class="p">]</span>
+    <span class="c1"># 参数列表，保存了参数的名称</span>
+    <span class="n">paramList</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;className&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;author&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;vtSymbol&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;fastPeriod&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;slowPeriod&#39;</span><span class="p">]</span>
 
-    <span class="c"># 变量列表，保存了变量的名称</span>
-    <span class="n">varList</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;inited&#39;</span><span class="p">,</span>
-               <span class="s">&#39;trading&#39;</span><span class="p">,</span>
-               <span class="s">&#39;pos&#39;</span><span class="p">,</span>
-               <span class="s">&#39;fastMa0&#39;</span><span class="p">,</span>
-               <span class="s">&#39;fastMa1&#39;</span><span class="p">,</span>
-               <span class="s">&#39;slowMa0&#39;</span><span class="p">,</span>
-               <span class="s">&#39;slowMa1&#39;</span><span class="p">]</span>
+    <span class="c1"># 变量列表，保存了变量的名称</span>
+    <span class="n">varList</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;inited&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;trading&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;pos&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;fastMa0&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;fastMa1&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;slowMa0&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;slowMa1&#39;</span><span class="p">]</span>
 
-    <span class="c"># ----------------------------------------------------------------------</span>
+    <span class="c1"># ----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctaEngine</span><span class="p">,</span> <span class="n">setting</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">TalibDoubleSmaDemo</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">ctaEngine</span><span class="p">,</span> <span class="n">setting</span><span class="p">)</span>
 
-    <span class="c"># ----------------------------------------------------------------------</span>
+    <span class="c1"># ----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">onInit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;初始化策略（必须由用户继承实现）&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">writeCtaLog</span><span class="p">(</span><span class="s">u&#39;双SMA演示策略初始化&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writeCtaLog</span><span class="p">(</span><span class="s1">u&#39;双SMA演示策略初始化&#39;</span><span class="p">)</span>
 
         <span class="n">initData</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initDays</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">bar</span> <span class="ow">in</span> <span class="n">initData</span><span class="p">:</span>
@@ -261,22 +261,22 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">putEvent</span><span class="p">()</span>
 
-    <span class="c"># ----------------------------------------------------------------------</span>
+    <span class="c1"># ----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">onStart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;启动策略（必须由用户继承实现）&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">writeCtaLog</span><span class="p">(</span><span class="s">u&#39;双SMA演示策略启动&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writeCtaLog</span><span class="p">(</span><span class="s1">u&#39;双SMA演示策略启动&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">putEvent</span><span class="p">()</span>
 
-    <span class="c"># ----------------------------------------------------------------------</span>
+    <span class="c1"># ----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">onStop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;停止策略（必须由用户继承实现）&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">writeCtaLog</span><span class="p">(</span><span class="s">u&#39;双SMA演示策略停止&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writeCtaLog</span><span class="p">(</span><span class="s1">u&#39;双SMA演示策略停止&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">putEvent</span><span class="p">()</span>
 
-    <span class="c"># ----------------------------------------------------------------------</span>
+    <span class="c1"># ----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">onTick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tick</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;收到行情TICK推送（必须由用户继承实现）&quot;&quot;&quot;</span>
-        <span class="c"># 计算K线</span>
+        <span class="c1"># 计算K线</span>
         <span class="n">tickMinute</span> <span class="o">=</span> <span class="n">tick</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">minute</span>
 
         <span class="k">if</span> <span class="n">tickMinute</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">barMinute</span><span class="p">:</span>
@@ -295,61 +295,61 @@
 
             <span class="n">bar</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">tick</span><span class="o">.</span><span class="n">date</span>
             <span class="n">bar</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">tick</span><span class="o">.</span><span class="n">time</span>
-            <span class="n">bar</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="n">tick</span><span class="o">.</span><span class="n">datetime</span>  <span class="c"># K线的时间设为第一个Tick的时间</span>
+            <span class="n">bar</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="n">tick</span><span class="o">.</span><span class="n">datetime</span>  <span class="c1"># K线的时间设为第一个Tick的时间</span>
 
-            <span class="c"># 实盘中用不到的数据可以选择不算，从而加快速度</span>
-            <span class="c"># bar.volume = tick.volume</span>
-            <span class="c"># bar.openInterest = tick.openInterest</span>
+            <span class="c1"># 实盘中用不到的数据可以选择不算，从而加快速度</span>
+            <span class="c1"># bar.volume = tick.volume</span>
+            <span class="c1"># bar.openInterest = tick.openInterest</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="n">bar</span>  <span class="c"># 这种写法为了减少一层访问，加快速度</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">barMinute</span> <span class="o">=</span> <span class="n">tickMinute</span>  <span class="c"># 更新当前的分钟</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="n">bar</span>  <span class="c1"># 这种写法为了减少一层访问，加快速度</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">barMinute</span> <span class="o">=</span> <span class="n">tickMinute</span>  <span class="c1"># 更新当前的分钟</span>
 
-        <span class="k">else</span><span class="p">:</span>  <span class="c"># 否则继续累加新的K线</span>
-            <span class="n">bar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bar</span>  <span class="c"># 写法同样为了加快速度</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># 否则继续累加新的K线</span>
+            <span class="n">bar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bar</span>  <span class="c1"># 写法同样为了加快速度</span>
 
             <span class="n">bar</span><span class="o">.</span><span class="n">high</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">high</span><span class="p">,</span> <span class="n">tick</span><span class="o">.</span><span class="n">lastPrice</span><span class="p">)</span>
             <span class="n">bar</span><span class="o">.</span><span class="n">low</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">low</span><span class="p">,</span> <span class="n">tick</span><span class="o">.</span><span class="n">lastPrice</span><span class="p">)</span>
             <span class="n">bar</span><span class="o">.</span><span class="n">close</span> <span class="o">=</span> <span class="n">tick</span><span class="o">.</span><span class="n">lastPrice</span>
 
-    <span class="c"># ----------------------------------------------------------------------</span>
+    <span class="c1"># ----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">onBar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bar</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;收到Bar推送（必须由用户继承实现）&quot;&quot;&quot;</span>
-        <span class="c"># 把最新的收盘价缓存到列表中</span>
+        <span class="c1"># 把最新的收盘价缓存到列表中</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">closeHistory</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">close</span><span class="p">)</span>
 
-        <span class="c"># 检查列表长度，如果超过缓存上限则移除最老的数据</span>
-        <span class="c"># 这样是为了减少计算用的数据量，提高速度</span>
+        <span class="c1"># 检查列表长度，如果超过缓存上限则移除最老的数据</span>
+        <span class="c1"># 这样是为了减少计算用的数据量，提高速度</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">closeHistory</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxHistory</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">closeHistory</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="c"># 如果小于缓存上限，则说明初始化数据尚未足够，不进行后续计算</span>
+        <span class="c1"># 如果小于缓存上限，则说明初始化数据尚未足够，不进行后续计算</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="c"># 将缓存的收盘价数转化为numpy数组后，传入talib的函数SMA中计算</span>
+        <span class="c1"># 将缓存的收盘价数转化为numpy数组后，传入talib的函数SMA中计算</span>
         <span class="n">closeArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">closeHistory</span><span class="p">)</span>
         <span class="n">fastSMA</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">SMA</span><span class="p">(</span><span class="n">closeArray</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fastPeriod</span><span class="p">)</span>
         <span class="n">slowSMA</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">SMA</span><span class="p">(</span><span class="n">closeArray</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slowPeriod</span><span class="p">)</span>
 
-        <span class="c"># 读取当前K线和上一根K线的数值，用于判断均线交叉</span>
+        <span class="c1"># 读取当前K线和上一根K线的数值，用于判断均线交叉</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fastMa0</span> <span class="o">=</span> <span class="n">fastSMA</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fastMa1</span> <span class="o">=</span> <span class="n">fastSMA</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slowMa0</span> <span class="o">=</span> <span class="n">slowSMA</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slowMa1</span> <span class="o">=</span> <span class="n">slowSMA</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
 
-        <span class="c"># 判断买卖</span>
-        <span class="n">crossOver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fastMa0</span><span class="o">&gt;</span><span class="bp">self</span><span class="o">.</span><span class="n">slowMa0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">fastMa1</span><span class="o">&lt;</span><span class="bp">self</span><span class="o">.</span><span class="n">slowMa1</span>     <span class="c"># 金叉上穿</span>
-        <span class="n">crossBelow</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fastMa0</span><span class="o">&lt;</span><span class="bp">self</span><span class="o">.</span><span class="n">slowMa0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">fastMa1</span><span class="o">&gt;</span><span class="bp">self</span><span class="o">.</span><span class="n">slowMa1</span>    <span class="c"># 死叉下穿</span>
+        <span class="c1"># 判断买卖</span>
+        <span class="n">crossOver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fastMa0</span><span class="o">&gt;</span><span class="bp">self</span><span class="o">.</span><span class="n">slowMa0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">fastMa1</span><span class="o">&lt;</span><span class="bp">self</span><span class="o">.</span><span class="n">slowMa1</span>     <span class="c1"># 金叉上穿</span>
+        <span class="n">crossBelow</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fastMa0</span><span class="o">&lt;</span><span class="bp">self</span><span class="o">.</span><span class="n">slowMa0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">fastMa1</span><span class="o">&gt;</span><span class="bp">self</span><span class="o">.</span><span class="n">slowMa1</span>    <span class="c1"># 死叉下穿</span>
 
-        <span class="c"># 金叉和死叉的条件是互斥</span>
+        <span class="c1"># 金叉和死叉的条件是互斥</span>
         <span class="k">if</span> <span class="n">crossOver</span><span class="p">:</span>
-            <span class="c"># 如果金叉时手头没有持仓，则直接做多</span>
+            <span class="c1"># 如果金叉时手头没有持仓，则直接做多</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">buy</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="c"># 如果有空头持仓，则先平空，再做多</span>
+            <span class="c1"># 如果有空头持仓，则先平空，再做多</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">cover</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">buy</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="c"># 死叉和金叉相反</span>
+        <span class="c1"># 死叉和金叉相反</span>
         <span class="k">elif</span> <span class="n">crossBelow</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">short</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -357,19 +357,19 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">sell</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">short</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-        <span class="c"># 发出状态更新事件</span>
+        <span class="c1"># 发出状态更新事件</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">putEvent</span><span class="p">()</span>
 
-    <span class="c"># ----------------------------------------------------------------------</span>
+    <span class="c1"># ----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">onOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;收到委托变化推送（必须由用户继承实现）&quot;&quot;&quot;</span>
-        <span class="c"># 对于无需做细粒度委托控制的策略，可以忽略onOrder</span>
+        <span class="c1"># 对于无需做细粒度委托控制的策略，可以忽略onOrder</span>
         <span class="k">pass</span>
 
-    <span class="c"># ----------------------------------------------------------------------</span>
+    <span class="c1"># ----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">onTrade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trade</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;收到成交推送（必须由用户继承实现）&quot;&quot;&quot;</span>
-        <span class="c"># 对于无需做细粒度委托控制的策略，可以忽略onOrder</span>
+        <span class="c1"># 对于无需做细粒度委托控制的策略，可以忽略onOrder</span>
         <span class="k">pass</span>
 </pre></div>
 

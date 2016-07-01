@@ -153,28 +153,28 @@
 <p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E8%A1%8C%E6%83%85%E6%95%B0%E6%8D%AE%E8%AE%B0%E5%BD%95.JPG" /></p>
 <p>行情数据收集模块位于vn.trader/dataRecorder文件夹下，该模块主要用于收集每天的实盘Tick数据，并自动聚合为K线后插入到MongoDB数据库中，模块内置了1分钟K线的聚合算法。点击菜单栏的功能-&gt;行情数据记录后可以打开如上图所示的界面，查看目前正在收集的行情数据内容（不开也没关系，数据收集会自动在后台运行）。</p>
 <p>该模块的配置基于DR_setting.json文件，打开后如下：</p>
-<div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;working&quot;</span><span class="o">:</span> <span class="n">false</span><span class="o">,</span>
+<div class="highlight"><pre><span></span>{
+    &quot;working&quot;: false,
 
-    <span class="s2">&quot;tick&quot;</span><span class="o">:</span>
-    <span class="cp">[</span>
-        <span class="err">[</span><span class="s2">&quot;Au(T+D)&quot;</span><span class="p">,</span> <span class="s2">&quot;SGIT&quot;</span><span class="cp">]</span><span class="o">,</span>
-        <span class="cp">[</span><span class="s2">&quot;Ag(T+D)&quot;</span><span class="p">,</span> <span class="s2">&quot;SGIT&quot;</span><span class="cp">]</span>
-    <span class="p">]</span><span class="o">,</span>
+    &quot;tick&quot;:
+    [
+        [&quot;Au(T+D)&quot;, &quot;SGIT&quot;],
+        [&quot;Ag(T+D)&quot;, &quot;SGIT&quot;]
+    ],
 
-    <span class="s2">&quot;bar&quot;</span><span class="o">:</span>
-    <span class="cp">[</span>
-        <span class="err">[</span><span class="s2">&quot;au1606&quot;</span><span class="p">,</span> <span class="s2">&quot;CTP&quot;</span><span class="cp">]</span><span class="o">,</span>
-        <span class="cp">[</span><span class="s2">&quot;ag1606&quot;</span><span class="p">,</span> <span class="s2">&quot;CTP&quot;</span><span class="cp">]</span>
-    <span class="p">]</span><span class="o">,</span>
+    &quot;bar&quot;:
+    [
+        [&quot;au1606&quot;, &quot;CTP&quot;],
+        [&quot;ag1606&quot;, &quot;CTP&quot;]
+    ],
 
-    <span class="s2">&quot;active&quot;</span><span class="o">:</span>
-    <span class="err">{</span>
-        <span class="s2">&quot;IF0000&quot;</span><span class="o">:</span> <span class="s2">&quot;IF1605&quot;</span><span class="o">,</span>
-        <span class="s2">&quot;IH0000&quot;</span><span class="o">:</span> <span class="s2">&quot;IH1605&quot;</span><span class="o">,</span>
-        <span class="s2">&quot;IC0000&quot;</span><span class="o">:</span> <span class="s2">&quot;IC1605&quot;</span>
-    <span class="p">}</span>
-<span class="err">}</span>
+    &quot;active&quot;:
+    {
+        &quot;IF0000&quot;: &quot;IF1605&quot;,
+        &quot;IH0000&quot;: &quot;IH1605&quot;,
+        &quot;IC0000&quot;: &quot;IC1605&quot;
+    }
+}
 </pre></div>
 
 

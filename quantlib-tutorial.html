@@ -265,7 +265,7 @@
 </li>
 <li>
 <p>编译安装QuantLib，打开cmd，切换到D盘（输入D:，因为上面的所有文件夹都在D盘），点击窗口左上角的图标，选择“编辑-&gt;粘贴“，将下方的批处理命令复制到cmd中运行（可以一次性全部复制，也可以逐行复制运行，注意全部复制时，若运行到某一步卡住，可以尝试按回车执行这一步的命令）：</p>
-<div class="highlight"><pre>REM 这里使用的是VS2013
+<div class="highlight"><pre><span></span>REM 这里使用的是VS2013
 
 REM 打开VS命令行工具来设置编译所需的环境变量
 <span class="s2">&quot;%VS120COMNTOOLS%\VsDevCmd.bat&quot;</span>
@@ -274,9 +274,9 @@ REM 切换到QuantLib代码所在的文件夹
 <span class="nb">cd</span> %QL_DIR%
 
 REM 把boost库添加到include和library路径中，并且指定VSC+<span class="o">=</span>使用这些路径
-<span class="nb">set </span><span class="nv">INCLUDE</span><span class="o">=</span>%myboost%;%INCLUDE%
-<span class="nb">set </span><span class="nv">LIB</span><span class="o">=</span>%myboost%<span class="se">\l</span>ib32-msvc-12.0;%LIB%
-<span class="nb">set </span><span class="nv">UseEnv</span><span class="o">=</span><span class="nb">true</span>
+<span class="nb">set</span> <span class="nv">INCLUDE</span><span class="o">=</span>%myboost%<span class="p">;</span>%INCLUDE%
+<span class="nb">set</span> <span class="nv">LIB</span><span class="o">=</span>%myboost%<span class="se">\l</span>ib32-msvc-12.0<span class="p">;</span>%LIB%
+<span class="nb">set</span> <span class="nv">UseEnv</span><span class="o">=</span><span class="nb">true</span>
 
 REM 使用msbuild来编译QuantLib
 REM 这个要花一段时间（几十分钟到若干小时）
@@ -287,9 +287,9 @@ msbuild /p:AdditionalLibPaths<span class="o">=</span><span class="s2">&quot;%myb
 </li>
 <li>
 <p>编译安装QuantLib-SWIG，将下方的批处理命令复制到cmd中运行（运行方法和上一步相同）：</p>
-<div class="highlight"><pre>REM 把编译工具设置为使用VS2013
-<span class="nb">set </span><span class="nv">VS100COMNTOOLS</span><span class="o">=</span>%VS120COMNTOOLS%
-<span class="nb">set </span><span class="nv">VS90COMNTOOLS</span><span class="o">=</span>%VS120COMNTOOLS%
+<div class="highlight"><pre><span></span>REM 把编译工具设置为使用VS2013
+<span class="nb">set</span> <span class="nv">VS100COMNTOOLS</span><span class="o">=</span>%VS120COMNTOOLS%
+<span class="nb">set</span> <span class="nv">VS90COMNTOOLS</span><span class="o">=</span>%VS120COMNTOOLS%
 
 REM 打开VS命令行工具来设置编译所需的环境变量
 <span class="s2">&quot;%VS120COMNTOOLS%\VsDevCmd.bat&quot;</span>
@@ -299,12 +299,12 @@ REM 切换到QuantLib-SWIG下面的Python文件夹下
 
 REM 创建setup.cfg
 <span class="nb">echo</span> <span class="o">[</span>build<span class="o">]</span> &gt; setup.cfg
-<span class="nb">echo </span><span class="nv">compiler</span><span class="o">=</span>msvc &gt;&gt; setup.cfg
+<span class="nb">echo</span> <span class="nv">compiler</span><span class="o">=</span>msvc &gt;&gt; setup.cfg
 
 REM 设置路径和环境变量
-<span class="nb">set </span><span class="nv">PATH</span><span class="o">=</span>%myanaconda%;%myanaconda%<span class="se">\s</span>cripts;%myswig%;%PATH%
-<span class="nb">set </span><span class="nv">INCLUDE</span><span class="o">=</span>%myboost%;%INCLUDE%
-<span class="nb">set </span><span class="nv">LIB</span><span class="o">=</span>%myboost%<span class="se">\l</span>ib32-msvc-12.0;%LIB%
+<span class="nb">set</span> <span class="nv">PATH</span><span class="o">=</span>%myanaconda%<span class="p">;</span>%myanaconda%<span class="se">\s</span>cripts<span class="p">;</span>%myswig%<span class="p">;</span>%PATH%
+<span class="nb">set</span> <span class="nv">INCLUDE</span><span class="o">=</span>%myboost%<span class="p">;</span>%INCLUDE%
+<span class="nb">set</span> <span class="nv">LIB</span><span class="o">=</span>%myboost%<span class="se">\l</span>ib32-msvc-12.0<span class="p">;</span>%LIB%
 
 REM 编译QuantLib-SWIG的Python接口
 REM 只有当swig的.i文件发生变化时，才需要先执行wrap命令

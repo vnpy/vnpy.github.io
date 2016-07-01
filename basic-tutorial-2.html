@@ -203,15 +203,15 @@
 <h2>Python API的结构设计</h2>
 <p>这里使用行情API作为示例。</p>
 <p>...表示省略的代码。</p>
-<div class="highlight"><pre><span class="c1">//API的继承实现</span>
+<div class="highlight"><pre><span></span><span class="c1">//API的继承实现</span>
 <span class="k">class</span> <span class="nc">MdApi</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CSecurityFtdcMdSpi</span>
 <span class="p">{</span>
-<span class="nl">private:</span>
+<span class="k">private</span><span class="o">:</span>
     <span class="n">CSecurityFtdcMdApi</span><span class="o">*</span> <span class="n">api</span><span class="p">;</span>            <span class="c1">//API对象</span>
     <span class="kr">thread</span> <span class="o">*</span><span class="n">task_thread</span><span class="p">;</span>                <span class="c1">//工作线程指针（向python中推送数据）</span>
     <span class="n">ConcurrentQueue</span><span class="o">&lt;</span><span class="n">Task</span><span class="o">&gt;</span> <span class="n">task_queue</span><span class="p">;</span>   <span class="c1">//任务队列</span>
 
-<span class="nl">public:</span>
+<span class="k">public</span><span class="o">:</span>
     <span class="n">MdApi</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="n">function0</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">boost</span><span class="o">::</span><span class="n">bind</span><span class="p">(</span><span class="o">&amp;</span><span class="n">MdApi</span><span class="o">::</span><span class="n">processTask</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
@@ -297,7 +297,7 @@
 <h2>Python API的函数实现</h2>
 <p>仍然使用之前的示例进行函数实现的讲解，包括MdApi的构造、析构函数，主动函数（reqUserLogin等），原生API回调函数（OnRspUserLogin等）和任务处理函数（processTask和processRspUserLogin等）。</p>
 <h3>构造、析构函数</h3>
-<div class="highlight"><pre><span class="n">MdApi</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><span class="n">MdApi</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="n">function0</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">boost</span><span class="o">::</span><span class="n">bind</span><span class="p">(</span><span class="o">&amp;</span><span class="n">MdApi</span><span class="o">::</span><span class="n">processTask</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
     <span class="kr">thread</span> <span class="nf">t</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
@@ -314,7 +314,7 @@
 <p>构造函数中仅包含了创建一个工作函数为processTask的工作线程，并将该线程的指针绑定到task_thread上。</p>
 <p>析构函数为空，用户在退出前应当主动调用安全退出函数（参见源代码中的exit）。</p>
 <h3>主动函数</h3>
-<div class="highlight"><pre><span class="kt">int</span> <span class="n">MdApi</span><span class="o">::</span><span class="n">reqUserLogin</span><span class="p">(</span><span class="n">dict</span> <span class="n">req</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nRequestID</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">MdApi</span><span class="o">::</span><span class="n">reqUserLogin</span><span class="p">(</span><span class="n">dict</span> <span class="n">req</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nRequestID</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="c1">//创建原生API函数调用需要的结构体</span>
     <span class="n">CSecurityFtdcReqUserLoginField</span> <span class="n">myreq</span> <span class="o">=</span> <span class="n">CSecurityFtdcReqUserLoginField</span><span class="p">();</span>
@@ -355,32 +355,32 @@
         {
             //提取key这个键对应的值，即Python对象o
             object o = d[key];</p>
-<div class="highlight"><pre>        <span class="c1">//生成从o中提取std::string类的提取器</span>
-        <span class="nb">extract</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span> <span class="nx">x</span><span class="p">(</span><span class="nx">o</span><span class="p">);</span>
+<div class="highlight"><pre><span></span>        //生成从o中提取std::string类的提取器
+        extract&lt;string&gt; x(o);
 
-        <span class="c1">//检查提取器是否能提取出数据</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">x.check</span><span class="p">())</span>
-        <span class="p">{</span>
-            <span class="c1">//执行解包器，提取string对象s</span>
-            <span class="kt">string</span> <span class="n">s</span> <span class="o">=</span> <span class="nx">x</span><span class="p">();</span>
+        //检查提取器是否能提取出数据
+        if (x.check())
+        {
+            //执行解包器，提取string对象s
+            string s = x();
 
-            <span class="c1">//从s中获取字符串指针buffer</span>
-            <span class="nx">const</span> <span class="nx">char</span> <span class="o">*</span><span class="n">buffer</span> <span class="o">=</span> <span class="nx">s.c_str</span><span class="p">();</span>
+            //从s中获取字符串指针buffer
+            const char *buffer = s.c_str();
 
-            <span class="c1">//将字符串指针指向的字符串数组复制到结构体成员的指针上</span>
-            <span class="c1">//对字符串指针赋值必须使用strcpy_s, vs2013使用strcpy编译通不过</span>
-            <span class="c1">//+1应该是因为C++字符串的结尾符号？不是特别确定，不加这个1会出错</span>
-            <span class="nx">strcpy_s</span><span class="p">(</span><span class="nb">value</span><span class="p">,</span> <span class="nx">strlen</span><span class="p">(</span><span class="nx">buffer</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">};</span>
+            //将字符串指针指向的字符串数组复制到结构体成员的指针上
+            //对字符串指针赋值必须使用strcpy_s, vs2013使用strcpy编译通不过
+            //+1应该是因为C++字符串的结尾符号？不是特别确定，不加这个1会出错
+            strcpy_s(value, strlen(buffer) + 1, buffer);
+        }
+    }
+};
 </pre></div>
 
 
 <p>（以上代码截取自vnltsmd.cpp文件）</p>
 <p>由于原生API中用到的底层数据类型主要包括四种：char字符、char[]字符串数组、int整数、double浮点数，可以对应的Python中的数据类型为：string、int、float。因此设计了三个函数getChar、getInt、getDouble来从Python对象中提取所需的C++数据，getInt、getDouble请参见源代码。</p>
 <h3>原生API的回调函数</h3>
-<div class="highlight"><pre><span class="kt">void</span> <span class="n">MdApi</span><span class="o">::</span><span class="n">OnRspUserLogin</span><span class="p">(</span><span class="n">CSecurityFtdcRspUserLoginField</span> <span class="o">*</span><span class="n">pRspUserLogin</span><span class="p">,</span> <span class="n">CSecurityFtdcRspInfoField</span> <span class="o">*</span><span class="n">pRspInfo</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nRequestID</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">bIsLast</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">MdApi</span><span class="o">::</span><span class="n">OnRspUserLogin</span><span class="p">(</span><span class="n">CSecurityFtdcRspUserLoginField</span> <span class="o">*</span><span class="n">pRspUserLogin</span><span class="p">,</span> <span class="n">CSecurityFtdcRspInfoField</span> <span class="o">*</span><span class="n">pRspInfo</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nRequestID</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">bIsLast</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">Task</span> <span class="n">task</span> <span class="o">=</span> <span class="n">Task</span><span class="p">();</span>
     <span class="n">task</span><span class="p">.</span><span class="n">task_name</span> <span class="o">=</span> <span class="n">ONRSPUSERLOGIN</span><span class="p">;</span>
@@ -420,7 +420,7 @@
 <p>其中any是boost库中的any类，作用是定义一个可以存放任意类型数据的变量（有点类似于Python里的变量），但是当用户尝试从该变量中获取原本的数据时，需要知道原本数据的类型。原生API中不同回调函数返回的参数类型是不同的，因此为了提高代码的简洁性选择使用boost.any这个泛型类。</p>
 <h3>任务处理函数</h3>
 <p>首先是负责从任务队列中提取任务，并根据任务名称的不同使用对应的函数进行处理的processTask函数：</p>
-<div class="highlight"><pre><span class="c1">///-------------------------------------------------------------------------------------</span>
+<div class="highlight"><pre><span></span><span class="c1">///-------------------------------------------------------------------------------------</span>
 <span class="c1">///工作线程从队列中取出数据，转化为python对象后，进行推送</span>
 <span class="c1">///-------------------------------------------------------------------------------------</span>
 <span class="kt">void</span> <span class="n">MdApi</span><span class="o">::</span><span class="n">processTask</span><span class="p">()</span>
@@ -433,7 +433,7 @@
         <span class="p">{</span>
             <span class="p">...</span>
 
-            <span class="k">case</span> <span class="n">ONRSPUSERLOGIN</span>:
+            <span class="k">case</span> <span class="nl">ONRSPUSERLOGIN</span><span class="p">:</span>
             <span class="p">{</span>
                 <span class="k">this</span><span class="o">-&gt;</span><span class="n">processRspUserLogin</span><span class="p">(</span><span class="n">task</span><span class="p">);</span>
                 <span class="k">break</span><span class="p">;</span>
@@ -448,7 +448,7 @@
 
 <p>（以上代码截取自vnltsmd.cpp文件）</p>
 <p>使用while (1)的方式让processTask处于无限循环中不断运行，从task_queue队列中提取任务对象task后，使用swtich根据任务的回调函数名称task_name，调用对应的函数处理该任务。上面的例子中，当程序检查task_name是ONRSPUSERLOGIN这个常量值后，就会调用processRspUserLogin函数进行处理，其代码如下：</p>
-<div class="highlight"><pre><span class="kt">void</span> <span class="n">MdApi</span><span class="o">::</span><span class="n">processRspUserLogin</span><span class="p">(</span><span class="n">Task</span> <span class="n">task</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">MdApi</span><span class="o">::</span><span class="n">processRspUserLogin</span><span class="p">(</span><span class="n">Task</span> <span class="n">task</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">CSecurityFtdcRspUserLoginField</span> <span class="n">task_data</span> <span class="o">=</span> <span class="n">any_cast</span><span class="o">&lt;</span><span class="n">CSecurityFtdcRspUserLoginField</span><span class="o">&gt;</span><span class="p">(</span><span class="n">task</span><span class="p">.</span><span class="n">task_data</span><span class="p">);</span>
     <span class="n">dict</span> <span class="n">data</span><span class="p">;</span>

@@ -153,10 +153,10 @@
 <p><strong>时间驱动</strong></p>
 <p>时间驱动的程序逻辑相对容易设计，简单来说就是让电脑每隔一段时间自动做一些事情。这个事情本身可以很复杂、包括很多步骤，但这些步骤都是线性的，按照顺序一步步执行下来。</p>
 <p>以下代码展示了一个非常简单的时间驱动的Python程序。</p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
 
 <span class="k">def</span> <span class="nf">demo</span><span class="p">():</span>
-    <span class="k">print</span> <span class="s">u&#39;时间驱动的程序每隔1秒运行demo函数&#39;</span>
+    <span class="k">print</span> <span class="s1">u&#39;时间驱动的程序每隔1秒运行demo函数&#39;</span>
 
 <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
     <span class="n">demo</span><span class="p">()</span>
@@ -201,20 +201,20 @@
 <p>为了解决这种情况，我们需要用到事件驱动引擎来管理不同事件的事件监听函数并执行所有和事件驱动相关的操作。</p>
 <h2>事件驱动引擎原理</h2>
 <p>vn.py框架中的<a href="https://github.com/vnpy/vnpy/tree/master/vn.event">vn.event模块</a>包含了一个可扩展的事件驱动引擎。整个引擎的实现并不复杂，除去注释、空行后大概也就100行左右的代码：</p>
-<div class="highlight"><pre><span class="c"># encoding: UTF-8</span>
+<div class="highlight"><pre><span></span><span class="c1"># encoding: UTF-8</span>
 
-<span class="c"># 系统模块</span>
+<span class="c1"># 系统模块</span>
 <span class="kn">from</span> <span class="nn">Queue</span> <span class="kn">import</span> <span class="n">Queue</span><span class="p">,</span> <span class="n">Empty</span>
 <span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
 
-<span class="c"># 第三方模块</span>
+<span class="c1"># 第三方模块</span>
 <span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QTimer</span>
 
-<span class="c"># 自己开发的模块</span>
+<span class="c1"># 自己开发的模块</span>
 <span class="kn">from</span> <span class="nn">eventType</span> <span class="kn">import</span> <span class="o">*</span>
 
 
-<span class="c">########################################################################</span>
+<span class="c1">########################################################################</span>
 <span class="k">class</span> <span class="nc">EventEngine</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    事件驱动引擎</span>
@@ -251,113 +251,113 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;初始化事件引擎&quot;&quot;&quot;</span>
-        <span class="c"># 事件队列</span>
+        <span class="c1"># 事件队列</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
 
-        <span class="c"># 事件引擎开关</span>
+        <span class="c1"># 事件引擎开关</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__active</span> <span class="o">=</span> <span class="bp">False</span>
 
-        <span class="c"># 事件处理线程</span>
+        <span class="c1"># 事件处理线程</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__run</span><span class="p">)</span>
 
-        <span class="c"># 计时器，用于触发计时器事件</span>
+        <span class="c1"># 计时器，用于触发计时器事件</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__timer</span> <span class="o">=</span> <span class="n">QTimer</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__onTimer</span><span class="p">)</span>
 
-        <span class="c"># 这里的__handlers是一个字典，用来保存对应的事件调用关系</span>
-        <span class="c"># 其中每个键对应的值是一个列表，列表中保存了对该事件进行监听的函数功能</span>
+        <span class="c1"># 这里的__handlers是一个字典，用来保存对应的事件调用关系</span>
+        <span class="c1"># 其中每个键对应的值是一个列表，列表中保存了对该事件进行监听的函数功能</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__handlers</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">__run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;引擎运行&quot;&quot;&quot;</span>
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">__active</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">event</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__queue</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">block</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">timeout</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>  <span class="c"># 获取事件的阻塞时间设为1秒</span>
+                <span class="n">event</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__queue</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">block</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">timeout</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 获取事件的阻塞时间设为1秒</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__process</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">Empty</span><span class="p">:</span>
                 <span class="k">pass</span>
 
-    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">__process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;处理事件&quot;&quot;&quot;</span>
-        <span class="c"># 检查是否存在对该事件进行监听的处理函数</span>
+        <span class="c1"># 检查是否存在对该事件进行监听的处理函数</span>
         <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handlers</span><span class="p">:</span>
-            <span class="c"># 若存在，则按顺序将事件传递给处理函数执行</span>
+            <span class="c1"># 若存在，则按顺序将事件传递给处理函数执行</span>
             <span class="p">[</span><span class="n">handler</span><span class="p">(</span><span class="n">event</span><span class="p">)</span> <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handlers</span><span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">type_</span><span class="p">]]</span>
 
-            <span class="c"># 以上语句为Python列表解析方式的写法，对应的常规循环写法为：</span>
-            <span class="c">#for handler in self.__handlers[event.type_]:</span>
-                <span class="c">#handler(event)</span>
+            <span class="c1"># 以上语句为Python列表解析方式的写法，对应的常规循环写法为：</span>
+            <span class="c1">#for handler in self.__handlers[event.type_]:</span>
+                <span class="c1">#handler(event)</span>
 
-    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">__onTimer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;向事件队列中存入计时器事件&quot;&quot;&quot;</span>
-        <span class="c"># 创建计时器事件</span>
+        <span class="c1"># 创建计时器事件</span>
         <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="n">type_</span><span class="o">=</span><span class="n">EVENT_TIMER</span><span class="p">)</span>
 
-        <span class="c"># 向队列中存入计时器事件</span>
+        <span class="c1"># 向队列中存入计时器事件</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
 
-    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;引擎启动&quot;&quot;&quot;</span>
-        <span class="c"># 将引擎设为启动</span>
+        <span class="c1"># 将引擎设为启动</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__active</span> <span class="o">=</span> <span class="bp">True</span>
 
-        <span class="c"># 启动事件处理线程</span>
+        <span class="c1"># 启动事件处理线程</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-        <span class="c"># 启动计时器，计时器事件间隔默认设定为1秒</span>
+        <span class="c1"># 启动计时器，计时器事件间隔默认设定为1秒</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__timer</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
 
-    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;停止引擎&quot;&quot;&quot;</span>
-        <span class="c"># 将引擎设为停止</span>
+        <span class="c1"># 将引擎设为停止</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__active</span> <span class="o">=</span> <span class="bp">False</span>
 
-        <span class="c"># 停止计时器</span>
+        <span class="c1"># 停止计时器</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 
-        <span class="c"># 等待事件处理线程退出</span>
+        <span class="c1"># 等待事件处理线程退出</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
 
-    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">handler</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;注册事件处理函数监听&quot;&quot;&quot;</span>
-        <span class="c"># 尝试获取该事件类型对应的处理函数列表，若无则创建</span>
+        <span class="c1"># 尝试获取该事件类型对应的处理函数列表，若无则创建</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">handlerList</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handlers</span><span class="p">[</span><span class="n">type_</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="n">handlerList</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__handlers</span><span class="p">[</span><span class="n">type_</span><span class="p">]</span> <span class="o">=</span> <span class="n">handlerList</span>
 
-        <span class="c"># 若要注册的处理器不在该事件的处理器列表中，则注册该事件</span>
+        <span class="c1"># 若要注册的处理器不在该事件的处理器列表中，则注册该事件</span>
         <span class="k">if</span> <span class="n">handler</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">handlerList</span><span class="p">:</span>
             <span class="n">handlerList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
 
-    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">unregister</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">handler</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;注销事件处理函数监听&quot;&quot;&quot;</span>
-        <span class="c"># 尝试获取该事件类型对应的处理函数列表，若无则忽略该次注销请求</span>
+        <span class="c1"># 尝试获取该事件类型对应的处理函数列表，若无则忽略该次注销请求</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">handlerList</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handlers</span><span class="p">[</span><span class="n">type_</span><span class="p">]</span>
 
-            <span class="c"># 如果该函数存在于列表中，则移除</span>
+            <span class="c1"># 如果该函数存在于列表中，则移除</span>
             <span class="k">if</span> <span class="n">handler</span> <span class="ow">in</span> <span class="n">handlerList</span><span class="p">:</span>
                 <span class="n">handlerList</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
 
-            <span class="c"># 如果函数列表为空，则从引擎中移除该事件类型</span>
+            <span class="c1"># 如果函数列表为空，则从引擎中移除该事件类型</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">handlerList</span><span class="p">:</span>
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">handlers</span><span class="p">[</span><span class="n">type_</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">pass</span>
 
-    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;向事件队列中存入事件&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
@@ -411,15 +411,15 @@
 <p>这里让笔者吐槽一下某些国内的C++平台（当然不是指所有的），每个策略对系统里所有的订单回报进行监听，如果是自身相关的就处理，不相关的就PASS。这种写法，光是判断是否和自身相关就得多做多少无谓的判断、浪费多少CPU资源，随着策略数量的增加，浪费呈线性增加的趋势，这种平台还叫嚣做高频，唉......</p>
 <h3>触发事件</h3>
 <p>用户可以通过引擎的put方法向事件队列__queue中存入事件，等待事件处理线程来进行处理，事件类的实现如下：</p>
-<div class="highlight"><pre><span class="c">########################################################################</span>
+<div class="highlight"><pre><span></span><span class="c1">########################################################################</span>
 <span class="k">class</span> <span class="nc">Event</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;事件对象&quot;&quot;&quot;</span>
 
-    <span class="c">#----------------------------------------------------------------------</span>
+    <span class="c1">#----------------------------------------------------------------------</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="n">type_</span>      <span class="c"># 事件类型</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dict_</span> <span class="o">=</span> <span class="p">{}</span>         <span class="c"># 字典用于保存具体的事件数据</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="n">type_</span>      <span class="c1"># 事件类型</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dict_</span> <span class="o">=</span> <span class="p">{}</span>         <span class="c1"># 字典用于保存具体的事件数据</span>
 </pre></div>
 
 
@@ -435,7 +435,7 @@
 <p>当启动计时器时，事件间隔默认设定为了1秒（1000毫秒），这个参数用户可以视乎自己的需求进行调整。假设用户使用时间驱动的函数工作间隔为分钟级，则可以选择将参数设置为60秒（600000毫秒），以此类推。</p>
 <h2>事件驱动引擎使用</h2>
 <p>同样在eventEngine.py中，包含了一段测试代码test函数，用来展示事件驱动引擎的使用方法：</p>
-<div class="highlight"><pre><span class="c">#----------------------------------------------------------------------</span>
+<div class="highlight"><pre><span></span><span class="c1">#----------------------------------------------------------------------</span>
 <span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;测试函数&quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">sys</span>
@@ -443,7 +443,7 @@
     <span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QCoreApplication</span>
 
     <span class="k">def</span> <span class="nf">simpletest</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
-        <span class="k">print</span> <span class="s">u&#39;处理每秒触发的计时器事件：</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+        <span class="k">print</span> <span class="s1">u&#39;处理每秒触发的计时器事件：</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
 
     <span class="n">app</span> <span class="o">=</span> <span class="n">QCoreApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
 
@@ -454,8 +454,8 @@
     <span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
 
 
-<span class="c"># 直接运行脚本可以进行测试</span>
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="c1"># 直接运行脚本可以进行测试</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">test</span><span class="p">()</span>
 </pre></div>
 
