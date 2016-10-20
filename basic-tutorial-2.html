@@ -343,37 +343,37 @@
 <p>（以上代码截取自vnltsmd.cpp文件）</p>
 <p>原生API中的请求登录函数为ReqUserLogin，传入的参数一共包含两个：一个CSecurityFtdcReqUserLoginField 结构体的指针，一个代表请求编号的整数。</p>
 <p>封装后的API函数为reqUserLogin，传入参数同样为两个：一个Python字典对象、一个整数。reqUserLogin函数会从Python字典对象中根据键值依次提取结构体中对应的数据。如结构体中有一个成员叫做BrokerID，则使用getChar函数从字典对象中提取"BrokerID"键对应的值。</p>
-<p>getChar函数的实现如下：
-    :::c++
-    //d为Python字典对象
-    //key为d中想要提取的数据的键名
-    //value为最终需要这个数据的结构体成员的指针
-    void getChar(dict d, string key, char *value)
-    {
-        //首先检查字典中是否存在key这个键
-        if (d.has_key(key))
-        {
-            //提取key这个键对应的值，即Python对象o
-            object o = d[key];</p>
-<div class="highlight"><pre><span></span>        //生成从o中提取std::string类的提取器
-        extract&lt;string&gt; x(o);
+<p>getChar函数的实现如下：</p>
+<div class="highlight"><pre><span></span><span class="c1">//d为Python字典对象</span>
+<span class="c1">//key为d中想要提取的数据的键名</span>
+<span class="c1">//value为最终需要这个数据的结构体成员的指针</span>
+<span class="kt">void</span> <span class="nf">getChar</span><span class="p">(</span><span class="n">dict</span> <span class="n">d</span><span class="p">,</span> <span class="n">string</span> <span class="n">key</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">value</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">//首先检查字典中是否存在key这个键</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="c1">//提取key这个键对应的值，即Python对象o</span>
+        <span class="n">object</span> <span class="n">o</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">];</span>
 
-        //检查提取器是否能提取出数据
-        if (x.check())
-        {
-            //执行解包器，提取string对象s
-            string s = x();
+        <span class="c1">//生成从o中提取std::string类的提取器</span>
+        <span class="n">extract</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">x</span><span class="p">(</span><span class="n">o</span><span class="p">);</span>
 
-            //从s中获取字符串指针buffer
-            const char *buffer = s.c_str();
+        <span class="c1">//检查提取器是否能提取出数据</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">check</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="c1">//执行解包器，提取string对象s</span>
+            <span class="n">string</span> <span class="n">s</span> <span class="o">=</span> <span class="n">x</span><span class="p">();</span>
 
-            //将字符串指针指向的字符串数组复制到结构体成员的指针上
-            //对字符串指针赋值必须使用strcpy_s, vs2013使用strcpy编译通不过
-            //+1应该是因为C++字符串的结尾符号？不是特别确定，不加这个1会出错
-            strcpy_s(value, strlen(buffer) + 1, buffer);
-        }
-    }
-};
+            <span class="c1">//从s中获取字符串指针buffer</span>
+            <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">buffer</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">c_str</span><span class="p">();</span>
+
+            <span class="c1">//将字符串指针指向的字符串数组复制到结构体成员的指针上</span>
+            <span class="c1">//对字符串指针赋值必须使用strcpy_s, vs2013使用strcpy编译通不过</span>
+            <span class="c1">//+1应该是因为C++字符串的结尾符号？不是特别确定，不加这个1会出错</span>
+            <span class="n">strcpy_s</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">buffer</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span>
 </pre></div>
 
 
@@ -405,17 +405,19 @@
 <p>（以上代码截取自vnltsmd.cpp文件）</p>
 <p>当登录成功后，原生API中的回调函数OnRspUserLogin会被自动调用，通知用户登录相关的信息，传入参数包括四个，分别为CSecurityFtdcRspUserLoginField结构体指针（用户本次登录的相关信息）pRspUserLogin，CSecurityFtdcRspInfoField结构体指针（登录是否存在错误的相关信息）pRspInfo，整数（登陆请求编号）nRequestID和布尔值（是否为该请求的最后一次通知）bIsLast。</p>
 <p>在回调函数中，我们通过创建一个Task对象来保存这些信息，并推入task_queue中，等待工作线程的提取处理。其中，由于pRspInfo可能存在空指针的情况，所以需要进行判断，若指针为空，则在Task对象上绑定一个内容为空的CSecurityFtdcRspInfoField结构体（这步等于一个异常情况的处理）。ONRSPUSERLOGIN是一个整数常量（在头文件中定义），用于标识该Task对象包含的是哪个回调函数返回的信息。</p>
-<p>Task对象的定义如下：
-    :::c++
-    //任务结构体
-    struct Task
-    {
-        int task_name;      //回调函数名称对应的常量
-        any task_data;      //数据结构体
-        any task_error;     //错误结构体
-        int task_id;        //请求id
-        bool task_last;     //是否为最后返回
-    };</p>
+<p>Task对象的定义如下：</p>
+<div class="highlight"><pre><span></span><span class="c1">//任务结构体</span>
+<span class="k">struct</span> <span class="n">Task</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">task_name</span><span class="p">;</span>      <span class="c1">//回调函数名称对应的常量</span>
+    <span class="n">any</span> <span class="n">task_data</span><span class="p">;</span>      <span class="c1">//数据结构体</span>
+    <span class="n">any</span> <span class="n">task_error</span><span class="p">;</span>     <span class="c1">//错误结构体</span>
+    <span class="kt">int</span> <span class="n">task_id</span><span class="p">;</span>        <span class="c1">//请求id</span>
+    <span class="kt">bool</span> <span class="n">task_last</span><span class="p">;</span>     <span class="c1">//是否为最后返回</span>
+<span class="p">};</span>
+</pre></div>
+
+
 <p>（以上代码截取自vnltsmd.h文件）</p>
 <p>其中any是boost库中的any类，作用是定义一个可以存放任意类型数据的变量（有点类似于Python里的变量），但是当用户尝试从该变量中获取原本的数据时，需要知道原本数据的类型。原生API中不同回调函数返回的参数类型是不同的，因此为了提高代码的简洁性选择使用boost.any这个泛型类。</p>
 <h3>任务处理函数</h3>
