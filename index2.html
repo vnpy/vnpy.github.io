@@ -103,6 +103,30 @@
         <div class="col-sm-9">
 
             <article>
+                <h2><a href="/basic-tutorial-8.html">Python量化交易平台开发教程系列8-顶层GUI界面开发（2）</a></h2>
+                <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>前言</h2>
+<p>接上一篇，主要分为两块：展示动态语言特性简化GUI开发的组件以及功能调用组件。</p>
+<h2>动态语言的方便之处</h2>
+<div class="highlight"><pre><span></span><span class="c1">########################################################################</span>
+<span class="k">class</span> <span class="nc">AccountMonitor</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;用于显示账户&quot;&quot;&quot;</span>
+    <span class="n">signal</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">Event</span><span class="p">()))</span>
+
+    <span class="n">dictLabels</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+    <span class="n">dictLabels</span><span class="p">[</span><span class="s1">&#39;AccountID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">u&#39;投资者账户&#39;</span>
+    <span class="n">dictLabels</span><span class="p">[</span><span class="s1">&#39;PreBalance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">u&#39;昨结&#39;</span>
+    <span class="n">dictLabels</span><span class="p">[</span><span class="s1">&#39;Withdraw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">u&#39;出金&#39;</span>
+    <span class="n">dictLabels</span><span class="p">[</span><span class="s1">&#39;Deposit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">u&#39;入金&#39;</span>    
+    <span class="n">dictLabels</span><span class="p">[</span><span class="s1">&#39;FrozenCash&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">u&#39;冻结资金&#39;</span>
+    <span class="n">dictLabels</span><span class="p">[</span><span class="s1">&#39;FrozenMargin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">u&#39;冻结保证金&#39;</span>
+    <span class="n">dictLabels</span><span class="p">[</span><span class="s1">&#39;FrozenCommission&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">u&#39;冻结手续费&#39;</span>
+    <span class="n">dictLabels</span><span class="p">[</span><span class="s1">&#39;FrozenTransferFee ...</span></pre></div>
+                    <a class="btn btn-default btn-xs" href="/basic-tutorial-8.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="/basic-tutorial-7.html">Python量化交易平台开发教程系列7-顶层GUI界面开发（1）</a></h2>
                 <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
 <h2>前言</h2>
@@ -381,48 +405,6 @@
                 </div>
             </article>
             <hr/>
-            <article>
-                <h2><a href="/blog-20150303.html">2015/3/3 项目开发日志</a></h2>
-                <div class="summary"><h2>目前项目状态</h2>
-<p>目前完成：  </p>
-<ol>
-<li>
-<p>华宝证券的LTS API的Python封装，发布在vn.lts文件夹下  </p>
-</li>
-<li>
-<p>事件驱动引擎，发布在vn.event文件夹下  </p>
-</li>
-</ol>
-<h3>vn.lts</h3>
-<p>ltsapi：华宝证券官方的LTS C++ API<br />
-pyscript：用于自动生成重复度较高的封装代码的Python脚本<br />
-vnltsmd：行情API的封装源代码和测试脚本<br />
-vnltstd：交易API的封装源代码和测试脚本  </p>
-<h3>vn.event</h3>
-<p>eventType：定义事件类型常量<br />
-eventEngine：包含事件驱动引擎实现  </p>
-<h2>下一步计划</h2>
-<ol>
-<li>
-<p>API封装、编译、使用方面的教程</p>
-</li>
-<li>
-<p>事件驱动引擎原理、使用方面的教程</p>
-</li>
-<li>
-<p>基于API和引擎开发的LTS交易客户平台（因为华宝没有提供官方的LTS交易软件，目前的两个实现分别是基于C++的尔易终端和基于.COM封装的盈佳终端）</p>
-</li>
-<li>
-<p>策略引擎接口</p>
-</li>
-</ol>
-<h2>联系作者</h2>
-<p>作者知乎名：用Python的交易员，想要联系作者可以通过知乎私信。</p>
-<hr />
-                    <a class="btn btn-default btn-xs" href="/blog-20150303.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
 
         <ul class="pagination">
                 <li class="prev"><a href="/index.html">&laquo;</a>
@@ -431,7 +413,10 @@ eventEngine：包含事件驱动引擎实现  </p>
                             href="/index.html">1</a></li>
                     <li class="active"><a
                             href="/index2.html">2</a></li>
-                <li class="next disabled"><a href="#">&raquo;</a></li>
+                    <li class=""><a
+                            href="/index3.html">3</a></li>
+                <li class="next"><a
+                        href="/index3.html">&raquo;</a></li>
         </ul>
         </div>
         <div class="col-sm-3" id="sidebar">
@@ -502,6 +487,21 @@ eventEngine：包含事件驱动引擎实现  </p>
         <li class="list-group-item">
             <a href="http://github.com/vnpy/vnpy/tree/master/vn.oanda" target="_blank">
                 OANDA接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ib" target="_blank">
+                IB接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.shzd" target="_blank">
+                直达期货接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.okcoin" target="_blank">
+                OKCoin接口
             </a>
         </li>
         <li class="list-group-item">

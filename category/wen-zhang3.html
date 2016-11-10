@@ -2,7 +2,7 @@
 <html lang="zh"
 >
 <head>
-    <title>日志 - vn.py</title>
+    <title>文章 - vn.py</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -11,16 +11,16 @@
 
     <link href="/images/favicon.png" rel="icon">
 
-<link rel="canonical" href="/pages/blog.html">
 
-        <meta name="author" content="用Python的交易员" />
-        <meta name="description" content="开发日志 vn.py框架v1.2发布 vn.py框架v1.0发布 2016年项目计划 20150420项目开发日志 20150303项目开发日志" />
+    <meta name="author" content="用Python的交易员" />
+    <meta name="keywords" content="文章" />
 
-    <meta property="og:site_name" content="vn.py" />
-    <meta property="og:type" content="article"/>
-    <meta property="og:title" content="日志"/>
-    <meta property="og:url" content="/pages/blog.html"/>
-    <meta property="og:description" content="开发日志 vn.py框架v1.2发布 vn.py框架v1.0发布 2016年项目计划 20150420项目开发日志 20150303项目开发日志" />
+    <!-- Open Graph tags -->
+        <meta property="og:site_name" content="vn.py" />
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="vn.py"/>
+        <meta property="og:url" content=""/>
+        <meta property="og:description" content="vn.py"/>
 
 
     <!-- Bootstrap -->
@@ -64,7 +64,7 @@
                          <li><a href="/pages/tutorial.html">
                              教程
                           </a></li>
-                         <li class="active"><a href="/pages/blog.html">
+                         <li><a href="/pages/blog.html">
                              日志
                           </a></li>
                          <li><a href="/pages/screenshot.html">
@@ -103,18 +103,60 @@
     <div class="row">
         <div class="col-sm-9">
 
-    <section id="content" class="body">
-        <h1 class="entry-title">日志</h1>
-        
-        <div class="entry-content">
-            <h1>开发日志</h1>
-<p><a href="/blog-1.2-release.html">vn.py框架v1.2发布</a></p>
-<p><a href="/blog-1.0-release.html">vn.py框架v1.0发布</a></p>
-<p><a href="/blog-2016-plan.html">2016年项目计划</a></p>
-<p><a href="/blog-20150420.html">20150420项目开发日志</a></p>
-<p><a href="/blog-20150303.html">20150303项目开发日志</a></p>
-        </div>
-    </section>
+            <article>
+                <h2><a href="/blog-20150303.html">2015/3/3 项目开发日志</a></h2>
+                <div class="summary"><h2>目前项目状态</h2>
+<p>目前完成：  </p>
+<ol>
+<li>
+<p>华宝证券的LTS API的Python封装，发布在vn.lts文件夹下  </p>
+</li>
+<li>
+<p>事件驱动引擎，发布在vn.event文件夹下  </p>
+</li>
+</ol>
+<h3>vn.lts</h3>
+<p>ltsapi：华宝证券官方的LTS C++ API<br />
+pyscript：用于自动生成重复度较高的封装代码的Python脚本<br />
+vnltsmd：行情API的封装源代码和测试脚本<br />
+vnltstd：交易API的封装源代码和测试脚本  </p>
+<h3>vn.event</h3>
+<p>eventType：定义事件类型常量<br />
+eventEngine：包含事件驱动引擎实现  </p>
+<h2>下一步计划</h2>
+<ol>
+<li>
+<p>API封装、编译、使用方面的教程</p>
+</li>
+<li>
+<p>事件驱动引擎原理、使用方面的教程</p>
+</li>
+<li>
+<p>基于API和引擎开发的LTS交易客户平台（因为华宝没有提供官方的LTS交易软件，目前的两个实现分别是基于C++的尔易终端和基于.COM封装的盈佳终端）</p>
+</li>
+<li>
+<p>策略引擎接口</p>
+</li>
+</ol>
+<h2>联系作者</h2>
+<p>作者知乎名：用Python的交易员，想要联系作者可以通过知乎私信。</p>
+<hr />
+                    <a class="btn btn-default btn-xs" href="/blog-20150303.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+
+        <ul class="pagination">
+                <li class="prev"><a href="/category/wen-zhang2.html">&laquo;</a>
+                </li>
+                    <li class=""><a
+                            href="/category/wen-zhang.html">1</a></li>
+                    <li class=""><a
+                            href="/category/wen-zhang2.html">2</a></li>
+                    <li class="active"><a
+                            href="/category/wen-zhang3.html">3</a></li>
+                <li class="next disabled"><a href="#">&raquo;</a></li>
+        </ul>
         </div>
         <div class="col-sm-3" id="sidebar">
             <aside>

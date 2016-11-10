@@ -2,7 +2,7 @@
 <html lang="zh"
 >
 <head>
-    <title>日志 - vn.py</title>
+    <title>vn.py框架v1.2发布 - vn.py</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -11,16 +11,19 @@
 
     <link href="/images/favicon.png" rel="icon">
 
-<link rel="canonical" href="/pages/blog.html">
+<link rel="canonical" href="/blog-1.2-release.html">
 
         <meta name="author" content="用Python的交易员" />
-        <meta name="description" content="开发日志 vn.py框架v1.2发布 vn.py框架v1.0发布 2016年项目计划 20150420项目开发日志 20150303项目开发日志" />
+        <meta name="description" content="距离上一个版本v1.1的发布过去4个月后终于完成了v1.2，主要增加的功能： vn.rpc模块 实现客户端到服务端的跨进程函数调用，同时支持服务端向客户端推送数据。有了这个模块后，可以大幅简化很多用户想要的GUI和引擎分离、网页端界面监控、大运算量策略独立运行、分布式架构等等功能的实现。 vn.shzd和vn.ib接口 直达期货的接口封装vn.shzd已经介入vn.trader，直达属于一家专业度较高的外盘期货经纪商，在速度和技术服务方面有一定的优势，国内很多大型机构偏好使用他们的通道。 初步完成了Interactive Brokers API的封装接口vn.ib，和IbPy相比的一些不同点： vn.ib基于Boost.Python封装了原生Posix C++接口，比起IbPy能提供更好的性能 vn.ib底层代码中添加了异常捕捉功能，避免IbPy的函数触发异常后没有报错直接断开连接，导致无法调试的问题 vn.ib安装时可能需要编译（默认的pyd在Windows7 Python 2.7 32位下编译），IbPy是纯Python的可以直接使用 vn.ib基于较新的IB官方API（9.72 beta ..." />
 
-    <meta property="og:site_name" content="vn.py" />
-    <meta property="og:type" content="article"/>
-    <meta property="og:title" content="日志"/>
-    <meta property="og:url" content="/pages/blog.html"/>
-    <meta property="og:description" content="开发日志 vn.py框架v1.2发布 vn.py框架v1.0发布 2016年项目计划 20150420项目开发日志 20150303项目开发日志" />
+        <meta property="og:site_name" content="vn.py" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="vn.py框架v1.2发布"/>
+        <meta property="og:url" content="/blog-1.2-release.html"/>
+        <meta property="og:description" content="距离上一个版本v1.1的发布过去4个月后终于完成了v1.2，主要增加的功能： vn.rpc模块 实现客户端到服务端的跨进程函数调用，同时支持服务端向客户端推送数据。有了这个模块后，可以大幅简化很多用户想要的GUI和引擎分离、网页端界面监控、大运算量策略独立运行、分布式架构等等功能的实现。 vn.shzd和vn.ib接口 直达期货的接口封装vn.shzd已经介入vn.trader，直达属于一家专业度较高的外盘期货经纪商，在速度和技术服务方面有一定的优势，国内很多大型机构偏好使用他们的通道。 初步完成了Interactive Brokers API的封装接口vn.ib，和IbPy相比的一些不同点： vn.ib基于Boost.Python封装了原生Posix C++接口，比起IbPy能提供更好的性能 vn.ib底层代码中添加了异常捕捉功能，避免IbPy的函数触发异常后没有报错直接断开连接，导致无法调试的问题 vn.ib安装时可能需要编译（默认的pyd在Windows7 Python 2.7 32位下编译），IbPy是纯Python的可以直接使用 vn.ib基于较新的IB官方API（9.72 beta ..."/>
+        <meta property="article:published_time" content="2016-11-10" />
+            <meta property="article:section" content="文章" />
+            <meta property="article:author" content="用Python的交易员" />
 
 
     <!-- Bootstrap -->
@@ -64,7 +67,7 @@
                          <li><a href="/pages/tutorial.html">
                              教程
                           </a></li>
-                         <li class="active"><a href="/pages/blog.html">
+                         <li><a href="/pages/blog.html">
                              日志
                           </a></li>
                          <li><a href="/pages/screenshot.html">
@@ -103,18 +106,87 @@
     <div class="row">
         <div class="col-sm-9">
 
-    <section id="content" class="body">
-        <h1 class="entry-title">日志</h1>
-        
-        <div class="entry-content">
-            <h1>开发日志</h1>
-<p><a href="/blog-1.2-release.html">vn.py框架v1.2发布</a></p>
-<p><a href="/blog-1.0-release.html">vn.py框架v1.0发布</a></p>
-<p><a href="/blog-2016-plan.html">2016年项目计划</a></p>
-<p><a href="/blog-20150420.html">20150420项目开发日志</a></p>
-<p><a href="/blog-20150303.html">20150303项目开发日志</a></p>
-        </div>
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/blog-1.2-release.html"
+                       rel="bookmark"
+                       title="Permalink to vn.py框架v1.2发布">
+                        vn.py框架v1.2发布
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2016-11-10T23:50:41+08:00"> 2016-11-10(周四)</time>
+    </span>
+
+
+
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>距离上一个版本v1.1的发布过去4个月后终于完成了v1.2，主要增加的功能：</p>
+<h2>vn.rpc模块</h2>
+<p>实现客户端到服务端的跨进程函数调用，同时支持服务端向客户端推送数据。有了这个模块后，可以大幅简化很多用户想要的GUI和引擎分离、网页端界面监控、大运算量策略独立运行、分布式架构等等功能的实现。</p>
+<h2>vn.shzd和vn.ib接口</h2>
+<p>直达期货的接口封装vn.shzd已经介入vn.trader，直达属于一家专业度较高的外盘期货经纪商，在速度和技术服务方面有一定的优势，国内很多大型机构偏好使用他们的通道。</p>
+<p>初步完成了Interactive Brokers API的封装接口vn.ib，和IbPy相比的一些不同点：</p>
+<ol>
+<li>
+<p>vn.ib基于Boost.Python封装了原生Posix C++接口，比起IbPy能提供更好的性能</p>
+</li>
+<li>
+<p>vn.ib底层代码中添加了异常捕捉功能，避免IbPy的函数触发异常后没有报错直接断开连接，导致无法调试的问题</p>
+</li>
+<li>
+<p>vn.ib安装时可能需要编译（默认的pyd在Windows7 Python 2.7 32位下编译），IbPy是纯Python的可以直接使用</p>
+</li>
+<li>
+<p>vn.ib基于较新的IB官方API（9.72 beta）开发，IbPy则是采用了较老的API（9.70 stable）</p>
+</li>
+</ol>
+<h2>增强CTA策略模块</h2>
+<p>基于社区用户的反馈，增加了一些vn.trader中CTA模块（ctaAlgo）的功能：</p>
+<ol>
+<li>
+<p>支持多进程参数优化，会自动根据电脑CPU的核心数量启动对应的进程池，大幅提高运算速度减少优化所需的时间，同时保持新优化函数和之前的一致性。</p>
+</li>
+<li>
+<p>CTA实盘策略引擎提供对策略函数运行时的容错功能，避免出现因为某个策略逻辑有误导致整个系统在盘中被挂住或者崩溃的情况，发生异常时引擎会自动捕捉输出在监控界面上，并停止该策略的运行。</p>
+</li>
+</ol>
+<h2>其他</h2>
+<ol>
+<li>
+<p>修改vn.trader中的路径配置方案，允许用户从任意目录启动交易平台（之前必须从vn.trader目录下启动，否则可能找不到模块文件），方便开发和Debug。</p>
+</li>
+<li>
+<p>修复了一些社区提出的小改进点以及bug。</p>
+</li>
+</ol>
+<h2>v1.3计划</h2>
+<ol>
+<li>
+<p>vn.ib接口替换掉IbPy接入到vn.trader中</p>
+</li>
+<li>
+<p>提供中泰证券的XTP柜台接口封装vn.xtp</p>
+</li>
+<li>
+<p>考虑接入LMAX外汇交易平台（真正的外汇交易所）的接口</p>
+</li>
+</ol>
+            </div>
+            <!-- /.entry-content -->
+        </article>
     </section>
+
         </div>
         <div class="col-sm-3" id="sidebar">
             <aside>

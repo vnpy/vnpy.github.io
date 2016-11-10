@@ -140,6 +140,15 @@
 <p>OANDA（vn.oanda）：外汇、CFD</p>
 </li>
 <li>
+<p>Interactive Brokers（vn.ib）：外盘股票、期货、期权、外汇等</p>
+</li>
+<li>
+<p>直达期货（vn.shzd）：外盘期货</p>
+</li>
+<li>
+<p>OKCoin（vn.okcoin）：比特币、莱特币等</p>
+</li>
+<li>
 <p>通联数据（vn.datayes）：历史行情数据、基本面数据</p>
 </li>
 </ul>
@@ -152,6 +161,9 @@
 </li>
 <li>
 <p>交易平台（vn.trader），整合了vn.py项目中所有的交易接口以及Interactive Brokers的三方接口（IbPy），围绕事件驱动引擎设计了针对策略算法和交易应用开发的上层API，使得交易员可以专注于解决交易业务需求而无需关注底层细节，平台中提供了一套完整的CTA策略模块（回测和实盘）作为开发参考</p>
+</li>
+<li>
+<p>RPC模块（vn.rpc），提供跨进程服务调用的RPC模块，同时支持服务端向客户端的主动数据推送，用于实现vn.py框架下模块的多进程解耦</p>
 </li>
 <li>
 <p><a href="http://www.vnpy.org">官方网站</a>和<a href="http://zhuanlan.zhihu.com/vn-py">知乎专栏</a>，长期更新vn.py相关的开发教程资料</p>
@@ -269,6 +281,21 @@
         <li class="list-group-item">
             <a href="http://github.com/vnpy/vnpy/tree/master/vn.oanda" target="_blank">
                 OANDA接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ib" target="_blank">
+                IB接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.shzd" target="_blank">
+                直达期货接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.okcoin" target="_blank">
+                OKCoin接口
             </a>
         </li>
         <li class="list-group-item">
