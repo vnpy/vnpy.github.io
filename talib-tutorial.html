@@ -191,6 +191,11 @@
 </li>
 </ol>
 <p>一定要尝试自己编译的用户，可以根据<a href="http://mrjbq7.github.io/ta-lib/install.html">该项目的网站</a>上的教程来安装。作者的两台电脑，一台直接安装成功，另一台安装了MinGW的电脑则报GCC编译错误（其实自己编译没有任何意义，感谢加州大学欧文分校打包的whl文件，省去了很多麻烦）。</p>
+<p>Linux下的安装建议使用Anaconda的conda工具：</p>
+<blockquote>
+<p>conda install -c quantopian ta-lib=0.4.9</p>
+</blockquote>
+<p>具体可以参考这里：<a href="https://anaconda.org/Quantopian/ta-lib">https://anaconda.org/Quantopian/ta-lib</a></p>
 <h2>DEMO</h2>
 <p>下面这个策略DEMO可以直接在vn.trader的CTA模块中使用（回测、模拟交易），请不要用于实盘！</p>
 <div class="highlight"><pre><span></span><span class="c1"># encoding: UTF-8</span>
