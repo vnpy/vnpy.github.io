@@ -104,6 +104,46 @@
         <div class="col-sm-9">
 
             <article>
+                <h2><a href="/basic-tutorial-1.html">Python量化交易平台开发教程系列1-类CTP交易API的工作原理</a></h2>
+                <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>类CTP交易API简介</h2>
+<p>国内程序化交易技术的爆发式发展几乎就是起源于上期技术公司基于CTP柜台推出了交易API，使得用户可以随意开发自己的交易软件直接连接到交易柜台上进行交易，同时CTP API的设计模式也成为了许多其他柜台上交易API的设计标准，本人已知的类CTP交易API包括：</p>
+<ol>
+<li>
+<p>上期CTP  </p>
+</li>
+<li>
+<p>飞马  </p>
+</li>
+<li>
+<p>华宝证券LTS</p>
+</li>
+<li>
+<p>飞创Xspeed</p>
+</li>
+<li>
+<p>金仕达</p>
+</li>
+<li>
+<p>恒生UFT</p>
+</li>
+</ol>
+<p>所以这个教程系列选择从类CTP交易API中的LTS API开始来介绍API的Python封装方法，真正掌握了以后想要做其他类型API（比如恒生的T2)的封装也只是大同小异而已。</p>
+<h2>LTS API文件说明</h2>
+<p>通常当用户从网上下载API的压缩包，解压后会看到以下的文件：
+<img alt="" src="http://7x2w1m.com1.z0.glb.clouddn.com/API文件列表.jpg" /></p>
+<ul>
+<li>.h文件：C++的头文件，包含了API的内部结构信息，开发C++程序时需要包含在项目内</li>
+<li>.dll文件：windows下的动态链接库文件，API的实体，开发C++程序编译和链接时用，使用开发好的程序时也必须放在程序的文件夹内  </li>
+<li>.lib文件：windows下的库文件，编译和链接时用，程序开发好后无需放在程序的文件夹内</li>
+<li>.so文件：linux下的动态链接库文件，其他同.dll文件</li>
+</ul>
+<p>找不到压缩包的读者可以在这里直接看<a href="https://github.com/vnpy/vnpy/tree/master/vn.lts/ltsapi" title="https://github.com/vnpy/vnpy/tree/master/vn.lts/ltsapi">https://github.com/vnpy/vnpy ...</a></p>
+                    <a class="btn btn-default btn-xs" href="/basic-tutorial-1.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="/basic-tutorial-0.html">Python量化交易平台开发教程系列0-引言</a></h2>
                 <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
 <h2>为什么用Python来开发量化交易平台</h2>
@@ -290,7 +330,7 @@ eventEngine：包含事件驱动引擎实现  </p>
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2016 用Python的交易员
+         <div class="col-xs-10">&copy; 2017 用Python的交易员
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
