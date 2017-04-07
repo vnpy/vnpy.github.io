@@ -79,9 +79,6 @@
                          <li><a href="/pages/download.html">
                              下载
                           </a></li>
-                         <li><a href="/pages/document.html">
-                             文档
-                          </a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
@@ -109,35 +106,6 @@
     <div class="row">
         <div class="col-sm-9">
 
-            <article>
-                <h2><a href="/basic-tutorial-2.html">Python量化交易平台开发教程系列2-类CTP交易API的Python封装设计</a></h2>
-                <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
-<p>(本篇教程包含的内容太多也太复杂，有不少读者反应看不懂，因为本身也不是使用vn.py必须掌握的知识，这篇教程暂时处于半完成状态，等多收集些读者的建议后会再做一个比较大的修订）</p>
-<h2>为什么要封装API</h2>
-<p>直接原因就是C++的API没法直接在Python里用，不过这个回答有点太简单，这里我们稍微做一些拓展解释：</p>
-<ol>
-<li>
-<p>C++ API中很多函数的调用参数是ApiStruct.h（参见上一篇）中定义的结构体，而在Python中我们既无法直接创建这些结构体（主动函数），也无法提取结构体中包含的数据（回调函数）。</p>
-</li>
-<li>
-<p>Python虚拟机是基于C语言实现的，所有的Python对象，哪怕只是一个整数或者字符串，在C的环境中都是一个PyObject对象（好吧，我知道C里没有对象，只有结构体，但估计90%的读者都不在乎这个区别）。用户如果在Python中直接传递一个参数到C++环境里，C++是无法识别的（Python：买入1手股指, C++：你要买入多少？）。</p>
-</li>
-<li>
-<p>Python只能加载封装为PyObject对象的模块，因此原生C++的API在Python中连加载都加载不了。</p>
-</li>
-</ol>
-<h2>封装后API的工作流程</h2>
-<h3>主动函数</h3>
-<ol>
-<li>
-<p>用户在Python程序中调用封装API的主动函数，并直接传入Python变量（PyObject对象）作为参数。</p>
-</li>
-<li>
-<p>封装API将Python变量转换成C ...</p></li></ol>
-                    <a class="btn btn-default btn-xs" href="/basic-tutorial-2.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
             <article>
                 <h2><a href="/basic-tutorial-1.html">Python量化交易平台开发教程系列1-类CTP交易API的工作原理</a></h2>
                 <div class="summary"><p>原创文章，转载请注明出处：用Python的交易员</p>
