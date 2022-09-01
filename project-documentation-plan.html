@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh"
+>
+<head>
+    <title>vn.py文档编写计划 - vn.py</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href="/images/favicon.png" rel="icon">
+
+<link rel="canonical" href="/project-documentation-plan.html">
+
+        <meta name="author" content="用Python的交易员" />
+        <meta name="description" content="鸡年的第一篇文章，给各位读者拜个年，祝大家新的一年身体健康，全家幸福～ 需求 之前在vn.py项目2017年计划里面提到，如果对vn.py社区用户们的需求情况做个排序，项目文档绝对可以排在第一位。尤其对于新手而言，目前能找到的文档资料比较零碎，只能自己去看源代码，学习曲线比较陡，也让很多人望而却步。 误区 之前走入了一个误区，因为自己是作者的关系对整个项目的了解比较全面，所以写文档的时候是从开发者的角度，按照自己一步步开发vn.py项目的顺序在写：CTP接口原理、接口封装、事件引擎、GUI界面、应用模块开发等。直接的后果就是导致用户上来就先接触最难的底层部分，然后才一点点过度到自己实际应用中会用到的上层开发部分，学习效率非常低下。 用户 接下来新的文档准备从用户的角度来写：先讲安装配置、基本使用，让用户能先把vn.py跑起来，不用再到处问环境怎么配置；然后介绍如何使用CTA模块来开发交易策略，如何结合风控模块来做事前风险管理；下一步讲解基于事件引擎的扩展模块的开发方式，使得用户能够去实现一些比较复杂的功能应用；最后再介绍接口封装、架构细节等内容，让有兴趣的用户来进一步提高。 不再废话了，直接进入目录。 目录 安装配置 Windows(200) Python环境 ..." />
+
+        <meta property="og:site_name" content="vn.py" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="vn.py文档编写计划"/>
+        <meta property="og:url" content="/project-documentation-plan.html"/>
+        <meta property="og:description" content="鸡年的第一篇文章，给各位读者拜个年，祝大家新的一年身体健康，全家幸福～ 需求 之前在vn.py项目2017年计划里面提到，如果对vn.py社区用户们的需求情况做个排序，项目文档绝对可以排在第一位。尤其对于新手而言，目前能找到的文档资料比较零碎，只能自己去看源代码，学习曲线比较陡，也让很多人望而却步。 误区 之前走入了一个误区，因为自己是作者的关系对整个项目的了解比较全面，所以写文档的时候是从开发者的角度，按照自己一步步开发vn.py项目的顺序在写：CTP接口原理、接口封装、事件引擎、GUI界面、应用模块开发等。直接的后果就是导致用户上来就先接触最难的底层部分，然后才一点点过度到自己实际应用中会用到的上层开发部分，学习效率非常低下。 用户 接下来新的文档准备从用户的角度来写：先讲安装配置、基本使用，让用户能先把vn.py跑起来，不用再到处问环境怎么配置；然后介绍如何使用CTA模块来开发交易策略，如何结合风控模块来做事前风险管理；下一步讲解基于事件引擎的扩展模块的开发方式，使得用户能够去实现一些比较复杂的功能应用；最后再介绍接口封装、架构细节等内容，让有兴趣的用户来进一步提高。 不再废话了，直接进入目录。 目录 安装配置 Windows(200) Python环境 ..."/>
+        <meta property="article:published_time" content="2017-01-31" />
+            <meta property="article:section" content="文章" />
+            <meta property="article:author" content="用Python的交易员" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.readable.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/monokai.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "//hm.baidu.com/hm.js?e8c7573f82d43fa50c895a8e28c49ceb";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+<img src="/images/favicon.png" width=""/> vn.py            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                         <li><a href="/pages/quickstart.html">
+                             Quick Start
+                          </a></li>
+                         <li><a href="/pages/blog.html">
+                             日志
+                          </a></li>
+                         <li><a href="/pages/screenshot.html">
+                             截图
+                          </a></li>
+                         <li><a href="/pages/community.html">
+                             社区
+                          </a></li>
+                         <li><a href="/pages/api.html">
+                             API接口
+                          </a></li>
+                         <li><a href="/pages/download.html">
+                             下载
+                          </a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<style>
+	#banner{
+	    background-image:url("/images/banner.png");
+	}
+</style>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1>vn.py</h1>
+				<p class="intro">Developed by traders, for traders.</p>
+		</div>
+	</div>
+</div><!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/project-documentation-plan.html"
+                       rel="bookmark"
+                       title="Permalink to vn.py文档编写计划">
+                        vn.py文档编写计划
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2017-01-31T12:03:02+08:00"> 2017-01-31(周二)</time>
+    </span>
+
+
+
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p><strong>鸡年的第一篇文章，给各位读者拜个年，祝大家新的一年身体健康，全家幸福～</strong></p>
+<h3>需求</h3>
+<p>之前在vn.py项目2017年计划里面提到，如果对vn.py社区用户们的需求情况做个排序，项目文档绝对可以排在第一位。尤其对于新手而言，目前能找到的文档资料比较零碎，只能自己去看源代码，学习曲线比较陡，也让很多人望而却步。</p>
+<h3>误区</h3>
+<p>之前走入了一个误区，因为自己是作者的关系对整个项目的了解比较全面，所以写文档的时候是从开发者的角度，按照自己一步步开发vn.py项目的顺序在写：CTP接口原理、接口封装、事件引擎、GUI界面、应用模块开发等。直接的后果就是导致用户上来就先接触最难的底层部分，然后才一点点过度到自己实际应用中会用到的上层开发部分，学习效率非常低下。</p>
+<h3>用户</h3>
+<p>接下来新的文档准备从用户的角度来写：先讲安装配置、基本使用，让用户能先把vn.py跑起来，不用再到处问环境怎么配置；然后介绍如何使用CTA模块来开发交易策略，如何结合风控模块来做事前风险管理；下一步讲解基于事件引擎的扩展模块的开发方式，使得用户能够去实现一些比较复杂的功能应用；最后再介绍接口封装、架构细节等内容，让有兴趣的用户来进一步提高。</p>
+<p>不再废话了，直接进入目录。</p>
+<h3>目录</h3>
+<ol>
+<li>
+<p>安装配置</p>
+<ol>
+<li>
+<p>Windows(200)</p>
+<ol>
+<li>Python环境：Anaconda安装</li>
+<li>VS2013运行时：vcredist x86</li>
+<li>数据库：MongoDB、RoboMongo</li>
+<li>Python库：pip安装</li>
+<li>成功运行</li>
+</ol>
+</li>
+<li>
+<p>Ubuntu(200)</p>
+<ol>
+<li>环境安装</li>
+<li>API编译(Linux下的链接问题)</li>
+<li>成功运行</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<p>基本使用(400)</p>
+<ol>
+<li>配置接口的账号、密码、服务器地址等，并测试连接</li>
+<li>日志信息、合约列表查询、行情订阅</li>
+<li>手动下单、撤单，成交和委托的数据监控</li>
+<li>错误、持仓、资金的数据监控</li>
+<li>其他贴士：窗口拖动、还原，一键测试功能</li>
+</ol>
+</li>
+<li>
+<p>CTA策略</p>
+<ol>
+<li>
+<p>模块文件介绍(200)</p>
+<ol>
+<li>每个文件的功能说明</li>
+<li>文件内模块的关系图</li>
+</ol>
+</li>
+<li>
+<p>策略回测(400)</p>
+<ol>
+<li>回测引擎API的使用</li>
+<li>读懂回测报告</li>
+<li>参数优化(普通模式)</li>
+<li>多进程优化</li>
+</ol>
+</li>
+<li>
+<p>策略实盘(200)</p>
+<ol>
+<li>载入策略到CTA引擎</li>
+<li>编写策略实例的json配置文件</li>
+<li>使用CTA监控组件来管理策略的生命周期</li>
+<li>策略实盘过程中的运维细节</li>
+</ol>
+</li>
+<li>
+<p>策略开发(600)</p>
+<ol>
+<li>策略模板CtaTemplate介绍</li>
+<li>委托类型</li>
+<li>时间序列数据结构</li>
+<li>使用talib中的技术指标</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<p>事前风控(200)</p>
+<ol>
+<li>使用风控模块RiskManager</li>
+<li>风控规则配置</li>
+<li>添加自定义规则</li>
+</ol>
+</li>
+<li>
+<p>行情解决方案(200)</p>
+<ol>
+<li>使用行情记录模块DataRecorder</li>
+<li>配置行情记录的规则</li>
+<li>历史数据下载功能ctaHistory.py</li>
+</ol>
+</li>
+<li>
+<p>事件引擎(400)</p>
+<ol>
+<li>事件引擎的结构</li>
+<li>事件引擎的启动和停止</li>
+<li>事件引擎的工作流程</li>
+<li>事件处理函数</li>
+<li>定时器事件</li>
+<li>使用中需要注意的细节</li>
+</ol>
+</li>
+<li>
+<p>应用开发</p>
+<ol>
+<li>应用模块的设计思路(200)<ol>
+<li>监听事件(事件引擎)</li>
+<li>调用功能(主引擎)</li>
+</ol>
+</li>
+<li>使用合理的数据结构来解决问题(200)<ol>
+<li>列表list、字典dict、集合set</li>
+<li>特殊结构collections</li>
+<li>矩阵numpy、时间序列pandas</li>
+</ol>
+</li>
+<li>设计应用的算法逻辑(200)</li>
+<li>开发应用的GUI界面(200)<ol>
+<li>使用表格(TableWidget)</li>
+<li>调整显示方式(GroupBox、TabWidget)</li>
+<li>数据选择工具(ComboBox，SpinBox)</li>
+<li>使用按钮调用功能</li>
+</ol>
+</li>
+<li>将模块加载到vn.trader中</li>
+</ol>
+</li>
+<li>
+<p>RPC(400)</p>
+<ol>
+<li>什么时候应该使用vn.rpc模块</li>
+<li>服务器端RpcServer和客户端RpcClient的介绍</li>
+<li>服务器端的开发</li>
+<li>客户端的开发</li>
+<li>vn.rpc模块的工作原理</li>
+<li>使用中需要注意的细节(如线程安全、心跳等)</li>
+</ol>
+</li>
+<li>
+<p>接口封装</p>
+<ol>
+<li>各种API的介绍和对比(200)</li>
+<li>API类模块的编译和使用(vn.ctp、vn.lts等)(200)</li>
+<li>类CTP交易API(200)<ol>
+<li>工作原理</li>
+<li>封装设计</li>
+</ol>
+</li>
+<li>Interactive Brokers(IB)的API(200)<ol>
+<li>工作原理</li>
+<li>封装设计</li>
+</ol>
+</li>
+<li>其他API(400)<ol>
+<li>oanda</li>
+<li>wind</li>
+<li>shzd</li>
+<li>okcoin</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2>社区协作</h2>
+<p>之前的一些文档编写大多是本人独自在做，接下来打算借助社区的力量来一起完成这个新的项目文档。</p>
+<p>既然涉及到团队协作就需要一套协作流程，每个章节的编写流程如下（初步计划，有不合理的地方欢迎指出）：</p>
+<ol>
+<li>作者（社区成员）选择自己有兴趣编写的章节并联系本人来确定一些细节：是否已有人在编写、内容框架、完成时间和报酬费用（下面会提到）等；</li>
+<li>细节确认无误后，作者就可以开始本章节的编写；</li>
+<li>在编写文档的过程中，遇到技术方面的难题可以直接联系本人，会帮助优先解决；</li>
+<li>作者完成文档的编写后发送给本人，本人会和作者一起对文档内容做回顾和修改；</li>
+<li>本人将最终完成的文档发布到vnpy.org网站上的文档板块，并向作者支付报酬费用；</li>
+<li>之前的目录中，部分章节旁边有一个括号中的数字，就是该章节计划的报酬费用，某些是需要完成一个子章节，某些是需要完成一个完整的章节。</li>
+</ol>
+<p>开始的时候计划自己来写几篇文档作为范例来给社区参考，为了给社区其他作者更多学习实践的机会，我会选择相对较为简单的章节（其实纯粹就是为了偷懒～）。</p>
+<p>综上，社区作者在这个新文档编写工作中才是最重要的角色，本人更多只是扮演一个组织者。相应的，对于社区作者来说，参与文档的编写也能为你的交易和职业生涯带来一些帮助：</p>
+<ol>
+<li>全面了解vn.py框架：除非自己已经弄得非常明白了，否则很难写出能让别人明白的文档；</li>
+<li>遇到技术问题时的优先帮助：现在社区群的规模已经较大，很多用户的提问我没有办法一一解答（QQ未读信息已经积累一堆了），对于文档作者我会提供自己的微信和手机，方便直接联系和保证问题的解答，同时也会分享自己在做量化交易过程中的一些实战经验；</li>
+<li>加入vn.py项目贡献者名单：章节发布后署名，拥有未来社区活动的优先参与资格，同时对于很多招聘Python方向量化职位的金融机构来说，有vn.py的项目经验也是一个不错的加分项；</li>
+<li>报酬费用：金额不多估计只够买买咖啡，更多是表达整个社区对文档作者的一份感谢。</li>
+</ol>
+<h3>有兴趣参与的朋友请直接qq私信我或者发邮件到vn.py@foxmail.com，提前谢过。</h3>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="http://github.com/vnpy/vnpy"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+              </ul>
+            </li>
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://www.vnpie.com" target="_blank">
+                官方论坛 - 维恩的派
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.trader" target="_blank">
+                交易平台
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.event" target="_blank">
+                事件引擎
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ctp" target="_blank">
+                CTP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.xspeed" target="_blank">
+                飞创接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.femas" target="_blank">
+                飞马接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksotp" target="_blank">
+                金仕达期权接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksgold" target="_blank">
+                金仕达黄金接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.sgit" target="_blank">
+                飞鼠接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/dev/vn.qdp" target="_blank">
+                QDP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.oanda" target="_blank">
+                OANDA接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ib" target="_blank">
+                IB接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.shzd" target="_blank">
+                直达期货接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.okcoin" target="_blank">
+                OKCoin接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.datayes" target="_blank">
+                通联数据接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.demo" target="_blank">
+                开发DEMO
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2017 用Python的交易员
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
+    <script src="/theme/js/bodypadding.js"></script>
+
+</body>
+</html>

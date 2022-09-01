@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh"
+>
+<head>
+    <title>vn.trader使用教程系列3-策略算法 - vn.py</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href="/images/favicon.png" rel="icon">
+
+<link rel="canonical" href="/trader-tutorial-3.html">
+
+        <meta name="author" content="用Python的交易员" />
+        <meta name="description" content="原创文章，转载请注明出处：用Python的交易员 风控模块 点击菜单栏的功能-&gt;风险管理后，可以打开如上图所示的界面。风控模块主要提供的是针对高频策略和短周期CTA策略的事前风控功能，防止由于错误的算法逻辑导致类似光大乌龙指的事件（就算亏不了几十亿，一下子把账户亏掉一半也是很痛苦的...）。 开关 工作状态按钮用于控制风控模块的运行状态。处于“运行中”状态时，每笔委托在发出前会执行模块中定义好的多个风控条件检查，全部符合条件（参考下文的详细介绍）才能正常通过，只要有一条不符合该委托都会被拒绝，并且会在日志中输出具体的风控信息。处于“未启动”状态时，则会忽略所有的风控检查，允许委托直接发出。 流控 流控主要控制的是单位时间内允许发出的最大的委托笔数，图中所示的限制是每1秒允许最多发出4笔委托，如果发送第5笔就会被拒绝，从而防止某些成交触发的交易信号由于逻辑错误被重复触发，在1秒内发出几十笔的情况。 清空流控计数按钮可以把当前的流控计数清0。 单笔委托 单笔委托上限比较容易理解，控制的是每一笔委托允许的最大合约手数，防止由于逻辑或者参数设置错误导致开仓太多合约的风险。 总成交 总成交上限控制的是每日允许的总成交的合约数量（不是成交笔数），针对的是无人值守的情况下，策略算法出现逻辑错误开始频繁的买卖（比如每秒开多1手，再平多1手，不断重复），导致在手续费和买卖价差上快速亏损的情况。 清空总成交技术按钮可以把当前的总成交技术清0。 活动订单 活动订单上限限制的是当前系统内所有的未成交和部分成交的委托数量 ..." />
+
+        <meta property="og:site_name" content="vn.py" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="vn.trader使用教程系列3-策略算法"/>
+        <meta property="og:url" content="/trader-tutorial-3.html"/>
+        <meta property="og:description" content="原创文章，转载请注明出处：用Python的交易员 风控模块 点击菜单栏的功能-&gt;风险管理后，可以打开如上图所示的界面。风控模块主要提供的是针对高频策略和短周期CTA策略的事前风控功能，防止由于错误的算法逻辑导致类似光大乌龙指的事件（就算亏不了几十亿，一下子把账户亏掉一半也是很痛苦的...）。 开关 工作状态按钮用于控制风控模块的运行状态。处于“运行中”状态时，每笔委托在发出前会执行模块中定义好的多个风控条件检查，全部符合条件（参考下文的详细介绍）才能正常通过，只要有一条不符合该委托都会被拒绝，并且会在日志中输出具体的风控信息。处于“未启动”状态时，则会忽略所有的风控检查，允许委托直接发出。 流控 流控主要控制的是单位时间内允许发出的最大的委托笔数，图中所示的限制是每1秒允许最多发出4笔委托，如果发送第5笔就会被拒绝，从而防止某些成交触发的交易信号由于逻辑错误被重复触发，在1秒内发出几十笔的情况。 清空流控计数按钮可以把当前的流控计数清0。 单笔委托 单笔委托上限比较容易理解，控制的是每一笔委托允许的最大合约手数，防止由于逻辑或者参数设置错误导致开仓太多合约的风险。 总成交 总成交上限控制的是每日允许的总成交的合约数量（不是成交笔数），针对的是无人值守的情况下，策略算法出现逻辑错误开始频繁的买卖（比如每秒开多1手，再平多1手，不断重复），导致在手续费和买卖价差上快速亏损的情况。 清空总成交技术按钮可以把当前的总成交技术清0。 活动订单 活动订单上限限制的是当前系统内所有的未成交和部分成交的委托数量 ..."/>
+        <meta property="article:published_time" content="2016-05-09" />
+            <meta property="article:section" content="文章" />
+            <meta property="article:author" content="用Python的交易员" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.readable.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/monokai.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "//hm.baidu.com/hm.js?e8c7573f82d43fa50c895a8e28c49ceb";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+<img src="/images/favicon.png" width=""/> vn.py            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                         <li><a href="/pages/quickstart.html">
+                             Quick Start
+                          </a></li>
+                         <li><a href="/pages/blog.html">
+                             日志
+                          </a></li>
+                         <li><a href="/pages/screenshot.html">
+                             截图
+                          </a></li>
+                         <li><a href="/pages/community.html">
+                             社区
+                          </a></li>
+                         <li><a href="/pages/api.html">
+                             API接口
+                          </a></li>
+                         <li><a href="/pages/download.html">
+                             下载
+                          </a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<style>
+	#banner{
+	    background-image:url("/images/banner.png");
+	}
+</style>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1>vn.py</h1>
+				<p class="intro">Developed by traders, for traders.</p>
+		</div>
+	</div>
+</div><!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/trader-tutorial-3.html"
+                       rel="bookmark"
+                       title="Permalink to vn.trader使用教程系列3-策略算法">
+                        vn.trader使用教程系列3-策略算法
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2016-05-09T11:13:00+08:00"> 2016-05-09(周一)</time>
+    </span>
+
+
+
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>风控模块</h2>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E9%A3%8E%E9%99%A9%E7%AE%A1%E7%90%86.JPG" /></p>
+<p>点击菜单栏的功能-&gt;风险管理后，可以打开如上图所示的界面。风控模块主要提供的是针对高频策略和短周期CTA策略的事前风控功能，防止由于错误的算法逻辑导致类似光大乌龙指的事件（就算亏不了几十亿，一下子把账户亏掉一半也是很痛苦的...）。</p>
+<p><strong>开关</strong></p>
+<p>工作状态按钮用于控制风控模块的运行状态。处于“运行中”状态时，每笔委托在发出前会执行模块中定义好的多个风控条件检查，全部符合条件（参考下文的详细介绍）才能正常通过，只要有一条不符合该委托都会被拒绝，并且会在日志中输出具体的风控信息。处于“未启动”状态时，则会忽略所有的风控检查，允许委托直接发出。</p>
+<p><strong>流控</strong></p>
+<p>流控主要控制的是单位时间内允许发出的最大的委托笔数，图中所示的限制是每1秒允许最多发出4笔委托，如果发送第5笔就会被拒绝，从而防止某些成交触发的交易信号由于逻辑错误被重复触发，在1秒内发出几十笔的情况。</p>
+<p>清空流控计数按钮可以把当前的流控计数清0。</p>
+<p><strong>单笔委托</strong></p>
+<p>单笔委托上限比较容易理解，控制的是每一笔委托允许的最大合约手数，防止由于逻辑或者参数设置错误导致开仓太多合约的风险。</p>
+<p><strong>总成交</strong></p>
+<p>总成交上限控制的是每日允许的总成交的合约数量（不是成交笔数），针对的是无人值守的情况下，策略算法出现逻辑错误开始频繁的买卖（比如每秒开多1手，再平多1手，不断重复），导致在手续费和买卖价差上快速亏损的情况。</p>
+<p>清空总成交技术按钮可以把当前的总成交技术清0。</p>
+<p><strong>活动订单</strong></p>
+<p>活动订单上限限制的是当前系统内所有的未成交和部分成交的委托数量，一些采用挂限价单来开平仓的策略算法，可能由于撤单操作有误，导致之前的委托没有撤销的同时还在不断挂出新的委托单，一旦价格波动就有可能被全部成交，出现巨大的持仓风险。</p>
+<p><strong>保存设置</strong></p>
+<p>用户改变以上风控参数的数值后，系统中的数值会立即被改变，但是必须点击“保存设置”按钮后相应的数值才会写入配置文件RM_setting.json中，重启后风控参数会从该文件中再次读取。</p>
+<h2>行情数据收集</h2>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E8%A1%8C%E6%83%85%E6%95%B0%E6%8D%AE%E8%AE%B0%E5%BD%95.JPG" /></p>
+<p>行情数据收集模块位于vn.trader/dataRecorder文件夹下，该模块主要用于收集每天的实盘Tick数据，并自动聚合为K线后插入到MongoDB数据库中，模块内置了1分钟K线的聚合算法。点击菜单栏的功能-&gt;行情数据记录后可以打开如上图所示的界面，查看目前正在收集的行情数据内容（不开也没关系，数据收集会自动在后台运行）。</p>
+<p>该模块的配置基于DR_setting.json文件，打开后如下：</p>
+<div class="highlight"><pre><span></span>{
+    &quot;working&quot;: false,
+
+    &quot;tick&quot;:
+    [
+        [&quot;Au(T+D)&quot;, &quot;SGIT&quot;],
+        [&quot;Ag(T+D)&quot;, &quot;SGIT&quot;]
+    ],
+
+    &quot;bar&quot;:
+    [
+        [&quot;au1606&quot;, &quot;CTP&quot;],
+        [&quot;ag1606&quot;, &quot;CTP&quot;]
+    ],
+
+    &quot;active&quot;:
+    {
+        &quot;IF0000&quot;: &quot;IF1605&quot;,
+        &quot;IH0000&quot;: &quot;IH1605&quot;,
+        &quot;IC0000&quot;: &quot;IC1605&quot;
+    }
+}
+</pre></div>
+
+
+<p>各个字段的功能如下：</p>
+<ul>
+<li>
+<p>working：用于控制是否启动行情数据的收集，true对应启动，false对应停止</p>
+</li>
+<li>
+<p>tick：需要收集Tick行情数据的合约代码和接口，["Au(T+D)", "SGIT"] 代表需要收集来自于飞鼠接口的黄金T+D现货的Tick数据</p>
+</li>
+<li>
+<p>bar：需要收集1分钟K线行情数据的合约代码和接口，["au1606", "CTP"]代表需要收集来自于CTP接口的au1606黄金期货的1分钟K线数据</p>
+</li>
+<li>
+<p>active：用于设置具体的期货合约和该期货连续合约的代码映射关系，"IF0000": "IF1605"代表将IF1605的行情数据（Tick和1分钟K线）插入到IF0000（可以自行改名）的集合中，注意这里每个连续合约代码只能对应一个具体合约的代码</p>
+</li>
+</ul>
+<p>注意事项：</p>
+<ol>
+<li>
+<p>修改DR_setting.json中的配置后，需要重启vn.trader才会生效。</p>
+</li>
+<li>
+<p>在active字段中定义的连续合约对应的具体合约代码也必须加入到上面的tick或者bar字段中，才会收集相应的tick或者1分钟K线数据。</p>
+</li>
+<li>
+<p>当数据收集组件向MongoDB中插入数据时可能因为某种原因出现阻塞（如硬盘转速较慢等），导致vn.trader的事件驱动引擎无法处理后续的事件，因此实盘中建议开一个独立的vn.trader进程专门用于收集数据。</p>
+</li>
+</ol>
+<h2>CTA策略模块</h2>
+<p>CTA策略模块相比较于之前介绍的部分，功能要强大和复杂的多，也需要用户有一定的Python编程基础，具体细节的使用方法未来会在单独的教程中讲解，这里只简要介绍下从开发到实盘交易一个CTA策略的流程：</p>
+<p><strong>回测和配置</strong></p>
+<ol>
+<li>
+<p>在ctaAlgo文件夹下创建一个策略.py文件；</p>
+</li>
+<li>
+<p>继承ctaTemplate.py中的CtaTemplate类实现具体的策略；</p>
+</li>
+<li>
+<p>使用ctaHistoryData.py中的函数从通联数据下载行情数据建立历史行情数据库（需要购买对应的数据授权，修改datayes.json），或者将文件夹下的IF0000_1min.csv中的股指连续合约1分钟数据插入到MongoDB中（仅适用于学习和回测）；</p>
+</li>
+<li>
+<p>在交互式开发工具中（如IPython Notebook和Spyder），使用ctaBacktesting.py中提供的回测引擎对开发好的策略使用历史数据进行回测（参考ctaBacktesting.py中的例子）；</p>
+</li>
+<li>
+<p>确定策略符合预期可以上线交易后，在ctaSetting.py中导入你的策略类，并添加到STRATEGY_CLASS字典中（这步是为了让CTA策略引擎能找到你的策略类）；</p>
+</li>
+<li>
+<p>在CTA_setting.json中加入实盘交易时创建策略实例所需要的参数，如策略实例名称name（不能重复）、策略类名称className（使用上一步中设置的策略类名称）、交易的合约代码vtSymbol等，其他的参数可以选择不传，会自动使用策略类中定义的默认值。</p>
+</li>
+</ol>
+<p><strong>实盘交易</strong></p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/CTA%E7%AD%96%E7%95%A5.JPG" /></p>
+<ol>
+<li>
+<p>打开vn.trader，连接好交易接口和数据库后，点击菜单栏的算法-&gt;CTA策略可以打开如上图所示的CTA策略模块的实盘交易管理界面；</p>
+</li>
+<li>
+<p>点击“加载策略”按钮，策略引擎会从CTA_setting.json中读取相关的策略配置信息用于生成具体的策略实例（下面称为“策略”），并显示在管理界面上；</p>
+</li>
+<li>
+<p>点击“初始化”按钮会调用策略的onInit函数，并完成策略开始交易前的初始化操作，此时策略可以计算参数指标等，但是无法发出委托；</p>
+</li>
+<li>
+<p>点击“启动”按钮会调用策略的onStart函数，正式启动策略的交易功能，此时策略基于收到的行情、成交、委托等数据进行相应的逻辑判断，并发出委托；</p>
+</li>
+<li>
+<p>点击“停止”按钮会调用策略的onStop函数，撤销当前策略已发出的所有未成交委托，并停止策略的交易功能，恢复到无法发出委托的状态；</p>
+</li>
+<li>
+<p>如果加载了多个策略，窗口最上方的“全部初始化”、“全部启动”和“全部停止”可以一次性对所有的策略执行相应的操作，省去多次点击。</p>
+</li>
+</ol>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="http://github.com/vnpy/vnpy"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+              </ul>
+            </li>
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://www.vnpie.com" target="_blank">
+                官方论坛 - 维恩的派
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.trader" target="_blank">
+                交易平台
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.event" target="_blank">
+                事件引擎
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ctp" target="_blank">
+                CTP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.xspeed" target="_blank">
+                飞创接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.femas" target="_blank">
+                飞马接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksotp" target="_blank">
+                金仕达期权接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksgold" target="_blank">
+                金仕达黄金接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.sgit" target="_blank">
+                飞鼠接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/dev/vn.qdp" target="_blank">
+                QDP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.oanda" target="_blank">
+                OANDA接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ib" target="_blank">
+                IB接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.shzd" target="_blank">
+                直达期货接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.okcoin" target="_blank">
+                OKCoin接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.datayes" target="_blank">
+                通联数据接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.demo" target="_blank">
+                开发DEMO
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2017 用Python的交易员
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
+    <script src="/theme/js/bodypadding.js"></script>
+
+</body>
+</html>

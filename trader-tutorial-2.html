@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh"
+>
+<head>
+    <title>vn.trader使用教程系列2-基础交易 - vn.py</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href="/images/favicon.png" rel="icon">
+
+<link rel="canonical" href="/trader-tutorial-2.html">
+
+        <meta name="author" content="用Python的交易员" />
+        <meta name="description" content="原创文章，转载请注明出处：用Python的交易员 窗口组件 双击vn.trader文件夹下的vtMain.py后，会看到以上的程序主窗口，无法双击的用户一般是Anaconda安装时的.py文件打开方式问题，右键vtMain.py后-&gt;打开方式-&gt;选择Anaconda文件夹下的python.exe后就可以打开。 在上一篇教程中设置好CTP接口的帐号密码等信息后，点击菜单上的系统-&gt;连接CTP即可连接到CTP柜台。算法交易等相关的功能会涉及数据库相关的操作，点击系统-&gt;连接数据库后vn.trader会自动连接上MongoDB数据库（需要将MongoDB注册为系统服务）。 窗口中间部分的组件均可以随意改变位置，也可以拖动变为顶层悬浮窗口，正常退出（点击右上方的X按钮）后会自动保存当前的窗口设置。最下方的状态栏显示了当前的CPU和内存使用率，便于监控当前的系统资源占用情况。 各组件的功能如下： 交易：发送和撤销交易委托、订阅行情等（参考下一章节） 行情：显示行情Tick数据推送 委托：显示委托回报相关的数据推送（注意视乎接口不同，大部分失败的委托并不会显示） 成交：显示成交相关的数据推送 持仓：显示持仓查询的数据结果（采用轮询查询的方式，非实时） 资金：显示账户资金查询的数据结果（采用轮询查询的方式 ..." />
+
+        <meta property="og:site_name" content="vn.py" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="vn.trader使用教程系列2-基础交易"/>
+        <meta property="og:url" content="/trader-tutorial-2.html"/>
+        <meta property="og:description" content="原创文章，转载请注明出处：用Python的交易员 窗口组件 双击vn.trader文件夹下的vtMain.py后，会看到以上的程序主窗口，无法双击的用户一般是Anaconda安装时的.py文件打开方式问题，右键vtMain.py后-&gt;打开方式-&gt;选择Anaconda文件夹下的python.exe后就可以打开。 在上一篇教程中设置好CTP接口的帐号密码等信息后，点击菜单上的系统-&gt;连接CTP即可连接到CTP柜台。算法交易等相关的功能会涉及数据库相关的操作，点击系统-&gt;连接数据库后vn.trader会自动连接上MongoDB数据库（需要将MongoDB注册为系统服务）。 窗口中间部分的组件均可以随意改变位置，也可以拖动变为顶层悬浮窗口，正常退出（点击右上方的X按钮）后会自动保存当前的窗口设置。最下方的状态栏显示了当前的CPU和内存使用率，便于监控当前的系统资源占用情况。 各组件的功能如下： 交易：发送和撤销交易委托、订阅行情等（参考下一章节） 行情：显示行情Tick数据推送 委托：显示委托回报相关的数据推送（注意视乎接口不同，大部分失败的委托并不会显示） 成交：显示成交相关的数据推送 持仓：显示持仓查询的数据结果（采用轮询查询的方式，非实时） 资金：显示账户资金查询的数据结果（采用轮询查询的方式 ..."/>
+        <meta property="article:published_time" content="2016-05-08" />
+            <meta property="article:section" content="文章" />
+            <meta property="article:author" content="用Python的交易员" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.readable.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/monokai.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "//hm.baidu.com/hm.js?e8c7573f82d43fa50c895a8e28c49ceb";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+<img src="/images/favicon.png" width=""/> vn.py            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                         <li><a href="/pages/quickstart.html">
+                             Quick Start
+                          </a></li>
+                         <li><a href="/pages/blog.html">
+                             日志
+                          </a></li>
+                         <li><a href="/pages/screenshot.html">
+                             截图
+                          </a></li>
+                         <li><a href="/pages/community.html">
+                             社区
+                          </a></li>
+                         <li><a href="/pages/api.html">
+                             API接口
+                          </a></li>
+                         <li><a href="/pages/download.html">
+                             下载
+                          </a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<style>
+	#banner{
+	    background-image:url("/images/banner.png");
+	}
+</style>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1>vn.py</h1>
+				<p class="intro">Developed by traders, for traders.</p>
+		</div>
+	</div>
+</div><!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/trader-tutorial-2.html"
+                       rel="bookmark"
+                       title="Permalink to vn.trader使用教程系列2-基础交易">
+                        vn.trader使用教程系列2-基础交易
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2016-05-08T11:13:00+08:00"> 2016-05-08(周日)</time>
+    </span>
+
+
+
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>窗口组件</h2>
+<p><img alt="主窗口" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E4%B8%BB%E7%AA%97%E5%8F%A3.JPG" /></p>
+<p>双击vn.trader文件夹下的vtMain.py后，会看到以上的程序主窗口，无法双击的用户一般是Anaconda安装时的.py文件打开方式问题，右键vtMain.py后-&gt;打开方式-&gt;选择Anaconda文件夹下的python.exe后就可以打开。</p>
+<p>在上一篇教程中设置好CTP接口的帐号密码等信息后，点击菜单上的系统-&gt;连接CTP即可连接到CTP柜台。算法交易等相关的功能会涉及数据库相关的操作，点击系统-&gt;连接数据库后vn.trader会自动连接上MongoDB数据库（需要将MongoDB注册为系统服务）。</p>
+<p>窗口中间部分的组件均可以随意改变位置，也可以拖动变为顶层悬浮窗口，正常退出（点击右上方的X按钮）后会自动保存当前的窗口设置。最下方的状态栏显示了当前的CPU和内存使用率，便于监控当前的系统资源占用情况。</p>
+<p>各组件的功能如下：</p>
+<ul>
+<li>
+<p>交易：发送和撤销交易委托、订阅行情等（参考下一章节）</p>
+</li>
+<li>
+<p>行情：显示行情Tick数据推送</p>
+</li>
+<li>
+<p>委托：显示委托回报相关的数据推送（注意视乎接口不同，大部分失败的委托并不会显示）</p>
+</li>
+<li>
+<p>成交：显示成交相关的数据推送</p>
+</li>
+<li>
+<p>持仓：显示持仓查询的数据结果（采用轮询查询的方式，非实时）</p>
+</li>
+<li>
+<p>资金：显示账户资金查询的数据结果（采用轮询查询的方式，非实时）</p>
+</li>
+<li>
+<p>错误：显示调用底层接口时由于操作失败触发的错误信息推送</p>
+</li>
+<li>
+<p>日志：显示来自于系统内各个组件发出的日志信息</p>
+</li>
+</ul>
+<p>以上监控组件中均可以通过点击右键-&gt;保存内容的方式把表格中的内容保存到csv文件中，便于后续的统计和分析。</p>
+<p>vn.trader文件夹下的VT_setting.json可以用来配置字体和数据库相关的设置。</p>
+<h2>交易委托</h2>
+<p><img alt="交易组件" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E4%BA%A4%E6%98%93.JPG" /></p>
+<p><strong>订阅行情</strong></p>
+<p>上图中的是交易组件，在代码框中输入要交易的合约后回车，名称框中会出现该合约对应的名称信息（如果没有请在日志组件中检查报错信息），同时会自动订阅该合约，后续该合约的行情数据更新也会刷新在右侧的价格梯度显示中。</p>
+<p><strong>委托发单</strong></p>
+<p>对于国内的交易柜台接口（如CTP、LTS、飞创等），用户只需填入方向类型、开平、价格、数量和价格类型即可。对于IB接口，由于其支持的合约数量和类型极多，还需要填入交易所、货币和产品类型的信息以确定唯一的合约。IB和OANDA接口可以忽略开平信息，因为国外的产品大多不允许锁仓交易（即多空会自动对冲，不会出现多单1手、空单1手的情况）。</p>
+<p>委托信息输入完成后，点击发单即可发出委托。如果发单成功，则很快委托回报的推送更新会出现在委托监控组件中，如果没有回报则意味着发单失败，可以在错误监控或者日志监控中检查相应的报错信息。</p>
+<p><strong>委托撤单</strong></p>
+<p>点击交易组件上的全撤按钮后，会对当前的所有活动委托（未成交、部分成交）执行撤单操作。</p>
+<p>双击委托监控组件中的某个单元格后，可以针对该单元格所显示的委托执行撤单操作。</p>
+<p><strong>快速平仓</strong></p>
+<p>双击持仓监控组件中的某个持仓后，会自动在交易组件中填充平仓相关的信息，用户可以输入价格后快速下单（这里为了预防某些大型机构不小心点击一键平仓后平仓委托把市场流动性全部吞噬，特意设计为了需要手动输入价格的方式）。</p>
+<p><strong>注意</strong></p>
+<p>注意对于期货而言，部分合约的英文字母采用大写（如IF1605），部分合约的英文字母采用小写（如au1606），具体可以在合约查询组件中查看（参考下一章节）。</p>
+<p>对于Wind接口，由于监管的原因券商已经禁止了其交易功能的接入，因此只能订阅行情（包括一些交易柜台上无法提供的如行业指数等数据）。</p>
+<h2>合约查询</h2>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E5%90%88%E7%BA%A6%E6%9F%A5%E8%AF%A2.JPG" /></p>
+<p>点击菜单栏的功能-&gt;查询合约后，可以看到如上图显示的窗口。该窗口中显示了目前已经连接的接口上允许交易的所有合约信息（目前IB接口的合约信息无法显示）。</p>
+<p>合约代码中英文字母的大小写在vn.trader系统中是敏感的，在进行手动交易或者编写策略时需要注意，否则会出现委托失败的情况。</p>
+<p>连接了新的接口后，可以右键-&gt;刷新来更新表格中显示的合约信息。</p>
+<p>交易所目前采用的是各交易所官方网站的字母缩写形式，vn.trader系统中的具体对应关系如下：</p>
+<table>
+<thead>
+<tr>
+<th>缩写</th>
+<th>交易所</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SSE</td>
+<td>上海证券交易所</td>
+</tr>
+<tr>
+<td>SZSE</td>
+<td>深圳证券交易所</td>
+</tr>
+<tr>
+<td>CFFEX</td>
+<td>中国金融期货交易所</td>
+</tr>
+<tr>
+<td>SHFE</td>
+<td>上海期货交易所</td>
+</tr>
+<tr>
+<td>CZCE</td>
+<td>郑州商品交易所</td>
+</tr>
+<tr>
+<td>DCE</td>
+<td>大连商品交易所</td>
+</tr>
+<tr>
+<td>SGE</td>
+<td>上海黄金交易所</td>
+</tr>
+<tr>
+<td>HKEX</td>
+<td>香港交易所</td>
+</tr>
+<tr>
+<td>SMART</td>
+<td>IB的智能路由（股票、期权）</td>
+</tr>
+<tr>
+<td>GLOBEX</td>
+<td>芝加哥商品交易所的电子交易平台</td>
+</tr>
+<tr>
+<td>IDEALPRO</td>
+<td>IB的外汇ECN平台</td>
+</tr>
+<tr>
+<td>OANDA</td>
+<td>OANDA外汇平台</td>
+</tr>
+<tr>
+<td>UNKNOWN</td>
+<td>未知（即以上以外的交易所）</td>
+</tr>
+</tbody>
+</table>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="http://github.com/vnpy/vnpy"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+              </ul>
+            </li>
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://www.vnpie.com" target="_blank">
+                官方论坛 - 维恩的派
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.trader" target="_blank">
+                交易平台
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.event" target="_blank">
+                事件引擎
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ctp" target="_blank">
+                CTP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.xspeed" target="_blank">
+                飞创接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.femas" target="_blank">
+                飞马接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksotp" target="_blank">
+                金仕达期权接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksgold" target="_blank">
+                金仕达黄金接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.sgit" target="_blank">
+                飞鼠接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/dev/vn.qdp" target="_blank">
+                QDP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.oanda" target="_blank">
+                OANDA接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ib" target="_blank">
+                IB接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.shzd" target="_blank">
+                直达期货接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.okcoin" target="_blank">
+                OKCoin接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.datayes" target="_blank">
+                通联数据接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.demo" target="_blank">
+                开发DEMO
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2017 用Python的交易员
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
+    <script src="/theme/js/bodypadding.js"></script>
+
+</body>
+</html>

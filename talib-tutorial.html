@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh"
+>
+<head>
+    <title>使用TA-Lib在vn.trader上开发CTA交易策略 - vn.py</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href="/images/favicon.png" rel="icon">
+
+<link rel="canonical" href="/talib-tutorial.html">
+
+        <meta name="author" content="用Python的交易员" />
+        <meta name="description" content="TA-Lib简介 作为一套被业界广泛应用的开源技术分析库（包含技术指标计算和K线模式识别等），TA-Lib自2001年发布以来已经有了十多年的历史。TA-Lib中一共包含大约125个技术指标的计算函数，同时提供了包括C/C++、Java、Perl、Python等多种语言的API。 有什么用 简单来说TA-Lib就是提供了一堆经过长期实践检验的技术指标计算函数。基于现成的计算函数，开发新策略雏形、快速验证某个灵感的时间可以大幅缩短，否则想象一下每开发个策略都要自己实现要用的技术指标，未免太浪费时间。 但是除此以外，TA-Lib还可以有一些其他的用法，举两个例子。 百科全书 坚持每天收盘后选一个自己没用过的指标，输入数据，画个图、跑个回测，开发量化策略很很多其他的技术一样都是熟能生巧。 另外，所有的技术指标在被开发出来的时候，背后都有一定的金融逻辑原理（行为金融学）的支撑，生搬硬套固然不可取，但是放着前人经验完全不看，整天凭自己的空想就弄个机器学习算法在数据上瞎折腾岂不是更浪费时间？ Alpha库 很大一部分CTA类的策略可以总结为几个简单的逻辑框架，比如趋势策略通常可以分解成以下部分：趋势信号（通常是基于某几个参数计算出来的指标值超过某个阈值）、信号过滤（和趋势信号类似）、出场方案（固定点数/百分比的止盈和止损，移动止损）。 因此把逻辑框架的代码搭好后，就可以通过机器学习算法来实现一种自动的策略开发方式： 从TA-Lib中选取两个指标分别作为趋势信号和信号过滤，结合止损、止盈方案 ..." />
+
+        <meta property="og:site_name" content="vn.py" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="使用TA-Lib在vn.trader上开发CTA交易策略"/>
+        <meta property="og:url" content="/talib-tutorial.html"/>
+        <meta property="og:description" content="TA-Lib简介 作为一套被业界广泛应用的开源技术分析库（包含技术指标计算和K线模式识别等），TA-Lib自2001年发布以来已经有了十多年的历史。TA-Lib中一共包含大约125个技术指标的计算函数，同时提供了包括C/C++、Java、Perl、Python等多种语言的API。 有什么用 简单来说TA-Lib就是提供了一堆经过长期实践检验的技术指标计算函数。基于现成的计算函数，开发新策略雏形、快速验证某个灵感的时间可以大幅缩短，否则想象一下每开发个策略都要自己实现要用的技术指标，未免太浪费时间。 但是除此以外，TA-Lib还可以有一些其他的用法，举两个例子。 百科全书 坚持每天收盘后选一个自己没用过的指标，输入数据，画个图、跑个回测，开发量化策略很很多其他的技术一样都是熟能生巧。 另外，所有的技术指标在被开发出来的时候，背后都有一定的金融逻辑原理（行为金融学）的支撑，生搬硬套固然不可取，但是放着前人经验完全不看，整天凭自己的空想就弄个机器学习算法在数据上瞎折腾岂不是更浪费时间？ Alpha库 很大一部分CTA类的策略可以总结为几个简单的逻辑框架，比如趋势策略通常可以分解成以下部分：趋势信号（通常是基于某几个参数计算出来的指标值超过某个阈值）、信号过滤（和趋势信号类似）、出场方案（固定点数/百分比的止盈和止损，移动止损）。 因此把逻辑框架的代码搭好后，就可以通过机器学习算法来实现一种自动的策略开发方式： 从TA-Lib中选取两个指标分别作为趋势信号和信号过滤，结合止损、止盈方案 ..."/>
+        <meta property="article:published_time" content="2016-03-01" />
+            <meta property="article:section" content="文章" />
+            <meta property="article:author" content="用Python的交易员" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.readable.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/monokai.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "//hm.baidu.com/hm.js?e8c7573f82d43fa50c895a8e28c49ceb";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+<img src="/images/favicon.png" width=""/> vn.py            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                         <li><a href="/pages/quickstart.html">
+                             Quick Start
+                          </a></li>
+                         <li><a href="/pages/blog.html">
+                             日志
+                          </a></li>
+                         <li><a href="/pages/screenshot.html">
+                             截图
+                          </a></li>
+                         <li><a href="/pages/community.html">
+                             社区
+                          </a></li>
+                         <li><a href="/pages/api.html">
+                             API接口
+                          </a></li>
+                         <li><a href="/pages/download.html">
+                             下载
+                          </a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<style>
+	#banner{
+	    background-image:url("/images/banner.png");
+	}
+</style>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1>vn.py</h1>
+				<p class="intro">Developed by traders, for traders.</p>
+		</div>
+	</div>
+</div><!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/talib-tutorial.html"
+                       rel="bookmark"
+                       title="Permalink to 使用TA-Lib在vn.trader上开发CTA交易策略">
+                        使用TA-Lib在vn.trader上开发CTA交易策略
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2016-03-01T13:58:42+08:00"> 2016-03-01(周二)</time>
+    </span>
+
+
+
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <h2>TA-Lib简介</h2>
+<p>作为一套被业界广泛应用的开源技术分析库（包含技术指标计算和K线模式识别等），TA-Lib自2001年发布以来已经有了十多年的历史。TA-Lib中一共包含大约125个技术指标的计算函数，同时提供了包括C/C++、Java、Perl、Python等多种语言的API。</p>
+<h2>有什么用</h2>
+<p>简单来说TA-Lib就是提供了一堆经过长期实践检验的技术指标计算函数。基于现成的计算函数，开发新策略雏形、快速验证某个灵感的时间可以大幅缩短，否则想象一下每开发个策略都要自己实现要用的技术指标，未免太浪费时间。</p>
+<p>但是除此以外，TA-Lib还可以有一些其他的用法，举两个例子。</p>
+<p><strong>百科全书 </strong></p>
+<p>坚持每天收盘后选一个自己没用过的指标，输入数据，画个图、跑个回测，开发量化策略很很多其他的技术一样都是熟能生巧。</p>
+<p>另外，所有的技术指标在被开发出来的时候，背后都有一定的金融逻辑原理（行为金融学）的支撑，生搬硬套固然不可取，但是放着前人经验完全不看，整天凭自己的空想就弄个机器学习算法在数据上瞎折腾岂不是更浪费时间？</p>
+<p><strong>Alpha库</strong></p>
+<p>很大一部分CTA类的策略可以总结为几个简单的逻辑框架，比如趋势策略通常可以分解成以下部分：趋势信号（通常是基于某几个参数计算出来的指标值超过某个阈值）、信号过滤（和趋势信号类似）、出场方案（固定点数/百分比的止盈和止损，移动止损）。</p>
+<p>因此把逻辑框架的代码搭好后，就可以通过机器学习算法来实现一种自动的策略开发方式：</p>
+<ol>
+<li>
+<p>从TA-Lib中选取两个指标分别作为趋势信号和信号过滤，结合止损、止盈方案，生成一个策略；</p>
+</li>
+<li>
+<p>基于某一组历史数据（如股指的1分钟行情），通过遗传算法来对以上的参数进行光与优化；</p>
+</li>
+<li>
+<p>两个指标的参数加起来通常不会超过10个，再加上止盈、止损、移动止损的参数，总参数不会超过15个，在一组高达十几万个数据点的时间序列上进行回测，过度拟合的可能性不大；</p>
+</li>
+<li>
+<p>现在云服务器价格也不贵，租一个核多一点的，把算法和数据丢上去7×24小时的跑，Alpha值达到一定标准的策略存下来；</p>
+</li>
+<li>
+<p>把上一步中保存下来的策略作为雏形，研究员再来进行针对性的有效性验证和更精细化的策略改进，把策略开发变成有的放矢，而不是盲人摸象。</p>
+</li>
+</ol>
+<p>这种策略开发方式使用传统的商业软件（如TB、MC等）几乎不可能实现，而Python这类开源软件就成为了最好的选择，用户可以自行决定几乎所有的算法（指标如何选择、遗传算法优化参数时如何迭代等等）。</p>
+<h2>怎么安装</h2>
+<p>尽管TA-Lib原生提供了基于SWIG封装的Python API，但是由于性能和编译不方便的原因，作者推荐Github上的一位开发者mrjbq7基于Cython封装的版本。</p>
+<p>安装过程：</p>
+<ol>
+<li>
+<p>在<a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#ta-lib">这里</a>下载<strong>TA_Lib-0.4.9-cp27-none-win32.whl</strong>放到桌面上，也就是vn.py建议的运行环境Anaconda 2.7 32位</p>
+</li>
+<li>
+<p>在桌面上按住Shift点击鼠标右键后，选择<strong>在此处打开命令窗口</strong>打开cmd</p>
+</li>
+<li>
+<p>安装wheel包，在cmd中运行：</p>
+<blockquote>
+<p>pip install wheel</p>
+</blockquote>
+</li>
+<li>
+<p>安装TA-Lib，在cmd中运行：</p>
+<blockquote>
+<p>pip install TA_Lib-0.4.9-cp27-none-win32.whl</p>
+</blockquote>
+</li>
+<li>
+<p>打开Python，运行：</p>
+<blockquote>
+<p>import talib</p>
+</blockquote>
+<p>没有报错则说明安装成功</p>
+</li>
+</ol>
+<p>一定要尝试自己编译的用户，可以根据<a href="http://mrjbq7.github.io/ta-lib/install.html">该项目的网站</a>上的教程来安装。作者的两台电脑，一台直接安装成功，另一台安装了MinGW的电脑则报GCC编译错误（其实自己编译没有任何意义，感谢加州大学欧文分校打包的whl文件，省去了很多麻烦）。</p>
+<p>Linux下的安装建议使用Anaconda的conda工具：</p>
+<blockquote>
+<p>conda install -c quantopian ta-lib=0.4.9</p>
+</blockquote>
+<p>具体可以参考这里：<a href="https://anaconda.org/Quantopian/ta-lib">https://anaconda.org/Quantopian/ta-lib</a></p>
+<h2>DEMO</h2>
+<p>下面这个策略DEMO可以直接在vn.trader的CTA模块中使用（回测、模拟交易），请不要用于实盘！</p>
+<div class="highlight"><pre><span></span><span class="c1"># encoding: UTF-8</span>
+
+<span class="kn">import</span> <span class="nn">talib</span> <span class="kn">as</span> <span class="nn">ta</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">ctaBase</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">ctaTemplate</span> <span class="kn">import</span> <span class="n">CtaTemplate</span>
+
+
+<span class="c1">########################################################################</span>
+<span class="k">class</span> <span class="nc">TalibDoubleSmaDemo</span><span class="p">(</span><span class="n">CtaTemplate</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;基于Talib模块的双指数均线策略Demo&quot;&quot;&quot;</span>
+
+    <span class="n">className</span> <span class="o">=</span> <span class="s1">&#39;TalibDoubleSmaDemo&#39;</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="s1">u&#39;ideaplat&#39;</span>
+
+    <span class="c1"># 策略参数</span>
+    <span class="n">fastPeriod</span> <span class="o">=</span> <span class="mi">5</span>      <span class="c1"># 快速均线参数</span>
+    <span class="n">slowPeriod</span> <span class="o">=</span> <span class="mi">20</span>     <span class="c1"># 慢速均线参数</span>
+    <span class="n">initDays</span> <span class="o">=</span> <span class="mi">5</span>        <span class="c1"># 初始化数据所用的天数</span>
+
+    <span class="c1"># 策略变量</span>
+    <span class="n">bar</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">barMinute</span> <span class="o">=</span> <span class="n">EMPTY_STRING</span>
+
+    <span class="n">closeHistory</span> <span class="o">=</span> <span class="p">[]</span>       <span class="c1"># 缓存K线收盘价的数组</span>
+    <span class="n">maxHistory</span> <span class="o">=</span> <span class="mi">50</span>         <span class="c1"># 最大缓存数量</span>
+
+    <span class="n">fastMa0</span> <span class="o">=</span> <span class="n">EMPTY_FLOAT</span>   <span class="c1"># 当前最新的快速均线数值</span>
+    <span class="n">fastMa1</span> <span class="o">=</span> <span class="n">EMPTY_FLOAT</span>   <span class="c1"># 上一根的快速均线数值</span>
+
+    <span class="n">slowMa0</span> <span class="o">=</span> <span class="n">EMPTY_FLOAT</span>   <span class="c1"># 慢速均线数值</span>
+    <span class="n">slowMa1</span> <span class="o">=</span> <span class="n">EMPTY_FLOAT</span>
+
+
+    <span class="c1"># 参数列表，保存了参数的名称</span>
+    <span class="n">paramList</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;className&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;author&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;vtSymbol&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;fastPeriod&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;slowPeriod&#39;</span><span class="p">]</span>
+
+    <span class="c1"># 变量列表，保存了变量的名称</span>
+    <span class="n">varList</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;inited&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;trading&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;pos&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;fastMa0&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;fastMa1&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;slowMa0&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;slowMa1&#39;</span><span class="p">]</span>
+
+    <span class="c1"># ----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctaEngine</span><span class="p">,</span> <span class="n">setting</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TalibDoubleSmaDemo</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">ctaEngine</span><span class="p">,</span> <span class="n">setting</span><span class="p">)</span>
+
+    <span class="c1"># ----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">onInit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;初始化策略（必须由用户继承实现）&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writeCtaLog</span><span class="p">(</span><span class="s1">u&#39;双SMA演示策略初始化&#39;</span><span class="p">)</span>
+
+        <span class="n">initData</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initDays</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">bar</span> <span class="ow">in</span> <span class="n">initData</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">onBar</span><span class="p">(</span><span class="n">bar</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">putEvent</span><span class="p">()</span>
+
+    <span class="c1"># ----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">onStart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;启动策略（必须由用户继承实现）&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writeCtaLog</span><span class="p">(</span><span class="s1">u&#39;双SMA演示策略启动&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">putEvent</span><span class="p">()</span>
+
+    <span class="c1"># ----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">onStop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;停止策略（必须由用户继承实现）&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writeCtaLog</span><span class="p">(</span><span class="s1">u&#39;双SMA演示策略停止&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">putEvent</span><span class="p">()</span>
+
+    <span class="c1"># ----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">onTick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tick</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;收到行情TICK推送（必须由用户继承实现）&quot;&quot;&quot;</span>
+        <span class="c1"># 计算K线</span>
+        <span class="n">tickMinute</span> <span class="o">=</span> <span class="n">tick</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">minute</span>
+
+        <span class="k">if</span> <span class="n">tickMinute</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">barMinute</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bar</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">onBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bar</span><span class="p">)</span>
+
+            <span class="n">bar</span> <span class="o">=</span> <span class="n">CtaBarData</span><span class="p">()</span>
+            <span class="n">bar</span><span class="o">.</span><span class="n">vtSymbol</span> <span class="o">=</span> <span class="n">tick</span><span class="o">.</span><span class="n">vtSymbol</span>
+            <span class="n">bar</span><span class="o">.</span><span class="n">symbol</span> <span class="o">=</span> <span class="n">tick</span><span class="o">.</span><span class="n">symbol</span>
+            <span class="n">bar</span><span class="o">.</span><span class="n">exchange</span> <span class="o">=</span> <span class="n">tick</span><span class="o">.</span><span class="n">exchange</span>
+
+            <span class="n">bar</span><span class="o">.</span><span class="n">open</span> <span class="o">=</span> <span class="n">tick</span><span class="o">.</span><span class="n">lastPrice</span>
+            <span class="n">bar</span><span class="o">.</span><span class="n">high</span> <span class="o">=</span> <span class="n">tick</span><span class="o">.</span><span class="n">lastPrice</span>
+            <span class="n">bar</span><span class="o">.</span><span class="n">low</span> <span class="o">=</span> <span class="n">tick</span><span class="o">.</span><span class="n">lastPrice</span>
+            <span class="n">bar</span><span class="o">.</span><span class="n">close</span> <span class="o">=</span> <span class="n">tick</span><span class="o">.</span><span class="n">lastPrice</span>
+
+            <span class="n">bar</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">tick</span><span class="o">.</span><span class="n">date</span>
+            <span class="n">bar</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">tick</span><span class="o">.</span><span class="n">time</span>
+            <span class="n">bar</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="n">tick</span><span class="o">.</span><span class="n">datetime</span>  <span class="c1"># K线的时间设为第一个Tick的时间</span>
+
+            <span class="c1"># 实盘中用不到的数据可以选择不算，从而加快速度</span>
+            <span class="c1"># bar.volume = tick.volume</span>
+            <span class="c1"># bar.openInterest = tick.openInterest</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="n">bar</span>  <span class="c1"># 这种写法为了减少一层访问，加快速度</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">barMinute</span> <span class="o">=</span> <span class="n">tickMinute</span>  <span class="c1"># 更新当前的分钟</span>
+
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># 否则继续累加新的K线</span>
+            <span class="n">bar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bar</span>  <span class="c1"># 写法同样为了加快速度</span>
+
+            <span class="n">bar</span><span class="o">.</span><span class="n">high</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">high</span><span class="p">,</span> <span class="n">tick</span><span class="o">.</span><span class="n">lastPrice</span><span class="p">)</span>
+            <span class="n">bar</span><span class="o">.</span><span class="n">low</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">low</span><span class="p">,</span> <span class="n">tick</span><span class="o">.</span><span class="n">lastPrice</span><span class="p">)</span>
+            <span class="n">bar</span><span class="o">.</span><span class="n">close</span> <span class="o">=</span> <span class="n">tick</span><span class="o">.</span><span class="n">lastPrice</span>
+
+    <span class="c1"># ----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">onBar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bar</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;收到Bar推送（必须由用户继承实现）&quot;&quot;&quot;</span>
+        <span class="c1"># 把最新的收盘价缓存到列表中</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">closeHistory</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">close</span><span class="p">)</span>
+
+        <span class="c1"># 检查列表长度，如果超过缓存上限则移除最老的数据</span>
+        <span class="c1"># 这样是为了减少计算用的数据量，提高速度</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">closeHistory</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxHistory</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">closeHistory</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># 如果小于缓存上限，则说明初始化数据尚未足够，不进行后续计算</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># 将缓存的收盘价数转化为numpy数组后，传入talib的函数SMA中计算</span>
+        <span class="n">closeArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">closeHistory</span><span class="p">)</span>
+        <span class="n">fastSMA</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">SMA</span><span class="p">(</span><span class="n">closeArray</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fastPeriod</span><span class="p">)</span>
+        <span class="n">slowSMA</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">SMA</span><span class="p">(</span><span class="n">closeArray</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slowPeriod</span><span class="p">)</span>
+
+        <span class="c1"># 读取当前K线和上一根K线的数值，用于判断均线交叉</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fastMa0</span> <span class="o">=</span> <span class="n">fastSMA</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fastMa1</span> <span class="o">=</span> <span class="n">fastSMA</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slowMa0</span> <span class="o">=</span> <span class="n">slowSMA</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slowMa1</span> <span class="o">=</span> <span class="n">slowSMA</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="c1"># 判断买卖</span>
+        <span class="n">crossOver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fastMa0</span><span class="o">&gt;</span><span class="bp">self</span><span class="o">.</span><span class="n">slowMa0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">fastMa1</span><span class="o">&lt;</span><span class="bp">self</span><span class="o">.</span><span class="n">slowMa1</span>     <span class="c1"># 金叉上穿</span>
+        <span class="n">crossBelow</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fastMa0</span><span class="o">&lt;</span><span class="bp">self</span><span class="o">.</span><span class="n">slowMa0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">fastMa1</span><span class="o">&gt;</span><span class="bp">self</span><span class="o">.</span><span class="n">slowMa1</span>    <span class="c1"># 死叉下穿</span>
+
+        <span class="c1"># 金叉和死叉的条件是互斥</span>
+        <span class="k">if</span> <span class="n">crossOver</span><span class="p">:</span>
+            <span class="c1"># 如果金叉时手头没有持仓，则直接做多</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">buy</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="c1"># 如果有空头持仓，则先平空，再做多</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cover</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">buy</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># 死叉和金叉相反</span>
+        <span class="k">elif</span> <span class="n">crossBelow</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">short</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sell</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">short</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">close</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># 发出状态更新事件</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">putEvent</span><span class="p">()</span>
+
+    <span class="c1"># ----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">onOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;收到委托变化推送（必须由用户继承实现）&quot;&quot;&quot;</span>
+        <span class="c1"># 对于无需做细粒度委托控制的策略，可以忽略onOrder</span>
+        <span class="k">pass</span>
+
+    <span class="c1"># ----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">onTrade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trade</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;收到成交推送（必须由用户继承实现）&quot;&quot;&quot;</span>
+        <span class="c1"># 对于无需做细粒度委托控制的策略，可以忽略onOrder</span>
+        <span class="k">pass</span>
+</pre></div>
+
+
+<p>（感谢社区ideaplat用户贡献的代码！作者做了一些小修改。）</p>
+<p>将上面的代码保存到一个talibDemo.py文件中后，参考vn.trader下ctaAlgo文件夹内的ctaBacktesting.py运行回测，也可以通过ctaSetting.py进行配置后，在vn.trader中进行模拟交易。</p>
+<p>从上面的DEMO中我们可以看到，talib中的技术指标函数主要接受一个numpy数组作为原始数据及若干个指标算法中的参数作为输入，返回的数据也是一个numpy数组，使用起来非常方便。</p>
+<p>注意缓存数据时使用的是Python列表而非numpy数组，主要原因是numpy数组的append方法本质是结合原数组中的数据和新的数据生成一个新的数组对象，相对于列表的append开销要高很多。</p>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="http://github.com/vnpy/vnpy"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+              </ul>
+            </li>
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://www.vnpie.com" target="_blank">
+                官方论坛 - 维恩的派
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.trader" target="_blank">
+                交易平台
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.event" target="_blank">
+                事件引擎
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ctp" target="_blank">
+                CTP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.xspeed" target="_blank">
+                飞创接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.femas" target="_blank">
+                飞马接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksotp" target="_blank">
+                金仕达期权接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksgold" target="_blank">
+                金仕达黄金接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.sgit" target="_blank">
+                飞鼠接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/dev/vn.qdp" target="_blank">
+                QDP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.oanda" target="_blank">
+                OANDA接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ib" target="_blank">
+                IB接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.shzd" target="_blank">
+                直达期货接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.okcoin" target="_blank">
+                OKCoin接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.datayes" target="_blank">
+                通联数据接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.demo" target="_blank">
+                开发DEMO
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2017 用Python的交易员
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
+    <script src="/theme/js/bodypadding.js"></script>
+
+</body>
+</html>

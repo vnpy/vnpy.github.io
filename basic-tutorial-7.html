@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh"
+>
+<head>
+    <title>Python量化交易平台开发教程系列7-顶层GUI界面开发（1） - vn.py</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href="/images/favicon.png" rel="icon">
+
+<link rel="canonical" href="/basic-tutorial-7.html">
+
+        <meta name="author" content="用Python的交易员" />
+        <meta name="description" content="原创文章，转载请注明出处：用Python的交易员 前言 终于有时间来写第一篇顶层GUI界面开发相关的教程了，之前实在是事情太多，跟各位读者抱个歉。 整合底层接口的各项功能到中层引擎中后，当我们开发顶层应用时（GUI或者策略算法），只需知道中层引擎对外提供的主动API函数以及事件引擎中相关的事件类型和数据形式即可。 在GUI和策略算法这两个主要类型的顶层应用中，作者选择先介绍GUI开发的原因是：目前国内支持用户定制化开发GUI界面的量化平台少之又少，而包含一个比较全面的GUI开发教程的则据我所知还没有。随着国内越来越多的衍生品推出（期权、分级基金、未来的反向基金），很多新型的交易策略从全自动转向了半自动，经常需要交易员的手动干预（启动暂停策略、盘中微调参数等），以及投资组合层面的风险管理（期权希腊值、分级基金行业暴露等），这种情况下传统上仅支持策略算法开发的量化交易平台变得越发难以满足交易员的需求（包括作者本人），所以估计这方面的文章更能填补当前市场需求的空缺（笑...）。 PyQt 目前Python上主要的GUI开发工具包括：tkinter、PyQt、PyGTK和wxPython，笔者选择PyQt的主要原因是： Anaconda中已经包含（早期版本中包含的是LGPL协议的Pyside，稳定性不如PyQt） 另一个内置GUI库tkinter的功能太弱 网上对这四款GUI开发工具比较分析的文章很多，有兴趣的读者可以自己搜搜看。 接下来的几篇GUI开发教程会假设读者已经对PyQt开发有了一定的了解，主要针对和量化交易平台开发相关的部分，需要补充基础知识的读者建议参考以下资源： zetcode.com，上面的教程简单明了，从头到尾做一遍对PyQt的工作原理基本就有个全面的了解了 Rapid ..." />
+
+        <meta property="og:site_name" content="vn.py" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="Python量化交易平台开发教程系列7-顶层GUI界面开发（1）"/>
+        <meta property="og:url" content="/basic-tutorial-7.html"/>
+        <meta property="og:description" content="原创文章，转载请注明出处：用Python的交易员 前言 终于有时间来写第一篇顶层GUI界面开发相关的教程了，之前实在是事情太多，跟各位读者抱个歉。 整合底层接口的各项功能到中层引擎中后，当我们开发顶层应用时（GUI或者策略算法），只需知道中层引擎对外提供的主动API函数以及事件引擎中相关的事件类型和数据形式即可。 在GUI和策略算法这两个主要类型的顶层应用中，作者选择先介绍GUI开发的原因是：目前国内支持用户定制化开发GUI界面的量化平台少之又少，而包含一个比较全面的GUI开发教程的则据我所知还没有。随着国内越来越多的衍生品推出（期权、分级基金、未来的反向基金），很多新型的交易策略从全自动转向了半自动，经常需要交易员的手动干预（启动暂停策略、盘中微调参数等），以及投资组合层面的风险管理（期权希腊值、分级基金行业暴露等），这种情况下传统上仅支持策略算法开发的量化交易平台变得越发难以满足交易员的需求（包括作者本人），所以估计这方面的文章更能填补当前市场需求的空缺（笑...）。 PyQt 目前Python上主要的GUI开发工具包括：tkinter、PyQt、PyGTK和wxPython，笔者选择PyQt的主要原因是： Anaconda中已经包含（早期版本中包含的是LGPL协议的Pyside，稳定性不如PyQt） 另一个内置GUI库tkinter的功能太弱 网上对这四款GUI开发工具比较分析的文章很多，有兴趣的读者可以自己搜搜看。 接下来的几篇GUI开发教程会假设读者已经对PyQt开发有了一定的了解，主要针对和量化交易平台开发相关的部分，需要补充基础知识的读者建议参考以下资源： zetcode.com，上面的教程简单明了，从头到尾做一遍对PyQt的工作原理基本就有个全面的了解了 Rapid ..."/>
+        <meta property="article:published_time" content="2015-07-09" />
+            <meta property="article:section" content="文章" />
+            <meta property="article:author" content="用Python的交易员" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.readable.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/monokai.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "//hm.baidu.com/hm.js?e8c7573f82d43fa50c895a8e28c49ceb";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+<img src="/images/favicon.png" width=""/> vn.py            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                         <li><a href="/pages/quickstart.html">
+                             Quick Start
+                          </a></li>
+                         <li><a href="/pages/blog.html">
+                             日志
+                          </a></li>
+                         <li><a href="/pages/screenshot.html">
+                             截图
+                          </a></li>
+                         <li><a href="/pages/community.html">
+                             社区
+                          </a></li>
+                         <li><a href="/pages/api.html">
+                             API接口
+                          </a></li>
+                         <li><a href="/pages/download.html">
+                             下载
+                          </a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<style>
+	#banner{
+	    background-image:url("/images/banner.png");
+	}
+</style>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1>vn.py</h1>
+				<p class="intro">Developed by traders, for traders.</p>
+		</div>
+	</div>
+</div><!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/basic-tutorial-7.html"
+                       rel="bookmark"
+                       title="Permalink to Python量化交易平台开发教程系列7-顶层GUI界面开发（1）">
+                        Python量化交易平台开发教程系列7-顶层GUI界面开发（1）
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2015-07-09T16:20:00+08:00"> 2015-07-09(周四)</time>
+    </span>
+
+
+
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>前言</h2>
+<p>终于有时间来写第一篇顶层GUI界面开发相关的教程了，之前实在是事情太多，跟各位读者抱个歉。</p>
+<p>整合底层接口的各项功能到中层引擎中后，当我们开发顶层应用时（GUI或者策略算法），只需知道中层引擎对外提供的主动API函数以及事件引擎中相关的事件类型和数据形式即可。</p>
+<p>在GUI和策略算法这两个主要类型的顶层应用中，作者选择先介绍GUI开发的原因是：目前国内支持用户定制化开发GUI界面的量化平台少之又少，而包含一个比较全面的GUI开发教程的则据我所知还没有。随着国内越来越多的衍生品推出（期权、分级基金、未来的反向基金），很多新型的交易策略从全自动转向了半自动，经常需要交易员的手动干预（启动暂停策略、盘中微调参数等），以及投资组合层面的风险管理（期权希腊值、分级基金行业暴露等），这种情况下传统上仅支持策略算法开发的量化交易平台变得越发难以满足交易员的需求（包括作者本人），所以估计这方面的文章更能填补当前市场需求的空缺（笑...）。</p>
+<h2>PyQt</h2>
+<p>目前Python上主要的GUI开发工具包括：tkinter、PyQt、PyGTK和wxPython，笔者选择PyQt的主要原因是：</p>
+<ol>
+<li>
+<p>Anaconda中已经包含（早期版本中包含的是LGPL协议的Pyside，稳定性不如PyQt）</p>
+</li>
+<li>
+<p>另一个内置GUI库tkinter的功能太弱</p>
+</li>
+</ol>
+<p>网上对这四款GUI开发工具比较分析的文章很多，有兴趣的读者可以自己搜搜看。</p>
+<p>接下来的几篇GUI开发教程会假设读者已经对PyQt开发有了一定的了解，主要针对和量化交易平台开发相关的部分，需要补充基础知识的读者建议参考以下资源：</p>
+<ol>
+<li>
+<p>zetcode.com，上面的教程简单明了，从头到尾做一遍对PyQt的工作原理基本就有个全面的了解了</p>
+</li>
+<li>
+<p>Rapid GUI Programming with Python and Qt，一本由Riverbank（PyQt的开发公司）员工推出的PyQt开发教程，非常细致全面，但是部分内容跳跃性太大，需要从头到尾多看几遍</p>
+</li>
+<li>
+<p>也可以在遇到特定问题时搜百度或者StackOverflow，通常都能找到答案</p>
+</li>
+</ol>
+<p><strong>PyQt版本</strong>
+在<a href="http://www.riverbankcomputing.com/software/pyqt/download">Riverbank官网</a>下载：</p>
+<blockquote>
+<p>PyQt4-4.11.4-gpl-Py2.7-Qt4.8.7-x32.exe    Windows 32 bit installer</p>
+</blockquote>
+<p>请特别注意这个版本的问题，从最近几个月的经验看，很多PyQt相关模块运行时报错就是因为下错了版本（PyQt5、64位等等都不对）。</p>
+<h2>GUI组件</h2>
+<p>从功能上看，所有交易平台的GUI组件都可以分为两类，数据监控（被动）和功能调用（主动），当然也有同时混合两类功能的组件。</p>
+<p><strong>数据监控</strong></p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B7%E7%9B%91%E6%8E%A7.jpg" /></p>
+<p>行情监控组件，用于监控实时行情数据，每当API端有新的行情数据推送时立即进行更新。</p>
+<p><strong>功能调用</strong></p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B7%E4%B8%BB%E5%8A%A8.jpg" /></p>
+<p>账号登录组件，用于调用中层引擎的登录功能，传入用户名、密码、服务器地址等参数。</p>
+<p><strong>混合（交易下单）</strong></p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B7%E6%B7%B7%E5%90%88.jpg" /></p>
+<p>交易下单组件，左侧部分用于填入下单参数后调用中层引擎的下单功能发单，右侧部分用于监控用户输入的合约代码的实时行情（有行情推送时立即更新）。</p>
+<h2>数据监控组件</h2>
+<p>数据监控组件主要用于对交易平台中的各项数据实现实时更新或者手动更新的显示监控，最常用的包括行情、报单、成交、持仓和日志等。监控组件中最常见的类型是表格，对应PyQt中的QTableWidget组件，表格中的单元格则使用QTableWidgetItem组件。对于某些特殊的数据监控也可以使用其他类型的组件，如上面交易下单组件中右侧的部分，主要是使用标签组件QLabel构成的。</p>
+<p>针对不同的监控内容需要实现不同的数据更新方法，例如日志、成交类数据应该使用插入更新（即每条新的数据都应该插入新的一行），行情数据应该使用固定位置更新（即在表格中固定的单元格位置更新数据），以及主要针对持仓和报单数据的混合更新（即已经存在的数据直接在对应的位置更新，否则插入新的一行）。</p>
+<p>下面以最基础的日志监控为例介绍监控组件的实现原理，其他更为复杂的监控组件建议用户直接阅读vn.demo中demoMain.py的源代码，大部分代码作者都做了详尽的注释。</p>
+<h3>日志监控</h3>
+<p>日志监控组件主要用于输出程序运行过程中有关当前程序运行状态的信息。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B7%E6%97%A5%E5%BF%97.jpg" /></p>
+<p>整个实现代码如下：</p>
+<div class="highlight"><pre><span></span><span class="c1">########################################################################</span>
+<span class="k">class</span> <span class="nc">LogMonitor</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;用于显示日志&quot;&quot;&quot;</span>
+    <span class="n">signal</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">Event</span><span class="p">()))</span>
+
+    <span class="c1">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eventEngine</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LogMonitor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eventEngine</span> <span class="o">=</span> <span class="n">eventEngine</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">initUi</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">registerEvent</span><span class="p">()</span>
+
+    <span class="c1">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">initUi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;初始化界面&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s1">u&#39;日志&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>                     
+        <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">([</span><span class="s1">u&#39;时间&#39;</span><span class="p">,</span> <span class="s1">u&#39;日志&#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>                 <span class="c1"># 关闭左边的垂直表头</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setEditTriggers</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidget</span><span class="o">.</span><span class="n">NoEditTriggers</span><span class="p">)</span> <span class="c1"># 设为不可编辑状态</span>
+
+        <span class="c1"># 自动调整列宽</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setResizeMode</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QHeaderView</span><span class="o">.</span><span class="n">ResizeToContents</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setResizeMode</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QHeaderView</span><span class="o">.</span><span class="n">Stretch</span><span class="p">)</span>
+
+    <span class="c1">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">registerEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;注册事件监听&quot;&quot;&quot;</span>
+        <span class="c1"># Qt图形组件的GUI更新必须使用Signal/Slot机制，否则有可能导致程序崩溃</span>
+        <span class="c1"># 因此这里先将图形更新函数作为Slot，和信号连接起来</span>
+        <span class="c1"># 然后将信号的触发函数注册到事件驱动引擎中</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updateLog</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eventEngine</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">EVENT_LOG</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">emit</span><span class="p">)</span>
+
+    <span class="c1">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">updateLog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;更新日志&quot;&quot;&quot;</span>
+        <span class="c1"># 获取当前时间和日志内容</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">,</span><span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()))</span>   
+        <span class="n">log</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">dict_</span><span class="p">[</span><span class="s1">&#39;log&#39;</span><span class="p">]</span>
+
+        <span class="c1"># 在表格最上方插入一行</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">insertRow</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># 创建单元格</span>
+        <span class="n">cellTime</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>    
+        <span class="n">cellLog</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">log</span><span class="p">)</span>
+
+        <span class="c1"># 将单元格插入表格</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">cellTime</span><span class="p">)</span>            
+        <span class="bp">self</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cellLog</span><span class="p">)</span>
+</pre></div>
+
+
+<p>接下来逐段讲解：</p>
+<p><strong>对象初始化（<strong>init</strong>）</strong></p>
+<div class="highlight"><pre><span></span>    <span class="c1">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eventEngine</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LogMonitor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eventEngine</span> <span class="o">=</span> <span class="n">eventEngine</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">initUi</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">registerEvent</span><span class="p">()</span>
+</pre></div>
+
+
+<ul>
+<li>
+<p>创建对象时，我们需要传入程序中的事件驱动引擎对象eventEngine，以及该图形组件所依附的母组件对象parent（一般可以留空）</p>
+</li>
+<li>
+<p>把eventEngine对象的引用保存到__eventEngine上后，我们调用initUi方法初始化图形组件的界面，以及registerEvent方法来向事件引擎中注册该图形组件的事件监听函数。</p>
+</li>
+</ul>
+<p><strong>初始化界面（initUi）</strong></p>
+<div class="highlight"><pre><span></span>    <span class="c1">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">initUi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;初始化界面&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s1">u&#39;日志&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>                     
+        <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">([</span><span class="s1">u&#39;时间&#39;</span><span class="p">,</span> <span class="s1">u&#39;日志&#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>                 <span class="c1"># 关闭左边的垂直表头</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setEditTriggers</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidget</span><span class="o">.</span><span class="n">NoEditTriggers</span><span class="p">)</span> <span class="c1"># 设为不可编辑状态</span>
+
+        <span class="c1"># 自动调整列宽</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setResizeMode</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QHeaderView</span><span class="o">.</span><span class="n">ResizeToContents</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setResizeMode</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QHeaderView</span><span class="o">.</span><span class="n">Stretch</span><span class="p">)</span>
+</pre></div>
+
+
+<ul>
+<li>
+<p>首先设置该图形组件左上方的标题栏内容为“日志”（日志监控组件）</p>
+</li>
+<li>
+<p>我们希望显示日志时，每行显示该条日志的生成时间和具体的日志内容</p>
+</li>
+<li>
+<p>由于QTableWidget本身比较类似于Excel表格，左侧有垂直标题栏（默认用于显示每行行号的表头）且可以编辑，我们需要关闭这两个功能</p>
+</li>
+<li>
+<p>另外我们希望显示日志生成时间的列的列宽可以调整为最小（只要能看见完整的时间就行），而把显示日志内容的列设为拉升（即窗口有多宽都完全覆盖）</p>
+</li>
+</ul>
+<p><strong>注册事件监听（registerEvent）</strong></p>
+<p>这里需要稍微深入一下vn.py框架中的多线程工作机制：</p>
+<ol>
+<li>
+<p>整个框架在Python环境中主要包含两个线程：主线程（运行Qt循环）和事件处理线程（运行EventEngine中的工作循环）</p>
+</li>
+<li>
+<p>针对用户是否需要使用GUI界面，主线程中运行的Qt循环可以选择QApplication（带GUI）或者QCoreApplication（纯cmd）</p>
+</li>
+<li>
+<p>Qt循环主要负责处理所有GUI相关的操作（控件绘制、信号处理等等），用户不能在其他线程中直接改变GUI界面上的任何内容，否则可能会直接导致程序崩溃</p>
+</li>
+<li>
+<p>当用户希望在其他线程中对GUI进行操作时，必须依赖Qt提供的signal/slot机制，Qt循环的底层也运行着一个类似于EventEngine的事件处理机制，其他线程发出signal后会首先记录到一个队列中，然后由Qt对队列中的signal任务进行循环处理（具体请参考Qt相关的资料）</p>
+</li>
+<li>
+<p>事件处理线程的工作原理在之前的教程中已经专门介绍过了，这里不再重复，用户只需记住所有Qt GUI组件的事件处理函数，都必须使用一个signal和该函数相连，并且在向事件引擎中注册函数监听时，将该signal的emit方法代替原本的事件处理函数进行注册</p>
+<div class="highlight"><pre><span></span><span class="c1">########################################################################</span>
+<span class="k">class</span> <span class="nc">LogMonitor</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;用于显示日志&quot;&quot;&quot;</span>
+    <span class="n">signal</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">Event</span><span class="p">()))</span>
+</pre></div>
+
+
+</li>
+<li>
+<p>signal的创建需要放在类的构造中，而不能放在类的初始化函数里（Qt会直接报错）</p>
+</li>
+<li>
+<p>由于事件驱动引擎在调用监听函数时会传入事件对象本身作为参数，因此在创建signal时需要允许传入一个类型为Event的参数</p>
+<div class="highlight"><pre><span></span>    <span class="c1">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">registerEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;注册事件监听&quot;&quot;&quot;</span>
+        <span class="c1"># Qt图形组件的GUI更新必须使用Signal/Slot机制，否则有可能导致程序崩溃</span>
+        <span class="c1"># 因此这里先将图形更新函数作为Slot，和信号连接起来</span>
+        <span class="c1"># 然后将信号的触发函数注册到事件驱动引擎中</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updateLog</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eventEngine</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">EVENT_LOG</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">emit</span><span class="p">)</span>
+</pre></div>
+
+
+</li>
+<li>
+<p>首先我们把signal和事件处理函数updateLog连接.</p>
+</li>
+<li>
+<p>然后将signal的emit方法注册到事件驱动引擎中，监听EVENT_LOG类型的事件</p>
+</li>
+</ol>
+<p><strong>更新日志记录（updateLog）</strong></p>
+<div class="highlight"><pre><span></span>    <span class="c1">#----------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">updateLog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;更新日志&quot;&quot;&quot;</span>
+        <span class="c1"># 获取当前时间和日志内容</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">,</span><span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()))</span>   
+        <span class="n">log</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">dict_</span><span class="p">[</span><span class="s1">&#39;log&#39;</span><span class="p">]</span>
+
+        <span class="c1"># 在表格最上方插入一行</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">insertRow</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># 创建单元格</span>
+        <span class="n">cellTime</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>    
+        <span class="n">cellLog</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">log</span><span class="p">)</span>
+
+        <span class="c1"># 将单元格插入表格</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">cellTime</span><span class="p">)</span>            
+        <span class="bp">self</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cellLog</span><span class="p">)</span>
+</pre></div>
+
+
+<ul>
+<li>感觉这段代码的注释已经足够清楚，就不多废话了</li>
+</ul>
+<h2>总结</h2>
+<p>尽管Qt库本身使用C++开发，相比之下在Python中使用PyQt构建GUI程序更为快捷、简便。基于Python动态语言的特性，在很多不是特别追求性能（GUI更新速度）的地方可以大幅减少用户的代码编写量，并且降低出错率。</p>
+<p>请记住vn.py从开始就是一款专门为交易员设计的通用型交易平台开发框架（而不止是全自动的程序化交易），在金融市场上真正能帮助交易员赚钱的绝对不是多么复杂的程序算法，而是能够完美实现交易员的交易策略并且越简单越好的工具。</p>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="http://github.com/vnpy/vnpy"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+              </ul>
+            </li>
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://www.vnpie.com" target="_blank">
+                官方论坛 - 维恩的派
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.trader" target="_blank">
+                交易平台
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.event" target="_blank">
+                事件引擎
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ctp" target="_blank">
+                CTP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.xspeed" target="_blank">
+                飞创接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.femas" target="_blank">
+                飞马接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksotp" target="_blank">
+                金仕达期权接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksgold" target="_blank">
+                金仕达黄金接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.sgit" target="_blank">
+                飞鼠接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/dev/vn.qdp" target="_blank">
+                QDP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.oanda" target="_blank">
+                OANDA接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ib" target="_blank">
+                IB接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.shzd" target="_blank">
+                直达期货接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.okcoin" target="_blank">
+                OKCoin接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.datayes" target="_blank">
+                通联数据接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.demo" target="_blank">
+                开发DEMO
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2017 用Python的交易员
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
+    <script src="/theme/js/bodypadding.js"></script>
+
+</body>
+</html>

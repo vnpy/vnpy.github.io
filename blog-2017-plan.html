@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh"
+>
+<head>
+    <title>2017年vn.py项目计划 - vn.py</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href="/images/favicon.png" rel="icon">
+
+<link rel="canonical" href="/blog-2017-plan.html">
+
+        <meta name="author" content="用Python的交易员" />
+        <meta name="description" content="去年初写2016年项目计划的情景还历历在目，眨眼就一年过去了，vn.py项目在2016年的成长速度远远超出了我的预期。截止写这篇文章的2017年1月7日，vn.py项目在Github上收获了2244个Star以及1276个Fork，比起2016年初几乎翻了四倍，代码贡献者的数量超过了20人（其中17人是在Github上直接提交了代码），机构用户的数量也已经超过了50家。 首先回顾2016年项目计划的完成情况 整体上去年计划的完成情况还不错，只有一个期权的CTA策略因为标的波动太小没有去做。 代码方面： 完善飞创、易盛等相对小众接口的添加，这块将由社区驱动，作者主要负责代码检查和管理（增加了vn.xspeed、vn.sgit、vn.okcoin、vn.shzd等接口，易盛暂时还未有计划） 整理vn.py项目中API的具体版本号，保证封装接口的对应，这点已经有多位用户提起过，项目初期没有做详细记录所以很多API的版本号一时都较难对上（已完成） Linux上API的编译以及vn.trader支持（已完成） 基于VirtualBox的vn.py开发环境镜像，解决部分用户反映项目初期不知该如何搭建开发环境的问题，这个镜像会由官方长期维护下去（已完成） 文章方面： 作者自己作为交易员的成长经历（通过知乎LIVE完成） vn.trader的使用教程（已完成） 将ta-lib（技术分析 ..." />
+
+        <meta property="og:site_name" content="vn.py" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="2017年vn.py项目计划"/>
+        <meta property="og:url" content="/blog-2017-plan.html"/>
+        <meta property="og:description" content="去年初写2016年项目计划的情景还历历在目，眨眼就一年过去了，vn.py项目在2016年的成长速度远远超出了我的预期。截止写这篇文章的2017年1月7日，vn.py项目在Github上收获了2244个Star以及1276个Fork，比起2016年初几乎翻了四倍，代码贡献者的数量超过了20人（其中17人是在Github上直接提交了代码），机构用户的数量也已经超过了50家。 首先回顾2016年项目计划的完成情况 整体上去年计划的完成情况还不错，只有一个期权的CTA策略因为标的波动太小没有去做。 代码方面： 完善飞创、易盛等相对小众接口的添加，这块将由社区驱动，作者主要负责代码检查和管理（增加了vn.xspeed、vn.sgit、vn.okcoin、vn.shzd等接口，易盛暂时还未有计划） 整理vn.py项目中API的具体版本号，保证封装接口的对应，这点已经有多位用户提起过，项目初期没有做详细记录所以很多API的版本号一时都较难对上（已完成） Linux上API的编译以及vn.trader支持（已完成） 基于VirtualBox的vn.py开发环境镜像，解决部分用户反映项目初期不知该如何搭建开发环境的问题，这个镜像会由官方长期维护下去（已完成） 文章方面： 作者自己作为交易员的成长经历（通过知乎LIVE完成） vn.trader的使用教程（已完成） 将ta-lib（技术分析 ..."/>
+        <meta property="article:published_time" content="2017-01-07" />
+            <meta property="article:section" content="文章" />
+            <meta property="article:author" content="用Python的交易员" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.readable.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/monokai.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "//hm.baidu.com/hm.js?e8c7573f82d43fa50c895a8e28c49ceb";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+<img src="/images/favicon.png" width=""/> vn.py            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                         <li><a href="/pages/quickstart.html">
+                             Quick Start
+                          </a></li>
+                         <li><a href="/pages/blog.html">
+                             日志
+                          </a></li>
+                         <li><a href="/pages/screenshot.html">
+                             截图
+                          </a></li>
+                         <li><a href="/pages/community.html">
+                             社区
+                          </a></li>
+                         <li><a href="/pages/api.html">
+                             API接口
+                          </a></li>
+                         <li><a href="/pages/download.html">
+                             下载
+                          </a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<style>
+	#banner{
+	    background-image:url("/images/banner.png");
+	}
+</style>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1>vn.py</h1>
+				<p class="intro">Developed by traders, for traders.</p>
+		</div>
+	</div>
+</div><!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/blog-2017-plan.html"
+                       rel="bookmark"
+                       title="Permalink to 2017年vn.py项目计划">
+                        2017年vn.py项目计划
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2017-01-07T23:45:02+08:00"> 2017-01-07(周六)</time>
+    </span>
+
+
+
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>去年初写2016年项目计划的情景还历历在目，眨眼就一年过去了，vn.py项目在2016年的成长速度远远超出了我的预期。截止写这篇文章的2017年1月7日，vn.py项目在Github上收获了2244个Star以及1276个Fork，比起2016年初几乎翻了四倍，代码贡献者的数量超过了20人（其中17人是在Github上直接提交了代码），机构用户的数量也已经超过了50家。</p>
+<h3>首先回顾2016年项目计划的完成情况</h3>
+<p>整体上去年计划的完成情况还不错，只有一个期权的CTA策略因为标的波动太小没有去做。</p>
+<p><strong>代码方面：</strong></p>
+<ol>
+<li>
+<p>完善飞创、易盛等相对小众接口的添加，这块将由社区驱动，作者主要负责代码检查和管理（增加了vn.xspeed、vn.sgit、vn.okcoin、vn.shzd等接口，易盛暂时还未有计划）</p>
+</li>
+<li>
+<p>整理vn.py项目中API的具体版本号，保证封装接口的对应，这点已经有多位用户提起过，项目初期没有做详细记录所以很多API的版本号一时都较难对上（已完成）</p>
+</li>
+<li>
+<p>Linux上API的编译以及vn.trader支持（已完成）</p>
+</li>
+<li>
+<p>基于VirtualBox的vn.py开发环境镜像，解决部分用户反映项目初期不知该如何搭建开发环境的问题，这个镜像会由官方长期维护下去（已完成）</p>
+</li>
+</ol>
+<p><strong>文章方面：</strong></p>
+<ol>
+<li>
+<p>作者自己作为交易员的成长经历（通过知乎LIVE完成）</p>
+</li>
+<li>
+<p>vn.trader的使用教程（已完成）</p>
+</li>
+<li>
+<p>将ta-lib（技术分析）和quantlib（金融工程和量化）整合到vn.trader中应用的教程，解决目前策略开发过程中技术指标和量化函数缺乏的问题（已完成）</p>
+</li>
+<li>
+<p>一套关于开发基于股指交易ETF期权的CTA策略的教程（未完成，上证50指数波动太小，准备在2017年基于商品期权来开发）</p>
+</li>
+</ol>
+<p><strong>社区方面：</strong></p>
+<ol>
+<li>
+<p>重新建设官方网站，目前使用的是托管在Github Pages上的Hexo静态博客，一来功能比较有限，二来有些用户反映Github时不时会被墙，考虑基于Flask重建一个托管在国内的官网（已完成，基于Pelican的新官网）</p>
+</li>
+<li>
+<p>有用户提出建设互动性更强的网站作为交流平台（如论坛或者知乎Q&amp;A类似的模式），这点在考虑中，主要制约因素是作者参与的时间，可能考虑和更多的资深用户合作是个好主意？（已完成，维恩的派论坛）</p>
+</li>
+</ol>
+<h3>然后展望一下2017年的项目计划</h3>
+<p>2015年是vn.py项目的诞生年，主要在打基础和完善架构；2016年基于社区的反馈，增加了很多新的接口和扩展模块；2017年准备集中在上层应用的开发，进一步解决量化交易员在实盘交易中的痛点。</p>
+<p><strong>Spread Trading价差交易模块</strong></p>
+<p>这个应该是目前呼声最高的应用，还有个名字叫做Pair Trading（配对交易），主要用于实现各种套利类的交易策略，如跨期套利、跨品种套利、跨市场套利等。</p>
+<p>在设计vn.trader中的CTA策略模块时，为了给策略开发者提供最大的自由度，选择把所有的交易委托细节都暴露给策略逻辑来管理。和CTA策略不同的是，价差交易策略一般只给出开平仓的信号，而不会直接去负责交易委托的细节管理。因此整个模块的实现上需要提供额外的一层功能：Spreading Algo价差委托算法，用于接受策略给出的交易信号，并自动管理各条套利腿的委托挂撤。</p>
+<p><strong>Web界面</strong></p>
+<p>越来越多的量化交易员开始拥有自己的交易服务器，无论是成本较低的云服务器还是机构比较常用的经纪商托管服务器。</p>
+<p>当前vn.trader的GUI界面开发使用的是PyQt4，只能在提供图形界面的操作系统上使用（Windows或者启动了X11服务的Linux）。而很多交易服务器考虑到系统稳定性和性能延时等因素，使用的都是纯命令行工作模式的Linux，在这种情况下Web界面就成为了比较合理的选择。</p>
+<p>外观上准备参考AlgoTrader的<a href="http://html5.algotrader.ch/">Web界面</a>，技术方面初步考虑使用Flask、Websocket、Bootstrap和Vue.js（已经有人提醒这个可能是大坑），后续开发过程中如果发现不合适再更换。</p>
+<p><strong>Docker支持</strong></p>
+<p>相信不少vn.py项目的用户在刚上手使用时都掉过各种各样Python环境配置方面的坑：弄错Anaconda的版本、弄错vcredist的版本、不知道如何使用pip安装三方包等。为了解决这个问题，之前打包制作了一个VirtualBox的Ubuntu镜像，实现了用户的开箱即用，但存在几个问题：镜像过大下载缓慢、打包复杂没有时间长期维护、只能在虚拟机中使用。</p>
+<p>最近两年诞生了一种新的容器技术Docker，让开发者可以打包他们的应用以及依赖包到一个可移植的容器中，然后用户可以在任何支持Docker的机器上直接使用，无论是虚拟机还是真实服务器。同时Docker的打包过程允许只提供环境搭建的指令，当用户部署Docker时才根据指令去下载和搭建整个环境，因此镜像可以很小（只是个脚本），还提供类似Github的Docker Hub方便镜像资源的分享。</p>
+<p>目前社区已经有用户在Docker中成功运行了vn.trader，但仅实现了CTP接口，同时是纯命令行模式没有GUI界面（使用脚本启动）。接下来官方支持的Docker会实现所有Linux下可用的接口，并提供界面方便使用（Web界面或者X11服务穿透）。</p>
+<p><strong>国际化支持</strong></p>
+<p>准备提供项目的英文支持，计划分为两步：软件界面上的英文翻译和文档的英文翻译。尽管vn.py项目诞生时主要面向的是国内量化交易员，但随着项目的成长，现在感觉也到了可以走出去看看的时候了。同时个人对vn.ib接口无论是API功能支持还是性能方面都挺有信心，想试试看能否超越IbPy。</p>
+<p><strong>文档建设</strong></p>
+<p>有个笑话：程序员最恨的事情之一是别人的项目不写文档，之二就是给自己的项目写文档。之前也是有不少人抱怨过vn.py项目的文档资料太少，只有知乎专栏和www.vnpy.org上面不多的文章，文章的抽象程度也比较高，让用户在刚上手时无从下手。</p>
+<p>2017年准备从用户使用的角度来设计一套全面的文档：入门使用、策略开发、扩展模块开发、架构细节、封装原理等，让新手能够循序渐进的学习，不至于一上来掉坑后爬不出来就气馁。</p>
+<p>最近开始接受项目捐赠来维护一个vn.py项目基金，第一个考虑的用途就是支持项目文档的编写。由本人设计好整个文档的目录，并给出几篇示例性质的章节后，鼓励社区成员选择自己擅长的题目章节去编写文档，对于文档作者而言参与的价值包括：</p>
+<ol>
+<li>在编写文档过程中遇到的问题，本人和另外几位社区管理员（资深用户）会提供更加充分的答疑解难，有条件的时候可以线下辅导；</li>
+<li>最终文档在发布后会署名作者的姓名，过去两年Python开发经验在国内量化领域求职时已经慢慢成为了一个重要加分项，有直接的vn.py文档编写经历证明相信可以为简历增色不少；</li>
+<li>一定量的资金回馈（从项目基金中支付），写文档时候的咖啡钱组织总还是出得起的。</li>
+</ol>
+<h1>最后，各种地缘政治因素的动荡注定了2017年不会是平静的一年，祝大家在市场的大幅波动中多多赚钱！</h1>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="http://github.com/vnpy/vnpy"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+              </ul>
+            </li>
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://www.vnpie.com" target="_blank">
+                官方论坛 - 维恩的派
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.trader" target="_blank">
+                交易平台
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.event" target="_blank">
+                事件引擎
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ctp" target="_blank">
+                CTP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.xspeed" target="_blank">
+                飞创接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.femas" target="_blank">
+                飞马接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksotp" target="_blank">
+                金仕达期权接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksgold" target="_blank">
+                金仕达黄金接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.sgit" target="_blank">
+                飞鼠接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/dev/vn.qdp" target="_blank">
+                QDP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.oanda" target="_blank">
+                OANDA接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ib" target="_blank">
+                IB接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.shzd" target="_blank">
+                直达期货接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.okcoin" target="_blank">
+                OKCoin接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.datayes" target="_blank">
+                通联数据接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.demo" target="_blank">
+                开发DEMO
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2017 用Python的交易员
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
+    <script src="/theme/js/bodypadding.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh"
+>
+<head>
+    <title>Python量化交易平台开发教程系列3-vn.py项目中API封装的编译 - vn.py</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href="/images/favicon.png" rel="icon">
+
+<link rel="canonical" href="/basic-tutorial-3.html">
+
+        <meta name="author" content="用Python的交易员" />
+        <meta name="description" content="原创文章，转载请注明出处：用Python的交易员 前言 经历了两篇的理论折磨后，本篇教程开始进入实际操作的环节，这里作者假设读者是毫无C++经验的用户，操作一步步配图，还有问题的来vn.py项目的github主页上提问。 本篇将会包含的内容： 安装Anaconda （一次安装搞定95%以上量化相关包的Python发行版） 安装Visual Studio 编译Boost库 编译vn.lts 安装Anaconda 在Anaconda历史版本中下载1.9.2（win 32位版本）。 下载好后双击安装，流程没有特别需要注意的，安装文件夹作者选的是D:\Anaconda，读者可以自己选择，注意最后一步编译vn.lts中设置时的文件夹必须是这里的安装文件夹。 为什么不用最新版本：尝试过使用2.1.0版，发现有一些包在我的电脑上存在兼容性问题（可能因为中文支持不好），需要修改一些.py文件里的源代码，太过麻烦，而且1.9.2到2.1 ..." />
+
+        <meta property="og:site_name" content="vn.py" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="Python量化交易平台开发教程系列3-vn.py项目中API封装的编译"/>
+        <meta property="og:url" content="/basic-tutorial-3.html"/>
+        <meta property="og:description" content="原创文章，转载请注明出处：用Python的交易员 前言 经历了两篇的理论折磨后，本篇教程开始进入实际操作的环节，这里作者假设读者是毫无C++经验的用户，操作一步步配图，还有问题的来vn.py项目的github主页上提问。 本篇将会包含的内容： 安装Anaconda （一次安装搞定95%以上量化相关包的Python发行版） 安装Visual Studio 编译Boost库 编译vn.lts 安装Anaconda 在Anaconda历史版本中下载1.9.2（win 32位版本）。 下载好后双击安装，流程没有特别需要注意的，安装文件夹作者选的是D:\Anaconda，读者可以自己选择，注意最后一步编译vn.lts中设置时的文件夹必须是这里的安装文件夹。 为什么不用最新版本：尝试过使用2.1.0版，发现有一些包在我的电脑上存在兼容性问题（可能因为中文支持不好），需要修改一些.py文件里的源代码，太过麻烦，而且1.9.2到2.1 ..."/>
+        <meta property="article:published_time" content="2015-03-12" />
+            <meta property="article:section" content="文章" />
+            <meta property="article:author" content="用Python的交易员" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.readable.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/monokai.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "//hm.baidu.com/hm.js?e8c7573f82d43fa50c895a8e28c49ceb";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+<img src="/images/favicon.png" width=""/> vn.py            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                         <li><a href="/pages/quickstart.html">
+                             Quick Start
+                          </a></li>
+                         <li><a href="/pages/blog.html">
+                             日志
+                          </a></li>
+                         <li><a href="/pages/screenshot.html">
+                             截图
+                          </a></li>
+                         <li><a href="/pages/community.html">
+                             社区
+                          </a></li>
+                         <li><a href="/pages/api.html">
+                             API接口
+                          </a></li>
+                         <li><a href="/pages/download.html">
+                             下载
+                          </a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<style>
+	#banner{
+	    background-image:url("/images/banner.png");
+	}
+</style>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1>vn.py</h1>
+				<p class="intro">Developed by traders, for traders.</p>
+		</div>
+	</div>
+</div><!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/basic-tutorial-3.html"
+                       rel="bookmark"
+                       title="Permalink to Python量化交易平台开发教程系列3-vn.py项目中API封装的编译">
+                        Python量化交易平台开发教程系列3-vn.py项目中API封装的编译
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2015-03-12T10:02:28+08:00"> 2015-03-12(周四)</time>
+    </span>
+
+
+
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>前言</h2>
+<p>经历了两篇的理论折磨后，本篇教程开始进入实际操作的环节，这里作者假设读者是毫无C++经验的用户，操作一步步配图，还有问题的来<a href="https://github.com/vnpy/vnpy">vn.py项目的github主页</a>上提问。</p>
+<p>本篇将会包含的内容：</p>
+<ol>
+<li>
+<p>安装Anaconda （一次安装搞定95%以上量化相关包的Python发行版）</p>
+</li>
+<li>
+<p>安装Visual Studio</p>
+</li>
+<li>
+<p>编译Boost库</p>
+</li>
+<li>
+<p>编译vn.lts</p>
+</li>
+</ol>
+<h2>安装Anaconda</h2>
+<p>在<a href="http://repo.continuum.io/archive/index.html">Anaconda历史版本</a>中下载1.9.2（win 32位版本）。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3anaconda.jpg" /></p>
+<p>下载好后双击安装，流程没有特别需要注意的，安装文件夹作者选的是D:\Anaconda，读者可以自己选择，注意最后一步编译vn.lts中设置时的文件夹必须是这里的安装文件夹。</p>
+<p>为什么不用最新版本：尝试过使用2.1.0版，发现有一些包在我的电脑上存在兼容性问题（可能因为中文支持不好），需要修改一些.py文件里的源代码，太过麻烦，而且1.9.2到2.1.0的区别非常小。</p>
+<p>为什么不用64位版本：同样是因为发生过兼容性的问题，不怕麻烦的读者可以自己折腾看看。</p>
+<h2>安装Visual Studio</h2>
+<p>在<a href="https://www.visualstudio.com/downloads/download-visual-studio-vs">Visual Studio下载</a>中下载Community 2013 with Update 4，注意选择简体中文（英文好的随意）。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/教程3vs2013_cn.jpg" /></p>
+<p>下好了同样正常安装，安装文件夹随意，这个对后面编译没有影响。</p>
+<p>不想用2013的其他版本的VS应该也都没问题，作者还测试过2010。</p>
+<h2>编译Boost库</h2>
+<h3>下载解压缩</h3>
+<p>在<a href="http://sourceforge.net/projects/boost/files/boost/1.57.0/">Source Forge</a>下载Boost 1.57.0，Source Forge下载速度较慢，建议选择7z格式。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3boost%20download.jpg" /></p>
+<p>下载完成后进行解压缩，将Boost库放到D:\boost_1_57_0文件夹下，注意最后一步编译vn.lts同样会用到这个文件夹。</p>
+<h3>Visual Studio 命令提示</h3>
+<p>打开Visual Studio 2013，在菜单栏的“工具”下找到“Visual Studio 命令提示”打开，如下图。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3vs%20cmd.jpg" /></p>
+<p>打开后的窗口就是个cmd命令窗口，接下来我们需要在其中敲入一些命令。</p>
+<p>记得我们之前Boost库放在了D:\boost_1_57_0这个文件夹下，首先我们要切换到这个文件夹，逐行输入以下命令，输完后记得回车：</p>
+<div class="highlight"><pre><span></span><span class="n">d</span><span class="o">:</span>
+
+<span class="n">cd</span><span class="o">\</span><span class="n">boost_1_57_0</span>
+</pre></div>
+
+
+<p>此时cmd里的显示应该类似于：
+<img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3boost%20cmd.jpg" /></p>
+<h3>booststrap.bat</h3>
+<p>然后输入以下内容，用于生成b2.exe文件：</p>
+<div class="highlight"><pre><span></span>bootstrap.bat
+</pre></div>
+
+
+<p>成功后显示为：</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3bootstrap.jpg" /></p>
+<h3>b2.exe</h3>
+<p>接下来编译boost库，--toolset=msvc-12.0是因为作者使用的是VS2013, --build-type=complete编译整个boost库，因为项目中不止用到boost.python：</p>
+<div class="highlight"><pre><span></span>b2 --toolset=msvc-12.0 --build-type=complete
+</pre></div>
+
+
+<p>这一步耗时会较长，视乎你的电脑性能，作者这里耗时大约20多分钟，过程中也会出现很多奇怪的输出，忽略就好，成功后会看到：</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3boost%20complete.jpg" /></p>
+<p>这里D:\boost_1_57_0\stage\lib中就是我们编译好的Boost库。</p>
+<h2>编译vn.lts</h2>
+<p>本教程中的例子是行情API（vnltsmd）。</p>
+<h3>下载vn.py</h3>
+<p>vn.py项目托管在Github上，主页为<a href="https://github.com/vnpy/vnpy">https://github.com/vnpy/vnpy</a>，点击主页右侧的“Download ZIP”下载（下图红框）。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3github.jpg" /></p>
+<p>解压缩zip文件，将vn.lts\ltsapi文件夹下的所有文件（.so文件除外）以及vn.lts\vnltsmd\pyltsmd文件夹下的所有文件，复制到一个新的文件夹中（假设命名为new），内容如下图所示：</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3folder.jpg" /></p>
+<h3>创建VS项目</h3>
+<p>打开VS2013后，点击菜单栏的“文件” -&gt; “新建” -&gt; “项目”， 在弹出的窗口中的左侧选择“模板” -&gt; “Visual C++” -&gt; “Win32” -&gt; “Win32项目”，下方的名称填入“vnltsmd”， 位置填入“D:\”（参见下图）。</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3vs2013%20project.jpg" /></p>
+<p>点击“确定”后，弹出Win32应用程序向导，点击“下一步”，应用程序类型选择为“DLL”，点击“完成”。</p>
+<h3>添加文件</h3>
+<p>在左侧的解决方案管理器中，将已有的文件全部删除。然后右键点击vnltsmd，选择“添加” -&gt; “现有项”， 将之前new文件夹中所有的文件添加进来，如下图：</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3vs2013%20project%20setting.jpg" /></p>
+<p>添加完成后的解决方案如下图：</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3solution%20files.jpg" /></p>
+<h3>配置项目</h3>
+<p>点击上方工具栏中的解决方案配置选项框（默认显示应该是“Debug”），选择“Release”，如下图红色方框：
+<img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E9%85%8D%E7%BD%AE.jpg" /></p>
+<p>右键点击方案管理器中的vnltsmd，选择“属性”，打开“vnltsmd属性页”对话框。</p>
+<p>选择“配置属性” -&gt; "VC++目录” ，如下图：</p>
+<p><img alt="enter image description here" src="http://7x2w1m.com1.z0.glb.clouddn.com/%E6%95%99%E7%A8%8B3vc++%E7%9B%AE%E5%BD%952.jpg" /></p>
+<p>在包含目录中添加：</p>
+<ul>
+<li>D:\boost_1_57_0</li>
+<li>D:\Anaconda\include</li>
+<li>new文件夹</li>
+</ul>
+<p>在引用目录中添加：</p>
+<ul>
+<li>D:\boost_1_57_0\libs\</li>
+<li>D:\Anaconda\libs</li>
+<li>new文件夹</li>
+</ul>
+<p>然后点击“链接器”，在附加库目录中添加：</p>
+<ul>
+<li>D:\boost_1_57_0\stage\lib</li>
+<li>D:\Anaconda\libs</li>
+<li>new文件夹</li>
+</ul>
+<p>最后点击“C/C++” -&gt; "预编译头”，将“预编译头”设置为“不使用预编译头”。</p>
+<p>都设置完了记得点“确定”，不然又得重弄一遍。</p>
+<h3>编译</h3>
+<p>终于完成了繁琐的项目创建和配置，此时按下F7，VS就会开始自动编译创建项目。显示如下内容说明编译成功：</p>
+<div class="highlight"><pre><span></span>1&gt;------ 已启动生成:  项目: vnltsmd, 配置: Release Win32 ------
+1&gt;  dllmain.cpp
+1&gt;  stdafx.cpp
+1&gt;  vnltsmd.cpp
+1&gt;     正在创建库 D:\vnltsmd\Release\vnltsmd.lib 和对象 D:\vnltsmd\Release\vnltsmd.exp
+1&gt;  正在生成代码
+1&gt;  已完成代码的生成
+1&gt;  vnltsmd.vcxproj -&gt; D:\vnltsmd\Release\vnltsmd.dll
+========== 生成:  成功 1 个，失败 0 个，最新 0 个，跳过 0 个 ==========
+</pre></div>
+
+
+<p>这时候我们到D:\vnltsmd\Release\文件夹下，找到vnltsmd.dll这个文件，将后缀名从.dll改为.pyd，就可以直接在python中导入使用了。</p>
+<p>从Github上下载的文件解压缩后的文件夹内，找到vn.lts\vnltsmd\test文件夹，将改名后的vnltsmd.pyd复制到该文件夹下覆盖原本的同名文件，就可以使用mdtest.py进行测试了，注意要在mdtest.py中先填入你的LTS用户名和密码。</p>
+<h2>总结</h2>
+<p>本篇教程如果读者从头到尾按照步骤一步步做下来应该是可以保证编译出.pyd文件的，上文示例中使用的是行情API，交易API的编译方法相同。</p>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="http://github.com/vnpy/vnpy"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+              </ul>
+            </li>
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://www.vnpie.com" target="_blank">
+                官方论坛 - 维恩的派
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.trader" target="_blank">
+                交易平台
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.event" target="_blank">
+                事件引擎
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ctp" target="_blank">
+                CTP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.xspeed" target="_blank">
+                飞创接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.femas" target="_blank">
+                飞马接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksotp" target="_blank">
+                金仕达期权接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksgold" target="_blank">
+                金仕达黄金接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.sgit" target="_blank">
+                飞鼠接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/dev/vn.qdp" target="_blank">
+                QDP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.oanda" target="_blank">
+                OANDA接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ib" target="_blank">
+                IB接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.shzd" target="_blank">
+                直达期货接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.okcoin" target="_blank">
+                OKCoin接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.datayes" target="_blank">
+                通联数据接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.demo" target="_blank">
+                开发DEMO
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2017 用Python的交易员
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
+    <script src="/theme/js/bodypadding.js"></script>
+
+</body>
+</html>

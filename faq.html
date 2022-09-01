@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh"
+>
+<head>
+    <title>常见问题 - vn.py</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href="/images/favicon.png" rel="icon">
+
+<link rel="canonical" href="/faq.html">
+
+        <meta name="author" content="用Python的交易员" />
+        <meta name="description" content="vn.py是否提供历史数据？ 答：作为开源项目，vn.py本身不提供历史数据服务器，但是提供了几个历史数据的解决方案： vn.trader下的IF0000_1min.csv包含了三年多的股指期货连续合约的一分钟数据，用户可以使用ctaHistoryData.py中的脚本函数将该数据导入MongoDB后用于回测； ctaHistoryData.py中同时提供了从通联数据的API接口一键下载建立本地数据库的函数，用户使用前需要购买相应的数据授权； vn.trader中的dataRecorder模块可以用于将每日的Tick行情数据收集后汇总成1分钟K线并插入MongoDB数据库，数据格式和ctaAlgo模块中使用的通用，该模块默认关闭，可以通过文件夹下的DR_setting.json来进行配置。 是否能在Mac下使用？ 答：不能，目前国内的柜台API接口只提供Windows和Linux下的接口，封装后的vn.py接口也只能在对应的操作系统使用。 是否提供Windows下的64位Python的封装？ 答：无，一方面国内部分柜台接口只有Windows下的32位版本，另一方面部分常用的Python库不提供64位的版本，因此出于兼容性的考虑，官方的vn.py只支持Windows下32位的Python（Linux下是64位），但目前有社区的用户自行封装编译了64位的API。 Python 3版本？ 答：目前Python 3的全局锁GIL性能远逊于Python 2，导致运行速度整体低20-40%不等，同时过去半年有一些社区反馈信息表示Python 3的坑太多，因此官方暂无支持计划。 Linux版本？ 答 ..." />
+
+        <meta property="og:site_name" content="vn.py" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="常见问题"/>
+        <meta property="og:url" content="/faq.html"/>
+        <meta property="og:description" content="vn.py是否提供历史数据？ 答：作为开源项目，vn.py本身不提供历史数据服务器，但是提供了几个历史数据的解决方案： vn.trader下的IF0000_1min.csv包含了三年多的股指期货连续合约的一分钟数据，用户可以使用ctaHistoryData.py中的脚本函数将该数据导入MongoDB后用于回测； ctaHistoryData.py中同时提供了从通联数据的API接口一键下载建立本地数据库的函数，用户使用前需要购买相应的数据授权； vn.trader中的dataRecorder模块可以用于将每日的Tick行情数据收集后汇总成1分钟K线并插入MongoDB数据库，数据格式和ctaAlgo模块中使用的通用，该模块默认关闭，可以通过文件夹下的DR_setting.json来进行配置。 是否能在Mac下使用？ 答：不能，目前国内的柜台API接口只提供Windows和Linux下的接口，封装后的vn.py接口也只能在对应的操作系统使用。 是否提供Windows下的64位Python的封装？ 答：无，一方面国内部分柜台接口只有Windows下的32位版本，另一方面部分常用的Python库不提供64位的版本，因此出于兼容性的考虑，官方的vn.py只支持Windows下32位的Python（Linux下是64位），但目前有社区的用户自行封装编译了64位的API。 Python 3版本？ 答：目前Python 3的全局锁GIL性能远逊于Python 2，导致运行速度整体低20-40%不等，同时过去半年有一些社区反馈信息表示Python 3的坑太多，因此官方暂无支持计划。 Linux版本？ 答 ..."/>
+        <meta property="article:published_time" content="2016-04-06" />
+            <meta property="article:section" content="文章" />
+            <meta property="article:author" content="用Python的交易员" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.readable.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/monokai.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "//hm.baidu.com/hm.js?e8c7573f82d43fa50c895a8e28c49ceb";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+<img src="/images/favicon.png" width=""/> vn.py            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                         <li><a href="/pages/quickstart.html">
+                             Quick Start
+                          </a></li>
+                         <li><a href="/pages/blog.html">
+                             日志
+                          </a></li>
+                         <li><a href="/pages/screenshot.html">
+                             截图
+                          </a></li>
+                         <li><a href="/pages/community.html">
+                             社区
+                          </a></li>
+                         <li><a href="/pages/api.html">
+                             API接口
+                          </a></li>
+                         <li><a href="/pages/download.html">
+                             下载
+                          </a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<style>
+	#banner{
+	    background-image:url("/images/banner.png");
+	}
+</style>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1>vn.py</h1>
+				<p class="intro">Developed by traders, for traders.</p>
+		</div>
+	</div>
+</div><!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/faq.html"
+                       rel="bookmark"
+                       title="Permalink to 常见问题">
+                        常见问题
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2016-04-06T21:45:00+08:00"> 2016-04-06(周三)</time>
+    </span>
+
+
+
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <h3>vn.py是否提供历史数据？</h3>
+<p>答：作为开源项目，vn.py本身不提供历史数据服务器，但是提供了几个历史数据的解决方案：</p>
+<ol>
+<li>
+<p>vn.trader下的IF0000_1min.csv包含了三年多的股指期货连续合约的一分钟数据，用户可以使用ctaHistoryData.py中的脚本函数将该数据导入MongoDB后用于回测；</p>
+</li>
+<li>
+<p>ctaHistoryData.py中同时提供了从通联数据的API接口一键下载建立本地数据库的函数，用户使用前需要购买相应的数据授权；</p>
+</li>
+<li>
+<p>vn.trader中的dataRecorder模块可以用于将每日的Tick行情数据收集后汇总成1分钟K线并插入MongoDB数据库，数据格式和ctaAlgo模块中使用的通用，该模块默认关闭，可以通过文件夹下的DR_setting.json来进行配置。</p>
+</li>
+</ol>
+<h3>是否能在Mac下使用？</h3>
+<p>答：不能，目前国内的柜台API接口只提供Windows和Linux下的接口，封装后的vn.py接口也只能在对应的操作系统使用。</p>
+<h3>是否提供Windows下的64位Python的封装？</h3>
+<p>答：无，一方面国内部分柜台接口只有Windows下的32位版本，另一方面部分常用的Python库不提供64位的版本，因此出于兼容性的考虑，官方的vn.py只支持Windows下32位的Python（Linux下是64位），但目前有社区的用户自行封装编译了64位的API。</p>
+<h3>Python 3版本？</h3>
+<p>答：目前Python 3的全局锁GIL性能远逊于Python 2，导致运行速度整体低20-40%不等，同时过去半年有一些社区反馈信息表示Python 3的坑太多，因此官方暂无支持计划。</p>
+<h3>Linux版本？</h3>
+<p>答：目前已经有社区贡献版本的linux编译工具，作者测试可用，包括详细教程的官方版本将会在2016年完成</p>
+<h3>如何获得LTS测试账户?</h3>
+<p>答：LTS是华宝证券目前独占的证券交易柜台，实盘账户的开户需要500万资金（特殊情况会有例外），测试账户可以联系他们的客服申请。服务器地址、经纪商编号等在获取账户后华宝证券都会提供。</p>
+<h3>如何获得CTP测试账户？</h3>
+<p>答：推荐上期技术开发的这个网站  http://simnow.sfit.com.cn/  可以选择自己未来打算使用的期货公司开立仿真账号。</p>
+<h3>为什么Demo中exe文件夹下的demoMain.exe文件运行报错？</h3>
+<p>答：请将exe文件夹复制到一个没有中文的路径名下（如C:\exe），再运行demoMain.exe。出现这个情况的原因是将Python文件打包时使用的nuitka工具对中文支持有问题。</p>
+<h3>是否提供历史行情数据？</h3>
+<p>答：用户可以使用vn.datayes模块和vn.trader中的CTA功能来建立历史行情数据库。</p>
+<h3>尝试连接CTP或LTS接口时，出现”empty location for service name in line 17 of file ....\source\network\serviceName.cpp”或者”invalid location in line 44 of file ....\source\network\ServiceName.cpp”错误如何解决？</h3>
+<p>答：在输入服务器的地址或者IP时，注意不要漏掉前缀的“tcp://”。</p>
+<h3>运行时出现”ImportError: DLL load failed: %1 不是有效的Win32应用程序”错误如何解决？</h3>
+<p>答：请去http://www.microsoft.com/zh-CN/download/details.aspx?id=40784
+下载x64和x86的vcredist（VC运行环境），并安装。</p>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="http://github.com/vnpy/vnpy"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+              </ul>
+            </li>
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://www.vnpie.com" target="_blank">
+                官方论坛 - 维恩的派
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.trader" target="_blank">
+                交易平台
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.event" target="_blank">
+                事件引擎
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ctp" target="_blank">
+                CTP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.xspeed" target="_blank">
+                飞创接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.femas" target="_blank">
+                飞马接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksotp" target="_blank">
+                金仕达期权接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksgold" target="_blank">
+                金仕达黄金接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.sgit" target="_blank">
+                飞鼠接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/dev/vn.qdp" target="_blank">
+                QDP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.oanda" target="_blank">
+                OANDA接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ib" target="_blank">
+                IB接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.shzd" target="_blank">
+                直达期货接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.okcoin" target="_blank">
+                OKCoin接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.datayes" target="_blank">
+                通联数据接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.demo" target="_blank">
+                开发DEMO
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2017 用Python的交易员
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
+    <script src="/theme/js/bodypadding.js"></script>
+
+</body>
+</html>

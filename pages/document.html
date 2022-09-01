@@ -2,7 +2,7 @@
 <html lang="zh"
 >
 <head>
-    <title>vn.py - 基于python的开源交易平台开发框架 - vn.py</title>
+    <title>文档 - vn.py</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -11,16 +11,16 @@
 
     <link href="/images/favicon.png" rel="icon">
 
-<link rel="canonical" href="/pages/vnpy-ji-yu-pythonde-kai-yuan-jiao-yi-ping-tai-kai-fa-kuang-jia.html">
+<link rel="canonical" href="/pages/document.html">
 
         <meta name="author" content="用Python的交易员" />
-        <meta name="description" content="项目简介 vn.py项目起源于国内私募的自主交易系统，2015年初启动时只是单纯的交易API接口的Python封装。随着业内关注度的上升和社区不断的贡献，目前已经一步步成长为一套全面的交易程序开发框架，用户群体也日渐多样化，包括私募基金、证券自营和资管、期货资管和子公司、高校研究机构、个人投资者等。 项目构成： 丰富的Python交易和数据API接口，基本覆盖了国内外常规交易品种（证券、期货、期权、外汇、CFD）： CTP（vn.ctp）：期货、期货期权 飞创（vn.xspeed）：期货、期货期权 飞马（vn.femas）：中金所的期货和期货期权 金仕达期权（vn.ksotp）：期货、期货期权、证券期权 金仕达黄金（vn.ksgold）：金交所贵金属 飞鼠（vn.sgit）：期货、金交所贵金属 QDP极速柜台 ..." />
+        <meta name="description" content="安装配置 Windows Python环境：Anaconda安装 VS2013运行时：vcredist x86 数据库：MongoDB、RoboMongo Python库：pip安装 成功运行 Ubuntu 环境安装 API编译 成功运行 基本使用 配置接口的账号、密码、服务器地址等，并测试连接 日志信息、合约列表查询、行情订阅 手动下单、撤单，成交和委托的数据监控 错误、持仓、资金的数据监控 其他贴士：窗口拖动、还原，一键测试功能 CTA策略 模块文件介绍 每个文件的功能说明 文件内模块的关系图 策略回测 回测引擎API的使用 读懂回测报告 参数优化(普通模式) 多进程优化 策略实盘 载入策略到CTA引擎 编写策略实例的json配置文件 使用CTA监控组件来管理策略的生命周期 策略实盘过程中的运维细节 ..." />
 
     <meta property="og:site_name" content="vn.py" />
     <meta property="og:type" content="article"/>
-    <meta property="og:title" content="vn.py - 基于python的开源交易平台开发框架"/>
-    <meta property="og:url" content="/pages/vnpy-ji-yu-pythonde-kai-yuan-jiao-yi-ping-tai-kai-fa-kuang-jia.html"/>
-    <meta property="og:description" content="项目简介 vn.py项目起源于国内私募的自主交易系统，2015年初启动时只是单纯的交易API接口的Python封装。随着业内关注度的上升和社区不断的贡献，目前已经一步步成长为一套全面的交易程序开发框架，用户群体也日渐多样化，包括私募基金、证券自营和资管、期货资管和子公司、高校研究机构、个人投资者等。 项目构成： 丰富的Python交易和数据API接口，基本覆盖了国内外常规交易品种（证券、期货、期权、外汇、CFD）： CTP（vn.ctp）：期货、期货期权 飞创（vn.xspeed）：期货、期货期权 飞马（vn.femas）：中金所的期货和期货期权 金仕达期权（vn.ksotp）：期货、期货期权、证券期权 金仕达黄金（vn.ksgold）：金交所贵金属 飞鼠（vn.sgit）：期货、金交所贵金属 QDP极速柜台 ..." />
+    <meta property="og:title" content="文档"/>
+    <meta property="og:url" content="/pages/document.html"/>
+    <meta property="og:description" content="安装配置 Windows Python环境：Anaconda安装 VS2013运行时：vcredist x86 数据库：MongoDB、RoboMongo Python库：pip安装 成功运行 Ubuntu 环境安装 API编译 成功运行 基本使用 配置接口的账号、密码、服务器地址等，并测试连接 日志信息、合约列表查询、行情订阅 手动下单、撤单，成交和委托的数据监控 错误、持仓、资金的数据监控 其他贴士：窗口拖动、还原，一键测试功能 CTA策略 模块文件介绍 每个文件的功能说明 文件内模块的关系图 策略回测 回测引擎API的使用 读懂回测报告 参数优化(普通模式) 多进程优化 策略实盘 载入策略到CTA引擎 编写策略实例的json配置文件 使用CTA监控组件来管理策略的生命周期 策略实盘过程中的运维细节 ..." />
 
 
     <!-- Bootstrap -->
@@ -61,6 +61,9 @@
                          <li><a href="/pages/quickstart.html">
                              Quick Start
                           </a></li>
+                         <li><a href="/pages/tutorial.html">
+                             教程
+                          </a></li>
                          <li><a href="/pages/blog.html">
                              日志
                           </a></li>
@@ -75,6 +78,9 @@
                           </a></li>
                          <li><a href="/pages/download.html">
                              下载
+                          </a></li>
+                         <li class="active"><a href="/pages/document.html">
+                             文档
                           </a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -104,118 +110,183 @@
         <div class="col-sm-9">
 
     <section id="content" class="body">
-        <h1 class="entry-title">vn.py - 基于python的开源交易平台开发框架</h1>
+        <h1 class="entry-title">文档</h1>
         
         <div class="entry-content">
             <hr />
-<h3>项目简介</h3>
-<p>vn.py项目起源于国内私募的自主交易系统，2015年初启动时只是单纯的交易API接口的Python封装。随着业内关注度的上升和社区不断的贡献，目前已经一步步成长为一套全面的交易程序开发框架，用户群体也日渐多样化，包括私募基金、证券自营和资管、期货资管和子公司、高校研究机构、个人投资者等。</p>
-<p>项目构成：</p>
 <ul>
 <li>
-<p>丰富的Python交易和数据API接口，基本覆盖了国内外常规交易品种（证券、期货、期权、外汇、CFD）：</p>
+<p>安装配置</p>
 <ul>
 <li>
-<p>CTP（vn.ctp）：期货、期货期权</p>
-</li>
-<li>
-<p>飞创（vn.xspeed）：期货、期货期权</p>
-</li>
-<li>
-<p>飞马（vn.femas）：中金所的期货和期货期权</p>
-</li>
-<li>
-<p>金仕达期权（vn.ksotp）：期货、期货期权、证券期权</p>
-</li>
-<li>
-<p>金仕达黄金（vn.ksgold）：金交所贵金属</p>
-</li>
-<li>
-<p>飞鼠（vn.sgit）：期货、金交所贵金属</p>
-</li>
-<li>
-<p>QDP极速柜台（vn.qdp）：期货、期货期权、金交所贵金属</p>
-</li>
-<li>
-<p>OANDA（vn.oanda）：外汇、CFD</p>
-</li>
-<li>
-<p>Interactive Brokers（vn.ib）：外盘股票、期货、期权、外汇等</p>
-</li>
-<li>
-<p>直达期货（vn.shzd）：外盘期货</p>
-</li>
-<li>
-<p>OKCoin（vn.okcoin）：比特币、莱特币等</p>
-</li>
-<li>
-<p>通联数据（vn.datayes）：历史行情数据、基本面数据</p>
-</li>
+<p>Windows</p>
+<ul>
+<li>Python环境：Anaconda安装</li>
+<li>VS2013运行时：vcredist x86</li>
+<li>数据库：MongoDB、RoboMongo</li>
+<li>Python库：pip安装</li>
+<li>成功运行</li>
 </ul>
 </li>
 <li>
-<p>事件驱动引擎（vn.event），用于实现Python在全局锁（GIL）限制下的高性能事件驱动编程</p>
+<p><a href="{filename}/文档/Ubuntu环境安装.md">Ubuntu</a></p>
+<ul>
+<li><a href="{filename}/文档/Ubuntu环境安装.md#环境安装#环境安装">环境安装</a></li>
+<li><a href="{filename}/文档/Ubuntu环境安装.md#API编译#API编译">API编译</a></li>
+<li><a href="{filename}/文档/Ubuntu环境安装.md#成功运行#成功运行">成功运行</a></li>
+</ul>
 </li>
-<li>
-<p>开发示例（vn.demo），通过简洁明了的代码展示如何使用API和事件驱动引擎开发交易程序</p>
-</li>
-<li>
-<p>交易平台（vn.trader），整合了vn.py项目中所有的交易接口以及Interactive Brokers的三方接口（IbPy），围绕事件驱动引擎设计了针对策略算法和交易应用开发的上层API，使得交易员可以专注于解决交易业务需求而无需关注底层细节，平台中提供了一套完整的CTA策略模块（回测和实盘）作为开发参考</p>
-</li>
-<li>
-<p>RPC模块（vn.rpc），提供跨进程服务调用的RPC模块，同时支持服务端向客户端的主动数据推送，用于实现vn.py框架下模块的多进程解耦</p>
-</li>
-<li>
-<p><a href="http://www.vnpy.org">官方网站</a>和<a href="http://zhuanlan.zhihu.com/vn-py">知乎专栏</a>，长期更新vn.py相关的开发教程资料</p>
-</li>
-<li>
-<p>官方交流QQ群，提供给社区用户一个便捷舒适的交流环境（严禁闲聊无关内容，由于管理严格吸引了大量的机构交易员）</p>
+</ul>
 </li>
 </ul>
 <hr />
-<h3>想提供帮助？</h3>
-<p>vn.py项目处于快速发展期，非常需要社区提供帮助，具体包括：</p>
 <ul>
 <li>
-<p>测试：对vn.py项目中代码的测试和BUG反馈</p>
-</li>
-<li>
-<p>文档：包括代码注释、开发教程、学习经验等</p>
-</li>
-<li>
-<p>新功能：提供新的交易和行情接口接入，上层应用开发等</p>
-</li>
-<li>
-<p>网站：对www.vnpy.org的官方网站（基于pelican）的外观设计和功能添加</p>
+<p>基本使用</p>
+<ul>
+<li>配置接口的账号、密码、服务器地址等，并测试连接</li>
+<li>日志信息、合约列表查询、行情订阅</li>
+<li>手动下单、撤单，成交和委托的数据监控</li>
+<li>错误、持仓、资金的数据监控</li>
+<li>其他贴士：窗口拖动、还原，一键测试功能</li>
+</ul>
 </li>
 </ul>
-<p>建议通过在Github上开issue的方式来贡献以上内容</p>
 <hr />
-<h3>联系方式</h3>
-<p>开发过程中遇到了问题？想要更多了解vn.py？请使用以下方式联系我们：</p>
 <ul>
 <li>
-<p>官方论坛（推荐）：<a href="http://www.vnpie.com">维恩的派</a></p>
+<p>CTA策略</p>
+<ul>
+<li>
+<p>模块文件介绍</p>
+<ul>
+<li>每个文件的功能说明</li>
+<li>文件内模块的关系图</li>
+</ul>
 </li>
 <li>
-<p>项目邮箱：vn.py@foxmail.com</p>
+<p>策略回测</p>
+<ul>
+<li>回测引擎API的使用</li>
+<li>读懂回测报告</li>
+<li>参数优化(普通模式)</li>
+<li>多进程优化</li>
+</ul>
 </li>
 <li>
-<p>QQ交流群：262656087</p>
+<p>策略实盘</p>
+<ul>
+<li>载入策略到CTA引擎</li>
+<li>编写策略实例的json配置文件</li>
+<li>使用CTA监控组件来管理策略的生命周期</li>
+<li>策略实盘过程中的运维细节</li>
+</ul>
 </li>
 <li>
-<p><a href="http://www.zhihu.com/people/traderusingpython">作者的知乎主页</a></p>
+<p>策略开发</p>
+<ul>
+<li>策略模板CtaTemplate介绍</li>
+<li>委托类型</li>
+<li>时间序列数据结构</li>
+<li>使用talib中的技术指标</li>
+</ul>
+</li>
+</ul>
 </li>
 </ul>
 <hr />
-<h3>项目捐赠</h3>
-<p>现阶段计划将收到的全部捐赠资金都投入到vn.py项目基金，用于支持后续的项目开发和各项活动。</p>
-<p>在此先强调一下：<strong>vn.py是开源项目，可以永久免费使用，并没有强制捐赠的要求！！！</strong></p>
-<p>捐赠方式：支付宝3216630132@qq.com（*晓优）</p>
-<p>计划长期维护一份捐赠清单，所以请在留言中注明是项目捐赠以及捐赠人的名字（当然想匿名的朋友就随意了）。</p>
+<ul>
+<li>事前风控<ul>
+<li>使用风控模块RiskManager</li>
+<li>风控规则配置</li>
+<li>添加自定义规则</li>
+</ul>
+</li>
+</ul>
 <hr />
-<h3>License</h3>
-<p><a href="http://mit-license.org/">MIT协议</a></p>
+<ul>
+<li>行情解决方案<ul>
+<li>使用行情记录模块DataRecorder</li>
+<li>配置行情记录的规则</li>
+<li>历史数据下载功能ctaHistory.py</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>事件引擎<ul>
+<li>事件引擎的结构</li>
+<li>事件引擎的启动和停止</li>
+<li>事件引擎的工作流程</li>
+<li>事件处理函数</li>
+<li>定时器事件</li>
+<li>使用中需要注意的细节</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>应用开发<ul>
+<li>应用模块的设计思路<ul>
+<li>监听事件(事件引擎)</li>
+<li>调用功能(主引擎)</li>
+</ul>
+</li>
+<li>使用合理的数据结构来解决问题<ul>
+<li>列表list、字典dict、集合set</li>
+<li>特殊结构collections</li>
+<li>矩阵numpy、时间序列pandas</li>
+</ul>
+</li>
+<li>设计应用的算法逻辑</li>
+<li>开发应用的GUI界面<ul>
+<li>使用表格(TableWidget)</li>
+<li>调整显示方式(GroupBox、TabWidget)</li>
+<li>数据选择工具(ComboBox，SpinBox)</li>
+<li>使用按钮调用功能</li>
+</ul>
+</li>
+<li>将模块加载到vn.trader中</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>RPC<ul>
+<li>什么时候应该使用vn.rpc模块</li>
+<li>服务器端RpcServer和客户端RpcClient的介绍</li>
+<li>服务器端的开发</li>
+<li>客户端的开发</li>
+<li>vn.rpc模块的工作原理</li>
+<li>使用中需要注意的细节(如线程安全、心跳等)</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>接口封装<ul>
+<li>各种API的介绍和对比</li>
+<li>API类模块的编译和使用(vn.ctp、vn.lts等)</li>
+<li>类CTP交易API<ul>
+<li>工作原理</li>
+<li>封装设计</li>
+</ul>
+</li>
+<li>Interactive Brokers(IB)的API<ul>
+<li>工作原理</li>
+<li>封装设计</li>
+</ul>
+</li>
+<li>其他API<ul>
+<li>oanda</li>
+<li>wind</li>
+<li>shzd</li>
+<li>okcoin</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
         </div>
     </section>
         </div>
@@ -262,6 +333,11 @@
         <li class="list-group-item">
             <a href="http://github.com/vnpy/vnpy/tree/master/vn.femas" target="_blank">
                 飞马接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://github.com/vnpy/vnpy/tree/master/vn.lts" target="_blank">
+                LTS接口
             </a>
         </li>
         <li class="list-group-item">

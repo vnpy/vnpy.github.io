@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh"
+>
+<head>
+    <title>Python量化交易平台开发教程系列0-引言 - vn.py</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href="/images/favicon.png" rel="icon">
+
+<link rel="canonical" href="/basic-tutorial-0.html">
+
+        <meta name="author" content="用Python的交易员" />
+        <meta name="description" content="原创文章，转载请注明出处：用Python的交易员 为什么用Python来开发量化交易平台 目前本人所在的公司一共有三款平台，分别基于C++， C#和Python。其中C#和Python平台都是由交易员开发；C++平台则是由专职IT团队作为一个通用平台开发，内部组件进行了封装（交易员不可见），对外提供行情、交易的API用于策略开发（除了C++ 外也包括C#和Python可用的API）。 理论上这款C++平台应该是最为稳定和强大的，由专业人士设计，同时采用封装核心，暴露API，支持组件模块开发，linux服务器运行的形式。 但是在实际运用中，交易团队表达了一个强烈的观点：这个平台实在是太难用了！ 由IT团队设计的API功能非常强大，但是也太过繁琐，导致学习曲线极为陡峭。 为了追求速度，没有设计原生GUI（本来就为了在Linux服务器上跑），但是今天绝大多数的非超高频（追求微秒级延迟的那种）交易策略，几乎都需要有人实时监控，你总不能让交易员盯着个linux shell上不断print出来的内容或者盘中去翻日志吧，这个运维风险就扛不起。尽管可以作为插件的形式开发GUI，但C++本身的GUI开发还是较为复杂的，非专业IT很难搞的定。 交易员团队的需求变化很快，通常等不及IT去排班开发，最好是今天收盘有个点子，明天开盘就能开始接实盘数据验证 ..." />
+
+        <meta property="og:site_name" content="vn.py" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="Python量化交易平台开发教程系列0-引言"/>
+        <meta property="og:url" content="/basic-tutorial-0.html"/>
+        <meta property="og:description" content="原创文章，转载请注明出处：用Python的交易员 为什么用Python来开发量化交易平台 目前本人所在的公司一共有三款平台，分别基于C++， C#和Python。其中C#和Python平台都是由交易员开发；C++平台则是由专职IT团队作为一个通用平台开发，内部组件进行了封装（交易员不可见），对外提供行情、交易的API用于策略开发（除了C++ 外也包括C#和Python可用的API）。 理论上这款C++平台应该是最为稳定和强大的，由专业人士设计，同时采用封装核心，暴露API，支持组件模块开发，linux服务器运行的形式。 但是在实际运用中，交易团队表达了一个强烈的观点：这个平台实在是太难用了！ 由IT团队设计的API功能非常强大，但是也太过繁琐，导致学习曲线极为陡峭。 为了追求速度，没有设计原生GUI（本来就为了在Linux服务器上跑），但是今天绝大多数的非超高频（追求微秒级延迟的那种）交易策略，几乎都需要有人实时监控，你总不能让交易员盯着个linux shell上不断print出来的内容或者盘中去翻日志吧，这个运维风险就扛不起。尽管可以作为插件的形式开发GUI，但C++本身的GUI开发还是较为复杂的，非专业IT很难搞的定。 交易员团队的需求变化很快，通常等不及IT去排班开发，最好是今天收盘有个点子，明天开盘就能开始接实盘数据验证 ..."/>
+        <meta property="article:published_time" content="2015-03-04" />
+            <meta property="article:section" content="文章" />
+            <meta property="article:author" content="用Python的交易员" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.readable.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/monokai.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "//hm.baidu.com/hm.js?e8c7573f82d43fa50c895a8e28c49ceb";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+<img src="/images/favicon.png" width=""/> vn.py            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                         <li><a href="/pages/quickstart.html">
+                             Quick Start
+                          </a></li>
+                         <li><a href="/pages/blog.html">
+                             日志
+                          </a></li>
+                         <li><a href="/pages/screenshot.html">
+                             截图
+                          </a></li>
+                         <li><a href="/pages/community.html">
+                             社区
+                          </a></li>
+                         <li><a href="/pages/api.html">
+                             API接口
+                          </a></li>
+                         <li><a href="/pages/download.html">
+                             下载
+                          </a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<style>
+	#banner{
+	    background-image:url("/images/banner.png");
+	}
+</style>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1>vn.py</h1>
+				<p class="intro">Developed by traders, for traders.</p>
+		</div>
+	</div>
+</div><!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/basic-tutorial-0.html"
+                       rel="bookmark"
+                       title="Permalink to Python量化交易平台开发教程系列0-引言">
+                        Python量化交易平台开发教程系列0-引言
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2015-03-04T10:58:42+08:00"> 2015-03-04(周三)</time>
+    </span>
+
+
+
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>原创文章，转载请注明出处：用Python的交易员</p>
+<h2>为什么用Python来开发量化交易平台</h2>
+<p>目前本人所在的公司一共有三款平台，分别基于C++， C#和Python。其中C#和Python平台都是由交易员开发；C++平台则是由专职IT团队作为一个通用平台开发，内部组件进行了封装（交易员不可见），对外提供行情、交易的API用于策略开发（除了C++ 外也包括C#和Python可用的API）。</p>
+<p>理论上这款C++平台应该是最为稳定和强大的，由专业人士设计，同时采用封装核心，暴露API，支持组件模块开发，linux服务器运行的形式。</p>
+<p>但是在实际运用中，交易团队表达了一个强烈的观点：这个平台实在是太难用了！ </p>
+<ol>
+<li>
+<p>由IT团队设计的API功能非常强大，但是也太过繁琐，导致学习曲线极为陡峭。  </p>
+</li>
+<li>
+<p>为了追求速度，没有设计原生GUI（本来就为了在Linux服务器上跑），但是今天绝大多数的非超高频（追求微秒级延迟的那种）交易策略，几乎都需要有人实时监控，你总不能让交易员盯着个linux shell上不断print出来的内容或者盘中去翻日志吧，这个运维风险就扛不起。尽管可以作为插件的形式开发GUI，但C++本身的GUI开发还是较为复杂的，非专业IT很难搞的定。  </p>
+</li>
+<li>
+<p>交易员团队的需求变化很快，通常等不及IT去排班开发，最好是今天收盘有个点子，明天开盘就能开始接实盘数据验证，没问题后天就能上实盘。比如去年四季度的分级基金套利机会就是稍纵即逝，那段时间如果能快速开发完成一套专门的监控套利系统，抓住的利润绝对会比用excel接wind数据来的多不少。  </p>
+</li>
+<li>
+<p>某些业务逻辑确实太过复杂，交易员想解释让IT明白，无奈IT并不是太擅长某些金融领域（比如期权高频套利的整个业务框架），交流成本太高。</p>
+</li>
+</ol>
+<p>用web开发来做比较的话，C++实现的量化交易平台像是java在网络开发领域的地位，强大（几乎无所不能）、稳定（无数大公司的支持），但是也很臃肿（你一两个人开发试试）。</p>
+<p>以上的原因促成了我坚持使用Python开发一个交易平台，这款平台的定位好比于node.js为前端工程师（用户体验的直接缔造者）提供了一个简洁又不失强大的后端平台，主要的目标用户群是中小型量化团队（根据我的经验，绝大部分的券商自营、期货资管和基金量化部门都不大）、专业的交易员团队（可以雇得起少量专职IT）以及一部分打算从互联网领域转行来的程序猿们（Python在互联网公司用的不少）。</p>
+<h2>Python在量化平台开发方面的优缺点</h2>
+<h3>优点</h3>
+<ol>
+<li>
+<p>动态语言的快速开发特性，封接口有boost.Python，写GUI有PyQt，时间序列有numpy，等等，几乎你想干的事都有现成的库可以用，这里吐槽下公司大牛自己写C++里的简单移动平均（SMA）算法，确实比常规实现快不少，但似乎对pnl没什么直接帮助。</p>
+</li>
+<li>
+<p>学习成本低，这点算是个共识了吧？</p>
+</li>
+<li>
+<p>真需要低延迟的时候，胶水语言很容易通过其他语言拓展：cython, ctypes, boost.Python等等。</p>
+</li>
+<li>
+<p>运行速度足够快，也许和C++比起来确实慢了不少，但是就我的经验来看，这点速度延迟对90%的策略pnl毫无影响。</p>
+</li>
+</ol>
+<h3>缺点</h3>
+<ol>
+<li>
+<p>GIL，该死的全局锁导致Python无法有效利用多核CPU的性能，尽管可以通过拓展绕过去，但还是没有其他语言原生多线程利用多核的方案来的简便。</p>
+</li>
+<li>
+<p>没有静态类型检查，重构的时候确实有点痛苦，不过一个良好的编程范式可以有效解决这个问题。</p>
+</li>
+<li>
+<p>不适合用来搞超高频策略（追求微秒级延迟的差异），得承认这点Python确实搞不过C++。常规基于TICK级数据的策略没问题。</p>
+</li>
+</ol>
+<h2>为什么会有这个系列</h2>
+<p>2015年的春节期间突然萌发了启动一个开源量化交易平台开发框架项目的想法，原因包括：  </p>
+<ol>
+<li>
+<p>国内很多的机构和个人量化投资者，在受够了一些商业软件的束缚后（TB、金字塔等）想基于柜台API进行直接开发，然后在C++的.h头文件、网上一些不成体系的开发指南、不知道如何构建程序核心架构等等问题中赚的一头雾水后放弃。  </p>
+</li>
+<li>
+<p>国外有相当多类似的项目，比如AlgoTrader、Tradelink、Marketcetera等等开源交易平台有着大量的用户和活跃的社区。目前国内据我所知只有海风的AT平台项目（基于C#），QuantBox项目当前更多只是一个柜台API的统一化封装（当然封装的非常漂亮，有兴趣的建议直接看看源代码）。  </p>
+</li>
+<li>
+<p>在本人的整个求学经历中，发现最佳的学习方式之一就是自己当老师，当你试着把某种知识教给别人时，你对这种知识的掌握会更加细致深入。  </p>
+</li>
+<li>
+<p>抛砖引玉，本人是交易员出身，编程算是半路出家，不专业的地方很多，通过这个项目和业内人士多多交流。  </p>
+</li>
+<li>
+<p>TB之类的商业软件不算，国内目前最大量化交易社区应该是C#（交易）和Matlab（研发），而能兼顾交易和研发的Python社区居然十分弱小，实在是不能忍。</p>
+</li>
+</ol>
+<p>授人以鱼不如授人以渔，目前这个项目<strong><a href="http://github.com/vnpy/vnpy">vn.py</a></strong>已经发布在了github上，包含了基于CTP API的Python封装和事件驱动引擎，鱼竿准备好了，剩下的就是学习如何钓鱼。一方面也是因为自己之前在学习过程中遇到的最大问题之一就是目前国内缺乏一个成体系的量化平台开发教程，所以发布项目后的下一步工作就是编写这个教程系列。</p>
+<h2>系列内容安排</h2>
+<p>整个系列文章目前预计包含的内容如下：  </p>
+<ol>
+<li>
+<p>类CTP交易API的工作原理  </p>
+</li>
+<li>
+<p>类CTP交易API的Python封装设计</p>
+</li>
+<li>
+<p>vn.py项目中API封装的编译，其他交易API的封装</p>
+</li>
+<li>
+<p>事件驱动引擎原理和使用</p>
+</li>
+<li>
+<p>CTP交易平台开发：登陆、订阅市场行情</p>
+</li>
+<li>
+<p>CTP交易平台开发：交易功能</p>
+</li>
+<li>
+<p>CTP交易平台开发：持仓、交易、下单监控</p>
+</li>
+</ol>
+<h2>联系作者</h2>
+<p>本人的知乎号：<a href="http://www.zhihu.com/people/traderusingPython">用Python的交易员</a>，可以通过知乎私信联系到我，一些和开源项目、教程相关的问题交流也会发在知乎上。</p>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="http://github.com/vnpy/vnpy"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+              </ul>
+            </li>
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://www.vnpie.com" target="_blank">
+                官方论坛 - 维恩的派
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.trader" target="_blank">
+                交易平台
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.event" target="_blank">
+                事件引擎
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ctp" target="_blank">
+                CTP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.xspeed" target="_blank">
+                飞创接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.femas" target="_blank">
+                飞马接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksotp" target="_blank">
+                金仕达期权接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ksgold" target="_blank">
+                金仕达黄金接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.sgit" target="_blank">
+                飞鼠接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/dev/vn.qdp" target="_blank">
+                QDP接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.oanda" target="_blank">
+                OANDA接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.ib" target="_blank">
+                IB接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.shzd" target="_blank">
+                直达期货接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.okcoin" target="_blank">
+                OKCoin接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.datayes" target="_blank">
+                通联数据接口
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://github.com/vnpy/vnpy/tree/master/vn.demo" target="_blank">
+                开发DEMO
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2017 用Python的交易员
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
+    <script src="/theme/js/bodypadding.js"></script>
+
+</body>
+</html>

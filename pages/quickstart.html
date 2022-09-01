@@ -2,7 +2,7 @@
 <html lang="zh"
 >
 <head>
-    <title>vn.py - 基于python的开源交易平台开发框架 - vn.py</title>
+    <title>Quick Start - vn.py</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -11,16 +11,16 @@
 
     <link href="/images/favicon.png" rel="icon">
 
-<link rel="canonical" href="/pages/vnpy-ji-yu-pythonde-kai-yuan-jiao-yi-ping-tai-kai-fa-kuang-jia.html">
+<link rel="canonical" href="/pages/quickstart.html">
 
         <meta name="author" content="用Python的交易员" />
-        <meta name="description" content="项目简介 vn.py项目起源于国内私募的自主交易系统，2015年初启动时只是单纯的交易API接口的Python封装。随着业内关注度的上升和社区不断的贡献，目前已经一步步成长为一套全面的交易程序开发框架，用户群体也日渐多样化，包括私募基金、证券自营和资管、期货资管和子公司、高校研究机构、个人投资者等。 项目构成： 丰富的Python交易和数据API接口，基本覆盖了国内外常规交易品种（证券、期货、期权、外汇、CFD）： CTP（vn.ctp）：期货、期货期权 飞创（vn.xspeed）：期货、期货期权 飞马（vn.femas）：中金所的期货和期货期权 金仕达期权（vn.ksotp）：期货、期货期权、证券期权 金仕达黄金（vn.ksgold）：金交所贵金属 飞鼠（vn.sgit）：期货、金交所贵金属 QDP极速柜台 ..." />
+        <meta name="description" content="对于大部分用户来说，无需自行编译API接口，建议可以直接使用vn.trader进行交易和策略开发。 Windows 7 使用步骤 准备一台Windows 7 64位系统的电脑 安装Anaconda：下载Anaconda 4.0.0 Python 2.7 32位版本，注意必须是32位 安装MongoDB：下载Windows 64-bit 2008 R2+版本 安装pymongo：在cmd中运行pip install pymongo 参考这里，将MongoDB注册为Windows服务并启动 安装Visual C++ Redistributable Packages for VS2013，中英文随意 在vn.py项目的Github主页选择Download ZIP下载项目代码，并解压到C ..." />
 
     <meta property="og:site_name" content="vn.py" />
     <meta property="og:type" content="article"/>
-    <meta property="og:title" content="vn.py - 基于python的开源交易平台开发框架"/>
-    <meta property="og:url" content="/pages/vnpy-ji-yu-pythonde-kai-yuan-jiao-yi-ping-tai-kai-fa-kuang-jia.html"/>
-    <meta property="og:description" content="项目简介 vn.py项目起源于国内私募的自主交易系统，2015年初启动时只是单纯的交易API接口的Python封装。随着业内关注度的上升和社区不断的贡献，目前已经一步步成长为一套全面的交易程序开发框架，用户群体也日渐多样化，包括私募基金、证券自营和资管、期货资管和子公司、高校研究机构、个人投资者等。 项目构成： 丰富的Python交易和数据API接口，基本覆盖了国内外常规交易品种（证券、期货、期权、外汇、CFD）： CTP（vn.ctp）：期货、期货期权 飞创（vn.xspeed）：期货、期货期权 飞马（vn.femas）：中金所的期货和期货期权 金仕达期权（vn.ksotp）：期货、期货期权、证券期权 金仕达黄金（vn.ksgold）：金交所贵金属 飞鼠（vn.sgit）：期货、金交所贵金属 QDP极速柜台 ..." />
+    <meta property="og:title" content="Quick Start"/>
+    <meta property="og:url" content="/pages/quickstart.html"/>
+    <meta property="og:description" content="对于大部分用户来说，无需自行编译API接口，建议可以直接使用vn.trader进行交易和策略开发。 Windows 7 使用步骤 准备一台Windows 7 64位系统的电脑 安装Anaconda：下载Anaconda 4.0.0 Python 2.7 32位版本，注意必须是32位 安装MongoDB：下载Windows 64-bit 2008 R2+版本 安装pymongo：在cmd中运行pip install pymongo 参考这里，将MongoDB注册为Windows服务并启动 安装Visual C++ Redistributable Packages for VS2013，中英文随意 在vn.py项目的Github主页选择Download ZIP下载项目代码，并解压到C ..." />
 
 
     <!-- Bootstrap -->
@@ -58,7 +58,7 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                         <li><a href="/pages/quickstart.html">
+                         <li class="active"><a href="/pages/quickstart.html">
                              Quick Start
                           </a></li>
                          <li><a href="/pages/blog.html">
@@ -104,118 +104,100 @@
         <div class="col-sm-9">
 
     <section id="content" class="body">
-        <h1 class="entry-title">vn.py - 基于python的开源交易平台开发框架</h1>
+        <h1 class="entry-title">Quick Start</h1>
         
         <div class="entry-content">
-            <hr />
-<h3>项目简介</h3>
-<p>vn.py项目起源于国内私募的自主交易系统，2015年初启动时只是单纯的交易API接口的Python封装。随着业内关注度的上升和社区不断的贡献，目前已经一步步成长为一套全面的交易程序开发框架，用户群体也日渐多样化，包括私募基金、证券自营和资管、期货资管和子公司、高校研究机构、个人投资者等。</p>
-<p>项目构成：</p>
+            <p>对于大部分用户来说，无需自行编译API接口，建议可以直接使用vn.trader进行交易和策略开发。</p>
+<h2>Windows 7</h2>
+<p><strong>使用步骤</strong></p>
+<ol>
+<li>
+<p>准备一台Windows 7 64位系统的电脑</p>
+</li>
+<li>
+<p>安装<a href="http://www.continuum.io/downloads">Anaconda</a>：下载<strong>Anaconda 4.0.0</strong> Python 2.7 32位版本，<strong>注意必须是32位</strong></p>
+</li>
+<li>
+<p>安装<a href="https://www.mongodb.org/downloads#production">MongoDB</a>：下载Windows 64-bit 2008 R2+版本</p>
+</li>
+<li>
+<p>安装pymongo：在cmd中运行pip install pymongo</p>
+</li>
+<li>
+<p>参考<a href="http://jingyan.baidu.com/article/6b97984dbeef881ca2b0bf3e.html">这里</a>，将MongoDB注册为Windows服务并启动</p>
+</li>
+<li>
+<p>安装<a href="https://www.microsoft.com/en-gb/download/details.aspx?id=40784">Visual C++  Redistributable Packages for VS2013</a>，中英文随意</p>
+</li>
+<li>
+<p>在<a href="http://github.com/vnpy/vnpy">vn.py项目的Github主页</a>选择Download ZIP下载项目代码，并解压到C:\vnpy</p>
+</li>
+<li>
+<p>在<a href="http://simnow.com.cn/">SimNow</a>注册CTP仿真账号，记下你的<strong>账号、密码、经纪商编号</strong>，然后下载快期查询你的<strong>交易和行情服务器地址</strong></p>
+</li>
+<li>
+<p>把C:\vnpy\vn.trader\ctpGateway\CTP_connect.json中的账号、密码、服务器等修改为上一步注册完成后你的信息（注意使用专门的编程编辑器，如Sublime Text等，防止json编码出错）</p>
+</li>
+<li>
+<p>双击运行C:\vnpy\vn.trader\vtMain.py，开始交易！无法双击的用户可以右键点击后选择打开方式，使用Anaconda文件夹下的python.exe运行。</p>
+</li>
+</ol>
+<p>对于想研究API封装的用户，可以参考教程里的入门部分一步步操作。</p>
+<h2>Ubuntu 16.04 LTS（开箱即用镜像）</h2>
+<p><strong>使用步骤</strong></p>
+<ol>
+<li>
+<p>在<a href="http://www.virtualbox.org/wiki/Downloads">VirtualBox网站</a>下载安装最新版的VirtualBox，安装程序会自动判断操作系统是32或者64位，并安装对应的版本</p>
+</li>
+<li>
+<p>下载<a href="http://pan.baidu.com/s/1cebOXw">镜像文件</a>，其中vnpy.zip是主压缩文件，其他带有编号的是压缩分卷，解压vnpy.zip到某个文件夹中</p>
+</li>
+<li>
+<p>打开VirtualBox，点击菜单栏的管理-&gt;导入虚拟电脑，找到上一步解压缩文件夹中的vnpy.ova，将该镜像导入到软件中</p>
+</li>
+<li>
+<p>在左侧的列表中选中vn.py虚拟机，点击启动后，就可以看到Ubuntu的运行界面了，管理员账号：vnpy，密码：vnpy</p>
+</li>
+</ol>
+<p><strong>镜像说明</strong></p>
+<ol>
+<li>
+<p>该Ubuntu环境支持CTP、LTS、IB和OANDA的交易接口</p>
+</li>
+<li>
+<p>MongoDB已经安装好并设置为开机启动，可以使用桌面上的Robomongo来管理数据库</p>
+</li>
+<li>
+<p>双击桌面的"修改CTP_connect.json"，修改账号、密码、服务器和经纪商代码的信息后，即可开始使用CTP接口交易</p>
+</li>
+<li>
+<p>IB的TWS平台可以使用模拟交易账户登录，账号：edemo，密码：demouser（注意该行情是虚拟的数据，只能用于测试）</p>
+</li>
+<li>
+<p>LTS和OANDA接口相关的设置需要在vn.trader文件夹下对应的gateway文件夹中修改json配置文件</p>
+</li>
+</ol>
+<h2>其他作者建议使用的软件工具</h2>
 <ul>
 <li>
-<p>丰富的Python交易和数据API接口，基本覆盖了国内外常规交易品种（证券、期货、期权、外汇、CFD）：</p>
-<ul>
-<li>
-<p>CTP（vn.ctp）：期货、期货期权</p>
+<p><a href="http://wingware.com/">WingIDE</a>：非常好用的Python集成开发环境（作者就是用它写的vn.py）</p>
 </li>
 <li>
-<p>飞创（vn.xspeed）：期货、期货期权</p>
+<p><a href="https://robomongo.org/">Robomongo</a>：MongoDB的图形化客户端，方便监控和修改数据</p>
 </li>
 <li>
-<p>飞马（vn.femas）：中金所的期货和期货期权</p>
+<p><a href="http://www.sublimetext.com/">Sublime Text</a>：针对编程的文本编辑器，当然你也可以使用Vim或者Emacs</p>
 </li>
 <li>
-<p>金仕达期权（vn.ksotp）：期货、期货期权、证券期权</p>
+<p><a href="http://www.pyqtgraph.org/">PyQtGraph</a>：适用于开发实时更新数据的图表，如Tick图、K线图、期权波动率曲线等（Matplotlib渲染开销太大，用于实盘绘图可能拖慢整个程序）</p>
 </li>
 <li>
-<p>金仕达黄金（vn.ksgold）：金交所贵金属</p>
+<p><a href="https://www.visualstudio.com/en-us/downloads/download-visual-studio-vs.aspx">Visual Studio 2013</a>：这个就不多说了（作者编译API封装用的是2013版本）</p>
 </li>
 <li>
-<p>飞鼠（vn.sgit）：期货、金交所贵金属</p>
-</li>
-<li>
-<p>QDP极速柜台（vn.qdp）：期货、期货期权、金交所贵金属</p>
-</li>
-<li>
-<p>OANDA（vn.oanda）：外汇、CFD</p>
-</li>
-<li>
-<p>Interactive Brokers（vn.ib）：外盘股票、期货、期权、外汇等</p>
-</li>
-<li>
-<p>直达期货（vn.shzd）：外盘期货</p>
-</li>
-<li>
-<p>OKCoin（vn.okcoin）：比特币、莱特币等</p>
-</li>
-<li>
-<p>通联数据（vn.datayes）：历史行情数据、基本面数据</p>
+<p><a href="https://www.sourcetreeapp.com/">SourceTree</a>：比Github Desktop更好用的版本管理软件，可以从Github同步代码库</p>
 </li>
 </ul>
-</li>
-<li>
-<p>事件驱动引擎（vn.event），用于实现Python在全局锁（GIL）限制下的高性能事件驱动编程</p>
-</li>
-<li>
-<p>开发示例（vn.demo），通过简洁明了的代码展示如何使用API和事件驱动引擎开发交易程序</p>
-</li>
-<li>
-<p>交易平台（vn.trader），整合了vn.py项目中所有的交易接口以及Interactive Brokers的三方接口（IbPy），围绕事件驱动引擎设计了针对策略算法和交易应用开发的上层API，使得交易员可以专注于解决交易业务需求而无需关注底层细节，平台中提供了一套完整的CTA策略模块（回测和实盘）作为开发参考</p>
-</li>
-<li>
-<p>RPC模块（vn.rpc），提供跨进程服务调用的RPC模块，同时支持服务端向客户端的主动数据推送，用于实现vn.py框架下模块的多进程解耦</p>
-</li>
-<li>
-<p><a href="http://www.vnpy.org">官方网站</a>和<a href="http://zhuanlan.zhihu.com/vn-py">知乎专栏</a>，长期更新vn.py相关的开发教程资料</p>
-</li>
-<li>
-<p>官方交流QQ群，提供给社区用户一个便捷舒适的交流环境（严禁闲聊无关内容，由于管理严格吸引了大量的机构交易员）</p>
-</li>
-</ul>
-<hr />
-<h3>想提供帮助？</h3>
-<p>vn.py项目处于快速发展期，非常需要社区提供帮助，具体包括：</p>
-<ul>
-<li>
-<p>测试：对vn.py项目中代码的测试和BUG反馈</p>
-</li>
-<li>
-<p>文档：包括代码注释、开发教程、学习经验等</p>
-</li>
-<li>
-<p>新功能：提供新的交易和行情接口接入，上层应用开发等</p>
-</li>
-<li>
-<p>网站：对www.vnpy.org的官方网站（基于pelican）的外观设计和功能添加</p>
-</li>
-</ul>
-<p>建议通过在Github上开issue的方式来贡献以上内容</p>
-<hr />
-<h3>联系方式</h3>
-<p>开发过程中遇到了问题？想要更多了解vn.py？请使用以下方式联系我们：</p>
-<ul>
-<li>
-<p>官方论坛（推荐）：<a href="http://www.vnpie.com">维恩的派</a></p>
-</li>
-<li>
-<p>项目邮箱：vn.py@foxmail.com</p>
-</li>
-<li>
-<p>QQ交流群：262656087</p>
-</li>
-<li>
-<p><a href="http://www.zhihu.com/people/traderusingpython">作者的知乎主页</a></p>
-</li>
-</ul>
-<hr />
-<h3>项目捐赠</h3>
-<p>现阶段计划将收到的全部捐赠资金都投入到vn.py项目基金，用于支持后续的项目开发和各项活动。</p>
-<p>在此先强调一下：<strong>vn.py是开源项目，可以永久免费使用，并没有强制捐赠的要求！！！</strong></p>
-<p>捐赠方式：支付宝3216630132@qq.com（*晓优）</p>
-<p>计划长期维护一份捐赠清单，所以请在留言中注明是项目捐赠以及捐赠人的名字（当然想匿名的朋友就随意了）。</p>
-<hr />
-<h3>License</h3>
-<p><a href="http://mit-license.org/">MIT协议</a></p>
         </div>
     </section>
         </div>
